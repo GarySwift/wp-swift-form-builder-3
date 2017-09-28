@@ -1,0 +1,59 @@
+[
+    {
+        "key": "group_599c872f1839d",
+        "title": "Help",
+        "fields": [
+            {
+                "key": "field_599c8821753eb",
+                "label": "Shortcodes",
+                "name": "",
+                "type": "message",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "message": "[contact_form]",
+                "new_lines": "br",
+                "esc_html": 0
+            },
+            {
+                "key": "field_599c8841753ec",
+                "label": "Functions",
+                "name": "",
+                "type": "message",
+                "instructions": "&lt;?php\r\necho wp_swift_form_builder();",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "message": "&lt;?php\r\necho wp_swift_form_builder();",
+                "new_lines": "br",
+                "esc_html": 0
+            }
+        ],
+        "location": [
+            [
+                {
+                    "param": "post_type",
+                    "operator": "==",
+                    "value": "post"
+                }
+            ]
+        ],
+        "menu_order": 0,
+        "position": "normal",
+        "style": "default",
+        "label_placement": "top",
+        "instruction_placement": "label",
+        "hide_on_screen": "",
+        "active": 0,
+        "description": ""
+    }
+]
