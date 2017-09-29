@@ -17,7 +17,7 @@
  * @extends     WP_Swift_Form_Builder_Plugin
  *
  */
-class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Plugin {
+class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
 
     private $attributes = null;
     private $option = '';
@@ -69,6 +69,9 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Plugin {
          * Variables
          */
         $send_email=true;//Debug variable. If false, emails will not be sent
+        if( get_field('debugging_stop_email', 'option') ) {
+            $send_email = false;
+        }  
         $options = get_option( 'wp_swift_form_builder_settings' );
         if (isset($options['wp_swift_form_builder_checkbox_debug_mode']) && $options['wp_swift_form_builder_checkbox_debug_mode'] === '1') {
             $send_email=false;
@@ -204,15 +207,19 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Plugin {
     private function build_confirmation_output($use_callout=true, $browser_output_header, $auto_response_message, $key_value_table, $user_output_footer) {
 
         $framework = '';
+        $debugging_stop_email = true;
         $options = get_option( 'wp_swift_form_builder_settings' );
         if (isset($options['wp_swift_form_builder_select_css_framework'])) {
             $framework = $options['wp_swift_form_builder_select_css_framework'];
         }
+        if( get_field('debugging_stop_email', 'option') ) {
+            $debugging_stop_email = true;
+        }  
         ob_start();
-        if (isset($options['_wp_swift_form_builder_checkbox_debug_mode']) && $options['wp_swift_form_builder_checkbox_debug_mode'] === '1'): ?>
+        if ($debugging_stop_email): ?>
             <pre>
-                <div><b>Debug Mode</b></div>
-                <br><?php var_dump($_POST); ?>
+                    <div><b>Debug Mode</b></div>
+                <!-- <br> --><?php //var_dump($_POST); ?>
             </pre>
         <?php endif ?>
         <?php if ($use_callout):

@@ -3,7 +3,7 @@ if( function_exists('acf_add_local_field_group') ):
 
 acf_add_local_field_group(array (
 	'key' => 'group_599c872f1839d',
-	'title' => 'Help',
+	'title' => 'Form Builder Clone Field: Help Tab',
 	'fields' => array (
 		array (
 			'key' => 'field_599c8821753eb',
@@ -24,7 +24,7 @@ acf_add_local_field_group(array (
 		),
 		array (
 			'key' => 'field_599c8841753ec',
-			'label' => 'Functions',
+			'label' => 'PHP Functions',
 			'name' => '',
 			'type' => 'message',
 			'instructions' => '&lt;?php
@@ -36,8 +36,8 @@ echo wp_swift_form_builder();',
 				'class' => '',
 				'id' => '',
 			),
-			'message' => '<pre class="prettyprint lang-php">&lt;?php
-echo wp_swift_form_builder();</pre>',
+			'message' => '&lt;?php
+echo wp_swift_form_builder();',
 			'new_lines' => 'br',
 			'esc_html' => 0,
 		),

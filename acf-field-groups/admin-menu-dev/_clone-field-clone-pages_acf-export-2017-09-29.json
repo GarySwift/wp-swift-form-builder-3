@@ -1,0 +1,164 @@
+[
+    {
+        "key": "group_59563408b12e0",
+        "title": "Form Builder Clone Field: Pages",
+        "fields": [
+            {
+                "key": "field_5956348d782bd",
+                "label": "Instructions",
+                "name": "",
+                "type": "message",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "message": "Please select a page if you wish to edit the default form handling",
+                "new_lines": "wpautop",
+                "esc_html": 0
+            },
+            {
+                "key": "field_59ce21aa05859",
+                "label": "Contact Form Availability",
+                "name": "contact_form_availability",
+                "type": "radio",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "choices": {
+                    "single": "Single Page",
+                    "global": "Globally"
+                },
+                "allow_null": 0,
+                "other_choice": 0,
+                "save_other_choice": 0,
+                "default_value": "single",
+                "layout": "horizontal",
+                "return_format": "value"
+            },
+            {
+                "key": "field_59563421782bb",
+                "label": "Contact Form Page",
+                "name": "contact_form_page",
+                "type": "post_object",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": [
+                    [
+                        {
+                            "field": "field_59ce21aa05859",
+                            "operator": "==",
+                            "value": "single"
+                        }
+                    ]
+                ],
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "post_type": [
+                    "page"
+                ],
+                "taxonomy": [],
+                "allow_null": 1,
+                "multiple": 0,
+                "return_format": "id",
+                "ui": 1
+            },
+            {
+                "key": "field_59ce2208018dd",
+                "label": "Contact Form Page",
+                "name": "",
+                "type": "message",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": [
+                    [
+                        {
+                            "field": "field_59ce21aa05859",
+                            "operator": "==",
+                            "value": "global"
+                        }
+                    ]
+                ],
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "message": "The contact form settings will now be global and can be managed in the <b>Contact Form<\/b> submenu.",
+                "new_lines": "wpautop",
+                "esc_html": 0
+            },
+            {
+                "key": "field_595651c892275",
+                "label": "Additional Forms",
+                "name": "additional_forms",
+                "type": "repeater",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "collapsed": "field_595651ec92276",
+                "min": 0,
+                "max": 0,
+                "layout": "row",
+                "button_label": "Add Page",
+                "sub_fields": [
+                    {
+                        "key": "field_595651ec92276",
+                        "label": "Page",
+                        "name": "page",
+                        "type": "post_object",
+                        "instructions": "",
+                        "required": 0,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "post_type": [
+                            "page"
+                        ],
+                        "taxonomy": [],
+                        "allow_null": 0,
+                        "multiple": 0,
+                        "return_format": "id",
+                        "ui": 1
+                    }
+                ]
+            }
+        ],
+        "location": [
+            [
+                {
+                    "param": "post_type",
+                    "operator": "==",
+                    "value": "post"
+                }
+            ]
+        ],
+        "menu_order": 0,
+        "position": "normal",
+        "style": "default",
+        "label_placement": "top",
+        "instruction_placement": "label",
+        "hide_on_screen": "",
+        "active": 0,
+        "description": ""
+    }
+]

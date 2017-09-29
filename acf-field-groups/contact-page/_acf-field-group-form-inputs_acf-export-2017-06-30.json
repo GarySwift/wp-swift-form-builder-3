@@ -1,0 +1,642 @@
+[
+    {
+        "key": "group_57b6fd868aeca",
+        "title": "Form Builder: Inputs",
+        "fields": [
+            {
+                "key": "field_57b6fd8692eb1",
+                "label": "Form Inputs",
+                "name": "form_inputs",
+                "type": "repeater",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "collapsed": "field_57b6fd86d2e0b",
+                "min": 0,
+                "max": 0,
+                "layout": "block",
+                "button_label": "Add Input",
+                "sub_fields": [
+                    {
+                        "key": "field_57b6fd86d2e0b",
+                        "label": "Name",
+                        "name": "name",
+                        "type": "text",
+                        "instructions": "",
+                        "required": 1,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "default_value": "",
+                        "placeholder": "",
+                        "prepend": "",
+                        "append": "",
+                        "maxlength": "",
+                        "readonly": 0,
+                        "disabled": 0
+                    },
+                    {
+                        "key": "field_57b6fd86d2e29",
+                        "label": "Type",
+                        "name": "type",
+                        "type": "select",
+                        "instructions": "",
+                        "required": 1,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "choices": {
+                            "text": "Text (Default)",
+                            "email": "Email",
+                            "number": "Number",
+                            "url": "URL",
+                            "input_combo": "Input Combo",
+                            "textarea": "Text Area (Multi-line Text)",
+                            "select": "Select",
+                            "multi_select": "Multiple Select",
+                            "checkbox": "Checkboxes",
+                            "radio": "Radio Buttons",
+                            "file": "File Upload",
+                            "date": "Date",
+                            "date_time": "Date & Time Combo",
+                            "date_range": "Date Range",
+                            "section": "Section Open",
+                            "section_close": "Section Close"
+                        },
+                        "default_value": [
+                            "text"
+                        ],
+                        "allow_null": 0,
+                        "multiple": 0,
+                        "ui": 0,
+                        "ajax": 0,
+                        "return_format": "value",
+                        "placeholder": ""
+                    },
+                    {
+                        "key": "field_57da6d23398a8",
+                        "label": "Header",
+                        "name": "section_header",
+                        "type": "text",
+                        "instructions": "",
+                        "required": "",
+                        "conditional_logic": [
+                            [
+                                {
+                                    "field": "field_57b6fd86d2e29",
+                                    "operator": "==",
+                                    "value": "section"
+                                }
+                            ]
+                        ],
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "default_value": "",
+                        "placeholder": "",
+                        "prepend": "",
+                        "append": "",
+                        "maxlength": "",
+                        "readonly": 0,
+                        "disabled": 0
+                    },
+                    {
+                        "key": "field_57b6fd86d2e49",
+                        "label": "Required",
+                        "name": "required",
+                        "type": "true_false",
+                        "instructions": "",
+                        "required": 0,
+                        "conditional_logic": [
+                            [
+                                {
+                                    "field": "field_57b6fd86d2e29",
+                                    "operator": "!=",
+                                    "value": "section"
+                                },
+                                {
+                                    "field": "field_57b6fd86d2e29",
+                                    "operator": "!=",
+                                    "value": "section_close"
+                                }
+                            ]
+                        ],
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "message": "Force input from user",
+                        "default_value": 1,
+                        "ui": 0,
+                        "ui_on_text": "",
+                        "ui_off_text": ""
+                    },
+                    {
+                        "key": "field_57b6fd86d2e5f",
+                        "label": "Placeholder",
+                        "name": "placeholder",
+                        "type": "text",
+                        "instructions": "Specifies a short hint for input",
+                        "required": 0,
+                        "conditional_logic": [
+                            [
+                                {
+                                    "field": "field_57b6fd86d2e29",
+                                    "operator": "!=",
+                                    "value": "file"
+                                },
+                                {
+                                    "field": "field_57b6fd86d2e29",
+                                    "operator": "!=",
+                                    "value": "select"
+                                },
+                                {
+                                    "field": "field_57b6fd86d2e29",
+                                    "operator": "!=",
+                                    "value": "multi_select"
+                                },
+                                {
+                                    "field": "field_57b6fd86d2e29",
+                                    "operator": "!=",
+                                    "value": "section"
+                                },
+                                {
+                                    "field": "field_57b6fd86d2e29",
+                                    "operator": "!=",
+                                    "value": "section_close"
+                                },
+                                {
+                                    "field": "field_57b6fd86d2e29",
+                                    "operator": "!=",
+                                    "value": "checkbox"
+                                },
+                                {
+                                    "field": "field_57b6fd86d2e29",
+                                    "operator": "!=",
+                                    "value": "radio"
+                                }
+                            ]
+                        ],
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "default_value": "",
+                        "placeholder": "",
+                        "prepend": "",
+                        "append": "",
+                        "maxlength": ""
+                    },
+                    {
+                        "key": "field_57b6fd86d2e72",
+                        "label": "Label",
+                        "name": "label",
+                        "type": "text",
+                        "instructions": "If different from name",
+                        "required": 0,
+                        "conditional_logic": [
+                            [
+                                {
+                                    "field": "field_57b6fd86d2e29",
+                                    "operator": "!=",
+                                    "value": "section"
+                                },
+                                {
+                                    "field": "field_57b6fd86d2e29",
+                                    "operator": "!=",
+                                    "value": "section_close"
+                                }
+                            ]
+                        ],
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "default_value": "",
+                        "placeholder": "",
+                        "prepend": "",
+                        "append": "",
+                        "maxlength": "",
+                        "readonly": 0,
+                        "disabled": 0
+                    },
+                    {
+                        "key": "field_57b6fd86d2e84",
+                        "label": "Select Options",
+                        "name": "select_options",
+                        "type": "repeater",
+                        "instructions": "",
+                        "required": 0,
+                        "conditional_logic": [
+                            [
+                                {
+                                    "field": "field_57b6fd86d2e29",
+                                    "operator": "==",
+                                    "value": "select"
+                                },
+                                {
+                                    "field": "field_57b6fd86d2e9f",
+                                    "operator": "==",
+                                    "value": "user"
+                                }
+                            ],
+                            [
+                                {
+                                    "field": "field_57b6fd86d2e29",
+                                    "operator": "==",
+                                    "value": "multi_select"
+                                },
+                                {
+                                    "field": "field_57b6fd86d2e9f",
+                                    "operator": "==",
+                                    "value": "user"
+                                }
+                            ],
+                            [
+                                {
+                                    "field": "field_57b6fd86d2e29",
+                                    "operator": "==",
+                                    "value": "checkbox"
+                                },
+                                {
+                                    "field": "field_57b6fd86d2e9f",
+                                    "operator": "==",
+                                    "value": "user"
+                                }
+                            ],
+                            [
+                                {
+                                    "field": "field_57b6fd86d2e29",
+                                    "operator": "==",
+                                    "value": "radio"
+                                },
+                                {
+                                    "field": "field_57b6fd86d2e9f",
+                                    "operator": "==",
+                                    "value": "user"
+                                }
+                            ]
+                        ],
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "collapsed": "",
+                        "min": 0,
+                        "max": 0,
+                        "layout": "table",
+                        "button_label": "Add Option",
+                        "sub_fields": [
+                            {
+                                "key": "field_57b6fd86e9a8c",
+                                "label": "Option",
+                                "name": "option",
+                                "type": "text",
+                                "instructions": "",
+                                "required": 1,
+                                "conditional_logic": 0,
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "default_value": "",
+                                "placeholder": "",
+                                "prepend": "",
+                                "append": "",
+                                "maxlength": "",
+                                "readonly": 0,
+                                "disabled": 0
+                            },
+                            {
+                                "key": "field_57b6fd86e9aa8",
+                                "label": "Option Value",
+                                "name": "option_value",
+                                "type": "text",
+                                "instructions": "",
+                                "required": 0,
+                                "conditional_logic": 0,
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "default_value": "",
+                                "placeholder": "",
+                                "prepend": "",
+                                "append": "",
+                                "maxlength": "",
+                                "readonly": 0,
+                                "disabled": 0
+                            }
+                        ]
+                    },
+                    {
+                        "key": "field_57b6fd86d2e9f",
+                        "label": "Select Type",
+                        "name": "select_type",
+                        "type": "radio",
+                        "instructions": "",
+                        "required": 0,
+                        "conditional_logic": [
+                            [
+                                {
+                                    "field": "field_57b6fd86d2e29",
+                                    "operator": "==",
+                                    "value": "select"
+                                }
+                            ],
+                            [
+                                {
+                                    "field": "field_57b6fd86d2e29",
+                                    "operator": "==",
+                                    "value": "multi_select"
+                                }
+                            ],
+                            [
+                                {
+                                    "field": "field_57b6fd86d2e29",
+                                    "operator": "==",
+                                    "value": "checkbox"
+                                }
+                            ]
+                        ],
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "choices": {
+                            "user": "Manually Input",
+                            "select": "Use Predefined Options"
+                        },
+                        "allow_null": 0,
+                        "other_choice": 0,
+                        "save_other_choice": 0,
+                        "default_value": "user",
+                        "layout": "vertical",
+                        "return_format": "value"
+                    },
+                    {
+                        "key": "field_57b6fd86d2eb9",
+                        "label": "Predefined Options",
+                        "name": "predefined_options",
+                        "type": "select",
+                        "instructions": "",
+                        "required": 0,
+                        "conditional_logic": [
+                            [
+                                {
+                                    "field": "field_57b6fd86d2e29",
+                                    "operator": "==",
+                                    "value": "select"
+                                },
+                                {
+                                    "field": "field_57b6fd86d2e9f",
+                                    "operator": "==",
+                                    "value": "select"
+                                }
+                            ],
+                            [
+                                {
+                                    "field": "field_57b6fd86d2e29",
+                                    "operator": "==",
+                                    "value": "multi_select"
+                                },
+                                {
+                                    "field": "field_57b6fd86d2e9f",
+                                    "operator": "==",
+                                    "value": "select"
+                                }
+                            ]
+                        ],
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "choices": {
+                            "countries": "Countries"
+                        },
+                        "default_value": {
+                            "countries": "countries"
+                        },
+                        "allow_null": 0,
+                        "multiple": 0,
+                        "ui": 0,
+                        "ajax": 0,
+                        "placeholder": "",
+                        "disabled": 0,
+                        "readonly": 0,
+                        "return_format": "value"
+                    },
+                    {
+                        "key": "field_57b6fd86d2ecd",
+                        "label": "Help Message",
+                        "name": "help",
+                        "type": "text",
+                        "instructions": "If different from default",
+                        "required": 0,
+                        "conditional_logic": [
+                            [
+                                {
+                                    "field": "field_57b6fd86d2e29",
+                                    "operator": "!=",
+                                    "value": "section"
+                                },
+                                {
+                                    "field": "field_57b6fd86d2e29",
+                                    "operator": "!=",
+                                    "value": "section_close"
+                                }
+                            ]
+                        ],
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "default_value": "",
+                        "placeholder": "Eg. Email is not required but must be valid",
+                        "prepend": "",
+                        "append": "",
+                        "maxlength": "",
+                        "readonly": 0,
+                        "disabled": 0
+                    },
+                    {
+                        "key": "field_5953bee870551",
+                        "label": "Instructions",
+                        "name": "instructions",
+                        "type": "text",
+                        "instructions": "",
+                        "required": 0,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "default_value": "",
+                        "placeholder": "",
+                        "prepend": "",
+                        "append": "",
+                        "maxlength": ""
+                    },
+                    {
+                        "key": "field_57b6ff3e6dde1",
+                        "label": "Section Content",
+                        "name": "section_content",
+                        "type": "wysiwyg",
+                        "instructions": "",
+                        "required": "",
+                        "conditional_logic": [
+                            [
+                                {
+                                    "field": "field_57b6fd86d2e29",
+                                    "operator": "==",
+                                    "value": "section"
+                                }
+                            ]
+                        ],
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "default_value": "",
+                        "tabs": "visual",
+                        "toolbar": "basic",
+                        "media_upload": 0,
+                        "delay": 0
+                    },
+                    {
+                        "key": "field_5952522b90367",
+                        "label": "Input One",
+                        "name": "input_one",
+                        "type": "text",
+                        "instructions": "",
+                        "required": 0,
+                        "conditional_logic": [
+                            [
+                                {
+                                    "field": "field_57b6fd86d2e29",
+                                    "operator": "==",
+                                    "value": "input_combo"
+                                }
+                            ]
+                        ],
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "default_value": "",
+                        "placeholder": "",
+                        "prepend": "",
+                        "append": "",
+                        "maxlength": ""
+                    },
+                    {
+                        "key": "field_595252d2505b2",
+                        "label": "Input Two",
+                        "name": "input_two",
+                        "type": "text",
+                        "instructions": "",
+                        "required": 0,
+                        "conditional_logic": [
+                            [
+                                {
+                                    "field": "field_57b6fd86d2e29",
+                                    "operator": "==",
+                                    "value": "input_combo"
+                                }
+                            ]
+                        ],
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "default_value": "",
+                        "placeholder": "",
+                        "prepend": "",
+                        "append": "",
+                        "maxlength": ""
+                    },
+                    {
+                        "key": "field_595253c6f57b9",
+                        "label": "Combo Input Type",
+                        "name": "combo_input_type",
+                        "type": "select",
+                        "instructions": "",
+                        "required": 0,
+                        "conditional_logic": [
+                            [
+                                {
+                                    "field": "field_57b6fd86d2e29",
+                                    "operator": "==",
+                                    "value": "input_combo"
+                                }
+                            ]
+                        ],
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "choices": {
+                            "text": "Text (Default)",
+                            "email": "Email",
+                            "number": "Number",
+                            "url": "URL"
+                        },
+                        "default_value": [
+                            "text"
+                        ],
+                        "allow_null": 0,
+                        "multiple": 0,
+                        "ui": 0,
+                        "ajax": 0,
+                        "return_format": "value",
+                        "placeholder": ""
+                    }
+                ]
+            }
+        ],
+        "location": [
+            [
+                {
+                    "param": "post_template",
+                    "operator": "==",
+                    "value": "page-templates\/page-book-now.php"
+                }
+            ]
+        ],
+        "menu_order": 0,
+        "position": "normal",
+        "style": "default",
+        "label_placement": "top",
+        "instruction_placement": "label",
+        "hide_on_screen": "",
+        "active": 1,
+        "description": ""
+    }
+]

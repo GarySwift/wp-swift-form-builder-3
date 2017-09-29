@@ -84,22 +84,29 @@ require_once plugin_dir_path( __FILE__ ) . '/email-templates/wp-swift-email-temp
 // }
 // add_action( 'init', 'wp_swift_form_builder_admin_menu' );
 
-require_once 'admin-menu-acf.php';
+/*
+ * Add the admin menu link
+ */
 require_once 'admin-menu.php';
+/*
+ * Add the ACF field group that will manaage the forms in the admin area.
+ */
+require_once 'admin-menu-acf.php';
+
 
 require_once 'admin-notices.php';
 
-function wp_swift_form_builder_admin_menu_slug() {
-	// if( current_user_can('editor') || current_user_can('administrator') ) {
-	// 	require plugin_dir_path( __FILE__ ) . '_admin-menu.php';
-	// }
-    if ( function_exists('wp_swift_admin_menu_slug') ) {
-        return wp_swift_admin_menu_slug();
-    }
-    else {
-        return 'options-general.php';
-    }	
-}
+// function wp_swift_form_builder_admin_menu_slug() {
+// 	// if( current_user_can('editor') || current_user_can('administrator') ) {
+// 	// 	require plugin_dir_path( __FILE__ ) . '_admin-menu.php';
+// 	// }
+//     if ( function_exists('wp_swift_admin_menu_slug') ) {
+//         return wp_swift_admin_menu_slug();
+//     }
+//     else {
+//         return 'options-general.php';
+//     }	
+// }
 
 function wp_swift_form_builder_admin_menu_check() {
 	if( function_exists('acf_add_options_page') ) {
@@ -110,6 +117,38 @@ function wp_swift_form_builder_admin_menu_check() {
 	}
 }
 add_action( 'init', 'wp_swift_form_builder_admin_menu_check' );
+
+
+# Register ACF field groups that will appear on the options pages
+add_action( 'init', 'acf_add_local_field_group_contact_form' );
+/*
+ * The ACF field group for 'Contact Form'
+ */ 
+function acf_add_local_field_group_contact_form() {
+    include "acf-field-groups/contact-page/_acf-field-group-contact-form.php";
+    include "acf-field-groups/contact-page/_acf-field-group-form-inputs.php";
+    // include "acf-field-groups/_acf-field-group-options-page-settings.php";
+    include "acf-field-groups/contact-page/_acf-field-group-contact-page-input-settings.php";
+}
+
+require_once 'class-form-builder.php';
+require_once 'class-form-builder-contact-form.php';
+require_once '_build-form-array.php';
+
+// Initialize the class
+// $wp_swift_contact_form_plugin = new WP_Swift_Form_Builder_Contact_Form();
+
+
+// require_once '_form-data.php';
+// function wp_swift_get_contact_form( $attributes=array() ) {
+    // $form_builder = null;
+    // // if (class_exists('WP_Swift_Form_Builder_Contact_Form')) {
+    //     $form_builder = new WP_Swift_Form_Builder_Contact_Form( get_contact_form_data(), array("show_mail_receipt"=>true, "option" => "") );    
+    // }
+    // return $form_builder;        
+// }
+
+
 /**
  * Begins execution of the plugin.
  *

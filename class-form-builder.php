@@ -12,7 +12,7 @@
  * The main plugin class that will handle business logic related to form 
  * functionality.
  */
-class WP_Swift_Form_Builder_Plugin {
+class WP_Swift_Form_Builder_Parent {
     public $action='';
     // public $form_settings = null;
     public $form_inputs = array();
@@ -423,7 +423,7 @@ class WP_Swift_Form_Builder_Plugin {
             <?php endif ?>
 
             <!-- @start .button -->
-            <div class="form-group button">
+            <div class="form-group button-group">
                 <button type="submit" name="<?php echo $this->submit_button_name; ?>" id="<?php echo $this->submit_button_id; ?>" class="button large" tabindex="<?php echo $this->tab_index++; ?>"><?php echo $this->submit_button_text; ?></button>
             </div>
             <!-- @end .button -->

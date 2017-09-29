@@ -57,6 +57,8 @@ class Wp_Swift_Form_Builder_Public {
 
         add_shortcode( 'form', array( $this, 'render_form' ) );
 
+        add_filter( 'the_content', array($this, 'wp_swift_render_contact_form_after_content') );
+
         # Handle POST request form login form
         // add_action( 'init', array( $this, 'process_form' ) );
 
@@ -79,10 +81,20 @@ class Wp_Swift_Form_Builder_Public {
      * @return string  The shortcode output
      */
     public function render_contact_form( $attributes = array(), $content = null ) {
+        $form_position = 'after_content';
+        if( get_field('form_position') ) {
+            $form_position = get_field('form_position');
+        }
+        if( $form_position === 'shortcode' ) {
 
-        $form_builder = wp_swift_get_contact_form($attributes);
-        // Render the login form using an external template
-        return $this->get_template_html( 'contact-form', $attributes, $form_builder );
+            $form_builder = wp_swift_get_contact_form($attributes);
+            // Render the login form using an external template
+            return $this->get_template_html( 'contact-form', $attributes, $form_builder );
+        }
+        else {
+            return '[contact-form]';
+        }
+
 
     }
 
@@ -159,6 +171,87 @@ class Wp_Swift_Form_Builder_Public {
 
 	}
 
+    /*
+     * Render the default contact form using the 'the_content' filter
+     * 
+     */
+    public function wp_swift_render_contact_form_after_content( $content ) {
+        $form_position = 'after_content';
+        if( get_field('form_position') ) {
+            $form_position = get_field('form_position');
+        }
+        if( $form_position === 'after_content' ) :
+            $form = '';
+            $form_builder = null;
+
+            if( class_exists('acf') ) {
+              // This page ID
+              $this_page_id = get_the_ID();
+              // The preset default contact page ID (Saved via ACF options page)
+              $contact_page_id = get_field('contact_form_page', 'option');
+
+              // Form IDs added with the repeater on the same options page
+              $form_pages = array();
+
+              if( have_rows('additional_forms', 'option') ):
+                  while ( have_rows('additional_forms', 'option') ) : the_row();
+                      $form_pages[] = get_sub_field('page');
+                  endwhile;
+              endif;
+
+
+              if ($this_page_id === $contact_page_id) {
+                $form_builder = wp_swift_get_contact_form();
+              }
+              elseif (in_array($this_page_id, $form_pages )) {
+                $form_position = get_field('form_position', $this_page_id);
+                if( $form_position !== 'shortcode' ) {
+                  $form_builder = wp_swift_get_generic_form($this_page_id);
+                }
+              }
+
+
+              if ($form_builder !== null ) {
+                ob_start();
+                    ?><div class="contact-form-container"><?php 
+                  if ($form_builder != null ) {
+                          if(isset($_POST[ $form_builder->get_submit_button_name() ])){ //check if form was submitted
+                              $form_builder->process_form(); 
+                          }
+                        $form_builder->acf_build_form();
+                    } 
+                ?></div><?php
+                    $form = ob_get_contents();
+                    ob_end_clean();
+                }
+
+            }
+            return $content.$form;      
+        endif;
+
+        return $content;
+    }
+
+}
+/*
+ * @end Wp_Swift_Form_Builder_Public
+ */
+function wp_swift_form_builder() {
+    $form_builder = wp_swift_get_contact_form();
+  if ($form_builder !== null ) {
+    ob_start();
+        ?><div class="contact-form-container"><?php 
+      if ($form_builder != null ) {
+              if(isset($_POST[ $form_builder->get_submit_button_name() ])){ //check if form was submitted
+                  $form_builder->process_form(); 
+              }
+            $form_builder->acf_build_form();
+        } 
+    ?></div><?php
+        $form = ob_get_contents();
+        ob_end_clean();
+    } 
+    return $form;   
 }
 /*
  * Check if the page has inputs set using ACF field groups
@@ -180,7 +273,7 @@ if (!function_exists('wp_swift_get_contact_form')) {
 	function wp_swift_get_contact_form( $attributes=array() ) {
 	    $form_builder = null;
 	    if (class_exists('WP_Swift_Form_Builder_Contact_Form')) {
-	        $form_builder = new WP_Swift_Form_Builder_Contact_Form( get_booking_form_data(), array("show_mail_receipt"=>true, "option" => "") );    
+	        $form_builder = new WP_Swift_Form_Builder_Contact_Form( get_contact_form_data(), array("show_mail_receipt"=>true, "option" => "") );    
 	    }
 	    return $form_builder;        
 	}
@@ -197,16 +290,16 @@ if (!function_exists('wp_swift_get_generic_form')) {
 }
 
 if (!function_exists('form_builder_location_array')) {
-	function form_builder_location_array($id) {
+	function form_builder_location_array($id, $param = 'page') {
 	    return array ( array (
-	            'param' => 'page',
+	            'param' => $param,
 	            'operator' => '==',
 	            'value' => $id,
 	        ),
 	    );
 	}
 }
-
+    
 /*
  * Get the booking form settings array
  *
