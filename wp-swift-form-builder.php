@@ -37,6 +37,30 @@ if ( ! defined( 'WPINC' ) ) {
 function activate_wp_swift_form_builder() {
 	require_once plugin_dir_path( __FILE__ ) . 'includes/class-wp-swift-form-builder-activator.php';
 	Wp_Swift_Form_Builder_Activator::activate();
+
+	$args = array(
+	  'post_type' => 'wp_swift_form',
+	  'post_title'   => 'Contact Form (Default)',
+	  'post_status'   => 'publish',
+	);
+	// add_option( 'wp_swift_form_builder_default_id', '101' );
+	// delete_option( 'wp_swift_form_builder_default_id' ); 
+	// update_option( 'wp_swift_form_builder_default_id', '101');
+	$wp_swift_form_builder_default_id = get_option( 'wp_swift_form_builder_default_id' );
+	// echo "<pre>wp_swift_form_builder_default_id: "; var_dump($wp_swift_form_builder_default_id); echo "</pre>";
+
+	// Create a new default form if there isn't one
+	if (isset($wp_swift_form_builder_default_id) && !$wp_swift_form_builder_default_id) {
+		$post_id = wp_insert_post($args);
+		if(!is_wp_error($post_id)) {
+			// Save the default ID as an option
+		  	add_option( 'wp_swift_form_builder_default_id', $post_id );
+		}
+		// else{
+		//   //there was an error in the post insertion, 
+		//   // echo $post_id->get_error_message();
+		// }
+	}	
 }
 
 /**
@@ -132,6 +156,8 @@ function acf_add_local_field_group_contact_form() {
     // include "acf-field-groups/contact-page/_acf-field-group-contact-page-input-settings.php";
     require_once plugin_dir_path( __FILE__ ) . 'acf-field-groups/input-builder/form-builder-inputs.php';
     require_once plugin_dir_path( __FILE__ ) . 'acf-field-groups/input-builder/form-builder-2-inputs-sections.php';
+    require_once plugin_dir_path( __FILE__ ) . 'acf-field-groups/default-contact-page/default-settings.php';
+    require_once plugin_dir_path( __FILE__ ) . 'acf-field-groups/contact-page/_acf-field-group-contact-form.php';
 }
 
 require_once 'class-form-builder.php';

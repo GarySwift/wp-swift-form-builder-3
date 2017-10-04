@@ -1,41 +1,41 @@
 <?php
-// $contact_form_page = false;
-// $booking_form_page = false;
-// $location = array();
+$contact_form_page = false;
+$booking_form_page = false;
+$location = array();
 
-// // echo "<pre>";var_dump("Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet voluptate repellendus molestias nihil id, aliquam corrupti ipsa temporibus dignissimos, doloribus. Tenetur a eos laborum optio libero amet, omnis placeat eum!");echo "</pre>";
-// $form_pages = array();
-// if( class_exists('acf') ):
-// 	if( have_rows('additional_forms', 'option') ):
-// 	    while ( have_rows('additional_forms', 'option') ) : the_row();
-// 	        $form_pages[] = get_sub_field('page');
-// 	    endwhile;
-// 	    // echo "<pre>";var_dump($form_pages);echo "</pre>";
-// 	endif;
-// endif;
+// echo "<pre>";var_dump("Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet voluptate repellendus molestias nihil id, aliquam corrupti ipsa temporibus dignissimos, doloribus. Tenetur a eos laborum optio libero amet, omnis placeat eum!");echo "</pre>";
+$form_pages = array();
+if( class_exists('acf') ):
+	if( have_rows('additional_forms', 'option') ):
+	    while ( have_rows('additional_forms', 'option') ) : the_row();
+	        $form_pages[] = get_sub_field('page');
+	    endwhile;
+	    // echo "<pre>";var_dump($form_pages);echo "</pre>";
+	endif;
+endif;
 
 if( function_exists('acf_add_local_field_group') ):
 
-	// if( get_field('contact_form_page', 'option') ) {
-	//     $contact_form_page = get_field('contact_form_page', 'option');
-	//     $location[] = form_builder_location_array( $contact_form_page );
-	// }
-	// if( get_field('booking_form_page', 'option') ) {
-	//     $booking_form_page = get_field('booking_form_page', 'option');
-	//     $location[] = form_builder_location_array( $booking_form_page );
-	// }
+	if( get_field('contact_form_page', 'option') ) {
+	    $contact_form_page = get_field('contact_form_page', 'option');
+	    $location[] = form_builder_location_array( $contact_form_page );
+	}
+	if( get_field('booking_form_page', 'option') ) {
+	    $booking_form_page = get_field('booking_form_page', 'option');
+	    $location[] = form_builder_location_array( $booking_form_page );
+	}
 
-	// foreach ($form_pages as $page_id) {
-	// 	$location[] = form_builder_location_array( $page_id );
-	// }
+	foreach ($form_pages as $page_id) {
+		$location[] = form_builder_location_array( $page_id );
+	}
 	
 	// echo "<pre>location ";var_dump($location);echo "</pre>";
-	// if ( count($form_pages) || $contact_form_page || $booking_form_page ):
+	if ( count($form_pages) || $contact_form_page || $booking_form_page ):
  
 	$sitename = get_bloginfo('name');
 	acf_add_local_field_group(array (
 		'key' => 'group_5666f0cb4d504',
-		'title' => 'Form Builder: Contact Form Response',
+		'title' => 'Form Builder: Contact Form',
 		'fields' => array (
 			array (
 				'key' => 'field_5695232e13e86',
@@ -159,34 +159,34 @@ if( function_exists('acf_add_local_field_group') ):
 				'media_upload' => 1,
 				'delay' => 0,
 			),
-			// array (
-			// 	'key' => 'field_5964846f4e58b',
-			// 	'label' => 'Form Position',
-			// 	'name' => 'form_position',
-			// 	'type' => 'select',
-			// 	'instructions' => '',
-			// 	'required' => 0,
-			// 	'conditional_logic' => 0,
-			// 	'wrapper' => array (
-			// 		'width' => '',
-			// 		'class' => '',
-			// 		'id' => '',
-			// 	),
-			// 	'choices' => array (
-			// 		'after_content' => 'After Content (Default)',
-			// 		'shortcode' => 'Shortcode',
-			// 		'function' => 'PHP function (Developer Option)',
-			// 	),
-			// 	'default_value' => array (
-			// 		0 => 'after_content',
-			// 	),
-			// 	'allow_null' => 0,
-			// 	'multiple' => 0,
-			// 	'ui' => 0,
-			// 	'ajax' => 0,
-			// 	'return_format' => 'value',
-			// 	'placeholder' => '',
-			// ),
+			array (
+				'key' => 'field_5964846f4e58b',
+				'label' => 'Form Position',
+				'name' => 'form_position',
+				'type' => 'select',
+				'instructions' => '',
+				'required' => 0,
+				'conditional_logic' => 0,
+				'wrapper' => array (
+					'width' => '',
+					'class' => '',
+					'id' => '',
+				),
+				'choices' => array (
+					'after_content' => 'After Content (Default)',
+					'shortcode' => 'Shortcode',
+					'function' => 'PHP function (Developer Option)',
+				),
+				'default_value' => array (
+					0 => 'after_content',
+				),
+				'allow_null' => 0,
+				'multiple' => 0,
+				'ui' => 0,
+				'ajax' => 0,
+				'return_format' => 'value',
+				'placeholder' => '',
+			),
 			array (
 				'key' => 'field_596484c34e58c',
 				'label' => 'Shortcode',
@@ -216,26 +216,8 @@ if( function_exists('acf_add_local_field_group') ):
 				'maxlength' => '',
 			),
 		),
-		'location' => array (
-			array (
-				array (
-					'param' => 'post_type',
-					'operator' => '==',
-					'value' => 'wp_swift_form',
-				),
-				// array (
-				// 	'param' => 'post',
-				// 	'operator' => '!=',
-				// 	'value' => '234',
-				// ),
-				// array (
-				// 	'param' => 'post',
-				// 	'operator' => '!=',
-				// 	'value' => '233',
-				// ),
-			),
-		),
-		'menu_order' => 10,
+		'location' => $location,	
+		'menu_order' => 0,
 		'position' => 'normal',
 		'style' => 'default',
 		'label_placement' => 'top',
@@ -245,5 +227,5 @@ if( function_exists('acf_add_local_field_group') ):
 		'description' => '',
 	));
 
-	// endif;//@end if ($contact_form_page || $booking_form_page)
+	endif;//@end if ($contact_form_page || $booking_form_page)
 endif;//@end if( function_exists('acf_add_local_field_group') )

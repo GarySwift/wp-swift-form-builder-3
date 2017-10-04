@@ -1,4 +1,34 @@
 <?php
+function get_location_input_sections() {
+	$wp_swift_form_builder_default_id = get_option( 'wp_swift_form_builder_default_id' );
+
+	$location = array (
+		array (
+			'param' => 'post_type',
+			'operator' => '==',
+			'value' => 'wp_swift_form',
+		),
+		// array (
+		// 	'param' => 'post',
+		// 	'operator' => '!=',
+		// 	'value' => '40',
+		// ),
+		// array (
+		// 	'param' => 'post',
+		// 	'operator' => '!=',
+		// 	'value' => '1',
+		// ),
+	);
+	if ($wp_swift_form_builder_default_id) {
+		$location[] = array (
+			'param' => 'post',
+			'operator' => '!=',
+			'value' => $wp_swift_form_builder_default_id,
+		);
+	}
+	// );
+	return array($location);
+}
 if( function_exists('acf_add_local_field_group') ):
 
 acf_add_local_field_group(array (
@@ -122,25 +152,7 @@ acf_add_local_field_group(array (
 			),
 		),
 	),
-	'location' => array (
-		array (
-			array (
-				'param' => 'post_type',
-				'operator' => '==',
-				'value' => 'wp_swift_form',
-			),
-			array (
-				'param' => 'post',
-				'operator' => '!=',
-				'value' => '40',
-			),
-			array (
-				'param' => 'post',
-				'operator' => '!=',
-				'value' => '1',
-			),
-		),
-	),
+	'location' => get_location_input_sections(),
 	'menu_order' => 0,
 	'position' => 'normal',
 	'style' => 'default',
