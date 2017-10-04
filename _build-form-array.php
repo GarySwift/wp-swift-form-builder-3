@@ -1,6 +1,5 @@
 <?php 
 //require_once WP_CONTENT_DIR . '/plugins/wp-swift-form-builder-2/_build-form-array.php';
-get_header();
 function build_acf_form_array($form_data, $section=0) {
     global $post;
     $id = '';

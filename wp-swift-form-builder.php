@@ -13,7 +13,7 @@
  * @package           Wp_Swift_Form_Builder
  *
  * @wordpress-plugin
- * Plugin Name:       WP Swift: Form Builder
+ * Plugin Name:       WP Swift: Form Builder 2
  * Plugin URI:        https://github.com/wp-swift-wordpress-plugins/wp-swift-form-builder-2
  * Description:       This is a short description of what the plugin does. It's displayed in the WordPress admin area.
  * Version:           1.0.0
@@ -125,15 +125,24 @@ add_action( 'init', 'acf_add_local_field_group_contact_form' );
  * The ACF field group for 'Contact Form'
  */ 
 function acf_add_local_field_group_contact_form() {
-    include "acf-field-groups/contact-page/_acf-field-group-contact-form.php";
-    include "acf-field-groups/contact-page/_acf-field-group-form-inputs.php";
-    // include "acf-field-groups/_acf-field-group-options-page-settings.php";
-    include "acf-field-groups/contact-page/_acf-field-group-contact-page-input-settings.php";
+	// echo "<pre>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Hic fugit quaerat iste voluptatum! Quos dolore consequatur eius iste accusamus unde at mollitia necessitatibus odio voluptatum tempora neque, odit beatae dignissimos. </pre>";
+    // include "acf-field-groups/contact-page/_acf-field-group-contact-form.php";
+    // include "acf-field-groups/contact-page/_acf-field-group-form-inputs.php";
+    // // include "acf-field-groups/_acf-field-group-options-page-settings.php";
+    // include "acf-field-groups/contact-page/_acf-field-group-contact-page-input-settings.php";
+    require_once plugin_dir_path( __FILE__ ) . 'acf-field-groups/input-builder/form-builder-inputs.php';
+    require_once plugin_dir_path( __FILE__ ) . 'acf-field-groups/input-builder/form-builder-2-inputs-sections.php';
 }
 
 require_once 'class-form-builder.php';
 require_once 'class-form-builder-contact-form.php';
 require_once '_build-form-array.php';
+
+
+/*
+ * Form Custom Post Type
+ */
+require_once plugin_dir_path( __FILE__ ) . 'cpt/wp_swift_form.php';
 
 // Initialize the class
 // $wp_swift_contact_form_plugin = new WP_Swift_Form_Builder_Contact_Form();
