@@ -11,7 +11,7 @@ function build_acf_form_array($form_data, $section=0) {
     $help = '';
     $instructions = '';
     $required = '';
-    $grouping = 'none';
+    $grouping = false;
     $select_options='';
 
     if( get_sub_field('id') ) {
@@ -38,6 +38,9 @@ function build_acf_form_array($form_data, $section=0) {
         $settings_group = get_sub_field('settings');
         $required = $settings_group["required"];
         $grouping = $settings_group["grouping"];
+        if ($grouping == 'none') {
+            $grouping = false;
+        }
     }
     if($required) {
         $required = 'required';

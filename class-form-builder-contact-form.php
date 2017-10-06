@@ -68,7 +68,7 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
         /*
          * Variables
          */
-        $send_email=true;//Debug variable. If false, emails will not be sent
+        $send_email=false;//Debug variable. If false, emails will not be sent
         if( get_field('debugging_stop_email', 'option') ) {
             $send_email = false;
         }  
@@ -214,7 +214,10 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
         }
         if( get_field('debugging_stop_email', 'option') ) {
             $debugging_stop_email = true;
-        }  
+        } 
+
+        $framework = "zurb_foundation";
+
         ob_start();
         if ($debugging_stop_email): ?>
             <pre>

@@ -401,7 +401,10 @@ class WP_Swift_Form_Builder_Parent {
         $options = get_option( 'wp_swift_form_builder_settings' );
         if (isset($options['wp_swift_form_builder_select_css_framework'])) {
             $framework = $options['wp_swift_form_builder_select_css_framework'];
-        } ?>
+        } 
+
+        // ob_start();
+        ?>
 
         <!-- @start form -->
         <form method="post" <?php echo $this->action; ?> name="<?php echo $this->form_name; ?>" id="<?php echo $this->form_id; ?>" class="<?php echo $framework.' '; echo $this->form_class.' '; echo $this->form_name ?>" novalidate<?php echo $this->enctype; ?>>
@@ -424,13 +427,18 @@ class WP_Swift_Form_Builder_Parent {
 
             <!-- @start .button -->
             <div class="form-group button-group">
-                <button type="submit" name="<?php echo $this->submit_button_name; ?>" id="<?php echo $this->submit_button_id; ?>" class="button large" tabindex="<?php echo $this->tab_index++; ?>"><?php echo $this->submit_button_text; ?></button>
+                <button type="submit" name="<?php echo $this->submit_button_name; ?>" id="<?php echo $this->submit_button_id; ?>" class="button large expanded" tabindex="<?php echo $this->tab_index++; ?>"><?php echo $this->submit_button_text; ?></button>
             </div>
             <!-- @end .button -->
 
         </form><!-- @end form -->
 
-        <?php         
+        <?php 
+
+        // $html = ob_get_contents();
+        // ob_end_clean();
+        
+        // echo $html;                
     }// front_end_form()
 
     public function front_end_form_input_loop() {
@@ -483,8 +491,7 @@ class WP_Swift_Form_Builder_Parent {
                         break;
                     case "textarea":
                         $input_html = $this->bld_form_textarea($id, $input);
-                        // $this->bld_form_textarea($id, $input);
-                        $this->wrap_input($id, $input, $input_html);
+                        echo $this->wrap_input($id, $input, $input_html);
                         break; 
                     case "radio":
                         $this->build_form_radio($id, $input);
@@ -523,8 +530,26 @@ class WP_Swift_Form_Builder_Parent {
                 $input['value']=''; 
             }
         }
-        ob_start();
+        // $grid_grouping_class = '';
+        // if (!$input["grouping"]) {
+        //     $grid_grouping_class = ' form-not-grid-grouping';
+        // }
+        // elseif ($input["grouping"] == "start") {
+
+        // }
+        //         elseif ($input["grouping"] == "start") {
+
+        // }
+        // ob_start();
+
+        //echo "<pre>"; var_dump($input["grouping"]); echo "</pre>";
         ?>
+
+        <?php if ($input["grouping"] && $input["grouping"] == "start"): ?>
+
+            <!-- Start grouping -->
+            <div class="form-grid-grouping">         
+        <?php endif ?>
 
             <!-- @start form element -->
             <div class="form-group<?php echo $has_error; ?>" id="<?php echo $id; ?>-form-group">
@@ -570,12 +595,17 @@ class WP_Swift_Form_Builder_Parent {
                 <!-- @start input -->
 
             </div><!-- @end form element -->
+
+        <?php if ($input["grouping"] && $input["grouping"] == "end"): ?>
+             
+            </div>
+            <!-- end grouping -->    
+        <?php endif;            
     
-        <?php
-        $form_group = ob_get_contents();
-        ob_end_clean();
+        // $form_group = ob_get_contents();
+        // ob_end_clean();
         
-        return $form_group;        
+        // return $form_group;        
     }
 
     /*************************************************************************/
@@ -809,8 +839,10 @@ class WP_Swift_Form_Builder_Parent {
                 $data['selected_option']=''; 
             }
         }
-        ob_start();
-        ?><select class="js-form-control" id="<?php echo $id; ?>" name="<?php echo $id; ?>" tabindex="<?php echo $this->tab_index++; ?>" <?php echo $data['required']; echo $multiple; ?>>
+        // ob_start();
+        ?>
+
+        <select class="js-form-control" id="<?php echo $id; ?>" name="<?php echo $id; ?>" tabindex="<?php echo $this->tab_index++; ?>" <?php echo $data['required']; echo $multiple; ?>>
 
             <?php if(!$multiple): ?>
                 <option value="">Please select an option...</option>
@@ -828,10 +860,12 @@ class WP_Swift_Form_Builder_Parent {
             //Note: select closing tag (below) is indented to format correctly in browser 
             ?>
 
-                    </select><?php
-        $input_html = ob_get_contents();
-        ob_end_clean();
-        return $input_html;
+        </select>
+
+        <?php
+        // $input_html = ob_get_contents();
+        // ob_end_clean();
+        // return $input_html;
     }
     public function bld_form_textarea($id, $input) {
         $has_error='';
@@ -869,13 +903,13 @@ class WP_Swift_Form_Builder_Parent {
               $required = ' required';
         } 
 
-        $input_html = '<textarea'.$data_type.$class.$id.$name.$tabindex.$placeholder.$section.$required.'>'.$value.'</textarea>';
+        $input_html = '<textarea rows="2"'.$data_type.$class.$id.$name.$tabindex.$placeholder.$section.$required.'>'.$value.'</textarea>';
         return $input_html;    
 
     }
 
     public function bld_combo_form_input($id, $data, $form_group, $section='') {
-        ob_start();
+        // ob_start();
 
         if (isset($data['order']) && $data['order'] == 0):
             ?>
@@ -903,10 +937,10 @@ class WP_Swift_Form_Builder_Parent {
             <!-- @end .form-builder-combo-row -->
         <?php endif;
   
-        $html_combo_row = ob_get_contents();
-        ob_end_clean();
+        // $html_combo_row = ob_get_contents();
+        // ob_end_clean();
         
-        return $html_combo_row;
+        // return $html_combo_row;
     } 
 
     public function bld_form_hidden_input($id, $data, $tabIndex=0, $section='') {

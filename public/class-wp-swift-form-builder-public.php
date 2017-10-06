@@ -99,6 +99,25 @@ class Wp_Swift_Form_Builder_Public {
     }
 
     /**
+     * A shortcode for rendering the forms.
+     *
+     * @param  array   $attributes  Shortcode attributes.
+     * @param  string  $content     The text content for shortcode. Not used.
+     *
+     * @return string  The shortcode output
+     */
+    public function render_form( $atts = array(), $content = null ) {
+        $a = shortcode_atts( array(
+            'id' => false,
+        ), $atts );
+        $id = $a['id'];
+        $form_data = wp_swift_get_form_data($id);
+        $form_builder = wp_swift_get_form_builder($form_data);
+        $html = wp_swift_set_form($form_builder);
+        return $html;
+    }
+
+    /**
      * Renders the contents of the given template to a string and returns it.
      *
      * @param string $template_name The name of the template to render (without .php)
@@ -233,10 +252,43 @@ class Wp_Swift_Form_Builder_Public {
     }
 
 }
+
+function wp_swift_get_form_data($id) {
+    $form_data = array();
+    $inputs = array();
+    // $sections = array();
+    if ( have_rows('sections', $id) ) :
+
+        $section_count = 0;
+
+        while( have_rows('sections', $id) ) : the_row();
+    
+            // $section = array();
+            // $section["section_header"] = the_sub_field('section_header');
+            // $section["section_content"] = the_sub_field('section_content');
+            if ( have_rows('form_inputs') ) :
+            
+                while( have_rows('form_inputs') ) : the_row();
+
+                    $inputs = build_acf_form_array($inputs, $section_count);  
+                   
+                endwhile;
+            
+            endif;
+            // $sections[] = $section;
+            $section_count++;
+        endwhile;
+    
+    endif; 
+    // $form_data['sections'] = $sections;
+    // $form_data['inputs'] = $inputs;
+    return $inputs;   
+}
 /*
  * @end Wp_Swift_Form_Builder_Public
  */
-function wp_swift_form_builder() {
+function wp_swift_form_builder($id) {
+/* 
     $form_builder = wp_swift_get_contact_form();
   if ($form_builder !== null ) {
     ob_start();
@@ -251,7 +303,12 @@ function wp_swift_form_builder() {
         $form = ob_get_contents();
         ob_end_clean();
     } 
-    return $form;   
+    return $form;    
+*/ 
+$form_data = wp_swift_get_form_data($id);
+$form_builder = wp_swift_get_form_builder($form_data);
+$html = wp_swift_set_form($form_builder);
+return $html;
 }
 /*
  * Check if the page has inputs set using ACF field groups
@@ -298,6 +355,25 @@ if (!function_exists('form_builder_location_array')) {
 	        ),
 	    );
 	}
+}
+
+function wp_swift_get_form_builder($form_data) {
+    if (class_exists('WP_Swift_Form_Builder_Contact_Form')) {
+        return new WP_Swift_Form_Builder_Contact_Form( $form_data, array("show_mail_receipt"=>true, "option" => "") ); 
+    }
+}
+
+function wp_swift_set_form($form_builder) {
+    ob_start();
+    if ($form_builder != null ) {
+        if(isset($_POST[ $form_builder->get_submit_button_name() ])){ //check if form was submitted
+            $form_builder->process_form(); 
+        }
+        $form_builder->acf_build_form();
+    }
+    $html = ob_get_contents();
+    ob_end_clean();
+    return $html; 
 }
     
 /*
