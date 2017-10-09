@@ -154,6 +154,7 @@ function acf_add_local_field_group_contact_form() {
     // include "acf-field-groups/contact-page/_acf-field-group-form-inputs.php";
     // // include "acf-field-groups/_acf-field-group-options-page-settings.php";
     // include "acf-field-groups/contact-page/_acf-field-group-contact-page-input-settings.php";
+    require_once plugin_dir_path( __FILE__ ) . 'acf-field-groups/input-builder/shortcode.php';
     require_once plugin_dir_path( __FILE__ ) . 'acf-field-groups/input-builder/form-builder-inputs.php';
     require_once plugin_dir_path( __FILE__ ) . 'acf-field-groups/input-builder/form-builder-2-inputs-sections.php';
     require_once plugin_dir_path( __FILE__ ) . 'acf-field-groups/default-contact-page/default-settings.php';

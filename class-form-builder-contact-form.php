@@ -25,9 +25,9 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
     /*
      * Initializes the plugin.
      */
-    public function __construct( $form_data, $args ) { 
+    public function __construct( $form_post_id, $form_data, $args ) { 
         // $args = $this->get_form_args();
-        parent::__construct( $form_data, $args );
+        parent::__construct( $form_post_id, $form_data, $args );
     }    
 
     /*
@@ -40,10 +40,10 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
      * The parent does not know what to with a successful form, it just validates default settings
      * The parent will handle errors if default errors have been found
      */
-    public function process_form() {
-        parent::validate_form();
+    public function process_form($post, $ajax=false) {
+        parent::validate_form($post, $ajax);
         if ($this->get_error_count()==0) {
-            echo $this->process_form_after_default_passed();
+            return $this->process_form_after_default_passed($ajax);
         }
     }
 
@@ -64,7 +64,7 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
      *
      * @return string               The html success message
      */
-    public function process_form_after_default_passed() {
+    public function process_form_after_default_passed($ajax) {
         /*
          * Variables
          */
@@ -79,7 +79,10 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
         $date = ' - '.date("Y-m-d H:i:s").' GMT';
         $post_id_or_acf_option= '';//We can specify if it is an option field or use a post_id (https://www.advancedcustomfields.com/add-ons/options-page/)
         $headers = array('Content-Type: text/html; charset=UTF-8');
-
+        $use_callout = true;
+        if ($ajax) {
+            $use_callout = false;
+        }
         /*
          * These are the default form settings
          */
@@ -156,7 +159,7 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
         /*
          * Return the html
          */              
-        return $this->build_confirmation_output($use_callout=true, $browser_output_header, $auto_response_message, $key_value_table, $user_output_footer);
+        return $this->build_confirmation_output($use_callout, $browser_output_header, $auto_response_message, $key_value_table, $user_output_footer);
     } 
 
 
@@ -204,10 +207,10 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
         echo $header;
     }
 
-    private function build_confirmation_output($use_callout=true, $browser_output_header, $auto_response_message, $key_value_table, $user_output_footer) {
+    private function build_confirmation_output($use_callout, $browser_output_header, $auto_response_message, $key_value_table, $user_output_footer) {
 
         $framework = '';
-        $debugging_stop_email = true;
+        $debugging_stop_email = false;//true;
         $options = get_option( 'wp_swift_form_builder_settings' );
         if (isset($options['wp_swift_form_builder_select_css_framework'])) {
             $framework = $options['wp_swift_form_builder_select_css_framework'];
@@ -228,7 +231,9 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
         <?php if ($use_callout):
                 if ($framework === "zurb_foundation"): ?>
                     <div id="form-thank-you">
-                        <div class="callout secondary" data-closable="slide-out-right">            
+                        <!-- <div class="callout secondary" data-closable="slide-out-right">    --> 
+                        <div id="form-success-panel">
+
                 <?php elseif ($framework === "bootstrap"): ?>
                     <div class="panel panel-success" id="form-success-panel">
                         <div class="panel-heading">
@@ -241,7 +246,10 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
                         <div class="panel-body">              
                 <?php endif; ?>     
         <?php endif ?>
-
+                <!-- <a href="#" >x</a> -->
+                <button id="close-form-success-panel" aria-label="Dismiss alert" type="button">
+                    <span aria-hidden="true">&times;</span>
+                </button>      
                 <?php if ($framework === "zurb_foundation"): ?>
                     <h3><?php echo $browser_output_header; ?></h3>
                 <?php endif; ?>                             
@@ -252,9 +260,9 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
 
         <?php if ($use_callout):  
                 if ($framework === "zurb_foundation"): ?>
-                            <button class="close-button" aria-label="Dismiss alert" type="button" data-close>
+               <!--          <button class="close-button" aria-label="Dismiss alert" type="button" data-close>
                             <span aria-hidden="true">&times;</span>
-                        </button>
+                        </button> -->
                     </div>        
                 <?php elseif ($framework === "bootstrap"): ?>
                          </div>

@@ -18,6 +18,7 @@ class WP_Swift_Form_Builder_Parent {
     public $form_inputs = array();
     private $post_id = null;
     private $form_id = '';
+    private $form_post_id = '';
     private $form_name = '';
     private $submit_button_id = '';
     private $submit_button_name = '';
@@ -41,9 +42,9 @@ class WP_Swift_Form_Builder_Parent {
     /*
      * Initializes the plugin.
      */
-    public function __construct($form_data=false, $form_builder_args=false) { //"option") {
+    public function __construct($form_post_id, $form_data=false, $form_builder_args=false) { //"option") {
         
-        $this->set_form_data($form_data, $form_builder_args);
+        $this->set_form_data($form_post_id, $form_data, $form_builder_args);
         // add_action( 'wp_enqueue_scripts', array( $this, 'wp_swift_form_builder_css_file') );
         // add_action( 'wp_enqueue_scripts', array($this, 'enqueue_javascript') );
         /*
@@ -64,7 +65,7 @@ class WP_Swift_Form_Builder_Parent {
      */
     // $this->set_form_data($form_data, $form_builder_args);
     // public function set_form_data($form_inputs="form_inputs", $post_id, $args=false, $attributes= false, $option=false) {
-    public function set_form_data($form_inputs=array(), $args=false) {
+    public function set_form_data($form_post_id, $form_inputs=array(), $args=false) {
         // include('_set-form-data.php');
         
         /*
@@ -125,7 +126,7 @@ class WP_Swift_Form_Builder_Parent {
         else {
             $this->form_id = $this->form_name;
         }
-
+        $this->form_post_id = $form_post_id;
         if(isset($args["submit_button_name"])) {
             $this->submit_button_name = $args["submit_button_name"];
         }
@@ -301,8 +302,8 @@ class WP_Swift_Form_Builder_Parent {
         }
         if ($framework === "zurb_foundation") :
             ?>
-            <div class="callout warning">
-                        <h3>Errors Found</h3>
+            <div class="form-message "><!-- callout warning -->
+                        <h3 class="heading">Errors Found</h3>
             <?php
         elseif ($framework === "bootstrap"):
             ?>
@@ -318,7 +319,7 @@ class WP_Swift_Form_Builder_Parent {
         ?>
 
 
-            <!-- <div class="callout warning"> -->
+            <div class="error-content">
 
                 <p>We're sorry, there has been an error with the form input. Please rectify the <?php echo $this->get_error_count() ?> errors below and resubmit.</p>
                 <ul><?php 
@@ -349,7 +350,7 @@ class WP_Swift_Form_Builder_Parent {
                         }
                     } 
                  ?></ul>
-            <!-- </div> -->
+            </div>
 
         <?php 
 
@@ -405,9 +406,9 @@ class WP_Swift_Form_Builder_Parent {
 
         // ob_start();
         ?>
-
+        <h1>form_post_id: <pre><?php echo $this->form_post_id ?></pre></h1>
         <!-- @start form -->
-        <form method="post" <?php echo $this->action; ?> name="<?php echo $this->form_name; ?>" id="<?php echo $this->form_id; ?>" class="<?php echo $framework.' '; echo $this->form_class.' '; echo $this->form_name ?>" novalidate<?php echo $this->enctype; ?>>
+        <form method="post" <?php echo $this->action; ?> name="<?php echo $this->form_name; ?>" id="<?php echo $this->form_id; ?>" data-id="<?php echo $this->form_post_id ?>" class="<?php echo $framework.' '; echo $this->form_class.' '; echo $this->form_name ?>" novalidate<?php echo $this->enctype; ?>>
             <?php
             $this->front_end_form_input_loop($this->form_inputs, $this->tab_index, $this->form_pristine, $this->error_count);
             if ($this->show_mail_receipt): ?>
@@ -417,7 +418,7 @@ class WP_Swift_Form_Builder_Parent {
                 <div class="form-label"></div>
                 <div class="form-input">
                     <div class="checkbox">
-                      <input type="checkbox" value="" tabindex=<?php echo $this->tab_index; ?> name="mail-receipt" id="mail-receipt"><label for="mail-receipt">Acknowledge me with a mail receipt</label>
+                      <input type="checkbox" value="" tabindex=<?php echo $this->tab_index; ?> name="mail-receipt" id="mail-receipt" checked><label for="mail-receipt">Acknowledge me with a mail receipt</label>
                     </div>
                 </div>                  
             </div> 
@@ -496,7 +497,9 @@ class WP_Swift_Form_Builder_Parent {
                     case "radio":
                         $this->build_form_radio($id, $input);
                     case "checkbox":
-                        $this->build_form_checkbox($id, $input);
+                        $input_html = $this->build_form_checkbox($id, $input);
+                        // $input_html = $this->bld_form_input($id, $input);
+                        echo $this->wrap_input($id, $input, $input_html);
                         break; 
                     case "multi_select":
                     case "select":
@@ -627,14 +630,14 @@ class WP_Swift_Form_Builder_Parent {
             return false;
         }
     }
-    public function validate_form($input_keys_to_skip=array()) {
+    public function validate_form($post, $ajax, $input_keys_to_skip=array()) {
         $this->default_input_keys_to_skip = array('submit-request-form', 'mail-receipt', 'form-file-upload', 'g-recaptcha-response');
         $this->default_input_keys_to_skip = array_merge($this->default_input_keys_to_skip, $input_keys_to_skip);
 
         // The form is submitted by a user and so is no longer pristine
         $this->set_form_pristine(false);
         //Loop through the POST and validate. Store the values in $form_data
-        foreach ($_POST as $key => $value) {
+        foreach ($post as $key => $value) {
             // echo "key <pre>"; var_dump($key); echo "</pre>";
             if (!in_array($key, $this->default_input_keys_to_skip)) { //Skip the button,  mail-receipt checkbox, g-recaptcha-response etc
                 $check_if_submit = substr($key, 0, 7);
@@ -648,12 +651,12 @@ class WP_Swift_Form_Builder_Parent {
         }
     }
 
-    public function process_form() {
+    public function process_form($post, $ajax=false) {
         echo "<div class='callout secondary'>"; 
         echo '<h5>public function process_form()</h5>';
         echo '<p>This the the default form handling for the <code>WP Swift: Form Builer</code> plugin. You will need to write your own function to handle this POST request.</p>';
         echo 'var_dump($_POST)<br><br>';
-        echo "<pre>";var_dump($_POST);echo "</pre>";
+        echo "<pre>";var_dump($post);echo "</pre>";
         echo "</div>";
     }
      /*
@@ -1138,14 +1141,14 @@ class WP_Swift_Form_Builder_Parent {
             }
         }
 
-        $data = $this->before_form_input($id, $data);
+        // $data = $this->before_form_input($id, $data);
         $count=0;  
         
         $name_append = '';
         if (count($data['options']) > 1) {
             $name_append = '[]';
         }
-     
+         $input_html = '';
         foreach ($data['options'] as $option): $count++;
             $checked='';
             // echo "<br><pre>";var_dump($option);echo "</pre>";
@@ -1159,10 +1162,20 @@ class WP_Swift_Form_Builder_Parent {
                 $name = $id.''.$name_append;
                 // $name = $id.'-checkbox'.$name_append;
             }
-            ?><label for="<?php echo $id.'-'.$count ?>" class="lbl-checkbox"><input id="<?php echo $id.'-'.$count ?>" name="<?php echo $name ?>" type="checkbox" tabindex="<?php echo $this->tab_index++; ?>" value="<?php echo $option['option_value'] ?>"<?php echo $checked; ?>>
-            <?php echo $option['option'] ?></label><?php 
+            // ob_start();
+        
+
+            $input_html .= '<label for="'.$id.'-'.$count.'" class="lbl-checkbox">';
+                $input_html .= '<input id="'.$id.'-'.$count.'" name="'.$name.'" type="checkbox" tabindex="'.$this->tab_index++.'" value="'.$option['option_value'].'"'.$checked.'>'.$option['option'].'';
+            $input_html .= '</label>';
+
+           
         endforeach;
-        $data = $this->after_form_input($id, $data);
+        // $input_html = ob_get_contents();
+        // ob_end_clean(); 
+        // $data = $this->after_form_input($id, $data);
+
+        return $input_html;  
     }
 
     public function section_open($section_header, $section_content) {

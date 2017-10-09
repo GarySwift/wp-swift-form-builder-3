@@ -110,9 +110,9 @@ class Wp_Swift_Form_Builder_Public {
         $a = shortcode_atts( array(
             'id' => false,
         ), $atts );
-        $id = $a['id'];
-        $form_data = wp_swift_get_form_data($id);
-        $form_builder = wp_swift_get_form_builder($form_data);
+        $form_id = $a['id'];
+        $form_data = wp_swift_get_form_data($form_id);
+        $form_builder = wp_swift_get_form_builder($form_id, $form_data);
         $html = wp_swift_set_form($form_builder);
         return $html;
     }
@@ -186,7 +186,7 @@ class Wp_Swift_Form_Builder_Public {
 		 * class.
 		 */
 
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/wp-swift-form-builder-public.js', array( 'jquery' ), $this->version, false );
+		// wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/wp-swift-form-builder-public.js', array( 'jquery' ), $this->version, false );
 
 	}
 
@@ -357,9 +357,9 @@ if (!function_exists('form_builder_location_array')) {
 	}
 }
 
-function wp_swift_get_form_builder($form_data) {
+function wp_swift_get_form_builder($form_post_id, $form_data) {
     if (class_exists('WP_Swift_Form_Builder_Contact_Form')) {
-        return new WP_Swift_Form_Builder_Contact_Form( $form_data, array("show_mail_receipt"=>true, "option" => "") ); 
+        return new WP_Swift_Form_Builder_Contact_Form( $form_post_id, $form_data, array("show_mail_receipt"=>true, "option" => "") ); 
     }
 }
 
@@ -367,7 +367,9 @@ function wp_swift_set_form($form_builder) {
     ob_start();
     if ($form_builder != null ) {
         if(isset($_POST[ $form_builder->get_submit_button_name() ])){ //check if form was submitted
-            $form_builder->process_form(); 
+            // $form_builder->process_form(); 
+            // var_dump($_POST);
+            echo "<pre>"; var_dump($_POST); echo "</pre>";
         }
         $form_builder->acf_build_form();
     }
