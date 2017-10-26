@@ -2,3 +2,47 @@
  * All of the CSS for your admin-specific functionality should be
  * included in this file.
  */
+
+/* @start acf group */
+.form-builder-input-group .acf-table{
+	border: none;
+}
+.form-builder-input-group .acf-table > thead > tr > th, .form-builder-input-group .acf-table > tbody > tr > td{
+    border-color: transparent;
+    border-width: 0;
+}
+.acf-field .form-builder-input-group .acf-label {
+	display: none;
+}
+.form-builder-input-group th.acf-th {
+ 	font-weight: bold;
+}
+.form-builder-input-group th.acf-th span, .form-builder-input-group th.acf-th p{
+ 	font-weight: normal;
+}
+/* @end acf group */
+/* @start inputs-repeater */
+.form-builder-inputs-repeater .acf-fields > .acf-field {
+	border-top: none;
+}
+.form-builder-inputs-repeater .acf-repeater .acf-row.-collapsed .acf-row-handle.order, .form-builder-inputs-repeater .acf-repeater .acf-row.-collapsed .acf-row-handle.remove  {
+    background: #F4F4F2;
+	color: #aaa;
+}
+.form-builder-inputs-repeater .acf-repeater .acf-row .acf-row-handle.order, .form-builder-inputs-repeater .acf-repeater .acf-row .acf-row-handle.remove {
+    background: #DCDCDC;
+    color: #6A6A6A;
+}
+.form-builder-inputs-repeater .acf-repeater .acf-row.-collapsed .acf-row-handle.remove {
+    border-right: none;
+}
+.form-builder-inputs-repeater .form-builder-input-row.form-builder-nested-repeater .acf-repeater .acf-row .acf-row-handle.order, .form-builder-inputs-repeater .form-builder-input-row.form-builder-nested-repeater .acf-repeater .acf-row .acf-row-handle.remove{
+    background: #F4F4F2;
+	color: #aaa;
+}
+/* @end inputs-repeater */
+/* @start input-row */
+.form-builder-input-row .acf-label, .form-builder-input-row .acf-input{
+	padding: 0px 8px;
+}
+/* @end input-row */

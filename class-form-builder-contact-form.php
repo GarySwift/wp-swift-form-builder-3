@@ -25,9 +25,9 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
     /*
      * Initializes the plugin.
      */
-    public function __construct( $form_post_id, $form_data, $args ) { 
+    public function __construct( $form_id ) { //, $sections, $settings = false
         // $args = $this->get_form_args();
-        parent::__construct( $form_post_id, $form_data, $args );
+        parent::__construct( $form_id );//, $sections, $settings
     }    
 
     /*
@@ -41,9 +41,20 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
      * The parent will handle errors if default errors have been found
      */
     public function process_form($post, $ajax=false) {
+ 
         parent::validate_form($post, $ajax);
         if ($this->get_error_count()==0) {
-            return $this->process_form_after_default_passed($ajax);
+            // echo "<pre>2</pre>";
+            return $this->process_form_after_default_passed($post, $ajax);
+        }
+        else {
+            ob_start();
+            // echo "<pre>3</pre>";
+            $this->acf_build_form_message();
+            $html = ob_get_contents();
+            ob_end_clean();
+            
+            return $html;
         }
     }
 
@@ -64,7 +75,7 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
      *
      * @return string               The html success message
      */
-    public function process_form_after_default_passed($ajax) {
+    public function process_form_after_default_passed($post, $ajax) {
         /*
          * Variables
          */
@@ -83,6 +94,10 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
         if ($ajax) {
             $use_callout = false;
         }
+        if ($ajax)
+            $class = 'ajax';
+        else
+            $class = 'standard';
         /*
          * These are the default form settings
          */
@@ -104,24 +119,24 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
          */
         if (function_exists('get_field')) {
             // If a to_email is set in ACF, send the email there instead of the admin email
-            if (get_field('to_email', $this->option)) {
-                $to = get_field('to_email', $this->option); 
+            if (get_field('to_email', parent::get_form_post_id() )) {
+                $to = get_field('to_email', parent::get_form_post_id() ); 
             }
             // Set reponse subject for email
-            if (get_field('response_subject', $this->option)) {
-                $response_subject = get_field('response_subject', $this->option); 
+            if (get_field('response_subject', parent::get_form_post_id() )) {
+                $response_subject = get_field('response_subject', parent::get_form_post_id() ); 
             }
             // Start the reponse message for the email
-            if (get_field('response_message', $this->option)) {
-                $response_message = get_field('response_message', $this->option);
+            if (get_field('response_message', parent::get_form_post_id() )) {
+                $response_message = get_field('response_message', parent::get_form_post_id() );
             }
             //Set auto_response_message
-            if (get_field('auto_response_message', $this->option)) {
-                $auto_response_message = get_field('auto_response_message', $this->option);
+            if (get_field('auto_response_message', parent::get_form_post_id() )) {
+                $auto_response_message = get_field('auto_response_message', parent::get_form_post_id() );
             }
             // Set the response that is set back to the browser
-            if (get_field('browser_output_header', $this->option)) {
-                $browser_output_header = get_field('browser_output_header', $this->option);
+            if (get_field('browser_output_header', parent::get_form_post_id() )) {
+                $browser_output_header = get_field('browser_output_header', parent::get_form_post_id() );
             } 
             // The auto-response subject
             if( get_field('auto_response_subject') ) {
@@ -132,6 +147,7 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
         // Start making the string that will be sent in the email
         $email_string = $response_message;
         $key_value_table = $this->build_key_value_table();
+
         // Add the table of values to the string
         $email_string .= $key_value_table;
 
@@ -145,69 +161,109 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
          * If the user has requested it, send an email acknowledgement
          */
         $user_output_footer = '';
-        if($this->get_show_mail_receipt()) {
-            $user_email_string = $auto_response_message.'<p>A copy of your enquiry is shown below.</p>'.$key_value_table;
+        // if($this->get_show_mail_receipt()) {
+
+        $user_email_string = $auto_response_message.'<p>A copy of your enquiry is shown below.</p>'.$key_value_table;
+        if ( isset($post["mail-receipt"]) ) {
             if ($send_email) {
                 if (isset($this->form_inputs['form-email']['clean'])) {
                     $status = wp_mail($this->form_inputs['form-email']['clean'], $auto_response_subject, wp_swift_wrap_email($user_email_string), $headers);// wrap_email($user_response_msg)
                 }
                 
             }
+            else {
+                $user_output_footer = "<pre>Debugging mode is on so no emails are being sent.</pre>";
+            }
+        
+            $user_output_footer .= '<p>A confirmation email has been sent to you including these details.</p>';
         }
-        $user_output_footer = '<p>A confirmation email has been sent to you including these details.</p>';
-
+        
+        // echo $user_output_footer;
         /*
          * Return the html
          */              
-        return $this->build_confirmation_output($use_callout, $browser_output_header, $auto_response_message, $key_value_table, $user_output_footer);
+        return $this->build_confirmation_output($class, $browser_output_header, $auto_response_message, $key_value_table, $user_output_footer);
     } 
 
+    private function build_confirmation_output($class, $browser_output_header, $auto_response_message, $key_value_table, $user_output_footer) {
 
-    private function build_key_value_table() {
+        ob_start(); ?>
 
-        ob_start(); 
-        ?><table class="form-feedback" id="print-table" style="width:100%">
-                <tbody>
-                    <?php foreach ($this->form_inputs as $key => $value): ?>
-                        <?php if (isset($value['data_type'])): $type = $value['data_type'];?>
-                            <tr>
-   
-                                <?php if ($type=='section'): ?>
-                                    <th colspan="2" style="width:100%; text-align:center">
-                                        <h3><?php $this->table_cell_header($key) ?></h3>
-                                    </th>
-                                <?php else: ?>
-                                    <?php if ($value['clean'] !== ''): ?>
-                                        <th style="width:30%; text-align:left"><?php $this->table_cell_header($key) ?></th>
-                                        <td><?php 
-                                            if ($value['type']=='select') {
-                                                echo ucwords(str_replace('-', ' ',$value['clean']));
-                                            } else {
-                                                echo $value['clean'];
-                                            }
-                                        ?></td>                                      
-                                    <?php endif ?>                                 
-                                <?php endif ?>
-                            </tr>
+            <div id="form-success-message" class="form-message <?php echo $class ?>"> 
+               
+                <h3><?php _e( $browser_output_header, 'wp-swift-form-builder' ); ?></h3>                    
+                <div>
+                    <?php _e( $auto_response_message, 'wp-swift-form-builder' ); ?>                       
+                </div>
+                <p><?php _e( 'A copy of your enquiry is shown below.', 'wp-swift-form-builder' ); ?></p>
 
-                        <?php endif ?>
-                       
-                    <?php endforeach ?>   
-                </tbody>
-            </table>
-            <?php
+                <?php echo $key_value_table; ?>
+
+                <?php if ($user_output_footer): ?>
+                    <p><?php _e( $user_output_footer, 'wp-swift-form-builder' ); ?></p>
+                <?php endif ?>
+
+            </div><!-- @end #form-success-message -->
+
+        <?php
+
         $html = ob_get_contents();
         ob_end_clean();
         return $html;
     }
 
-    private function table_cell_header($key) {
-        $header = ucwords(str_replace('-', ' ',substr($key, 5)));
+    private function build_key_value_table() {
+
+        ob_start(); 
+        ?><table class="form-feedback" id="print-table" style="width:100%">
+                    <tbody><?php 
+                        
+                    foreach ($this->form_inputs as $section_key => $section): 
+                        foreach ($section["inputs"] as $input_key => $section_input):
+                
+                        if (isset($section_input['data_type'])): $type = $section_input['data_type']; ?>
+
+                        <tr><?php 
+                            if ($type=='section'): ?>
+
+                            <th colspan="2" style="width:100%; text-align:center">
+                                <h3><?php $this->table_cell_header($input_key) ?></h3>
+                            </th>
+
+                            <?php 
+                            else: 
+                                if ($section_input['clean'] !== ''): ?>
+
+                            <th style="width:30%; text-align:left"><?php $this->table_cell_header($input_key) ?></th>
+                            <td><?php 
+                                    if ($section_input['type']=='select') {
+                                        echo ucwords(str_replace('-', ' ',$section_input['clean']));
+                                    } else {
+                                        echo $section_input['clean'];
+                                    }
+                            ?></td>
+                        <?php   endif;//@end if ($section_input['clean'] !== '')                               
+                            endif;//@end if ($type=='section')
+                        ?></tr><?php endif;
+
+                        endforeach;//@end foreach ($section["inputs"] as $input_key => $section_input):
+                    endforeach;//@end foreach ($this->form_inputs as $section_key => $section):
+                    ?>   
+                    </tbody>
+                </table><!-- @end table -->
+        <?php
+        $html = ob_get_contents();
+        ob_end_clean();
+        return $html;
+    }
+
+    private function table_cell_header($input_key) {
+        $header = ucwords(str_replace('-', ' ',substr($input_key, 5)));
         $header = str_replace(' Of ', ' of ', $header);
         echo $header;
     }
 
-    private function build_confirmation_output($use_callout, $browser_output_header, $auto_response_message, $key_value_table, $user_output_footer) {
+    private function build_confirmation_output_2($use_callout, $browser_output_header, $auto_response_message, $key_value_table, $user_output_footer) {
 
         $framework = '';
         $debugging_stop_email = false;//true;
@@ -274,6 +330,25 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
         ob_end_clean();
         return $html;
     }
+
+    /*
+     * Hookable function that
+     */
+    public function before_submit_button_hook() {
+    ?>
+        
+            <!-- @start .mail-receipt -->
+            <div class="form-group mail-receipt">
+                <div class="form-label"></div>
+                <div class="form-input">
+                    <div class="checkbox">
+                      <input type="checkbox" value="" tabindex=<?php echo parent::get_tab_index(); ?> name="mail-receipt" id="mail-receipt" checked><label for="mail-receipt">Acknowledge me with a mail receipt</label>
+                    </div>
+                </div>                  
+            </div> 
+            <!-- @end .mail-receipt -->
+    <?php
+    }    
 }
 //     }
 // }

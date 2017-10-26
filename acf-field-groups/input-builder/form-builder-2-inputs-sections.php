@@ -46,7 +46,7 @@ acf_add_local_field_group(array (
 			'conditional_logic' => 0,
 			'wrapper' => array (
 				'width' => '',
-				'class' => '',
+				'class' => 'form_inputs_field_59d2045c948d4',
 				'id' => '',
 			),
 			'collapsed' => 'field_59d2045c948d4',

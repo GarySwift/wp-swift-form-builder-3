@@ -101,6 +101,9 @@ require_once plugin_dir_path( __FILE__ ) . '/email-templates/wp-swift-email-temp
  * @author 	 Gary Swift 
  * @since    1.0.0
  */
+
+# Change the Default WordPress Uploads Folder
+define('FORM_BUILDER_DIR', '/form-builder/');
 // function wp_swift_form_builder_admin_menu() {
 // 	if( current_user_can('editor') || current_user_can('administrator') ) {
 // 		require plugin_dir_path( __FILE__ ) . 'admin-menu.php';
@@ -155,8 +158,8 @@ function acf_add_local_field_group_contact_form() {
     // // include "acf-field-groups/_acf-field-group-options-page-settings.php";
     // include "acf-field-groups/contact-page/_acf-field-group-contact-page-input-settings.php";
     require_once plugin_dir_path( __FILE__ ) . 'acf-field-groups/input-builder/shortcode.php';
-    require_once plugin_dir_path( __FILE__ ) . 'acf-field-groups/input-builder/form-builder-inputs.php';
-    require_once plugin_dir_path( __FILE__ ) . 'acf-field-groups/input-builder/form-builder-2-inputs-sections.php';
+    // require_once plugin_dir_path( __FILE__ ) . 'acf-field-groups/input-builder/form-builder-inputs.php';
+    // require_once plugin_dir_path( __FILE__ ) . 'acf-field-groups/input-builder/form-builder-2-inputs-sections.php';
     require_once plugin_dir_path( __FILE__ ) . 'acf-field-groups/default-contact-page/default-settings.php';
     require_once plugin_dir_path( __FILE__ ) . 'acf-field-groups/contact-page/_acf-field-group-contact-form.php';
 }

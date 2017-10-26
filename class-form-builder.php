@@ -24,7 +24,7 @@ class WP_Swift_Form_Builder_Parent {
     private $submit_button_name = '';
     private $submit_button_text = '';
     private $css_framework = "zurb_foundation";
-    private $show_mail_receipt = false;
+    // private $show_mail_receipt = false;
     private $form_pristine = true;
     private $enctype = '';
     private $error_count = 0;
@@ -40,78 +40,27 @@ class WP_Swift_Form_Builder_Parent {
     private $option = '';
 
     /*
-     * Initializes the plugin.
-     */
-    public function __construct($form_post_id, $form_data=false, $form_builder_args=false) { //"option") {
-        
-        $this->set_form_data($form_post_id, $form_data, $form_builder_args);
-        // add_action( 'wp_enqueue_scripts', array( $this, 'wp_swift_form_builder_css_file') );
-        // add_action( 'wp_enqueue_scripts', array($this, 'enqueue_javascript') );
-        /*
-         * Inputs
-         */
-        // add_action( 'admin_menu', array($this, 'wp_swift_form_builder_add_admin_menu'), 20 );
-        // add_action( 'admin_init', array($this, 'wp_swift_form_builder_settings_init') );
-        if (isset($attributes["section-layout"])) {
-            $section_layout_string = $attributes["section-layout"];
-            if ( class_exists($section_layout_string) ) {
-                $this->Section_Layout_Addon = new $section_layout_string();
-            }
-        }
-    }
+        function guide
+        acf_build_form()
+
+
+    */
 
     /*
-     * Set the form data
+     * Initializes the plugin.
      */
-    // $this->set_form_data($form_data, $form_builder_args);
-    // public function set_form_data($form_inputs="form_inputs", $post_id, $args=false, $attributes= false, $option=false) {
-    public function set_form_data($form_post_id, $form_inputs=array(), $args=false) {
-        // include('_set-form-data.php');
-        
-        /*
-         * @function  set_form_data
-         * Set the form data
-         *
-         * @param       $form_inputs        string or array
-         * @param       $post_id            the post id
-         * @param       $form_inputs        string or array
-         */
-        // public function set_form_data($form_inputs="form_inputs", $post_id, $args=false, $attributes= false, $option=false)
+    public function __construct($form_id) {// , $sections, $settings = false  //"option") {
+        $form_data = wp_swift_get_form_data($form_id);
+        // echo "<pre>"; var_dump($form_data); echo "</pre>";
+    // if (class_exists('WP_Swift_Form_Builder_Contact_Form') && isset($form_data["sections"])) {
+        $this->form_inputs = $form_data["sections"];
+        $settings = $form_data["settings"];
 
-
-        // $this->form_settings = array();
-        // $this->post_id = $post_id;
-        // $this->form_settings["form_pristine"] = true;
-        // $this->form_settings["form_num_error_found"] = 0;
-        $this->error_count = 0;
-        // $this->form_settings["enctype"] = "";
-        // $this->form_settings["form_class"] = "";
-        $this->form_settings["option"]=$args["option"];
-        $this->option = $args["option"];
-        if (isset($args["show_mail_receipt"]) && $args["show_mail_receipt"] === true) {
-            $this->show_mail_receipt = true;
-        }
-        // if( function_exists('acf')) {
-        //     if (get_sub_field('form_name', $post_id)) {
-        //          $this->form_settings["form-name"] = sanitize_title_with_dashes( get_sub_field('form_name') );
-        //     }
-        //     // elseif(isset($args["form_name"])) {
-        //     //     $this->form_settings["form-name"] = sanitize_title_with_dashes($args["form_name"]);
-        //     // }
-        //     // else {
-        //     //      $this->form_settings["form-name"] = "request-form";
-        //     // }
-        //     if (get_sub_field('button_text', $post_id)) {
-        //           $this->form_settings["submit-button-text"] = get_sub_field('button_text');
-        //     }
-        //     // elseif(isset($args["button_text"])) {
-        //     //     $this->form_settings["submit-button-text"] = $args["button_text"];
-        //     // }
-        //     // else {
-        //     //       $this->form_settings["submit-button-text"] = "Submit Form";
-        //     // }
-        // }
-
+        // $this->set_form_data($form_post_id, $form_inputs, $args);
+        $this->form_post_id = $form_id;
+        // $this->form_inputs = $sections;
+        // $settings = $form_inputs["settings"];
+        // echo "<pre>"; var_dump($settings); echo "</pre>"; 
         if(isset($args["form_name"])) {
             $form_name = sanitize_title_with_dashes($args["form_name"]);
             $this->form_name = $form_name;
@@ -126,7 +75,7 @@ class WP_Swift_Form_Builder_Parent {
         else {
             $this->form_id = $this->form_name;
         }
-        $this->form_post_id = $form_post_id;
+        
         if(isset($args["submit_button_name"])) {
             $this->submit_button_name = $args["submit_button_name"];
         }
@@ -148,283 +97,147 @@ class WP_Swift_Form_Builder_Parent {
             $this->submit_button_text = "Submit Form";
         }
 
-
         if (isset($args["clear_after_submission"])) {
-            // echo "<pre>";var_dump($args["clear_after_submission"]);echo "</pre>";
             $this->clear_after_submission = $args["clear_after_submission"];
-            // echo "<pre>";var_dump($this->clear_after_submission);echo "</pre>";
         }
 
         if (isset($args["action"]) && $args["action"]!='') {
             $this->action = 'action="'.$args["action"].'"';
         }
+
         if (isset($args["list_form_errors_in_warning_panel"])) {
             $this->list_form_errors_in_warning_panel = $args["list_form_errors_in_warning_panel"];
         }
+
         if (isset($args["form_class"])) {
-            $this->form_class = $args["form_class"];
+            $this->form_class .= $args["form_class"];
         }
-        // $this->form_settings["form-name"] = "request-form";
-        // $this->form_settings["submit-button-text"] = "Submit Form";
-        // $this->form_settings["submit-button-name"] = "submit-".$this->form_settings["form-name"];
+        if (isset($settings["groupings"])) {
+            $this->form_class .= " groupings";
+        }             
+    }
 
+    public function run() {
+        // echo 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Modi debitis voluptate libero est, similique corporis dolor repudiandae et nemo in asperiores. Fugit cum optio officia nesciunt nam, facilis dicta. Soluta!';//
+        return $this->get_form();
+    }
 
-        $this->form_settings["error_class"] = "";
-        $this->form_settings["ajax"] = false;
-        $form_data = array();
-                
-        if (is_array($form_inputs)) {
-            $this->form_settings["form_data"] = $form_inputs;
-            $this->form_inputs = $form_inputs;
-        }
-        else if (is_string($form_inputs)) {
-            if( function_exists('acf')) {
-                 // Construct the array that makes the form
-                if ( have_rows($form_inputs, $option) ) {
-
-                    $this->form_settings = array();
-                    $this->form_settings["form_pristine"] = true;
-                    $this->form_settings["form_num_error_found"] = 0;
-                    $this->form_settings["enctype"] = "";
-                    $this->form_settings["form_class"] = "";
-                    $this->form_settings["option"]=$option;
-                    if (get_sub_field('form_name')) {
-                         $this->form_settings["form-name"] = sanitize_title_with_dashes( get_sub_field('form_name') );
-                    }
-                    else {
-                         $this->form_settings["form-name"] = "request-form";
-                    }
-                    if (get_sub_field('button_text')) {
-                          $this->form_settings["submit-button-text"] = get_sub_field('button_text');
-                    }
-                    else {
-                          $this->form_settings["submit-button-text"] = "Submit Form";
-                    }
-
-                    $this->form_settings["submit-button-name"] = "submit-".$this->form_settings["form-name"];
-                    $this->form_settings["error_class"] = "";
-                    $this->form_settings["ajax"] = false;
-                    $form_data = array();
-
-                    while( have_rows($form_inputs, $option) ) : the_row(); // Loop through the repeater for form inputs
-
-                        $name =  get_sub_field('name');
-                        $id = sanitize_title_with_dashes( get_sub_field('name') );
-                        $type = get_sub_field('type');
-                        $label = get_sub_field('label');
-                        $help = get_sub_field('help');
-                        $placeholder = get_sub_field('placeholder');
-                        $required = get_sub_field('required');
-                        $select_options='';
-
-                        // If the user has manually added options with the repeater
-                        if( get_sub_field('select_options') ) {
-                            $select_options = get_sub_field('select_options');
-
-                            if(get_sub_field('select_type') === 'user') {                    
-                                for ($i = 0; $i < count($select_options); ++$i) {
-                                    if($select_options[$i]['option_value']=='') {
-                                        $select_options[$i]['option_value'] = sanitize_title_with_dashes( $select_options[$i]['option'] );
-                                    }
-                                }   
-                            }
-                        }
-
-                        // If the user has elected to select predefined options - only countries available at the moment
-                        if(get_sub_field('select_type') === 'select') {
-                            $countries = getCountries(); // Returns an array of countries
-                            $i=0;
-                            // Push each entry into $select_options in a usable way
-                            foreach ($countries as $key => $value) {
-                                ++$i;
-                                $select_options[$i]['option_value']  = sanitize_title_with_dashes($key);
-                                $select_options[$i]['option'] = $value;//$key;
-                            }                     
-                        }
-
-                        if($required) {
-                            $required = 'required';
-                        }
-                        else {
-                            $required = '';
-                        }
-                        if(!$label) {
-                            $label = $name;
-                        }
-
-                        switch ($type) {
-                            case "text":
-                            case "url":
-                            case "email":
-                            case "number":
-                            case "password":
-                                $form_data['form-'.$id] = array("passed"=>false, "clean"=>"", "value"=>"", "section"=>1, "required"=>$required, "type"=>$type,  "placeholder"=>$placeholder, "label"=>$label, "help"=>$help);
-                                break;
-                            case "textarea":
-                                $form_data['form-'.$id] = array("passed"=>false, "clean"=>"", "value"=>"", "section"=>1, "required"=>$required, "type"=>$type,  "placeholder"=>$placeholder, "label"=>$label, "help"=>$help);
-                                break; 
-                            case "checkbox":
-                            case "select":
-                                $form_data['form-'.$id] = array("passed"=>false, "clean"=>"", "value"=>"", "section"=>1, "required"=>$required, "type"=>$type,  "placeholder"=>$placeholder, "label"=>$label, "options"=>$select_options, "selected_option"=>"", "help"=>$help);
-                                break;
-                            case "multi_select":
-                                $form_data['form-'.$id] = array("passed"=>false, "clean"=>"", "value"=>"", "section"=>1, "required"=>$required, "type"=>$type,  "placeholder"=>$placeholder, "label"=>$label, "options"=>$select_options, "selected_option"=>"", "help"=>$help);
-                                break;    
-                           case "file":
-                                $this->form_settings["enctype"] = ' enctype="multipart/form-data"';
-                                $this->form_settings["form_class"] = 'js-check-form-file';
-                                $form_data['form-'.$id] = array("passed"=>false, "clean"=>"", "value"=>"", "section"=>1, "required"=>$required, "type"=>$type,  "placeholder"=>$placeholder, "label"=>$label, "accept"=>"pdf", "help"=>$help);
-                                break;            
-                        }           
-                            
-                    endwhile;// End the AFC loop  
-                    $this->form_settings["form_data"] = $form_data;
-                }
+    public function get_form() {
+        ob_start();
+        ?>
+        <div class="<?php echo $this->form_class; ?>">
+        <?php
+        // if ($form_builder != null ) {
+            if(isset($_POST[ $this->get_submit_button_name() ])) { //check if form was submitted
+                echo $this->process_form($_POST); 
             }
-        }
-        // return $this->form_settings;            
+            $this->acf_build_form();
+        // }
+        ?>
+        </div>
+        <?php
+        $html = ob_get_contents();
+        ob_end_clean();
+        return $html; 
+    }
+
+    // private function get_form_class() {
+
+    // }
+    /*
+     * @function  set_form_data
+     * Set the form data
+     *
+     * @param       $form_post_id   int     the id of the form CPT
+     * @param       $form_inputs    array   the array of inputs
+     * @param       $args           array   additional arguments
+     */
+    public function set_form_data($form_post_id, $form_inputs=array(), $args=false) {
+   
     }//@end set_form_data()
 
-
-    /*
+  /*
      * Build the form
      */
-    public function acf_build_form() {
-        // include('_acf-build-form.php');
-        /*
-         * acf_build_form()
-         */
-        if ($this->get_error_count()>0):
-        $framework = $this->css_framework;
-        $options = get_option( 'wp_swift_form_builder_settings' );
-        if (isset($options['wp_swift_form_builder_select_css_framework'])) {
-            $framework = $options['wp_swift_form_builder_select_css_framework'];
-        }
-        if ($framework === "zurb_foundation") :
-            ?>
-            <div class="form-message "><!-- callout warning -->
-                        <h3 class="heading">Errors Found</h3>
-            <?php
-        elseif ($framework === "bootstrap"):
-            ?>
-            <div class="panel panel-danger">
-              <div class="panel-heading"><h3>Errors Found</h3></div>
-              <div class="panel-body">
-        <?php else:?>
-            <h3>Errors Found</h3><?php  
-        endif;
-
-
-
-        ?>
-
-
-            <div class="error-content">
-
-                <p>We're sorry, there has been an error with the form input. Please rectify the <?php echo $this->get_error_count() ?> errors below and resubmit.</p>
-                <ul><?php 
-                    if ($this->list_form_errors_in_warning_panel) {
-                       foreach ($this->form_inputs as $key => $data) {
-
-                            if (isset($data["passed"]) && !$data["passed"] && $data["type"] != "checkbox") {
-                                if ($data["help"]): 
-                                ?>
-                                    <li><?php echo $data["help"] ?></li>
-                                <?php else: 
-                                    $help = $data['label'].' is required';
-                                    if ($data['type']=='email' || $data['type']=='url') {
-                                        $help .= ' and must be valid';
-                                    }
-                                    ?>
-                                    <li><?php echo $help ?></li>
-                                <?php 
-                                endif;
-                            }
-                         }
-                    }
-                    if (count($this->extra_error_msgs)) {
-                        foreach ($this->extra_error_msgs as $key => $msg) {
-                        ?>
-                            <li><?php echo $msg ?></li>
-                        <?php 
-                        }
-                    } 
-                 ?></ul>
-            </div>
-
-        <?php 
-
-        if ($framework === "zurb_foundation") :
-            ?>
-            </div>
-            <?php
-        elseif ($framework === "bootstrap"):
-            ?>
-          </div>
-        </div>
-            <?php
-        endif;
-        // endif;
-        // $this->success_msg = "Testing";
-
-        elseif($this->get_error_count()===0):
-        ?>
-            <?php if ($this->success_msg !== ''): ?>
-                <div class="callout warning">
-                    <h3>Form Saved</h3>
-                    <?php echo $this->success_msg; ?>
-                </div>
-            <?php endif ?>
-        <?php
-        endif;
-
-        if (count($this->extra_msgs ) > 0 && $this->get_error_count()===0): ?>
-            <div class="callout warning">
-                <h3>Notifications</h3>
-                <ul><?php 
-                    if (count($this->extra_msgs)) {
-                        foreach ($this->extra_msgs as $key => $msg) {
-                        ?>
-                            <li><?php echo $msg ?></li>
-                        <?php 
-                        }
-                    } 
-                 ?></ul>
-            </div>
-        <?php 
-        endif;
-
+    public function acf_build_form($acf_build_form_message=true) {
+        // if ($acf_build_form_message) {
+        //    $this->acf_build_form_message();
+        // }
         $this->front_end_form();
     }//@end acf_build_form()
+
+    /*
+     * Build form message
+     */
+    public function acf_build_form_message() {
+        if ($this->get_error_count()>0): ?>
+
+            <!-- @start .form-message -->
+            <div id="form-error-message" class="form-message error">
+                <h3 class="heading">Errors Found</h3>
+
+                <div class="error-content">
+
+                    <p>We're sorry, there has been an error with the form input. Please rectify the <?php 
+                        echo $this->get_error_count() === 1 ? ' error' : $this->get_error_count().' errors'; ?> below and resubmit.</p>
+                    <ul><?php 
+
+                        if ($this->list_form_errors_in_warning_panel) {
+                            foreach ($this->form_inputs as $section_key => $section) {
+
+                                foreach ($section["inputs"] as $input_key => $section_input) {
+                                    if (isset($section_input["passed"]) && !$section_input["passed"] && $section_input["type"] != "checkbox") {
+                                        if ($section_input["help"]): 
+                                        ?>
+                                            <li><?php echo $section_input["help"] ?></li>
+                                        <?php else: 
+                                            $help = $section_input['label'].' is required';
+                                            if ($section_input['type']=='email' || $section_input['type']=='url') {
+                                                $help .= ' and must be valid';
+                                            }
+                                            ?>
+                                            <li><?php echo $help ?></li>
+                                        <?php 
+                                        endif;
+                                    }
+                                }
+     
+                            }
+                        }
+                        if (count($this->extra_error_msgs)) {
+                            foreach ($this->extra_error_msgs as $key => $msg) {
+                            ?>
+                                <li><?php echo $msg ?></li>
+                            <?php 
+                            }
+                        } 
+                     ?></ul>
+                </div>
+
+            </div>
+            <!-- @end .form-message -->
+
+        <?php
+        endif;
+    }//@end acf_build_form_message()
 
     public function front_end_form() {
         $framework='zurb';
         $options = get_option( 'wp_swift_form_builder_settings' );
         if (isset($options['wp_swift_form_builder_select_css_framework'])) {
             $framework = $options['wp_swift_form_builder_select_css_framework'];
-        } 
-
-        // ob_start();
+        }
         ?>
-        <h1>form_post_id: <pre><?php echo $this->form_post_id ?></pre></h1>
+
         <!-- @start form -->
         <form method="post" <?php echo $this->action; ?> name="<?php echo $this->form_name; ?>" id="<?php echo $this->form_id; ?>" data-id="<?php echo $this->form_post_id ?>" class="<?php echo $framework.' '; echo $this->form_class.' '; echo $this->form_name ?>" novalidate<?php echo $this->enctype; ?>>
             <?php
+            
             $this->front_end_form_input_loop($this->form_inputs, $this->tab_index, $this->form_pristine, $this->error_count);
-            if ($this->show_mail_receipt): ?>
 
-            <!-- @start .mail-receipt -->
-            <div class="form-group mail-receipt">
-                <div class="form-label"></div>
-                <div class="form-input">
-                    <div class="checkbox">
-                      <input type="checkbox" value="" tabindex=<?php echo $this->tab_index; ?> name="mail-receipt" id="mail-receipt" checked><label for="mail-receipt">Acknowledge me with a mail receipt</label>
-                    </div>
-                </div>                  
-            </div> 
-            <!-- @end .mail-receipt -->
+            $this->before_submit_button_hook(); 
 
-            <?php endif ?>
+            ?>
 
             <!-- @start .button -->
             <div class="form-group button-group">
@@ -434,190 +247,60 @@ class WP_Swift_Form_Builder_Parent {
 
         </form><!-- @end form -->
 
-        <?php 
-
-        // $html = ob_get_contents();
-        // ob_end_clean();
-        
-        // echo $html;                
+        <?php             
     }// front_end_form()
 
     public function front_end_form_input_loop() {
-        $i=0;
-        foreach ($this->form_inputs as $id => $input):
-            $i++;
-            if (isset($input['data_type'])) {
-                switch ($input['data_type']) {
-                    case "section": 
-                        if ($this->Section_Layout_Addon) {
-                            $this->Section_Layout_Addon->section_open($input['section_header'], $input['section_content']);
-                        }
-                        else {
-                            $this->section_open($input['section_header'], $input['section_content']);
-                        }
-                        break; 
-                    case "section_close":
-                        if ($this->Section_Layout_Addon) {
-                            $this->Section_Layout_Addon->section_close();
-                        }
-                        else {
-                            $this->section_close();
-                        } 
-                        break;               
-                    case "text":
-                    case "url":
-                    case "email":
-                    case "number":
-                    case "username": // Wordpress username
-                    // case "input_combo":
-                    case "password":
-                        $input_html = $this->bld_form_input($id, $input);
-                        echo $this->wrap_input($id, $input, $input_html);
-                        break;
-                    case "input_combo":
-                    // echo "<pre>"; var_dump($input); echo "</pre><hr>";
-                        $input_html = $this->bld_form_input($id, $input);
-                        $form_group = $this->wrap_input($id, $input, $input_html);
-                        // echo $form_group;
-                        echo $this->bld_combo_form_input($id, $input, $form_group);
-         
-                        // $input_html = $this->bld_form_input($id, $input);
-                        // $this->wrap_input($id, $input, $input_html);
-                        break;  
-                    // case "date_range":
-                    //     $this->bld_combo_form_input($id, $input);
-                    //     break;         
-                    case "hidden":
-                        $this->bld_form_hidden_input($id, $input);
-                        break;
-                    case "textarea":
-                        $input_html = $this->bld_form_textarea($id, $input);
-                        echo $this->wrap_input($id, $input, $input_html);
-                        break; 
-                    case "radio":
-                        $this->build_form_radio($id, $input);
-                    case "checkbox":
-                        $input_html = $this->build_form_checkbox($id, $input);
-                        // $input_html = $this->bld_form_input($id, $input);
-                        echo $this->wrap_input($id, $input, $input_html);
-                        break; 
-                    case "multi_select":
-                    case "select":
-                        $input_html = $this->bld_form_select($id, $input, '');
-                        // $this->bld_form_select($id, $input, '');
-                        $this->wrap_input($id, $input, $input_html);
-                        break;
-                    default:
-                        // echo "<pre>Unkown type: ".$input['data_type']."</pre><hr>";
-                        // echo "<pre>";var_dump($input);echo "</pre>";
-                        break;                                                             
-                }  
-            }
-                 
-        endforeach;
-    }
 
-    /*
-     *
-     */
-    public function wrap_input($id, $input, $input_html, $section='') {
-        $has_error='';
-        if(!$this->form_pristine && $input['passed']==false && $input["type"] !== "checkbox") {
-            // This input has has error detected so add an error class to the surrounding div
-            $has_error = ' has-error';
-        }
+        foreach ($this->form_inputs as $key => $section) {
+            foreach ($section["inputs"] as $id => $input) {
 
-        if(!$this->form_pristine) {
-            if($this->clear_after_submission && $this->error_count===0) {
-                // No errors found so clear the values
-                $input['value']=''; 
+                if (isset($input['data_type'])) {
+                    switch ($input['data_type']) {            
+                        case "text":
+                        case "url":
+                        case "email":
+                        case "number":
+                        case "username":
+                        case "password":
+                            $input_html = $this->build_form_input($id, $input);
+                            echo $this->wrap_input($id, $input, $input_html);
+                            break;
+                        case "textarea":
+                            $input_html = $this->build_form_textarea($id, $input);
+                            echo $this->wrap_input($id, $input, $input_html);
+                            break; 
+                        case "radio":
+                            $input_html = $this->build_form_radio($id, $input);
+                            echo $this->wrap_input($id, $input, $input_html);
+                            break; 
+                        case "checkbox":
+                            $input_html = $this->build_form_checkbox($id, $input);
+                            echo $this->wrap_input($id, $input, $input_html);
+                            break; 
+                        case "multi_select":
+                        case "select":
+                            $input_html = $this->build_form_select($id, $input, '');
+                            $this->wrap_input($id, $input, $input_html);
+                            break;                                                        
+                    }  
+                }
+                     
             }
         }
-        // $grid_grouping_class = '';
-        // if (!$input["grouping"]) {
-        //     $grid_grouping_class = ' form-not-grid-grouping';
-        // }
-        // elseif ($input["grouping"] == "start") {
 
-        // }
-        //         elseif ($input["grouping"] == "start") {
-
-        // }
-        // ob_start();
-
-        //echo "<pre>"; var_dump($input["grouping"]); echo "</pre>";
-        ?>
-
-        <?php if ($input["grouping"] && $input["grouping"] == "start"): ?>
-
-            <!-- Start grouping -->
-            <div class="form-grid-grouping">         
-        <?php endif ?>
-
-            <!-- @start form element -->
-            <div class="form-group<?php echo $has_error; ?>" id="<?php echo $id; ?>-form-group">
-
-                <!-- @start input anchor -->
-                <a href="<?php echo $id; ?>-anchor"></a>
-                <!-- @end input anchor -->
-
-                <!-- @start input label -->
-                <div class="form-label">
-                    <?php 
-                    if ($input['label']!=''): 
-                    ?><label for="<?php echo $id; ?>" class="control-label <?php echo $input['required']; ?>"><?php echo $input['label']; ?> <span></span></label><?php 
-                    endif; ?>
-
-                </div>  
-                <!-- @end input label -->
-                
-                <!-- @start input -->
-                <div class="form-input">
-                    <?php 
-                        echo $input_html; 
-
-                        if ($input['help']) {
-                             $help = $input['help'];
-                        }
-                        else {
-                            $help = $input['label']. ' is required';
-                            if ($input['type']=='email' || $input['type']=='url') {
-                                $help .= ' and must be valid';
-                            }  
-                            $input['help'] = $help;
-                        }   
-                        if ($input['required']): echo PHP_EOL; ?>
-                    <small class="error"><?php echo $help; ?></small><?php 
-                        endif;
-                        if (isset($input['instructions']) && $input['instructions']): echo PHP_EOL; ?>
-                    <small class="instructions"><?php echo $input['instructions']; ?></small><?php 
-                        endif;
-                    ?>
-
-                </div>
-                <!-- @start input -->
-
-            </div><!-- @end form element -->
-
-        <?php if ($input["grouping"] && $input["grouping"] == "end"): ?>
-             
-            </div>
-            <!-- end grouping -->    
-        <?php endif;            
-    
-        // $form_group = ob_get_contents();
-        // ob_end_clean();
-        
-        // return $form_group;        
     }
 
-    /*************************************************************************/
-    /*************************************************************************/
-    /*************************************************************************/
-
-    public function get_show_mail_receipt() {
-        return $this->show_mail_receipt;
+    public function get_tab_index( $increment=true ) {
+        if ($increment) {
+            $this->tab_index++;
+        }
+        return $this->tab_index;
     }
+
+    // public function get_show_mail_receipt() {
+    //     return $this->show_mail_receipt;
+    // }
     public function get_form_inputs() {
         return $this->form_inputs;
     }
@@ -631,24 +314,37 @@ class WP_Swift_Form_Builder_Parent {
         }
     }
     public function validate_form($post, $ajax, $input_keys_to_skip=array()) {
-        $this->default_input_keys_to_skip = array('submit-request-form', 'mail-receipt', 'form-file-upload', 'g-recaptcha-response');
-        $this->default_input_keys_to_skip = array_merge($this->default_input_keys_to_skip, $input_keys_to_skip);
+        // $this->default_input_keys_to_skip = array('submit-request-form', 'mail-receipt', 'form-file-upload', 'g-recaptcha-response');
+        // $this->default_input_keys_to_skip = array_merge($this->default_input_keys_to_skip, $input_keys_to_skip);
 
         // The form is submitted by a user and so is no longer pristine
         $this->set_form_pristine(false);
         //Loop through the POST and validate. Store the values in $form_data
         foreach ($post as $key => $value) {
             // echo "key <pre>"; var_dump($key); echo "</pre>";
-            if (!in_array($key, $this->default_input_keys_to_skip)) { //Skip the button,  mail-receipt checkbox, g-recaptcha-response etc
-                $check_if_submit = substr($key, 0, 7);
-                // Get the substring of the key and make sure it is not a submit button
-                if ($check_if_submit!='submit-') {
+            // if (!in_array($key, $this->default_input_keys_to_skip)) { //Skip the button,  mail-receipt checkbox, g-recaptcha-response etc
+            //     $check_if_submit = substr($key, 0, 7);
+            //     // Get the substring of the key and make sure it is not a submit button
+            //     if ($check_if_submit!='submit-') {
 
-                    $this->check_input($key, $value);//Validate input    
-                }
+            //         $this->check_input($key, $value);//Validate input    
+            //     }
                 
-            }
+            // }
+            $this->check_input($key, $value);//Validate input    
         }
+        // echo "<br>";echo "<br>";echo "<br>";echo "<br>";echo "<br>";echo "<br>";echo "<br>";
+        // echo "<hr>";echo "<hr>";echo "<hr>";echo "<hr>";echo "<hr>";echo "<hr>";echo "<hr>";
+        // echo "<br>";echo "<br>";echo "<br>";echo "<br>";echo "<br>";echo "<br>";echo "<br>";
+
+        // foreach ($this->form_inputs as $section_key => $section) {
+        //     // echo "<pre>"; var_dump($section); echo "</pre>";
+        //     // echo "<hr>";
+        //     foreach ($section["inputs"] as $input_key => $input) {
+        //         echo "<pre>"; var_dump($input); echo "</pre>";
+        //     }
+        // }
+
     }
 
     public function process_form($post, $ajax=false) {
@@ -665,7 +361,13 @@ class WP_Swift_Form_Builder_Parent {
      */
     public function get_submit_button_name() {
         return $this->submit_button_name;
-    }    
+    }  
+    /*
+     * Get form_post_id
+     */
+    public function get_form_post_id() {
+        return $this->form_post_id;
+    }  
     /*
      * Get form_pristine
      */
@@ -678,12 +380,11 @@ class WP_Swift_Form_Builder_Parent {
     public function set_form_pristine($form_pristine) {
         $this->form_pristine = $form_pristine;
     }
-
     /*
      * Get error_count
      */
     public function get_error_count() {
-        return $this->error_count;//form_num_error_found
+        return $this->error_count;
     }
     /*
      * Increase error_count
@@ -691,7 +392,6 @@ class WP_Swift_Form_Builder_Parent {
     public function increase_error_count() {
         $this->error_count++;
     }
-
     /*
      * Get extra_error_msgs
      */
@@ -737,51 +437,24 @@ class WP_Swift_Form_Builder_Parent {
         $this->increase_error_count();
     }
 
-    // public function enqueue_javascript () {
-    //     $options = get_option( 'wp_swift_form_builder_settings' );
-    //     // echo "<pre>wp-swift-form-builder</pre>";
-        
-    //     if (isset($options['wp_swift_form_builder_checkbox_javascript'])==false) {
-    //        wp_enqueue_script( $handle='wp-swift-form-builder', $src=plugins_url( '/assets/javascript/wp-swift-form-builder.js', __FILE__ ), $deps=null, $ver=null, $in_footer=true );
-    //     }
-    // }
-
     /*
-     * Add the css file
+     * Get the CSS class for the input
      */
-    // function wp_swift_form_builder_css_file() {
-    //     $options = get_option( 'wp_swift_form_builder_settings' );
-    //     // echo "<pre>2 wp-swift-form-builder-style</pre>";
-    //     // echo "<pre>"; var_dump($options); echo "</pre>";
-    //     // echo "<pre>"; var_dump(!isset($options['wp_swift_form_builder_checkbox_css'])); echo "</pre>";
-    //     // echo "<pre>"; var_dump(isset($options['wp_swift_form_builder_checkbox_css'])); echo "</pre>";
-    //     if (isset($options['wp_swift_form_builder_checkbox_css'])==false) {
-    //         wp_enqueue_style('wp-swift-form-builder-style', plugins_url( 'assets/css/wp-swift-form-builder.css', __FILE__ ) );
-    //     }
-
-    // }
-    
-    /*
-     * Build the HTML before the form input
-     */
-    public function before_form_input($id, $data) {
-        $data = $this->form_element_open($id, $data);
-        $this->form_element_anchor($id);
-        $this->form_element_label($id, $data);
-        $this->form_element_form_input_open();
-        return $data;
-    }
-    /*
-     * Build the HTML after the form input
-     */
-    public function after_form_input($id, $data) {
-        $data = $this->form_element_help($data);
-        $this->form_element_form_input_close();
-        $this->form_element_close($id, $data);
-        return $data;
+    private function get_form_input_class() {
+        return "js-form-builder-control";// form-control form-builder-control 
     }
 
-    public function bld_form_input($id, $input, $section='') {
+    /*
+     * Set the CSS framework
+     */
+    public function set_css_framework($css_framework) {
+        $this->css_framework = $css_framework;
+    }
+
+    /******************************************************
+     * @start Form Inputs
+     ******************************************************/
+    private function build_form_input($id, $input, $section='') {
         $has_error='';
         if(!$this->form_pristine) {
             if($this->clear_after_submission && $this->error_count===0) {
@@ -834,7 +507,7 @@ class WP_Swift_Form_Builder_Parent {
         return $input_html;       
     } 
 
-    public function bld_form_select($id, $data, $multiple='') {
+    private function build_form_select($id, $data, $multiple='') {
 
         if(!$this->form_pristine) {
             if($this->clear_after_submission && $this->error_count===0) {
@@ -842,7 +515,7 @@ class WP_Swift_Form_Builder_Parent {
                 $data['selected_option']=''; 
             }
         }
-        // ob_start();
+        ob_start();
         ?>
 
         <select class="js-form-control" id="<?php echo $id; ?>" name="<?php echo $id; ?>" tabindex="<?php echo $this->tab_index++; ?>" <?php echo $data['required']; echo $multiple; ?>>
@@ -866,11 +539,12 @@ class WP_Swift_Form_Builder_Parent {
         </select>
 
         <?php
-        // $input_html = ob_get_contents();
-        // ob_end_clean();
-        // return $input_html;
+        $input_html = ob_get_contents();
+        ob_end_clean();
+        return $input_html;
     }
-    public function bld_form_textarea($id, $input) {
+
+    private function build_form_textarea($id, $input) {
         $has_error='';
         if(!$this->form_pristine) {
             if($this->clear_after_submission && $this->error_count===0) {
@@ -911,206 +585,7 @@ class WP_Swift_Form_Builder_Parent {
 
     }
 
-    public function bld_combo_form_input($id, $data, $form_group, $section='') {
-        // ob_start();
-
-        if (isset($data['order']) && $data['order'] == 0):
-            ?>
-
-            <!-- @start .form-builder-combo-row -->
-            <div class="row form-builder-combo-row">
-            
-            <div class="small-12 medium-6 large-6 columns columns-1">
-            <div class="input-1">
-                <?php  echo $form_group; ?>
-
-            </div><!-- @end .input-1 -->
-            </div><!-- @end .columns-1.columns -->
-            
-        <?php elseif (isset($data['order']) && $data['order'] == 1): ?>
-            
-            <div class="small-12 medium-6 large-6 columns columns-2">
-            <div class="input-2">
-                <?php echo $form_group; ?>
-
-            </div><!-- @end .input-2 -->            
-            </div><!-- @end .columns-2.columns -->
-            
-            </div>
-            <!-- @end .form-builder-combo-row -->
-        <?php endif;
-  
-        // $html_combo_row = ob_get_contents();
-        // ob_end_clean();
-        
-        // return $html_combo_row;
-    } 
-
-    public function bld_form_hidden_input($id, $data, $tabIndex=0, $section='') {
-        // echo "<pre>"; var_dump($data); echo "</pre>";
-        // $has_error='';
-        // echo "<pre>this->form_pristine: "; var_dump($this->form_pristine); echo "</pre>";
-        // echo "<pre>this->clear_after_submission "; var_dump($this->clear_after_submission); echo "</pre>";
-        // echo "<pre>this->error_count "; var_dump($this->error_count); echo "</pre>";
-        // if(!$this->form_pristine) {
-        //     if($this->clear_after_submission && $this->error_count===0) {
-        //         // No errors found so clear the values
-        //         $data['value']=''; 
-        //     }
-        // }
-        // data_type is the same as $data['type'] unless it is an invalid attributes type such as username
-        // $data_type = $data['type'];
-        // if ($data['type']=='username') {
-        //     $data['type']='text';
-        //     $data_type = 'username';
-        // }
-        // $data = $this->before_form_input($id, $data);
-        if (isset($data['data-type'])) {
-            $data_type = $data['data-type'];
-        }
-        else {
-            $data_type = $data['type'];
-        }
-        if (isset($data['name'])) {
-            $name = $data['name'];
-        }
-        else {
-            $name = $id;
-        }
-        
-        if (isset($data['id-index'])) {
-            $id .= '-'.$data['id-index'];
-        }
-        ?><input 
-            type="hidden" 
-            data-type="<?php echo $data_type; ?>" 
-            class="hidden" 
-            id="<?php echo $id; ?>" 
-            name="<?php echo $name; ?>" 
-            value="<?php echo $data['value']; ?>"
-            <?php if ( isset($data["section"])): ?> data-section="<?php echo $data["section"] ?>" <?php endif ?>
-            <?php echo $data['required']; ?>   
-        ><?php 
-        // $data = $this->after_form_input($id, $data);
-    } 
-    private function form_element_open($id, $data) {
-            $has_error='';
-
-            if(!$this->form_pristine && $data['passed']==false && $data["type"] !== "checkbox") {
-                // This input has has error detected so add an error class to the surrounding div
-                $has_error = 'has-error';
-            }
-            // echo "<pre>has_error: "; var_dump($has_error); echo "</pre>";
-            // echo "<pre>"; var_dump($data); echo "</pre>";
-            if(!$this->form_pristine) {
-                if($this->clear_after_submission && $this->error_count===0) {
-                    // No errors found so clear the values
-                    $data['value']=''; 
-                }
-            }
-            // $has_error = 'has-error';
-        ?><!-- @start form element -->
-        <div class="row form-group form-builder <?php echo $has_error; ?>" 
-        id="<?php echo $id; ?>-form-group"><?php 
-        return $data;
-    }
-    private function form_element_anchor($id) {
-        ?><a href="<?php echo $id; ?>-anchor"></a><?php
-    }
-    private function form_element_label($id, $data) {
-        // echo "Required: <pre>".$data['required']."</pre><hr>";
-        ?><div class="<?php echo $this->get_form_label_div_class() ?> form-label">
-            <?php if ($data['label']!=''): ?>
-                <label for="<?php echo $id; ?>" class="control-label <?php echo $data['required']; ?>"><?php echo $data['label']; ?> <span></span></label>
-            <?php endif ?>
-        </div><?php     
-    }
-    private function form_element_close() {
-        ?></div><!-- @end form element --><?php 
-    }
-    private function form_element_form_input_open() {
-        ?><div class="<?php echo $this->get_form_input_div_class() ?> form-input"><?php /*small-12 medium-9 large-9 columns*/
-    }
-    private function form_element_form_input_close() {
-        ?></div><?php 
-    }
-    private function form_element_help($data) {
-        if ($data['help']) {
-             $help = $data['help'];
-        }
-        else {
-            $help = $data['label']. ' is required';
-            if ($data['type']=='email' || $data['type']=='url') {
-                $help .= ' and must be valid';
-            }  
-            $data['help'] = $help;
-        }   
-        if ($data['required']): 
-            ?><small class="error"><?php echo $help; ?></small><?php 
-        endif;
-        if (isset($data['instructions']) && $data['instructions']): 
-            ?><small class="instructions"><?php echo $data['instructions']; ?></small><?php 
-        endif;
-        return $data;
-    }
-    /*
-     * Get the CSS class for div wrapping the label
-     */
-    private function get_form_label_div_class() {
-        $framework = $this->css_framework;
-        $options = get_option( 'wp_swift_form_builder_settings' );
-        if (isset($options['wp_swift_form_builder_select_css_framework'])) {
-            $framework = $options['wp_swift_form_builder_select_css_framework'];
-        }
-
-        if ($framework === "zurb_foundation") {
-            return $framework."";//" small-12 medium-12 large-12 columns "
-        }
-        elseif ($framework === "bootstrap") {
-            return "col-xs-12 col-sm-12 col-md-12 col-lg-12 ";
-        }    
-        else {
-            return "";
-        }
-    }
-    /*
-     * Get the CSS class for div wrapping the label
-     */
-    private function get_form_input_div_class() {
-        $framework = $this->css_framework;
-        $options = get_option( 'wp_swift_form_builder_settings' );
-        if (isset($options['wp_swift_form_builder_select_css_framework'])) {
-            $framework = $options['wp_swift_form_builder_select_css_framework'];
-        }
-           
-        if ($framework === "zurb_foundation") {
-            return "";//" small-12 medium-12 large-12 columns "
-        }
-        elseif ($framework === "bootstrap") {
-            return "col-xs-12 col-sm-12 col-md-12 col-lg-12 ";
-        }     
-        else {
-            return "";
-        }
-    }
-
-    /*
-     * Get the CSS class for the input
-     */
-    private function get_form_input_class() {
-        return "js-form-builder-control";// form-control form-builder-control 
-    }
-    /*
-     * Set the CSS framework
-     */
-    public function set_css_framework($css_framework) {
-        $this->css_framework = $css_framework;
-    }
-
-
-
-
-    function build_form_radio($id, $input) {
+    private function build_form_radio($id, $input) {
         if(!$this->form_pristine) {
             if($this->clear_after_submission && $this->error_count===0) {
                 // No errors found so clear the selected value
@@ -1118,20 +593,27 @@ class WP_Swift_Form_Builder_Parent {
             }
         }
 
-        $this->before_form_input($id, $input);
         $count=0;  
         $checked='';
-          ?><?php 
-            foreach ($input['options'] as $option): $count++;
-                if ( ($input['selected_option']=='' && $count==1) || ($input['selected_option']==$option['option_value'])){
-                    $checked=' checked';
-                }
-                ?><input id="<?php echo $id.'-'.$count ?>" name="<?php echo $id ?>-radio" type="radio" tabindex="<?php echo $this->tab_index++; ?>" value="<?php echo $option['option_value'] ?>"<?php echo $checked; ?>>
-                <label for="<?php echo $id.'-'.$count ?>"><?php echo $option['option'] ?></label><?php 
-            endforeach; ?><?php
-        $this->after_form_input($id, $input);
+        ob_start();
+        foreach ($input['options'] as $option): $count++;
+            if ( $input['selected_option'] !== '' && ($input['selected_option'] === $option['option_value']) ){
+                $checked=' checked';
+            }
+            ?>
+                    
+                    <label for="<?php echo $id.'-'.$count ?>" class="lbl-radio">
+                        <input id="<?php echo $id.'-'.$count ?>" name="<?php echo $id ?>-radio" type="radio" data-type="radio" tabindex="<?php echo $this->tab_index++; ?>" value="<?php echo $option['option_value'] ?>"<?php echo $checked; ?>><?php echo $option['option'] ?>
+
+                    </label>
+            <?php 
+        endforeach;
+        $html = ob_get_contents();
+        ob_end_clean();
+        return $html;            
     }
-    function build_form_checkbox($id, $data) {
+
+    private function build_form_checkbox($id, $data) {
         if(!$this->form_pristine) {
             if($this->clear_after_submission && $this->error_count===0) {
                 // No errors found so clear the checked values
@@ -1141,17 +623,15 @@ class WP_Swift_Form_Builder_Parent {
             }
         }
 
-        // $data = $this->before_form_input($id, $data);
         $count=0;  
-        
         $name_append = '';
         if (count($data['options']) > 1) {
             $name_append = '[]';
         }
-         $input_html = '';
+        ob_start();
         foreach ($data['options'] as $option): $count++;
             $checked='';
-            // echo "<br><pre>";var_dump($option);echo "</pre>";
+
             if ( $option['checked'] == true ){
                 $checked=' checked';
             }
@@ -1160,72 +640,103 @@ class WP_Swift_Form_Builder_Parent {
             }
             else {
                 $name = $id.''.$name_append;
-                // $name = $id.'-checkbox'.$name_append;
             }
-            // ob_start();
-        
+            ?>
 
-            $input_html .= '<label for="'.$id.'-'.$count.'" class="lbl-checkbox">';
-                $input_html .= '<input id="'.$id.'-'.$count.'" name="'.$name.'" type="checkbox" tabindex="'.$this->tab_index++.'" value="'.$option['option_value'].'"'.$checked.'>'.$option['option'].'';
-            $input_html .= '</label>';
-
+                    <label for="<?php echo $id.'-'.$count ?>" class="lbl-checkbox">
+                        <input id="<?php echo $id.'-'.$count ?>" name="<?php echo $name ?>" type="checkbox" data-type="checkbox" tabindex="<?php echo $this->tab_index++; ?>" value="<?php echo $option['option_value'] ?>"<?php echo $checked; ?>><?php echo $option['option'] ?>
+                    
+                    </label>
+            <?php 
            
         endforeach;
-        // $input_html = ob_get_contents();
-        // ob_end_clean(); 
-        // $data = $this->after_form_input($id, $data);
-
+        $input_html = ob_get_contents();
+        ob_end_clean();
         return $input_html;  
     }
+    /******************************************************
+     * @ens Form Inputs
+     ******************************************************/
 
-    public function section_open($section_header, $section_content) {
- 
-        if ($section_header): ?>
+    /*
+     * Us the same fucntion to wrap all inputs
+     */
+    public function wrap_input($id, $input, $input_html, $section='') {
+        $has_error='';
+        if(!$this->form_pristine && $input['passed']==false && $input["type"] !== "checkbox") {
+            // This input has has error detected so add an error class to the surrounding div
+            $has_error = ' has-error';
+        }
 
-            <!-- @start section-header -->
-            <header class="form-section-header">
-                <h4><?php echo $section_header ?></h4>
-            </header>
-            <!-- @end section-header  -->
-        <?php endif;
+        if(!$this->form_pristine) {
+            if($this->clear_after_submission && $this->error_count===0) {
+                // No errors found so clear the values
+                $input['value']=''; 
+            }
+        }
+        if ($input["grouping"] && $input["grouping"] == "start"): ?>
 
-        if ($section_content): ?>
+            <!-- Start grouping -->
+            <div class="form-grid-grouping">         
+        <?php endif ?>
 
-            <!-- @start section-content -->
-            <div class="form-section-content">
-                <div class="form-section-content-inner">
-                    <p><?php echo $section_content ?></p>
+            <!-- @start form element -->
+            <div class="form-group<?php echo $has_error; ?>" id="<?php echo $id; ?>-form-group">
+
+                <!-- @start input anchor -->
+                <a href="<?php echo $id; ?>-anchor"></a>
+                <!-- @end input anchor -->
+
+                <!-- @start input label -->
+                <div class="form-label">
+                    <?php 
+                    if ($input['label']!=''): 
+                    ?><label for="<?php echo $id; ?>" class="control-label <?php echo $input['required']; ?>"><?php echo $input['label']; ?> <span></span></label><?php 
+                    endif; ?>
+
+                </div>  
+                <!-- @end input label -->
+                
+                <!-- @start input -->
+                <div class="form-input">
+                    <?php 
+                        echo $input_html; 
+
+                        if ($input['help']) {
+                             $help = $input['help'];
+                        }
+                        else {
+                            $help = $input['label']. ' is required';
+                            if ($input['type']=='email' || $input['type']=='url') {
+                                $help .= ' and must be valid';
+                            }  
+                            $input['help'] = $help;
+                        }   
+                        if ($input['required']): echo PHP_EOL; ?>
+                    <small class="error"><?php echo $help; ?></small><?php 
+                        endif;
+                        if (isset($input['instructions']) && $input['instructions']): echo PHP_EOL; ?>
+                    <small class="instructions"><?php echo $input['instructions']; ?></small><?php 
+                        endif;
+                    ?>
+
                 </div>
+                <!-- @start input -->
+
             </div>
-            <!-- @end section-content -->
-        <?php endif;  
+            <!-- @end form element -->
+        <?php if ($input["grouping"] && $input["grouping"] == "end"): ?>
+             
+            </div>
+            <!-- end grouping -->    
+        <?php endif;    
     }
 
-    public function section_close() {
-    ?>
+    /*
+     * Hookable function that
+     */
+    public function before_submit_button_hook() {
 
-        <!-- @end section -->
-        <?php       
-    } 
-
-    public function html_section_open_side_by_side ($section_header, $section_content) {
-      ?>
-          <div class="row form-section">
-           <div class="small-12 medium-6 large-6 columns large-push-6">
-               <div class="search-info">
-                   <h3 class="search-header-info"><?php echo $section_header ?></h3>
-                   <div class="entry-content"><?php echo $section_content ?></div>
-               </div>
-           </div>
-           <div class="small-12 medium-6 large-6 columns large-pull-6">   
-      <?php
-        return '';
-    }
-
-    public function html_section_close_side_by_side () {
-        $html = '</div>';
-        $html .= '</div>'; 
-        return $html;
     }
 
     /*
@@ -1237,6 +748,9 @@ class WP_Swift_Form_Builder_Parent {
      * @return null
      */
     public function check_input($key, $value){
+        // echo "<pre>key: "; var_dump($key); echo "</pre>";
+        // echo "<pre>value: "; var_dump($value); echo "</pre>";
+        // echo "<hr>";
         // include('_check-input.php');
         /*
          * Check an individual form input field and sets the array with the findings 
@@ -1246,110 +760,287 @@ class WP_Swift_Form_Builder_Parent {
          */
         // public function check_input($key, $value){
 
-        $this->form_inputs[$key]['value'] = $value;
+        $input = null;
+        foreach ($this->form_inputs as $section_key => $section) {
+            foreach ($section["inputs"] as $input_key => $section_input) {
+                if ( $input_key === $key ) {
+                    $input = &$this->form_inputs[$section_key]["inputs"][$key];
+                    $input['value'] = $value;
+                    break;
+                }
 
-        if($this->form_inputs[$key]['required'] && $this->form_inputs[$key]['value']=='') {
-            $this->increase_error_count();
-            return;
+            }
         }
 
-        else if(!$this->form_inputs[$key]['required'] && $this->form_inputs[$key]['value']=='') {
-            $this->form_inputs[$key]['clean'] = $this->form_inputs[$key]['value'];
-            $this->form_inputs[$key]['passed'] = true;
-            return;
-        }
-
-        if(!is_array($this->form_inputs[$key]['value'])) {
-            $this->form_inputs[$key]['value'] = trim($this->form_inputs[$key]['value']);
-           
-        }
-
-        switch ($this->form_inputs[$key]['type']) {
-            case "text":
-            case "textarea":
-                $this->form_inputs[$key]['clean'] = sanitize_text_field( $this->form_inputs[$key]['value'] );
-                break;
-            case "username":
-                $username_strlen = strlen ( $this->form_inputs[$key]['value']  );
-                if ($username_strlen<4 || $username_strlen>30) {
-                    $this->increase_error_count();
-                    return $this->form_inputs[$key];
-                }
-                $this->form_inputs[$key]['clean'] = sanitize_user( $this->form_inputs[$key]['value'], $strict=true ); 
-                break;
-            case "email":
-                if ( !is_email( $this->form_inputs[$key]['value'] ) ) { 
-                    $this->increase_error_count();
-                    return $this->form_inputs[$key]; 
-                }
-                else {
-                    $this->form_inputs[$key]['clean'] = sanitize_email( $this->form_inputs[$key]['value'] );  
-                }
-                break;
-            case "number":
-                if ( !is_numeric( $this->form_inputs[$key]['value'] ) ) { 
-                    $this->increase_error_count();
-                    return $this->form_inputs[$key]; 
-                }
-                else {
-                    $this->form_inputs[$key]['clean'] = $this->form_inputs[$key]['value'];  
-                }
-                break;        
-            case "url":
-                if (filter_var($this->form_inputs[$key]['value'], FILTER_VALIDATE_URL) === false) {
-                    $this->increase_error_count();
-                    return $this->form_inputs[$key];
-                }
-                else {
-                    $this->form_inputs[$key]['clean'] = $this->form_inputs[$key]['value'];
-                }
-                break;
-            case "select2":
-            case "select":
-                $this->form_inputs[$key]['selected_option'] = $value;
-                $this->form_inputs[$key]['clean'] = $value;
-                break;
-            case "file":     
-                break; 
-            case "hidden":
-                    if (isset($this->form_inputs[$key]['nonce'])) {
-                        $retrieved_nonce = $value;
-                        if (!wp_verify_nonce($retrieved_nonce, 'search_nonce' ) ) {
-                            $this->increase_error_count();
-                            die( 'Failed security check' );
-                            return;  
-                        }
-                    }
-                    if (isset($this->form_inputs[$key]['expected'])) {
-                        if ($this->form_inputs[$key]['expected'] != $value ) {
-                            $this->increase_error_count();
-                            return;  
-                        }
-                    }             
-                break; 
-            case "password":
-                    break; 
-            case "checkbox":
-                    $options = $this->form_inputs[$key]["options"];
-                    $clean = '';
-                    foreach ($options as $option_key => $option) {
-                        if ( in_array($option["option_value"], $value)) {
-                            $options[$option_key]["checked"] = true;
-                            $clean .= $option["option"].', ';
-                        }
-                    }
-                    $clean = rtrim( $clean, ', ');
-                    $this->form_inputs[$key]["options"] = $options;
-                    $this->form_inputs[$key]['clean'] = $clean;
-                    break;                          
-        }
-        // esc_attr() - Escaping for HTML attributes. Encodes the <, >, &, ” and ‘ (less than, greater than, ampersand, double quote and single quote) characters. Will never double encode entities.
-        $this->form_inputs[$key]['passed'] = true;        
-    }//@end check_input
-
-
-
+        if ($input) {
      
+            if($input['required'] && $input['value']=='') {
+                $this->increase_error_count();
+                return;
+            }
+
+            else if(!$input['required'] && $input['value']=='') {
+                $input['clean'] = $input['value'];
+                $input['passed'] = true;
+                return;
+            }
+
+            if(!is_array($input['value'])) {
+                $input['value'] = trim($input['value']);
+               
+            }
+
+            switch ($input['type']) {
+                case "text":
+                case "textarea":
+                    $input['clean'] = sanitize_text_field( $input['value'] );
+                    break;
+                case "username":
+                    $username_strlen = strlen ( $input['value']  );
+                    if ($username_strlen<4 || $username_strlen>30) {
+                        $this->increase_error_count();
+                        return $input;
+                    }
+                    $input['clean'] = sanitize_user( $input['value'], $strict=true ); 
+                    break;
+                case "email":
+                    if ( !is_email( $input['value'] ) ) { 
+                        $this->increase_error_count();
+                        return $input; 
+                    }
+                    else {
+                        $input['clean'] = sanitize_email( $input['value'] );  
+                    }
+                    break;
+                case "number":
+                    if ( !is_numeric( $input['value'] ) ) { 
+                        $this->increase_error_count();
+                        return $input; 
+                    }
+                    else {
+                        $input['clean'] = $input['value'];  
+                    }
+                    break;        
+                case "url":
+                    if (filter_var($input['value'], FILTER_VALIDATE_URL) === false) {
+                        $this->increase_error_count();
+                        return $input;
+                    }
+                    else {
+                        $input['clean'] = $input['value'];
+                    }
+                    break;
+                case "select2":
+                case "select":
+                    $input['selected_option'] = $value;
+                    $input['clean'] = $value;
+                    break;
+                case "file":     
+                    break; 
+                case "hidden":
+                        if (isset($input['nonce'])) {
+                            $retrieved_nonce = $value;
+                            if (!wp_verify_nonce($retrieved_nonce, 'search_nonce' ) ) {
+                                $this->increase_error_count();
+                                die( 'Failed security check' );
+                                return;  
+                            }
+                        }
+                        if (isset($input['expected'])) {
+                            if ($input['expected'] != $value ) {
+                                $this->increase_error_count();
+                                return;  
+                            }
+                        }             
+                    break; 
+                case "password":
+                        break; 
+                case "checkbox":
+                        $options = $input["options"];
+                        $clean = '';
+                        foreach ($options as $option_key => $option) {
+                            if ( in_array($option["option_value"], $value)) {
+                                $options[$option_key]["checked"] = true;
+                                $clean .= $option["option"].', ';
+                            }
+                        }
+                        $clean = rtrim( $clean, ', ');
+                        $input["options"] = $options;
+                        $input['clean'] = $clean;
+                        break;                          
+            }
+            // esc_attr() - Escaping for HTML attributes. Encodes the <, >, &, ” and ‘ (less than, greater than, ampersand, double quote and single quote) characters. Will never double encode entities.
+            $input['passed'] = true;   
+        }
+
+        // echo "<pre>"; var_dump($input); echo "</pre>";
+        // echo "<hr>";echo "<hr>";
+        return;         
+    }//@end check_input 
+
+
+    // private function get_form_data($id) {
+    //     $form_data = array();
+    //     $settings = array();
+    //     $sections = array();
+    //     if ( have_rows('sections', $id) ) :
+
+    //         $section_count = 0;
+    //         $input_count = 0;
+
+    //         while( have_rows('sections', $id) ) : the_row();
+    //             $section = array();
+    //             $inputs = array();
+
+    //             if ( get_sub_field('section_header') ) {
+    //                 $section["section_header"] = get_sub_field('section_header');
+    //             }
+    //             if ( get_sub_field('section_content') ) {
+    //                 $section["section_content"] = get_sub_field('section_content');
+    //             }            
+    //             if ( have_rows('form_inputs') ) :
+    //                 while( have_rows('form_inputs') ) : the_row();
+    //                     $inputs_settings_array = $this->build_form_array($inputs, $settings, $section_count);  
+    //                     $settings = $inputs_settings_array["settings"];
+    //                     $inputs = $inputs_settings_array["inputs"];
+    //                     $input_count++;
+    //                 endwhile;
+    //             endif;
+
+    //             $section["inputs"] = $inputs;
+    //             $sections[] = $section;
+    //             $section_count++;
+    //         endwhile;
+
+    //         if ($input_count) {
+    //             $form_data["sections"] = $sections;
+    //             $form_data["settings"] = $settings;
+    //         }
+
+    //     endif;
+    //     return $form_data; 
+    // }  
+    // private function build_form_array($inputs, $settings, $section=0) {
+    //     global $post;
+    //     $id = '';
+    //     $type = 'text';
+    //     $data_type = get_sub_field('type');
+    //     $name = '';
+    //     $label = '';
+    //     $placeholder = '';
+    //     $help = '';
+    //     $instructions = '';
+    //     $required = '';
+    //     $grouping = false;
+    //     $select_options='';
+    //     $prefix = 'form-';
+
+    //     if( get_sub_field('id') ) {
+    //         $id_group = get_sub_field('id');
+    //         if ($id_group["name"]) {
+    //             $name = $id_group["name"];
+    //             $id = sanitize_title_with_dashes( $name );
+    //             if ($id_group["label"]) {
+    //                 $label = $id_group["label"];
+    //             }
+    //             else {
+    //                 $label = $name;
+    //             }
+    //         }
+    //     }
+
+    //     if( get_sub_field('reporting') ) {
+    //         $reporting_group = get_sub_field('reporting');
+    //         $help = $reporting_group["help"];
+    //         $instructions = $reporting_group["instructions"];
+    //     }
+
+    //     if( get_sub_field('settings') ) {
+    //         $settings_group = get_sub_field('settings');
+    //         $required = $settings_group["required"];
+    //         $grouping = $settings_group["grouping"];
+    //         if ($grouping == 'none') {
+    //             $grouping = false;
+    //         }
+    //         else {
+    //             if (!isset($settings["groupings"])) {
+    //                 $settings["groupings"] = true;
+    //             }
+    //         }
+    //     }
+        
+    //     if($required) {
+    //         $required = 'required';
+    //     }
+    //     else {
+    //         $required = '';
+    //     }
+
+    //     if( get_sub_field('type') ) {
+    //         $type = get_sub_field('type');
+    //         $data_type = get_sub_field('type');
+    //     }
+    //     if($type==='date' || $type==='date_time' || $type==='date_range') {
+    //         $type='text';
+    //     }
+
+    //     if( get_sub_field('placeholder') ) {
+    //         $placeholder = get_sub_field('placeholder');
+    //     }
+
+    //     if( get_sub_field('select_options') ) {
+    //         $select_options = get_sub_field('select_options');
+    //         if ($data_type === 'checkbox' || $data_type === 'select' || $data_type === 'radio') {
+    //             foreach ($select_options as $key => $value) {
+    //                 $value['checked'] = false;
+    //                 if ( $value['option_value'] === '') {
+    //                     $select_options[$key]['option_value'] = sanitize_title_with_dashes( $value['option'] );
+    //                 }
+    //                 if ($data_type==='checkbox') {
+    //                     $select_options[$key]['checked'] = false;
+    //                 }               
+    //             }
+    //         }          
+    //     }
+
+    //     /*
+    //      * Check for array key conflict and increment $id if found
+    //      */
+    //     if (array_key_exists($prefix.$id, $inputs)) {
+    //         for ($i=1; $i < 20; $i++) { 
+    //             if (!array_key_exists($prefix.$id.'-'.$i, $inputs)) {
+    //                 $id = $id.'-'.$i;
+    //                 break;
+    //             }
+    //         }
+    //     }    
+
+    //     switch ($data_type) {           
+    //         case "text":
+    //         case "url":
+    //         case "email":
+    //         case "number":
+    //             $inputs[$prefix.$id] = array("passed"=>false, "clean"=>"", "value"=>"", "section"=>$section, "required"=>$required, "type"=>$type, "data_type"=>$data_type,  "placeholder"=>$placeholder, "label"=>$label, "help"=>$help, "instructions" => $instructions, "grouping" => $grouping);
+    //             break;
+    //         case "textarea":
+    //             $inputs[$prefix.$id] = array("passed"=>false, "clean"=>"", "value"=>"", "section"=>$section, "required"=>$required, "type"=>$type, "data_type"=>$data_type,  "placeholder"=>$placeholder, "label"=>$label, "help"=>$help, "instructions" => $instructions, "grouping" => $grouping);
+    //             break; 
+    //         case "select":
+    //         case "multi_select":
+    //         case "checkbox":
+    //         case "radio":
+    //             $inputs[$prefix.$id] = array("passed"=>false, "clean"=>"", "value"=>"", "section"=>$section, "required"=>$required, "type"=>$type, "data_type"=>$data_type, "label"=>$label, "options"=>$select_options, "selected_option"=>"", "help"=>$help, "instructions" => $instructions, "grouping" => $grouping);//,  "placeholder"=>$placeholder
+    //             break;    
+    //         case "file":
+    //             $enctype = 'enctype="multipart/form-data"';
+    //             $form_class = 'js-check-form-file';
+    //             $inputs[$prefix.$id] = array("passed"=>false, "clean"=>"", "value"=>"", "section"=>$section, "required"=>$required, "type"=>$type, "data_type"=>$data_type,  "placeholder"=>$placeholder, "label"=>$label, "accept"=>"pdf", "help"=>$help, "instructions" => $instructions, "grouping" => $grouping);
+    //             break;              
+    //         case "date_range":
+    //             $inputs[$prefix.$id.'-start'] = array("passed"=>false, "clean"=>"", "value"=>"", "section"=>$section, "required"=>$required, "type"=>$type, "data_type"=>$data_type, "label"=>"Date From", "help"=>$help, "instructions" => $instructions, "grouping" => $grouping, 'order'=>0, 'parent_label'=>$label);
+    //             $inputs[$prefix.$id.'-end'] = array("passed"=>false, "clean"=>"", "value"=>"", "section"=>$section, "required"=>$required, "type"=>$type, "data_type"=>$data_type, "label"=>"Date To", "help"=>$help, "instructions" => $instructions, "grouping" => $grouping, 'order'=>1, 'parent_label'=>$label);
+    //             break;                                               
+    //     }
+    //     return array("inputs" => $inputs, "settings" => $settings);       
+    // }        
 }
-// Initialize the plugin
-// $form_builder_plugin = new WP_Swift_Form_Builder_Plugin();
