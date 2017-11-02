@@ -2,7 +2,7 @@
  * All of the CSS for your admin-specific functionality should be
  * included in this file.
  */
-$uncollapsed: #DCDCDC;
+$uncollapsed: #E9E9E9;
 /* @start acf group */
 .form-builder-input-group .acf-table{
 	border: none;
@@ -99,3 +99,10 @@ img.contact-form-svg {
     width: 260px;
     margin: 15px 0;
 }
+
+
+.acf-fields > .acf-field.other-field {
+    padding: 0 12px;
+}
+
+

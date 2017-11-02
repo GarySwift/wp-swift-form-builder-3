@@ -200,6 +200,11 @@ acf_add_local_field_group(array (
 				'operator' => '==',
 				'value' => 'wp_swift_form_category:contact',
 			),
+			array (
+				'param' => 'post_taxonomy',
+				'operator' => '==',
+				'value' => 'wp_swift_form_category:contact-form',
+			),			
 		),
 	),
 	'menu_order' => 0,
