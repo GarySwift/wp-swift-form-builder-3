@@ -1,4 +1,34 @@
 <?php
+function get_location_input_sections() {
+	$wp_swift_form_builder_default_id = get_option( 'wp_swift_form_builder_default_id' );
+
+	$location = array (
+		array (
+			'param' => 'post_type',
+			'operator' => '==',
+			'value' => 'wp_swift_form',
+		),
+		// array (
+		// 	'param' => 'post',
+		// 	'operator' => '!=',
+		// 	'value' => '40',
+		// ),
+		// array (
+		// 	'param' => 'post',
+		// 	'operator' => '!=',
+		// 	'value' => '1',
+		// ),
+	);
+	if ($wp_swift_form_builder_default_id) {
+		$location[] = array (
+			'param' => 'post',
+			'operator' => '!=',
+			'value' => $wp_swift_form_builder_default_id,
+		);
+	}
+	// );
+	return array($location);
+}
 if( function_exists('acf_add_local_field_group') ):
 
 acf_add_local_field_group(array (
@@ -6,33 +36,18 @@ acf_add_local_field_group(array (
 	'title' => 'Form Builder: Input Sections',
 	'fields' => array (
 		array (
-			'key' => 'field_59ec8f68aa374',
-			'label' => 'Inputs',
-			'name' => '',
-			'type' => 'tab',
-			'instructions' => '',
-			'required' => 0,
-			'conditional_logic' => 0,
-			'wrapper' => array (
-				'width' => '',
-				'class' => '',
-				'id' => '',
-			),
-			'placement' => 'top',
-			'endpoint' => 0,
-		),
-		array (
 			'key' => 'field_59cf72b083b6d',
 			'label' => 'Sections',
 			'name' => 'sections',
 			'type' => 'repeater',
+			'value' => NULL,
 			'instructions' => '',
 			'required' => 0,
 			'conditional_logic' => 0,
 			'wrapper' => array (
 				'width' => '',
-				'class' => '',
-				'id' => 'form-builder-input-sections',
+				'class' => 'form_inputs_field_59d2045c948d4',
+				'id' => '',
 			),
 			'collapsed' => 'field_59d2045c948d4',
 			'min' => 1,
@@ -61,6 +76,7 @@ acf_add_local_field_group(array (
 					'label' => 'Form Inputs',
 					'name' => 'form_inputs',
 					'type' => 'clone',
+					'value' => NULL,
 					'instructions' => '',
 					'required' => 0,
 					'conditional_logic' => 0,
@@ -98,6 +114,7 @@ acf_add_local_field_group(array (
 					'label' => 'Section Header',
 					'name' => 'section_header',
 					'type' => 'text',
+					'value' => NULL,
 					'instructions' => '',
 					'required' => 0,
 					'conditional_logic' => 0,
@@ -117,6 +134,7 @@ acf_add_local_field_group(array (
 					'label' => 'Section Content',
 					'name' => 'section_content',
 					'type' => 'wysiwyg',
+					'value' => NULL,
 					'instructions' => '',
 					'required' => 0,
 					'conditional_logic' => 0,
@@ -133,75 +151,8 @@ acf_add_local_field_group(array (
 				),
 			),
 		),
-		array (
-			'key' => 'field_59ec8f96aa375',
-			'label' => 'Settings',
-			'name' => '',
-			'type' => 'tab',
-			'instructions' => '',
-			'required' => 0,
-			'conditional_logic' => 0,
-			'wrapper' => array (
-				'width' => '',
-				'class' => '',
-				'id' => '',
-			),
-			'placement' => 'top',
-			'endpoint' => 0,
-		),
-		array (
-			'key' => 'field_59ec8fa5aa376',
-			'label' => 'Hide Labels',
-			'name' => 'hide_labels',
-			'type' => 'true_false',
-			'instructions' => '',
-			'required' => 0,
-			'conditional_logic' => 0,
-			'wrapper' => array (
-				'width' => '',
-				'class' => '',
-				'id' => '',
-			),
-			'message' => 'Placeholders will be automatically added if labels are hidden',
-			'default_value' => 0,
-			'ui' => 1,
-			'ui_on_text' => '',
-			'ui_off_text' => '',
-		),
-		array (
-			'key' => 'field_59ec9007aa377',
-			'label' => 'Wrap Form',
-			'name' => 'wrap_form',
-			'type' => 'true_false',
-			'instructions' => '',
-			'required' => 0,
-			'conditional_logic' => 0,
-			'wrapper' => array (
-				'width' => '',
-				'class' => '',
-				'id' => '',
-			),
-			'message' => 'Adds a border around the form and removes them from error messages',
-			'default_value' => 0,
-			'ui' => 1,
-			'ui_on_text' => '',
-			'ui_off_text' => '',
-		),
 	),
-	'location' => array (
-		array (
-			array (
-				'param' => 'post_type',
-				'operator' => '==',
-				'value' => 'wp_swift_form',
-			),
-			array (
-				'param' => 'post_taxonomy',
-				'operator' => '==',
-				'value' => 'wp_swift_form_category:contact',
-			),
-		),
-	),
+	'location' => get_location_input_sections(),
 	'menu_order' => 0,
 	'position' => 'normal',
 	'style' => 'default',

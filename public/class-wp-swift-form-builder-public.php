@@ -63,17 +63,10 @@ class Wp_Swift_Form_Builder_Public {
      * @return string  The shortcode output
      */
     public function render_form( $atts = array(), $content = null ) {
-        // $html = '';
         $a = shortcode_atts( array(
             'id' => false,
         ), $atts );
-        // $form_id = $a['id'];
-
-        $form_builder = new WP_Swift_Form_Builder_Contact_Form( $a['id'] ); //wp_swift_get_contact_form($form_id);
-        // if ($form_builder != null) {
-        //    $html = $form_builder->get_form();// wp_swift_set_form($form_builder);
-        // }
-        
+        $form_builder = new WP_Swift_Form_Builder_Contact_Form( $a['id'] );
         return $form_builder->run();
     }
 
@@ -95,8 +88,13 @@ class Wp_Swift_Form_Builder_Public {
 		 * between the defined hooks and the functions defined in this
 		 * class.
 		 */
+		$options = get_option( 'wp_swift_form_builder_settings' );
+        if ( !isset($options['wp_swift_form_builder_checkbox_css']) ) {
+			$file = 'css/wp-swift-form-builder-public.css';
+			$version = filemtime(plugin_dir_path( __FILE__ ) . $file);
+			wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . $file, array(), $version, 'all' );
+        }
 
-		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/wp-swift-form-builder-public.css', array(), $this->version, 'all' );
 
 	}
 
@@ -118,8 +116,12 @@ class Wp_Swift_Form_Builder_Public {
 		 * between the defined hooks and the functions defined in this
 		 * class.
 		 */
-
-		// wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/wp-swift-form-builder-public.js', array( 'jquery' ), $this->version, false );
+		$options = get_option( 'wp_swift_form_builder_settings' );
+        if ( !isset($options['wp_swift_form_builder_checkbox_javascript']) ) {
+			$file = 'js/wp-swift-form-builder-public.js';
+			$version = filemtime(plugin_dir_path( __FILE__ ) . $file);
+			wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . $file, array( 'jquery' ), $version, false );
+		}
 
 	}
 }//@end class Wp_Swift_Form_Builder_Public

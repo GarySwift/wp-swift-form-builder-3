@@ -40,23 +40,29 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
      * The parent does not know what to with a successful form, it just validates default settings
      * The parent will handle errors if default errors have been found
      */
-    public function process_form($post, $ajax=false) {
- 
-        parent::validate_form($post, $ajax);
-        if ($this->get_error_count()==0) {
-            // echo "<pre>2</pre>";
-            return $this->process_form_after_default_passed($post, $ajax);
-        }
-        else {
-            ob_start();
-            // echo "<pre>3</pre>";
-            $this->acf_build_form_message();
-            $html = ob_get_contents();
-            ob_end_clean();
-            
-            return $html;
-        }
-    }
+    // public function process_form($post, $ajax=false) {
+        
+    //     if ( parent::get_form_inputs() ) {
+    //         $form_inputs = parent::get_form_inputs();
+    //         // echo "1<pre>"; var_dump($form_inputs); echo "</pre>";
+    //         parent::validate_form($post);
+    //         $form_inputs = parent::get_form_inputs();
+    //         // echo "2<pre>"; var_dump($form_inputs); echo "</pre>";
+    //         if ($this->get_error_count()==0) {
+    //             // echo "<pre>2</pre>";
+    //             return $this->process_form_after_default_passed($post, $ajax);
+    //         }
+    //         else {
+    //             ob_start();
+    //             // echo "<pre>3</pre>";
+    //             $this->acf_build_form_message();
+    //             $html = ob_get_contents();
+    //             ob_end_clean();
+                
+    //             return $html;
+    //         }
+    //     }
+    // }
 
     
     /*
@@ -75,7 +81,7 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
      *
      * @return string               The html success message
      */
-    public function process_form_after_default_passed($post, $ajax) {
+    public function submit_form_success($post, $ajax) {
         /*
          * Variables
          */
@@ -118,25 +124,26 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
          * Now, we can override the default settings if they are set
          */
         if (function_exists('get_field')) {
+            $form_post_id = parent::get_form_post_id();
             // If a to_email is set in ACF, send the email there instead of the admin email
-            if (get_field('to_email', parent::get_form_post_id() )) {
-                $to = get_field('to_email', parent::get_form_post_id() ); 
+            if (get_field('to_email', $form_post_id )) {
+                $to = get_field('to_email', $form_post_id ); 
             }
             // Set reponse subject for email
-            if (get_field('response_subject', parent::get_form_post_id() )) {
-                $response_subject = get_field('response_subject', parent::get_form_post_id() ); 
+            if (get_field('response_subject', $form_post_id )) {
+                $response_subject = get_field('response_subject', $form_post_id ); 
             }
             // Start the reponse message for the email
-            if (get_field('response_message', parent::get_form_post_id() )) {
-                $response_message = get_field('response_message', parent::get_form_post_id() );
+            if (get_field('response_message', $form_post_id )) {
+                $response_message = get_field('response_message', $form_post_id );
             }
             //Set auto_response_message
-            if (get_field('auto_response_message', parent::get_form_post_id() )) {
-                $auto_response_message = get_field('auto_response_message', parent::get_form_post_id() );
+            if (get_field('auto_response_message', $form_post_id )) {
+                $auto_response_message = get_field('auto_response_message', $form_post_id );
             }
             // Set the response that is set back to the browser
-            if (get_field('browser_output_header', parent::get_form_post_id() )) {
-                $browser_output_header = get_field('browser_output_header', parent::get_form_post_id() );
+            if (get_field('browser_output_header', $form_post_id )) {
+                $browser_output_header = get_field('browser_output_header', $form_post_id );
             } 
             // The auto-response subject
             if( get_field('auto_response_subject') ) {
@@ -213,27 +220,27 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
     }
 
     private function build_key_value_table() {
-
+        // $form_data = &parent::get_form_data();
         ob_start(); 
         ?><table class="form-feedback" id="print-table" style="width:100%">
                     <tbody><?php 
                         
-                    foreach ($this->form_inputs as $section_key => $section): 
+                    foreach (parent::get_form_data() as $section_key => $section): 
                         foreach ($section["inputs"] as $input_key => $section_input):
                 
                         if (isset($section_input['data_type'])): $type = $section_input['data_type']; ?>
 
-                        <tr><?php 
+                        <?php 
                             if ($type=='section'): ?>
-
+                        <tr>
                             <th colspan="2" style="width:100%; text-align:center">
                                 <h3><?php $this->table_cell_header($input_key) ?></h3>
                             </th>
-
+                        </tr>
                             <?php 
                             else: 
                                 if ($section_input['clean'] !== ''): ?>
-
+                        <tr>
                             <th style="width:30%; text-align:left"><?php $this->table_cell_header($input_key) ?></th>
                             <td><?php 
                                     if ($section_input['type']=='select') {
@@ -242,9 +249,10 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
                                         echo $section_input['clean'];
                                     }
                             ?></td>
+                        </tr>    
                         <?php   endif;//@end if ($section_input['clean'] !== '')                               
                             endif;//@end if ($type=='section')
-                        ?></tr><?php endif;
+                        ?><?php endif;
 
                         endforeach;//@end foreach ($section["inputs"] as $input_key => $section_input):
                     endforeach;//@end foreach ($this->form_inputs as $section_key => $section):

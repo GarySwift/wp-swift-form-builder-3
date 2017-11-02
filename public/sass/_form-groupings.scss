@@ -1,0 +1,14 @@
+.form-grid-grouping {
+	@extend .grid-x;
+	.form-group {
+		@extend .cell;
+		@extend .large-auto;
+		@extend .small-6;
+	}
+}
+div.form-builder.groupings {
+	.form-group {
+	    padding-right: $form-group-padding;
+	    padding-left: $form-group-padding;
+	}
+}

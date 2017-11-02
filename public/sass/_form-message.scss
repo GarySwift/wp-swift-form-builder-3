@@ -1,0 +1,41 @@
+.form-message {
+	table tbody {
+		border: 1px solid #D2D2D2;
+	}
+	ul {
+	    list-style-type: square;
+	}
+}
+.form-message.ajax {
+	table {
+		margin-bottom: 0;
+	}
+}
+.form-message.standard {
+    margin-right: $form-group-padding;
+    margin-left: $form-group-padding;
+	border: 1px solid #D2D2D2;
+	background-color: #F8F8F8;
+	padding: 15px;
+	margin-bottom: 20px;
+}
+.form-message.error {
+	margin-right: $form-group-padding;
+	margin-left: $form-group-padding;
+	padding: 15px;
+	margin-bottom: 20px;
+	border: 1px solid $has-error;
+	color: $has-error;
+}
+.form-message.error.ajax {
+	border: none;
+}
+div.form-builder.wrap {
+	.form-message {
+	    margin-right: 0;
+	    margin-left: 0;
+		border: none;
+		background-color: transparent;
+		padding: 5px;
+	}
+}

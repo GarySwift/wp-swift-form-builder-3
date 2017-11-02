@@ -1,118 +1,108 @@
-// console.log('Ideally, it is not considered best practise to attach more than a single DOM-ready or window-load handler for a particular page. Although scripts in the WordPress core, Plugins and Themes may be practising this, we should strive to set a better example in our own work.');
-(function( $ ) {
-	'use strict';
-
-	/**
-	 * All of the code for your public-facing JavaScript source
-	 * should reside in this file.
-	 *
-	 * Note: It has been assumed you will write jQuery code here, so the
-	 * $ function reference has been prepared for usage within the scope
-	 * of this function.
-	 *
-	 * This enables you to define handlers, for when the DOM is ready:
-	 *
-	 * $(function() {
-	 *
-	 * });
-	 *
-	 * When the window is loaded:
-	 *
-	 * $( window ).load(function() {
-	 *
-	 * });
-	 *
-	 * ...and/or other possibilities.
-	 *
-	 * Ideally, it is not considered best practise to attach more than a
-	 * single DOM-ready or window-load handler for a particular page.
-	 * Although scripts in the WordPress core, Plugins and Themes may be
-	 * practising this, we should strive to set a better example in our own work.
-	 */
-
-})( jQuery );
+console.info('wp-swift-form-builder-public.js');
 jQuery(document).ready(function($){
-	console.log("wp-swift-form-builder x");
 
-		// When a user leaves a form input
-	// $('.js-form-control').blur(function(e){	
+	// Form Input Object
+	var FormBuilderInput = function FormBuilderInput(input) {
+		this.name = input.name;
+		this.value = input.value;
+		this.id = '#'+(this.name.replace(/[\[\]']+/g,''));
+		this.required = $(this.id).prop('required');
+		this.type = $(this.id).prop('type');
+		this.dataType = $(this.id).data('type');
+	};
+
+	// Instance methods
+	FormBuilderInput.prototype = {
+		errorCount: 0,
+		feedbackMessage: '', 
+		isValid: function isValid() {
+		  	var re;
+		  	if(this.required && this.value==='') {
+		  		return false;
+		  	}
+			switch (this.dataType) {
+				case 'number':
+					return !isNaN(this.value);
+			    case 'url':
+			        re = /^(http(?:s)?\:\/\/[a-zA-Z0-9]+(?:(?:\.|\-)[a-zA-Z0-9]+)+(?:\:\d+)?(?:\/[\w\-]+)*(?:\/?|\/\w+\.[a-zA-Z]{2,4}(?:\?[\w]+\=[\w\-]+)?)?(?:\&[\w]+\=[\w\-]+)*)$/i;
+			        return re.test(this.value);
+			  	case 'email':
+			      	re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
+			      	return re.test(this.value); 
+			    case 'select':	
+			    	return this.value.toLowerCase().substring(0, 6) !== 'select';	
+			    case 'date_time':
+			    	return isValidDateTime(this.value);   	
+			    case 'date':
+			    	return isValidDate(this.value); 
+			    case 'password':
+				   	return passwordCheck(this);
+			}
+			return true;
+	    }
+	};
+
+	var validateForm = function(form) {
+		var errorsInForm = 0;
+		for (var i = 0; i < form.length; i++) {
+			var input = new FormBuilderInput(form[i]);
+			if(!input.isValid()) {
+				$(input.id+'-form-group').addClass('has-error');
+				errorsInForm++;
+			}
+			else {
+				$(input.id+'-form-group').removeClass('has-error');
+			}
+		}
+		return errorsInForm;		
+	};
+	
+	$('#request-form').submit(function(e){	
+		e.preventDefault();
+		var errorsInForm = validateForm( $(this).serializeArray() );
+		var form = $(this);
+		var submit = form.find(":submit");
+		submit.prop('disabled', true);
+
+		if (errorsInForm === 0) {
+			// FormBuilderAjax is set on server using wp_localize_script
+			if(typeof FormBuilderAjax !== "undefined") {
+				FormBuilderAjax.form = $(this).serializeArray();
+				FormBuilderAjax.id = form.data('id');
+				FormBuilderAjax.action = "wp_swift_submit_request_form";
+
+				$.post(FormBuilderAjax.ajaxurl, FormBuilderAjax, function(response) {
+					var serverResponse = JSON.parse(response);
+					$('#form-builder-reveal-content').html(serverResponse.html);
+					var $modal = $('#form-builder-reveal');
+					
+					if(typeof $modal !== "undefined") {
+						$modal.foundation('open');
+						submit.prop('disabled', false);	
+					}
+				});	
+			}
+		}
+		else {
+			alert("Please fill in the required fields!");
+			submit.prop('disabled', false);
+		}
+		return false;
+	});
+
+	// When a user leaves a form input
 	$('body').on('blur', '.js-form-builder-control', function(e) {	
 		var input = new FormBuilderInput($(this).serializeArray()[0]);
-		console.log('blur');
-		console.log(input);
 		if(!input.isValid()) {
-			
-			// if(input.data_type !=='date_time') {
-				// console.log(input.id+'-form-group');
-				$(input.id+'-form-group').addClass('has-error');
-				// console.log(input.id + ' has-error');
-			// }
-			// else {
-			// 	if(!input.isValid()) {
-			// 		$(input.id+'-form-group').addClass('has-error');
-			// 		console.log(input.id + ' has-error');
-			// 	}
-			// }
+			$(input.id+'-form-group').addClass('has-error');
 		}
 		else {
 			$(input.id+'-form-group').addClass('has-success');
 		}
 	});
 
-
+    // When a user enters a form input
 	$('body').on('focus', '.js-form-builder-control', function(e) {	
 		$('#'+this.id+'-form-group').removeClass('has-error').removeClass('has-success');
 	});
-
-	//Form Input Object
-	FormBuilderInput = function FormBuilderInput(input) {
-		this.name = input.name;
-		this.value = input.value;
-		this.id = '#'+(this.name.replace(/[\[\]']+/g,''));
-		this.required = $(this.id).prop('required');
-		this.type = $(this.id).prop('type');
-		this.data_type = $(this.id).data('type');
-	};
-
-	// Instance methods
-	FormBuilderInput.prototype = {
-	  errorCount: 0,
-	  feedbackMessage: '', 
-	  isValid: function isValid() {
-	  	var re;
-	  	if(this.required && this.value==='') {
-	  		return false;
-	  	}
-
-	  	// console.log(this.id, ': ', this.data_type);
-		switch (this.data_type) {
-			case 'number':
-
-			// console.log('isNaN(this.value)', isNaN(this.value));
-				    return !isNaN(this.value);
-		    case 'url':
-		        re = /^(http(?:s)?\:\/\/[a-zA-Z0-9]+(?:(?:\.|\-)[a-zA-Z0-9]+)+(?:\:\d+)?(?:\/[\w\-]+)*(?:\/?|\/\w+\.[a-zA-Z]{2,4}(?:\?[\w]+\=[\w\-]+)?)?(?:\&[\w]+\=[\w\-]+)*)$/i;
-		        return re.test(this.value);
-		  	case 'email':
-		      	re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
-		      	return re.test(this.value); 
-		    case 'select':	
-		    	return this.value.toLowerCase().substring(0, 6) !== 'select';	
-		    case 'date_time':
-		 //    	  				console.log('this.id', this.id);
-			// console.log('this.data_type', this.data_type);
-			// console.log('this.value', this.value);
-		    	return isValidDateTime(this.value);   	
-		    case 'date':
-		    	return isValidDate(this.value); 
-		    case 'password':
-			    // console.log("password isValid...");
-			   	return passwordCheck(this);
-		    	// return false;
-		    	// return isValidDate(this.value); 
-		}
-		return true;
-	  }
-	};	
 });
-

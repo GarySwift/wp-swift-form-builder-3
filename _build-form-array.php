@@ -14,6 +14,8 @@ function build_acf_form_array($inputs, $settings, $section=0) {
     $grouping = false;
     $select_options='';
     $prefix = 'form-';
+    $css_class = '';
+    $other = false;
 
     if( get_sub_field('id') ) {
         $id_group = get_sub_field('id');
@@ -29,12 +31,6 @@ function build_acf_form_array($inputs, $settings, $section=0) {
         }
     }
 
-    if( get_sub_field('reporting') ) {
-        $reporting_group = get_sub_field('reporting');
-        $help = $reporting_group["help"];
-        $instructions = $reporting_group["instructions"];
-    }
-
     if( get_sub_field('settings') ) {
         $settings_group = get_sub_field('settings');
         $required = $settings_group["required"];
@@ -45,6 +41,23 @@ function build_acf_form_array($inputs, $settings, $section=0) {
         else {
             if (!isset($settings["groupings"])) {
                 $settings["groupings"] = true;
+            }
+        }
+    }
+
+    if( get_sub_field('reporting') ) {
+        $reporting_group = get_sub_field('reporting');
+        $instructions = $reporting_group["instructions"];
+        $help = $reporting_group["help"];
+        if ($help === '') {
+            if ($required) {
+                $help = $label.' is required';
+                if ( $data_type === 'email' ||  $data_type === 'url') {
+                    $help .= ' and must be valid';
+                }
+            }
+            else {
+                $help = $label.' is not valid';
             }
         }
     }
@@ -60,12 +73,17 @@ function build_acf_form_array($inputs, $settings, $section=0) {
         $type = get_sub_field('type');
         $data_type = get_sub_field('type');
     }
-    if($type==='date' || $type==='date_time' || $type==='date_range') {
+    if( $type === 'date' || $type === 'date_time' || $type === 'date_range' ) {
         $type='text';
     }
 
     if( get_sub_field('placeholder') ) {
         $placeholder = get_sub_field('placeholder');
+    }
+    
+    if( get_sub_field('other') ) {
+        $other = true;
+        $css_class .= ' js-other-value-event';
     }
 
     if( get_sub_field('select_options') ) {
@@ -80,7 +98,17 @@ function build_acf_form_array($inputs, $settings, $section=0) {
                     $select_options[$key]['checked'] = false;
                 }               
             }
+            if ( $other && $data_type==='checkbox') {
+                $select_options[] = array('option' => 'Other', 'option_value' => 'other', 'checked' => false);
+            }
+            elseif( $other ) {
+                $select_options[] = array('option' => 'Other', 'option_value' => 'other');
+            }
         }          
+    }
+
+    if( isset($settings['hide_labels']) ) {
+        $placeholder = $label;
     }
 
     /*
@@ -100,72 +128,86 @@ function build_acf_form_array($inputs, $settings, $section=0) {
         case "url":
         case "email":
         case "number":
-            $inputs[$prefix.$id] = array("passed"=>false, "clean"=>"", "value"=>"", "section"=>$section, "required"=>$required, "type"=>$type, "data_type"=>$data_type,  "placeholder"=>$placeholder, "label"=>$label, "help"=>$help, "instructions" => $instructions, "grouping" => $grouping);
+            $inputs[$prefix.$id] = array("passed"=>false, "clean"=>"", "value"=>"", "section"=>$section, "required"=>$required, "type"=>$type, "data_type"=>$data_type,  "placeholder"=>$placeholder, "label"=>$label, "help"=>$help, "instructions" => $instructions, "grouping" => $grouping, "css_class" => $css_class);
             break;
         case "textarea":
-            $inputs[$prefix.$id] = array("passed"=>false, "clean"=>"", "value"=>"", "section"=>$section, "required"=>$required, "type"=>$type, "data_type"=>$data_type,  "placeholder"=>$placeholder, "label"=>$label, "help"=>$help, "instructions" => $instructions, "grouping" => $grouping);
+            $inputs[$prefix.$id] = array("passed"=>false, "clean"=>"", "value"=>"", "section"=>$section, "required"=>$required, "type"=>$type, "data_type"=>$data_type,  "placeholder"=>$placeholder, "label"=>$label, "help"=>$help, "instructions" => $instructions, "grouping" => $grouping, "css_class" => $css_class);
             break; 
         case "select":
         case "multi_select":
         case "checkbox":
         case "radio":
-            $inputs[$prefix.$id] = array("passed"=>false, "clean"=>"", "value"=>"", "section"=>$section, "required"=>$required, "type"=>$type, "data_type"=>$data_type, "label"=>$label, "options"=>$select_options, "selected_option"=>"", "help"=>$help, "instructions" => $instructions, "grouping" => $grouping);//,  "placeholder"=>$placeholder
+            $inputs[$prefix.$id] = array("passed"=>false, "clean"=>"", "value"=>"", "section"=>$section, "required"=>$required, "type"=>$type, "data_type"=>$data_type, "label"=>$label, "options"=>$select_options, "selected_option"=>"", "help"=>$help, "instructions" => $instructions, "grouping" => $grouping, "css_class" => $css_class);//,  "placeholder"=>$placeholder
             break;    
         case "file":
             $enctype = 'enctype="multipart/form-data"';
             $form_class = 'js-check-form-file';
-            $inputs[$prefix.$id] = array("passed"=>false, "clean"=>"", "value"=>"", "section"=>$section, "required"=>$required, "type"=>$type, "data_type"=>$data_type,  "placeholder"=>$placeholder, "label"=>$label, "accept"=>"pdf", "help"=>$help, "instructions" => $instructions, "grouping" => $grouping);
+            $inputs[$prefix.$id] = array("passed"=>false, "clean"=>"", "value"=>"", "section"=>$section, "required"=>$required, "type"=>$type, "data_type"=>$data_type,  "placeholder"=>$placeholder, "label"=>$label, "accept"=>"pdf", "help"=>$help, "instructions" => $instructions, "grouping" => $grouping, "css_class" => $css_class);
             break;              
         case "date_range":
-            $inputs[$prefix.$id.'-start'] = array("passed"=>false, "clean"=>"", "value"=>"", "section"=>$section, "required"=>$required, "type"=>$type, "data_type"=>$data_type, "label"=>"Date From", "help"=>$help, "instructions" => $instructions, "grouping" => $grouping, 'order'=>0, 'parent_label'=>$label);
-            $inputs[$prefix.$id.'-end'] = array("passed"=>false, "clean"=>"", "value"=>"", "section"=>$section, "required"=>$required, "type"=>$type, "data_type"=>$data_type, "label"=>"Date To", "help"=>$help, "instructions" => $instructions, "grouping" => $grouping, 'order'=>1, 'parent_label'=>$label);
+            $inputs[$prefix.$id.'-start'] = array("passed"=>false, "clean"=>"", "value"=>"", "section"=>$section, "required"=>$required, "type"=>$type, "data_type"=>$data_type, "label"=>"Date From", "help"=>$help, "instructions" => $instructions, "grouping" => $grouping, "css_class" => $css_class, 'order'=>0, 'parent_label'=>$label);
+            $inputs[$prefix.$id.'-end'] = array("passed"=>false, "clean"=>"", "value"=>"", "section"=>$section, "required"=>$required, "type"=>$type, "data_type"=>$data_type, "label"=>"Date To", "help"=>$help, "instructions" => $instructions, "grouping" => $grouping, "css_class" => $css_class, 'order'=>1, 'parent_label'=>$label);
             break;                                               
     }
+    if( $other ) {
+        $inputs[$prefix.$id.'-other'] = array("passed"=>false, "clean"=>"", "value"=>"", "section"=>$section, "required"=>'', "type"=>"text", "data_type"=>"text",  "placeholder"=>$placeholder, "label"=>"Other ".$label, "help"=>$help, "instructions" => $instructions, "grouping" => false, "css_class" => " js-other-value css-hide");
+    }    
     return array("inputs" => $inputs, "settings" => $settings);       
 }
 
 function wp_swift_get_form_data($id) {
+    
+    return wp_swift_form_data_loop($id);
 
-    // return wp_swift_form_data_loop($id);
-    $upload_dir = wp_upload_dir();
-    $file_path = $upload_dir["basedir"].FORM_BUILDER_DIR;
-    $file_name = 'form-builder-'.$id.'.json';
-    $file = $file_path.$file_name;
-    // echo $file;
-    if (file_exists($file)) {
-        return json_decode(file_get_contents($file), true);
-        // return json_decode(json_encode(file_get_contents($file)), true);
+    if (FORM_BUILDER_SAVE_TO_JSON) {
+
+        $upload_dir = wp_upload_dir();
+        $file_path = $upload_dir["basedir"].FORM_BUILDER_DIR;
+        $file_name = 'form-builder-'.$id.'.json';
+        $file = $file_path.$file_name;
+
+        if (file_exists($file)) {
+            return json_decode(file_get_contents($file), true);
+        }
+        else {
+            return wp_swift_form_data_loop($id);
+        }
     }
     else {
-        return wp_swift_form_data_loop($id);
-        // return json_decode(json_encode((object) wp_swift_form_data_loop($id)), FALSE);
-        // return json_decode( wp_swift_form_data_loop($id), true);
+
+        $option_name = 'form-builder-'.$id;
+        $form_data_option = get_option( $option_name );
+        if ( $form_data_option ) {
+            return json_decode($form_data_option, true);
+        }
+        else {
+            return wp_swift_form_data_loop($id);;
+        }
     }
-    // file_put_contents($file, $form_data_json);
-    // write_log ( "post_type is ".$post_type );
-    // write_log ( "post_id is ".$post_id );
-    // write_log ( $form_data );
-    // write_log( $form_data_json);
-    // write_log( wp_upload_dir() );
-    // write_log( $file);    
-
-    // $file_get_contents = file_get_contents($file);
-    // write_log( json_decode($file_get_contents)); 
-
 }
-class Form_Data {
-    public $settings = array();
-    public $sections = array();
-} 
+
 function wp_swift_form_data_loop($id) {
 
-
-
-
-
-    $form_data = array();//new Form_Data;//
+    $form_data = array("sections" => false, "settings" => false );
     $settings = array();
     $sections = array();
+
+    if( get_field('hide_labels', $id) ) {
+        $settings['hide_labels'] = true;
+        $settings['form_css_class'] = ' hide-labels';
+    }
+
+    if( get_field('wrap_form', $id) ) {
+        $settings['wrap_form'] = true;
+        
+        if ( isset($settings['form_css_class']) ) {
+            $settings['form_css_class'] .= ' wrap';
+        }
+        else {
+            $settings['form_css_class'] = ' wrap';
+        }
+    }
+
     if ( have_rows('sections', $id) ) :
 
         $section_count = 0;
@@ -198,30 +240,8 @@ function wp_swift_form_data_loop($id) {
         if ($input_count) {
             $form_data["sections"] = $sections;
             $form_data["settings"] = $settings;
-            // $form_data->sections = (object) $sections;
-            // $form_data->settings = (object) $settings;
         }
 
     endif;
     return $form_data; 
-}  
-// function get_section($form_data) {
-// 	if (isset($form_data['section-count'])) {
-// 		return $form_data['section-count'];
-// 	}
-// 	else {
-// 		return 0;
-// 	}
-// }
-
-// function get_page_inputs($page_id) {
-// 	$form_data = array();
-// 	if ( have_rows('form_inputs', $page_id) ) :
-
-// 	    while( have_rows('form_inputs', $page_id) ) : the_row(); // Loop through the repeater for form inputs        
-// 	         $form_data =  build_acf_form_array($form_data);  
-// 	    endwhile;// End the AFC loop  
-
-// 	endif;
-// 	return $form_data;
-// }
+}

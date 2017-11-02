@@ -37,30 +37,17 @@ if ( ! defined( 'WPINC' ) ) {
 function activate_wp_swift_form_builder() {
 	require_once plugin_dir_path( __FILE__ ) . 'includes/class-wp-swift-form-builder-activator.php';
 	Wp_Swift_Form_Builder_Activator::activate();
-
-	$args = array(
-	  'post_type' => 'wp_swift_form',
-	  'post_title'   => 'Contact Form (Default)',
-	  'post_status'   => 'publish',
-	);
-	// add_option( 'wp_swift_form_builder_default_id', '101' );
-	// delete_option( 'wp_swift_form_builder_default_id' ); 
-	// update_option( 'wp_swift_form_builder_default_id', '101');
-	$wp_swift_form_builder_default_id = get_option( 'wp_swift_form_builder_default_id' );
-	// echo "<pre>wp_swift_form_builder_default_id: "; var_dump($wp_swift_form_builder_default_id); echo "</pre>";
-
-	// Create a new default form if there isn't one
-	if (isset($wp_swift_form_builder_default_id) && !$wp_swift_form_builder_default_id) {
-		$post_id = wp_insert_post($args);
-		if(!is_wp_error($post_id)) {
-			// Save the default ID as an option
-		  	add_option( 'wp_swift_form_builder_default_id', $post_id );
-		}
-		// else{
-		//   //there was an error in the post insertion, 
-		//   // echo $post_id->get_error_message();
-		// }
-	}	
+    // $slug = 'contact';
+    // $term = 'Contact Form';
+    // $taxonomy = 'wp_swift_form_category';
+    // if (!term_exists( $term, $taxonomy )) {
+    //     wp_insert_term( $term, $taxonomy, array( 'slug' => $slug ) );
+    //     // $terms = get_terms([
+    //     //     'taxonomy' => $taxonomy,
+    //     //     'hide_empty' => false,
+    //     // ]);
+    //     // write_log($terms);
+    // }	
 }
 
 /**
@@ -82,9 +69,25 @@ register_deactivation_hook( __FILE__, 'deactivate_wp_swift_form_builder' );
 require plugin_dir_path( __FILE__ ) . 'includes/class-wp-swift-form-builder.php';
 
 /**
+ * The Admin menu settings.
+ *
+ * @author 	 Gary Swift 
+ * @since    1.0.0
+ */
+
+define('FORM_BUILDER_DIR', '/form-builder/');
+define('FORM_BUILDER_SAVE_TO_JSON', false);
+
+/**
  * The FormBuilder class that handles all form logic
  */
 require_once plugin_dir_path( __FILE__ ) . 'class-form-builder.php';
+
+/**
+ * The class that handles the admin interface
+ */
+require_once plugin_dir_path( __FILE__ ) . 'class-admin-interface-templates.php';
+require_once plugin_dir_path( __FILE__ ) . 'class-admin-interface.php';
 
 /**
  * A FormBuilder child class that handles contact forms
@@ -96,29 +99,23 @@ require_once plugin_dir_path( __FILE__ ) . 'class-form-builder-contact-form.php'
 require_once plugin_dir_path( __FILE__ ) . '/email-templates/wp-swift-email-templates.php';
 
 /**
- * The Admin menu settings.
- *
- * @author 	 Gary Swift 
- * @since    1.0.0
+ * Create the ajax nonce and url
  */
-
-# Change the Default WordPress Uploads Folder
-define('FORM_BUILDER_DIR', '/form-builder/');
-// function wp_swift_form_builder_admin_menu() {
-// 	if( current_user_can('editor') || current_user_can('administrator') ) {
-// 		require plugin_dir_path( __FILE__ ) . 'admin-menu.php';
-// 	}
-// }
-// add_action( 'init', 'wp_swift_form_builder_admin_menu' );
+require_once plugin_dir_path( __FILE__ ) . '_localize-script.php';
+require_once plugin_dir_path( __FILE__ ) . '_ajax-form-callback.php';
+require_once plugin_dir_path( __FILE__ ) . '_save-post-action.php';
+require_once plugin_dir_path( __FILE__ ) . '_new-contact-form.php';
+// Debugging
+require_once plugin_dir_path( __FILE__ ) . '__write-log.php';
 
 /*
  * Add the admin menu link
  */
-require_once 'admin-menu.php';
+// require_once 'admin-menu.php';
 /*
  * Add the ACF field group that will manaage the forms in the admin area.
  */
-require_once 'admin-menu-acf.php';
+// require_once 'admin-menu-acf.php';
 
 
 require_once 'admin-notices.php';
@@ -143,7 +140,7 @@ function wp_swift_form_builder_admin_menu_check() {
 		add_action( 'admin_menu', 'wp_swift_form_builder_add_admin_menu' );
 	}
 }
-add_action( 'init', 'wp_swift_form_builder_admin_menu_check' );
+// add_action( 'init', 'wp_swift_form_builder_admin_menu_check' );
 
 
 # Register ACF field groups that will appear on the options pages
@@ -157,11 +154,11 @@ function acf_add_local_field_group_contact_form() {
     // include "acf-field-groups/contact-page/_acf-field-group-form-inputs.php";
     // // include "acf-field-groups/_acf-field-group-options-page-settings.php";
     // include "acf-field-groups/contact-page/_acf-field-group-contact-page-input-settings.php";
-    require_once plugin_dir_path( __FILE__ ) . 'acf-field-groups/input-builder/shortcode.php';
-    // require_once plugin_dir_path( __FILE__ ) . 'acf-field-groups/input-builder/form-builder-inputs.php';
-    // require_once plugin_dir_path( __FILE__ ) . 'acf-field-groups/input-builder/form-builder-2-inputs-sections.php';
-    require_once plugin_dir_path( __FILE__ ) . 'acf-field-groups/default-contact-page/default-settings.php';
-    require_once plugin_dir_path( __FILE__ ) . 'acf-field-groups/contact-page/_acf-field-group-contact-form.php';
+    // require_once plugin_dir_path( __FILE__ ) . 'acf-field-groups/input-builder/shortcode.php';
+    require_once plugin_dir_path( __FILE__ ) . 'acf-field-groups/input-builder/form-builder-inputs.php';
+    require_once plugin_dir_path( __FILE__ ) . 'acf-field-groups/input-builder/form-builder-2-inputs-sections.php';
+    // require_once plugin_dir_path( __FILE__ ) . 'acf-field-groups/default-contact-page/default-settings.php';
+    // require_once plugin_dir_path( __FILE__ ) . 'acf-field-groups/contact-page/_acf-field-group-contact-form.php';
 }
 
 require_once 'class-form-builder.php';
@@ -173,7 +170,7 @@ require_once '_build-form-array.php';
  * Form Custom Post Type
  */
 require_once plugin_dir_path( __FILE__ ) . 'cpt/wp_swift_form.php';
-
+require_once plugin_dir_path( __FILE__ ) . 'cpt/wp_swift_form_category.php';
 // Initialize the class
 // $wp_swift_contact_form_plugin = new WP_Swift_Form_Builder_Contact_Form();
 
