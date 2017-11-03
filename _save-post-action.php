@@ -5,23 +5,23 @@ function wp_swift_form_builder_save_post($post_id) {
 
     $form_data = wp_swift_form_data_loop($post_id); 
 
-    $slug = 'contact';
-    $term = 'Contact Form';
-    $taxonomy = 'wp_swift_form_category';
-    if (!term_exists( $term, $taxonomy )) {
-        // wp_insert_term( $term, $taxonomy, array( 'slug' => $slug ) );
-        $terms = get_terms([
-            'taxonomy' => $taxonomy,
-            'hide_empty' => false,
-        ]);
-        write_log($terms);
-    }
-           $terms = get_terms([
-            'taxonomy' => $taxonomy,
-            'hide_empty' => false,
-        ]);
-        write_log($terms);
-    wp_set_post_terms( $post_id, $term, $taxonomy );
+    // $slug = 'contact';
+    // $term = 'Contact Form';
+    // $taxonomy = 'wp_swift_form_category';
+    // if (term_exists( $term, $taxonomy )) {
+    //     // wp_insert_term( $term, $taxonomy, array( 'slug' => $slug ) );
+    //     $terms = get_terms([
+    //         'taxonomy' => $taxonomy,
+    //         'hide_empty' => false,
+    //     ]);
+    //     write_log($terms);
+    // }
+    //        $terms = get_terms([
+    //         'taxonomy' => $taxonomy,
+    //         'hide_empty' => false,
+    //     ]);
+    //     write_log($terms);
+    // wp_set_post_terms( $post_id, $term, $taxonomy );
 
     if (FORM_BUILDER_SAVE_TO_JSON) {
     	/*
