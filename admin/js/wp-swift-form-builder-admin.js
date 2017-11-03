@@ -1,11 +1,11 @@
 jQuery(document).ready(function($){
 	$('body').on('click', '#shortcode-input', function(e) {
-		// copy_shortcode( this );
+		copy_shortcode( this );
 
 
-				var $msg = $('#shortcode-input-copy');
-				$msg.removeClass('hidden');
-				console.log('#shortcode-input-copy');
+				// var $msg = $('#shortcode-input-copy');
+				// $msg.removeClass('hidden');
+				// console.log('#shortcode-input-copy');
 				// setTimeout(function(){$msg.addClass('hidden'); }, 2000);
 				// console.log('#copied-to-clipboard');
 	});
@@ -61,6 +61,7 @@ jQuery(document).ready(function($){
 
 /*
 [form id="322"]
+[form id="154"]
 
 [form id="322"]
 */	

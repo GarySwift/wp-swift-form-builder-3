@@ -30,6 +30,20 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
+/*
+ * Form Custom Post Type and Taxonomies
+ */
+require_once plugin_dir_path( __FILE__ ) . 'cpt/wp_swift_form.php';
+require_once plugin_dir_path( __FILE__ ) . 'cpt/wp_swift_form_category.php';
+/**
+ * Constant vars
+ */
+define('FORM_BUILDER_DIR', '/form-builder/');
+define('FORM_BUILDER_SAVE_TO_JSON', false);
+define('FORM_BUILDER_DEFAULT_TERM', 'Contact Form');
+define('FORM_BUILDER_DEFAULT_SLUG', 'contact-form');
+define('FORM_BUILDER_DEFAULT_TAXONOMY', 'wp_swift_form_category');
+
 /**
  * The code that runs during plugin activation.
  * This action is documented in includes/class-wp-swift-form-builder-activator.php
@@ -45,8 +59,18 @@ function wp_swift_form_builder_taxonomy_check() {
         cptui_register_my_taxes_wp_swift_form_category();
         if (!term_exists( FORM_BUILDER_DEFAULT_TERM, FORM_BUILDER_DEFAULT_TAXONOMY )) {
             wp_insert_term( FORM_BUILDER_DEFAULT_TERM, FORM_BUILDER_DEFAULT_TAXONOMY, array( 'slug' => FORM_BUILDER_DEFAULT_SLUG ) );
-        }    
+        }
+        // $terms = get_terms([
+        //     'taxonomy' => FORM_BUILDER_DEFAULT_TAXONOMY,
+        //     'hide_empty' => false,
+        // ]);
+        // write_log(FORM_BUILDER_DEFAULT_TAXONOMY);    
+        // write_log($terms);          
     }
+    else {
+        write_log( '2 FORM_BUILDER_DEFAULT_TAXONOMY not exist' );
+    }
+    
 }
 /**
  * The code that runs during plugin deactivation.
@@ -72,21 +96,6 @@ require plugin_dir_path( __FILE__ ) . 'includes/class-wp-swift-form-builder.php'
  * @author 	 Gary Swift 
  * @since    1.0.0
  */
-
-/**
- * Constant vars
- */
-define('FORM_BUILDER_DIR', '/form-builder/');
-define('FORM_BUILDER_SAVE_TO_JSON', false);
-define('FORM_BUILDER_DEFAULT_TERM', 'Contact Form');
-define('FORM_BUILDER_DEFAULT_SLUG', 'contact-form');
-define('FORM_BUILDER_DEFAULT_TAXONOMY', 'wp_swift_form_category');
-
-/*
- * Form Custom Post Type and Taxonomies
- */
-require_once plugin_dir_path( __FILE__ ) . 'cpt/wp_swift_form.php';
-require_once plugin_dir_path( __FILE__ ) . 'cpt/wp_swift_form_category.php';
 
 
 
@@ -132,7 +141,7 @@ require_once plugin_dir_path( __FILE__ ) . '__write-log.php';
 // require_once 'admin-menu-acf.php';
 
 
-require_once '_admin-notices.php';
+require_once 'admin-notices.php';
 
 // function wp_swift_form_builder_admin_menu_slug() {
 // 	// if( current_user_can('editor') || current_user_can('administrator') ) {
@@ -185,6 +194,18 @@ require_once '_build-form-array.php';
  */
 
 require_once plugin_dir_path( __FILE__ ) . '_shortcode-metabox.php';
+// Initialize the class
+// $wp_swift_contact_form_plugin = new WP_Swift_Form_Builder_Contact_Form();
+
+
+// require_once '_form-data.php';
+// function wp_swift_get_contact_form( $attributes=array() ) {
+    // $form_builder = null;
+    // // if (class_exists('WP_Swift_Form_Builder_Contact_Form')) {
+    //     $form_builder = new WP_Swift_Form_Builder_Contact_Form( get_contact_form_data(), array("show_mail_receipt"=>true, "option" => "") );    
+    // }
+    // return $form_builder;        
+// }
 
 
 /**
@@ -203,3 +224,63 @@ function run_wp_swift_form_builder() {
 
 }
 run_wp_swift_form_builder();
+
+
+
+function wp_swift_init_test() {
+    // $slug = 'contact';
+    // $term = 'Contact Form';
+    $taxonomy = 'wp_swift_form_category';
+    // if (!term_exists( $term, $taxonomy )) {
+    //     wp_insert_term( $term, $taxonomy, array( 'slug' => $slug ) );
+    //     $terms = get_terms([
+    //         'taxonomy' => $taxonomy,
+    //         'hide_empty' => false,
+    //     ]);
+    //     write_log($terms);
+    // }
+       // wp_insert_term( $term, $taxonomy, array( 'slug' => $slug ) );
+        $terms = get_terms([
+            'taxonomy' => $taxonomy,
+            'hide_empty' => false,
+        ]);
+        write_log('1'); 
+        write_log($terms); 
+        foreach ( $terms as $term ) {
+               wp_delete_term( $term->term_id, $taxonomy );
+        } 
+           $terms = get_terms([
+            'taxonomy' => $taxonomy,
+            'hide_empty' => false,
+        ]);
+           write_log('2'); 
+        write_log($terms);       
+}
+// add_action("init", "wp_swift_init_test");
+// function wp_swift_form_builder_new_to_publish($post_id) {
+//      write_log('1 wp_swift_form_builder_new_to_publish');
+//     // Return if this isn't a 'wp_swift_form' post
+//     if ( "wp_swift_form" != get_post_type($post_id) ) return; 
+//     wp_set_post_terms( $post_id, FORM_BUILDER_DEFAULT_TERM, FORM_BUILDER_DEFAULT_TAXONOMY );
+//     write_log('2 wp_swift_form_builder_new_to_publish');
+// }
+// add_action( 'new_to_publish', 'wp_swift_form_builder_new_to_publish' );
+
+
+// function wp_swift_form_builder_pending_to_publish($post_id) {
+//      write_log('1 wp_swift_form_builder_pending_to_publish');
+//     // Return if this isn't a 'wp_swift_form' post
+//     if ( "wp_swift_form" != get_post_type($post_id) ) return; 
+//     wp_set_post_terms( $post_id, FORM_BUILDER_DEFAULT_TERM, FORM_BUILDER_DEFAULT_TAXONOMY );
+//     write_log('2 wp_swift_form_builder_pending_to_publish');
+// }
+// add_action( 'pending_to_publish', 'wp_swift_form_builder_pending_to_publish' );
+
+// function wp_swift_form_builder_draft_to_publish($post_id) {
+//      write_log('1 wp_swift_form_builder_draft_to_publish');
+//     // Return if this isn't a 'wp_swift_form' post
+//     if ( "wp_swift_form" != get_post_type($post_id) ) return; 
+//     wp_set_post_terms( $post_id, FORM_BUILDER_DEFAULT_TERM, FORM_BUILDER_DEFAULT_TAXONOMY );
+//     write_log('2 wp_swift_form_builder_draft_to_publish');
+// }
+// add_action( 'draft_to_publish', 'wp_swift_form_builder_draft_to_publish' );

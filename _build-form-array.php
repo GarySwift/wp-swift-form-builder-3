@@ -156,8 +156,6 @@ function build_acf_form_array($inputs, $settings, $section=0) {
 }
 
 function wp_swift_get_form_data($id) {
-    
-    return wp_swift_form_data_loop($id);
 
     if (FORM_BUILDER_SAVE_TO_JSON) {
 
@@ -192,56 +190,59 @@ function wp_swift_form_data_loop($id) {
     $settings = array();
     $sections = array();
 
-    if( get_field('hide_labels', $id) ) {
-        $settings['hide_labels'] = true;
-        $settings['form_css_class'] = ' hide-labels';
-    }
-
-    if( get_field('wrap_form', $id) ) {
-        $settings['wrap_form'] = true;
-        
-        if ( isset($settings['form_css_class']) ) {
-            $settings['form_css_class'] .= ' wrap';
+    if (function_exists('get_field')) :
+        if( get_field('hide_labels', $id) ) {
+            $settings['hide_labels'] = true;
+            $settings['form_css_class'] = ' hide-labels';
         }
-        else {
-            $settings['form_css_class'] = ' wrap';
-        }
-    }
 
-    if ( have_rows('sections', $id) ) :
-
-        $section_count = 0;
-        $input_count = 0;
-
-        while( have_rows('sections', $id) ) : the_row();
-            $section = array();
-            $inputs = array();
-
-            if ( get_sub_field('section_header') ) {
-                $section["section_header"] = get_sub_field('section_header');
+        if( get_field('wrap_form', $id) ) {
+            $settings['wrap_form'] = true;
+            
+            if ( isset($settings['form_css_class']) ) {
+                $settings['form_css_class'] .= ' wrap';
             }
-            if ( get_sub_field('section_content') ) {
-                $section["section_content"] = get_sub_field('section_content');
-            }            
-            if ( have_rows('form_inputs') ) :
-                while( have_rows('form_inputs') ) : the_row();
-                    $inputs_settings_array = build_acf_form_array($inputs, $settings, $section_count);  
-                    $settings = $inputs_settings_array["settings"];
-                    $inputs = $inputs_settings_array["inputs"];
-                    $input_count++;
-                endwhile;
-            endif;
-
-            $section["inputs"] = $inputs;
-            $sections[] = $section;
-            $section_count++;
-        endwhile;
-
-        if ($input_count) {
-            $form_data["sections"] = $sections;
-            $form_data["settings"] = $settings;
+            else {
+                $settings['form_css_class'] = ' wrap';
+            }
         }
 
+        if ( have_rows('sections', $id) ) :
+
+            $section_count = 0;
+            $input_count = 0;
+
+            while( have_rows('sections', $id) ) : the_row();
+                $section = array();
+                $inputs = array();
+
+                if ( get_sub_field('section_header') ) {
+                    $section["section_header"] = get_sub_field('section_header');
+                }
+                if ( get_sub_field('section_content') ) {
+                    $section["section_content"] = get_sub_field('section_content');
+                }            
+                if ( have_rows('form_inputs') ) :
+                    while( have_rows('form_inputs') ) : the_row();
+                        $inputs_settings_array = build_acf_form_array($inputs, $settings, $section_count);  
+                        $settings = $inputs_settings_array["settings"];
+                        $inputs = $inputs_settings_array["inputs"];
+                        $input_count++;
+                    endwhile;
+                endif;
+
+                $section["inputs"] = $inputs;
+                $sections[] = $section;
+                $section_count++;
+            endwhile;
+
+            if ($input_count) {
+                $form_data["sections"] = $sections;
+                $form_data["settings"] = $settings;
+            }
+
+        endif;
     endif;
+
     return $form_data; 
 }

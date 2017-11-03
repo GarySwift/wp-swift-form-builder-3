@@ -4,24 +4,10 @@ function wp_swift_form_builder_save_post($post_id) {
     if ( "wp_swift_form" != get_post_type($post_id) ) return; 
 
     $form_data = wp_swift_form_data_loop($post_id); 
-
-    // $slug = 'contact';
-    // $term = 'Contact Form';
-    // $taxonomy = 'wp_swift_form_category';
-    // if (term_exists( $term, $taxonomy )) {
-    //     // wp_insert_term( $term, $taxonomy, array( 'slug' => $slug ) );
-    //     $terms = get_terms([
-    //         'taxonomy' => $taxonomy,
-    //         'hide_empty' => false,
-    //     ]);
-    //     write_log($terms);
-    // }
-    //        $terms = get_terms([
-    //         'taxonomy' => $taxonomy,
-    //         'hide_empty' => false,
-    //     ]);
-    //     write_log($terms);
-    // wp_set_post_terms( $post_id, $term, $taxonomy );
+    // Check if default taxonomy exists
+    wp_swift_form_builder_taxonomy_check();
+    // Add default taxonomy
+    wp_set_post_terms( $post_id, FORM_BUILDER_DEFAULT_TERM, FORM_BUILDER_DEFAULT_TAXONOMY );
 
     if (FORM_BUILDER_SAVE_TO_JSON) {
     	/*

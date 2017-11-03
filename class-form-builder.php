@@ -1,6 +1,4 @@
 <?php
-
-
 /*
  * Include the WordPress Admin API interface settings for this plugin.
  * This will declare all menu pages, tabs and inputs etc but it does not

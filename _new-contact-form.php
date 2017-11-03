@@ -20,11 +20,7 @@ function wp_swift_form_preset() {
 
         $post_id = wp_insert_post($args);
         if(!is_wp_error($post_id)) {
-		    $term = 'Contact Form';
-		    $taxonomy = 'wp_swift_form_category';
-		    if (term_exists( $term, $taxonomy )) {
-		        wp_set_post_terms( $post_id, $term, $taxonomy );
-		    }
+            // Prepopulate the ACF field with input details (this is not processed form data)
             update_field( 'field_59cf72b083b6d', wp_swift_get_form_data_preset(), $post_id );
             wp_swift_form_builder_save_post($post_id);
             // wp_redirect(admin_url('post.php?post='.$post_id.'&action=edit', 'http'), 301);
@@ -36,12 +32,6 @@ function wp_swift_form_preset() {
         }
         add_action( 'admin_notices', 'wp_swift_form_builder_new_contact_form_error' );
     }
-}
-function wp_swift_form_builder_new_contact_form_error() {
-	$class = 'notice notice-error';
-	$message = __( 'WP Swift: Form Builder - An error has occurred while attempting to create a new form', 'wp-swift-form-builder' );
-
-	printf( '<div class="%1$s"><p>%2$s</p></div>', esc_attr( $class ), esc_html( $message ) ); 
 }
 
 // add_action("init", "wp_swift_form_preset");

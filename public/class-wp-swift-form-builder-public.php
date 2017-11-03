@@ -66,6 +66,18 @@ class Wp_Swift_Form_Builder_Public {
         $a = shortcode_atts( array(
             'id' => false,
         ), $atts );
+
+    // if( get_field('sections', $a['id']) ) {
+    //     $sections = get_field('sections', $a['id']);
+    //     // echo "<pre>"; var_export($sections); echo "</pre>";
+    //     echo "<pre>"; 
+    //     	echo json_encode($sections);
+    //     echo "</pre>";
+    // }
+    // else {
+    //     write_log('no sections');
+    // }
+
         $form_builder = new WP_Swift_Form_Builder_Contact_Form( $a['id'] );
         return $form_builder->run();
     }
@@ -77,24 +89,12 @@ class Wp_Swift_Form_Builder_Public {
 	 */
 	public function enqueue_styles() {
 
-		/**
-		 * This function is provided for demonstration purposes only.
-		 *
-		 * An instance of this class should be passed to the run() function
-		 * defined in Wp_Swift_Form_Builder_Loader as all of the hooks are defined
-		 * in that particular class.
-		 *
-		 * The Wp_Swift_Form_Builder_Loader will then create the relationship
-		 * between the defined hooks and the functions defined in this
-		 * class.
-		 */
 		$options = get_option( 'wp_swift_form_builder_settings' );
         if ( !isset($options['wp_swift_form_builder_checkbox_css']) ) {
 			$file = 'css/wp-swift-form-builder-public.css';
 			$version = filemtime(plugin_dir_path( __FILE__ ) . $file);
 			wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . $file, array(), $version, 'all' );
         }
-
 
 	}
 
@@ -105,17 +105,6 @@ class Wp_Swift_Form_Builder_Public {
 	 */
 	public function enqueue_scripts() {
 
-		/**
-		 * This function is provided for demonstration purposes only.
-		 *
-		 * An instance of this class should be passed to the run() function
-		 * defined in Wp_Swift_Form_Builder_Loader as all of the hooks are defined
-		 * in that particular class.
-		 *
-		 * The Wp_Swift_Form_Builder_Loader will then create the relationship
-		 * between the defined hooks and the functions defined in this
-		 * class.
-		 */
 		$options = get_option( 'wp_swift_form_builder_settings' );
         if ( !isset($options['wp_swift_form_builder_checkbox_javascript']) ) {
 			$file = 'js/wp-swift-form-builder-public.js';

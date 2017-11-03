@@ -238,21 +238,17 @@ class WP_Swift_Form_Builder_Admin_Interface {
 	public function wp_swift_form_builder_options_page(  ) { 
 	    ?>
 	        <div id="form-builder-wrap" class="wrap">
-	        <h2>WP Swift: Form Builder</h2>
+		        <h2>WP Swift: Form Builder</h2>
 
-	        <form action='options.php' method='post'>
-	            
-	            <?php
-	            settings_fields( 'form-builder' );
-	            do_settings_sections( 'form-builder' );
-	            submit_button();
-	            ?>
+		        <form action='options.php' method='post'>
+		            
+		            <?php
+		            settings_fields( 'form-builder' );
+		            do_settings_sections( 'form-builder' );
+		            submit_button();
+		            ?>
 
-	        </form>
-	        <hr>
-	        <h2>Contact Form</h2>
-	        <p>Use the button below to create a new form with preset input fields.</p>
-	        <a href="<?php echo admin_url('edit.php?post_type=wp_swift_form&wp_swift_form_builder_preset_test_2=1', 'http') ?>" class="button button-primary">New Contact Form</a>	
+		        </form>
 	        </div>
 	    <?php 
 	}

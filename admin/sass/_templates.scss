@@ -1,0 +1,33 @@
+$black: #0a0a0a;
+$white: #fefefe;
+
+// #shortcode-input-copy.hidden {
+// 	visibility: hidden;
+	
+// }
+// #shortcode-input-copy {
+// 	visibility: visible;
+// 	text-align: center;
+
+// }
+.wp-swift-form-builder-template {
+	background-color: $white;
+	padding: 15px;
+	padding-top: 0;
+	margin-top: 15px;
+}
+.new-form-from-template {
+	background-color: #4278F1;
+	color: white;
+	border: none;
+	width: 100%;
+	padding: 10px;
+	cursor: pointer;
+	-webkit-transition: background-color 0.3s;
+	-o-transition: background-color 0.3s;
+	transition: background-color 0.3s;
+
+}
+.new-form-from-template:hover {
+	background-color: #4895F0;
+}
