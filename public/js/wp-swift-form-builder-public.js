@@ -1,5 +1,78 @@
 console.info('wp-swift-form-builder-public.js');
 jQuery(document).ready(function($){
+// console.log('fdatepicker');
+// console.log($.fdatepicker);
+// console.log();
+// console.log(Datepicker);
+// console.log();
+
+// if(jQuery().fdatepicker) {
+//     console.log(' //run plugin dependent code');
+//  }
+// if (typeof $().fdatepicker === "function") { 
+	
+// }
+// console.log('fdatepicker', fdatepicker);
+// if ($.isFunction(fdatepicker)) {
+// console.log('$().fdatepicker is a function');
+// }
+// else {
+// 	console.log('not a function');
+// }
+	if(jQuery().fdatepicker) {
+
+		var today = new Date();
+		var dd = today.getDate();
+		var mm = today.getMonth()+1; //January is 0!
+		var yyyy = today.getFullYear();
+		
+		if(dd<10){
+		    dd='0'+dd;
+		} 
+		if(mm<10){
+		    mm='0'+mm;
+		} 
+		today = dd+'-'+mm+'-'+yyyy;		
+
+		$('.js-date-picker input').fdatepicker({
+			initialDate: today,
+			format: 'dd-mm-yyyy',
+			endDate: today,
+			disableDblClickSelection: true,
+			leftArrow:'<<',
+			rightArrow:'>>',
+			closeIcon:'X',
+			closeButton: true
+		});
+	}	
+
+	$('.js-other-value').removeClass('css-hide').hide();
+
+	$('.js-other-value-event select').change(function() {
+		var input = new FormBuilderInput( $(this).serializeArray()[0] );
+		if (input.value === 'other') {
+			$(input.id + '-other-form-group').slideDown();
+		}
+		else {
+			$(input.id + '-other-form-group').slideUp();
+			$(input.id + '-other').val('');
+		}
+	});
+
+
+	$('.js-other-value-event input[type=checkbox]').change(function() {
+		var input = new FormBuilderInput( this );
+		if (input.value === 'other') {
+			
+			if (this.checked) {
+				$(input.id + '-other-form-group').slideDown();
+			}
+			else {
+				$(input.id + '-other-form-group').slideUp();
+				$(input.id + '-other').val('');
+			}
+		}		
+	});
 
 	// Form Input Object
 	var FormBuilderInput = function FormBuilderInput(input) {

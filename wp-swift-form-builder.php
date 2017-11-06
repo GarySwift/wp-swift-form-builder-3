@@ -40,14 +40,6 @@ function activate_wp_swift_form_builder() {
     wp_swift_form_builder_taxonomy_check();
 }
 
-function wp_swift_form_builder_taxonomy_check() {
-    if (!taxonomy_exists( FORM_BUILDER_DEFAULT_TAXONOMY )) {
-        cptui_register_my_taxes_wp_swift_form_category();
-        if (!term_exists( FORM_BUILDER_DEFAULT_TERM, FORM_BUILDER_DEFAULT_TAXONOMY )) {
-            wp_insert_term( FORM_BUILDER_DEFAULT_TERM, FORM_BUILDER_DEFAULT_TAXONOMY, array( 'slug' => FORM_BUILDER_DEFAULT_SLUG ) );
-        }    
-    }
-}
 /**
  * The code that runs during plugin deactivation.
  * This action is documented in includes/class-wp-swift-form-builder-deactivator.php
@@ -67,7 +59,7 @@ register_deactivation_hook( __FILE__, 'deactivate_wp_swift_form_builder' );
 require plugin_dir_path( __FILE__ ) . 'includes/class-wp-swift-form-builder.php';
 
 /**
- * The Admin menu settings.
+ * FormBuilder constants and required files
  *
  * @author 	 Gary Swift 
  * @since    1.0.0
@@ -82,25 +74,10 @@ define('FORM_BUILDER_DEFAULT_TERM', 'Contact Form');
 define('FORM_BUILDER_DEFAULT_SLUG', 'contact-form');
 define('FORM_BUILDER_DEFAULT_TAXONOMY', 'wp_swift_form_category');
 
-/*
- * Form Custom Post Type and Taxonomies
- */
-require_once plugin_dir_path( __FILE__ ) . 'cpt/wp_swift_form.php';
-require_once plugin_dir_path( __FILE__ ) . 'cpt/wp_swift_form_category.php';
-
-
-
-require_once plugin_dir_path( __FILE__ ) . '_new-form-error.php';
 /**
  * The FormBuilder class that handles all form logic
  */
 require_once plugin_dir_path( __FILE__ ) . 'class-form-builder.php';
-
-/**
- * The class that handles the admin interface
- */
-require_once plugin_dir_path( __FILE__ ) . 'class-admin-interface-templates.php';
-require_once plugin_dir_path( __FILE__ ) . 'class-admin-interface.php';
 
 /**
  * A FormBuilder child class that handles contact forms
@@ -108,84 +85,67 @@ require_once plugin_dir_path( __FILE__ ) . 'class-admin-interface.php';
 require_once plugin_dir_path( __FILE__ ) . 'class-form-builder-contact-form.php';
 
 /*
-*/
+ * Form Custom Post Type and Taxonomies
+ */
+require_once plugin_dir_path( __FILE__ ) . 'cpt/wp_swift_form.php';
+require_once plugin_dir_path( __FILE__ ) . 'cpt/wp_swift_form_category.php';
+
+/**
+ * The ACF field groups
+ */ 
+require_once plugin_dir_path( __FILE__ ) . 'acf-field-groups/form-builder-inputs.php';
+require_once plugin_dir_path( __FILE__ ) . 'acf-field-groups/form-builder-input-sections.php';
+
+/**
+ * The classes that handles the admin interface
+ */
+require_once plugin_dir_path( __FILE__ ) . 'class-admin-interface-templates.php';
+require_once plugin_dir_path( __FILE__ ) . 'class-admin-interface-settings.php';
+
+/**
+ * Function that wraps email message in a html template
+ */
 require_once plugin_dir_path( __FILE__ ) . '/email-templates/wp-swift-email-templates.php';
 
 /**
  * Create the ajax nonce and url
  */
 require_once plugin_dir_path( __FILE__ ) . '_localize-script.php';
+
+/**
+ * Check if the default taxonomy exists and create it if not
+ */
+require_once plugin_dir_path( __FILE__ ) . '_taxonomy-check.php';
+
+/**
+ * Handle the ajax form submit
+ */
 require_once plugin_dir_path( __FILE__ ) . '_ajax-form-callback.php';
+
+/**
+ * save_post hook that adds default taxonomy and saves the processed ACF form data into FormBuilder data
+ */
 require_once plugin_dir_path( __FILE__ ) . '_save-post-action.php';
-require_once plugin_dir_path( __FILE__ ) . '_new-contact-form.php';
-// Debugging
-require_once plugin_dir_path( __FILE__ ) . '__write-log.php';
-// require_once plugin_dir_path( __FILE__ ) . 'debug/_terms.php';
 
-/*
- * Add the admin menu link
+/**
+ * All admin notices including a GET request for 'wp_swift_form_builder_new_contact_form_error'
  */
-// require_once 'admin-menu.php';
-/*
- * Add the ACF field group that will manaage the forms in the admin area.
+require_once plugin_dir_path( __FILE__ ) . '_admin-notices.php';
+
+/**
+ * Process ACF data into FormBuilder data
  */
-// require_once 'admin-menu-acf.php';
+require_once plugin_dir_path( __FILE__ ) . '_build-form-array.php';
 
-
-require_once '_admin-notices.php';
-
-// function wp_swift_form_builder_admin_menu_slug() {
-// 	// if( current_user_can('editor') || current_user_can('administrator') ) {
-// 	// 	require plugin_dir_path( __FILE__ ) . '_admin-menu.php';
-// 	// }
-//     if ( function_exists('wp_swift_admin_menu_slug') ) {
-//         return wp_swift_admin_menu_slug();
-//     }
-//     else {
-//         return 'options-general.php';
-//     }	
-// }
-
-function wp_swift_form_builder_admin_menu_check() {
-	if( function_exists('acf_add_options_page') ) {
-		add_action( 'admin_menu', 'wp_swift_form_builder_add_admin_menu_acf' );
-	}
-	else {
-		add_action( 'admin_menu', 'wp_swift_form_builder_add_admin_menu' );
-	}
-}
-// add_action( 'init', 'wp_swift_form_builder_admin_menu_check' );
-
-
-# Register ACF field groups that will appear on the options pages
-add_action( 'init', 'acf_add_local_field_group_contact_form' );
-/*
- * The ACF field group for 'Contact Form'
- */ 
-function acf_add_local_field_group_contact_form() {
-	// echo "<pre>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Hic fugit quaerat iste voluptatum! Quos dolore consequatur eius iste accusamus unde at mollitia necessitatibus odio voluptatum tempora neque, odit beatae dignissimos. </pre>";
-    // include "acf-field-groups/contact-page/_acf-field-group-contact-form.php";
-    // include "acf-field-groups/contact-page/_acf-field-group-form-inputs.php";
-    // // include "acf-field-groups/_acf-field-group-options-page-settings.php";
-    // include "acf-field-groups/contact-page/_acf-field-group-contact-page-input-settings.php";
-    // require_once plugin_dir_path( __FILE__ ) . 'acf-field-groups/input-builder/shortcode.php';
-    require_once     'acf-field-groups/input-builder/form-builder-inputs.php';
-    require_once plugin_dir_path( __FILE__ ) . 'acf-field-groups/input-builder/form-builder-2-inputs-sections.php';
-    // require_once plugin_dir_path( __FILE__ ) . 'acf-field-groups/default-contact-page/default-settings.php';
-    // require_once plugin_dir_path( __FILE__ ) . 'acf-field-groups/contact-page/_acf-field-group-contact-form.php';
-}
-
-require_once 'class-form-builder.php';
-require_once 'class-form-builder-contact-form.php';
-require_once '_build-form-array.php';
-
-
-/*
- * Form Custom Post Type
+/**
+ * A metabox showing form usage which includes shortcode and php function
  */
-
 require_once plugin_dir_path( __FILE__ ) . '_shortcode-metabox.php';
 
+/**
+ * Add the FoundationPress reveal modal which shows submission response
+ */
+require_once plugin_dir_path( __FILE__ ) . '_reveal-modal.php';
 
 /**
  * Begins execution of the plugin.

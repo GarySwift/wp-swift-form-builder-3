@@ -1,4 +1,7 @@
 <?php
+/**
+ * save_post hook that adds default taxonomy and saves the processed ACF form data into FormBuilder data
+ */
 function wp_swift_form_builder_save_post($post_id) {
     // Return if this isn't a 'wp_swift_form' post
     if ( "wp_swift_form" != get_post_type($post_id) ) return; 

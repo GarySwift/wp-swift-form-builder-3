@@ -23,8 +23,6 @@ class WP_Swift_Form_Builder_Admin_Interface_Templates {
 	public function wp_swift_form_builder_add_admin_menu(  ) { 
 
 	    add_submenu_page( 'edit.php?post_type=wp_swift_form', 'Form Builder Templates', 'Templates', 'manage_options', 'form_builder_templates', array($this, 'wp_swift_form_builder_templates')  );
-   
-
 	}
 
 	// public function wp_swift_form_builder_templates(  ) { 
@@ -35,23 +33,13 @@ class WP_Swift_Form_Builder_Admin_Interface_Templates {
 	 */
 	public function wp_swift_form_builder_settings_init(  ) { 
 
-
 	    register_setting( 'form-builder-templates', 'wp_swift_form_builder_settings' );
-
 	    add_settings_section(
 	        'wp_swift_form_builder_plugin_page_section', 
 	        __( 'Starter Template Forms', 'wp-swift-form-builder' ), 
 	        array($this, 'wp_swift_form_builder_settings_section_callback'), 
 	        'form-builder-templates'
 	    );
-
-// add_settings_field( 
-// 			'wp_swift_form_builder_checkbox_debug_mode', 
-// 			__( 'Debug Mode', 'wp-swift-form-builder' ), 
-// 			array($this, 'wp_swift_form_builder_checkbox_debug_mode_render'),  
-// 			'form-builder-templates', 
-// 			'wp_swift_form_builder_plugin_page_section' 
-// 	    );
 	}
 
 	/*
@@ -88,17 +76,10 @@ class WP_Swift_Form_Builder_Admin_Interface_Templates {
 	        <div id="form-builder-wrap" class="wrap">
 	        <h2>Templates</h2>
 
-	        	        <form action='options.php' method='post'>
-	            
-	            <?php
+	        <?php
 	            settings_fields( 'form-builder-templates' );
 	            do_settings_sections( 'form-builder-templates' );
-	            // submit_button();
-	            ?>
-
-	        </form>
-
-	        
+	        ?>
 
 			<div class="wp-swift-form-builder-template">
 				<div class="image"><img src="<?php echo plugin_dir_url( __FILE__ ) .'/admin/images/' ?>contact-form.svg" alt="Template Image" id="contact-form-svg-1" class="contact-form-svg"></div>

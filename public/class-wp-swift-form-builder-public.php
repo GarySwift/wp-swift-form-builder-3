@@ -129,12 +129,7 @@ function wp_swift_get_contact_form($form_id) {
     // }
 }
 
-function wp_swift_get_form($form_id) {
-    // $form_builder = wp_swift_get_form_builder($form_id);
-    // if ($form_builder !== null) {
-    //    return $form_builder->get_form();
-    // }
+function wp_swift_formbuilder_run($form_id) {
     $form_builder = new WP_Swift_Form_Builder_Contact_Form( $form_id );
-    // $form_builder = wp_swift_get_contact_form(234);
     echo $form_builder->run();    
 }

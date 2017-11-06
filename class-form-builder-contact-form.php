@@ -19,8 +19,8 @@
  */
 class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
 
-    private $attributes = null;
-    private $option = '';
+    // private $attributes = null;
+    // private $option = '';
 
     /*
      * Initializes the plugin.

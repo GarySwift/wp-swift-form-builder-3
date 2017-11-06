@@ -4,7 +4,7 @@
  * This will declare all menu pages, tabs and inputs etc but it does not
  * handle any business logic related to form functionality.
  */
-class WP_Swift_Form_Builder_Admin_Interface {
+class WP_Swift_Form_Builder_Admin_Interface_Settings {
 
     /*
      * Initializes the plugin.
@@ -254,4 +254,4 @@ class WP_Swift_Form_Builder_Admin_Interface {
 	}
 }
 // Initialize the class
-$form_builder_admin_interface = new WP_Swift_Form_Builder_Admin_Interface();
+$form_builder_admin_interface_settings = new WP_Swift_Form_Builder_Admin_Interface_Settings();

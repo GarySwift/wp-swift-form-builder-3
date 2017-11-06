@@ -134,7 +134,7 @@ class WP_Swift_Form_Builder_Parent {
             if( isset( $_POST[$this->get_submit_button_name()] ) ) { //check if form was submitted
                 echo $this->process_form($_POST); 
             }
-            $this->acf_build_form();
+            $this->front_end_form();
         // }
         ?>
         </div>
@@ -155,9 +155,10 @@ class WP_Swift_Form_Builder_Parent {
      * @param       $form_inputs    array   the array of inputs
      * @param       $args           array   additional arguments
      */
-    public function set_form_data($form_post_id, $form_inputs=array(), $args=false) {
+    // public function set_form_data($form_post_id, $form_inputs=array(), $args=false) {
    
-    }//@end set_form_data()
+    // }
+    //@end set_form_data()
 
   /*
      * Build the form
@@ -176,7 +177,7 @@ class WP_Swift_Form_Builder_Parent {
 
 
     public function front_end_form() {
-        $framework='zurb';
+        $framework='';
         $options = get_option( 'wp_swift_form_builder_settings' );
         if (isset($options['wp_swift_form_builder_select_css_framework'])) {
             $framework = $options['wp_swift_form_builder_select_css_framework'];
@@ -218,6 +219,8 @@ class WP_Swift_Form_Builder_Parent {
                         case "number":
                         case "username":
                         case "password":
+                        case "date":
+                        case "date_range":
                             $input_html = $this->build_form_input($id, $input);
                             echo $this->wrap_input($id, $input, $input_html);
                             break;
