@@ -236,6 +236,10 @@ class WP_Swift_Form_Builder_Parent {
                             $input_html = $this->build_form_checkbox($id, $input);
                             echo $this->wrap_input($id, $input, $input_html);
                             break; 
+                        case "checkbox_single":
+                            $input_html = $this->build_form_checkbox_single($id, $input);
+                            echo $this->wrap_input($id, $input, $input_html);
+                            break;               
                         case "multi_select":
                         case "select":
                             $input_html = $this->build_form_select($id, $input, '');
@@ -264,6 +268,7 @@ class WP_Swift_Form_Builder_Parent {
  *
  */
     public function validate_form($post) {
+
         // The form is submitted by a user and so is no longer pristine
         $this->set_form_pristine(false);
         foreach ($this->form_data as &$section) {
@@ -272,7 +277,16 @@ class WP_Swift_Form_Builder_Parent {
                     $input['value'] = $post[$input_key];
                     $input = $this->validate_input($input);
                 }
+                else {
+                    if ($input["data_type"] === "checkbox_single" && $input["required"] === "") {
+                        $input['clean'] = 'No';
+                        $input['passed'] = true;
+                    }                    
+                }
 
+                // echo "<pre>"; echo $input["data_type"]." - ".$input["required"];echo "</pre>";
+
+                // echo "<pre>";  echo "</pre>";
                 if (!$input['passed']) {
                     $this->increase_error_count();
                     if ($input['help'] == '') {
@@ -378,7 +392,11 @@ class WP_Swift_Form_Builder_Parent {
                     $clean = rtrim( $clean, ', ');
                     $input["options"] = $options;
                     $input['clean'] = $clean;
-                    break;                          
+                    break;                        
+            case "checkbox_single":
+                    $input["option"]["checked"] = 1;
+                    $input['clean'] = "Yes";//"Yes <small>(".$input["option"]["key"].")</small>";
+                    break;        
         }
         $input['passed'] = true;
         return $input;   
@@ -436,11 +454,11 @@ class WP_Swift_Form_Builder_Parent {
             }
         }
         // data_type is the same as $data['type'] unless it is an invalid attributes type such as username
-        $data_type = $input['type'];
-        if ($input['type']=='username') {
-            $input['type']='text';
-            $data_type = 'username';
-        }
+        // $data_type = $input['type'];
+        // if ($input['type']=='username') {
+        //     $input['type']='text';
+        //     $data_type = 'username';
+        // }
         if (isset($input['name'])) {
             $name = $input['name'];
         }
@@ -455,8 +473,8 @@ class WP_Swift_Form_Builder_Parent {
         
         // new
         $type = ' type="'.$input['type'].'"';
-        $data_type = ' data-type="'.$data_type.'"';
-        $class = ' class="'.$this->get_form_input_class().'"';
+        $data_type = ' data-type="'.$input['data_type'].'"';
+        $class = ' class="'.$this->get_form_input_class($input).'"';
         $id = ' id="'.$id.'"';
         $name = ' name="'.$name.'"';
         $tabindex = ' tabindex="'.$this->tab_index++.'"';
@@ -627,6 +645,35 @@ class WP_Swift_Form_Builder_Parent {
         ob_end_clean();
         return $input_html;  
     }
+
+    private function build_form_checkbox_single($id, $input) {
+        $checked='';
+        if ( $input["option"]["checked"]){
+            $checked=' checked';
+        }  
+        $required = '';
+        if (isset($input['required']) && $input['required'] !== '') {
+              $required = ' required';
+        }           
+        ob_start();
+        // echo "<pre>"; var_dump($input); echo "</pre>";
+        if ($input["option"]["key"]): ?>
+
+                    <label for="<?php echo $id ?>" class="lbl-checkbox">
+                        <input id="<?php echo $id ?>" name="<?php echo $id ?>" type="checkbox" class="js-single-checkbox"  data-type="checkbox" tabindex="<?php echo $this->tab_index++; ?>" value="1"<?php echo $checked; echo $required; ?>><?php echo $input["option"]["key"] ?>
+                    
+                    </label>
+        <?php else: ?>
+
+                    <input id="<?php echo $id.'-'.$count ?>" name="<?php echo $name ?>" class="js-single-checkbox" type="checkbox" data-type="checkbox" tabindex="<?php echo $this->tab_index++; ?>" value="1"<?php echo $checked; echo $required; ?>><?php echo $input["option"]["key"] ?>
+        <?php endif;
+
+        $html = ob_get_contents();
+        ob_end_clean();
+        
+        return $html;
+
+    }
     /******************************************************
      * @end Form Inputs
      ******************************************************/
@@ -694,7 +741,7 @@ class WP_Swift_Form_Builder_Parent {
                     ?>
 
                 </div>
-                <!-- @start input -->
+                <!-- @end input -->
 
             </div>
             <!-- @end form element -->
@@ -798,7 +845,10 @@ class WP_Swift_Form_Builder_Parent {
     /*
      * Get the CSS class for the input
      */
-    private function get_form_input_class() {
+    private function get_form_input_class($input=false) {
+        if (isset($input["css_class_input"])) {
+            return "js-form-builder-control " . $input["css_class_input"];
+        }
         return "js-form-builder-control";// form-control form-builder-control 
     }
 

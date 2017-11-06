@@ -109,7 +109,7 @@ class Wp_Swift_Form_Builder_Public {
         if ( !isset($options['wp_swift_form_builder_checkbox_javascript']) ) {
 			$file = 'js/wp-swift-form-builder-public.js';
 			$version = filemtime(plugin_dir_path( __FILE__ ) . $file);
-			wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . $file, array( 'jquery' ), $version, false );
+			wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . $file, array( 'jquery' ), $version, true );
 		}
 
 	}

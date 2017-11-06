@@ -107,6 +107,7 @@ function build_acf_form_array($inputs, $settings, $section=0) {
     $select_options='';
     $prefix = 'form-';
     $css_class = '';
+    $css_class_input = '';
     $other = false;
 
     if( get_sub_field('id') ) {
@@ -185,6 +186,7 @@ function build_acf_form_array($inputs, $settings, $section=0) {
 
     if( $data_type === 'date_range' ) {
         $css_class .= ' js-date-picker-range';
+        $css_class_input = 'js-date-picker-range';
         if (!isset($settings["groupings"])) {
             $settings["groupings"] = true;
         }        
@@ -241,16 +243,19 @@ function build_acf_form_array($inputs, $settings, $section=0) {
         case "multi_select":
         case "checkbox":
         case "radio":
-            $inputs[$prefix.$id] = array("passed"=>false, "clean"=>"", "value"=>"", "section"=>$section, "required"=>$required, "type"=>$type, "data_type"=>$data_type, "label"=>$label, "options"=>$select_options, "selected_option"=>"", "help"=>$help, "instructions" => $instructions, "grouping" => $grouping, "css_class" => $css_class);//,  "placeholder"=>$placeholder
-            break;    
+            $inputs[$prefix.$id] = array("passed"=>false, "clean"=>"", "value"=>"", "section"=>$section, "required"=>$required, "type"=>$type, "data_type"=>$data_type, "label"=>$label, "options"=>$select_options, "selected_option"=>"", "help"=>$help, "instructions" => $instructions, "grouping" => $grouping, "css_class" => $css_class);
+            break; 
+        case "checkbox_single":
+             $inputs[$prefix.$id] = array("passed"=>false, "clean"=>"", "value"=>"", "section"=>$section, "required"=>$required, "type"=>"checkbox", "data_type"=>$data_type, "label"=>$label, "option"=>array("value" => 1, "key" => get_sub_field('checkbox_label'), 'checked' => false), "selected_option"=>"", "help"=>$help, "instructions" => $instructions, "grouping" => $grouping, "css_class" => $css_class);
+            break;       
         case "file":
             $enctype = 'enctype="multipart/form-data"';
             $form_class = 'js-check-form-file';
             $inputs[$prefix.$id] = array("passed"=>false, "clean"=>"", "value"=>"", "section"=>$section, "required"=>$required, "type"=>$type, "data_type"=>$data_type,  "placeholder"=>$placeholder, "label"=>$label, "accept"=>"pdf", "help"=>$help, "instructions" => $instructions, "grouping" => $grouping, "css_class" => $css_class);
             break;              
         case "date_range":
-            $inputs[$prefix.$id.'-start'] = array("passed"=>false, "clean"=>"", "value"=>"", "section"=>$section, "required"=>$required, "type"=>$type, "data_type"=>$data_type, "label"=>"Date From", "help"=>$help, "instructions" => $instructions, "grouping" => 'start', "css_class" => $css_class.' js-date-range', 'order'=>0, 'parent_label'=>$label);
-            $inputs[$prefix.$id.'-end'] = array("passed"=>false, "clean"=>"", "value"=>"", "section"=>$section, "required"=>$required, "type"=>$type, "data_type"=>$data_type, "label"=>"Date To", "help"=>$help, "instructions" => $instructions, "grouping" => 'end', "css_class" => $css_class.' js-date-range', 'order'=>1, 'parent_label'=>$label);
+            $inputs[$prefix.$id.'-start'] = array("passed"=>false, "clean"=>"", "value"=>"", "section"=>$section, "required"=>$required, "type"=>$type, "data_type"=>"date", "label"=>"Date From", "help"=>$help, "instructions" => $instructions, "grouping" => 'start', "css_class" => $css_class.' js-date-range', 'css_class_input' => $css_class_input, 'order'=>0, 'parent_label'=>$label);
+            $inputs[$prefix.$id.'-end'] = array("passed"=>false, "clean"=>"", "value"=>"", "section"=>$section, "required"=>$required, "type"=>$type, "data_type"=>"date", "label"=>"Date To", "help"=>$help, "instructions" => $instructions, "grouping" => 'end', "css_class" => $css_class.' js-date-range', 'order'=>1, 'parent_label'=>$label);
             break;                                               
     }
     if( $other ) {

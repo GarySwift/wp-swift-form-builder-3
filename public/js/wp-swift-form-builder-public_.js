@@ -1,26 +1,104 @@
 console.info('wp-swift-form-builder-public.js');
-var dateInPast = function dateInPast(years) {
-	var dateNow = new Date();
-	var dd = dateNow.getDate();
-	var mm = dateNow.getMonth()+1; //January is 0!
-	var yyyy = dateNow.getFullYear();
-
-	if(dd<10){
-	    dd='0'+dd;
-	} 
-	if(mm<10){
-	    mm='0'+mm;
-	} 
-	
-	var dateInPast = dd + '-' + mm + '-' + (yyyy-years);
-	console.log(dateInPast);
-	return 	dateInPast;	
-};
 jQuery(document).ready(function($){
-	// FormBuilderDatePicker is set on server using wp_localize_script
+	// console.log('');
+	// console.log('plugin');
+	// console.log('FormBuilderDatePicker', FormBuilderDatePicker);
+	// console.log('FormBuilderAjax', FormBuilderAjax);
+	// console.log('FormBuilderDatePicker', FormBuilderDatePicker);
+	// if(typeof FormBuilderDatePicker === "undefined") {
+	// 	var FormBuilderDatePicker = {format: 'dd-mm-yyyy'};
+	// 	console.log('1 FormBuilderDatePicker', FormBuilderDatePicker);
+	// }
+	// else {
+	// 	console.log('2 FormBuilderDatePicker', FormBuilderDatePicker);
+	// }
+// var isValidDate = function isValidDate(value, userFormat) {
 
-	// dateInPast(13);
+//   // Set default format if format is not provided
+//   userFormat = userFormat || 'dd-mm-yyyy';
 
+//   // Find custom delimiter by excluding the
+//   // month, day and year characters
+//   var delimiter = /[^mdy]/.exec(userFormat)[0];
+
+//   // Create an array with month, day and year
+//   // so we know the format by index
+//   var theFormat = userFormat.split(delimiter);
+
+//   // Get the user date now that we know the delimiter
+//   var theDate = value.split(delimiter);
+
+//   function isDate(date, format) {
+//     var m, d, y, i = 0, len = format.length, f;
+//     for (i; i < len; i++) {
+//       f = format[i];
+//       if (/m/.test(f)) m = date[i];
+//       if (/d/.test(f)) d = date[i];
+//       if (/y/.test(f)) y = date[i];
+//     }
+//     return (
+//       m > 0 && m < 13 &&
+//       y && y.length === 4 &&
+//       d > 0 &&
+//       // Is it a valid day of the month?
+//       d <= (new Date(y, m, 0)).getDate()
+//     );
+//   }
+
+//   return isDate(theDate, theFormat);
+
+// }
+	// Validates that the input string is a valid date formatted as "dd-mm-yyyy"
+	var isValidDate = function isValidDate(dateString) {
+	    // First check for the pattern
+	    if(!dateString.match(/^(\d{1,2})-(\d{1,2})-(\d{4})$/)) {
+	    	return false;
+	    }
+	    // Parse the date parts to integers
+	    var parts = dateString.split("-");
+
+	    var day = parseInt(parts[0], 10);
+	    var month = parseInt(parts[1], 10);
+	    var year = parseInt(parts[2], 10);
+
+	    // Check the ranges of month and year
+	    var year_now = new Date().getFullYear();
+
+	    if(year < 1900 || year > 2100 || month === 0 || month > 12){
+	        return false;
+	    }
+
+	    var monthLength = [ 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 ];
+
+	    // Adjust for leap years
+	    if(year % 400 === 0 || (year % 100 !== 0 && year % 4 === 0)){
+	        monthLength[1] = 29;
+	    }
+
+	    // Check the range of the day
+	    return day > 0 && day <= monthLength[month - 1];
+	};
+
+// console.log('isValidDate', isValidDate);
+// console.log('fdatepicker');
+// console.log($.fdatepicker);
+// console.log();
+// console.log(Datepicker);
+// console.log();
+
+// if(jQuery().fdatepicker) {
+//     console.log(' //run plugin dependent code');
+//  }
+// if (typeof $().fdatepicker === "function") { 
+	
+// }
+// console.log('fdatepicker', fdatepicker);
+// if ($.isFunction(fdatepicker)) {
+// console.log('$().fdatepicker is a function');
+// }
+// else {
+// 	console.log('not a function');
+// }
 	if(jQuery().fdatepicker) {
 
 		var today = new Date();
@@ -37,10 +115,9 @@ jQuery(document).ready(function($){
 		today = dd+'-'+mm+'-'+yyyy;		
 
 		$('.js-date-picker input').fdatepicker({
-			// initialDate: today,
+			initialDate: today,
 			format: FormBuilderDatePicker.format,
-			endDate: today,//dateInPast(13),
-			// startDate: dateInPast(13),
+			endDate: today,
 			disableDblClickSelection: true,
 			leftArrow:'<<',
 			rightArrow:'>>',
@@ -49,9 +126,15 @@ jQuery(document).ready(function($){
 		});
 
 		// Range
-
+		// var datepickerFormat  = 'dd-mm-yyyy';
 		var nowTemp = new Date();
 		var now = new Date(nowTemp.getFullYear(), nowTemp.getMonth(), nowTemp.getDate(), 0, 0, 0, 0);
+
+		// FormBuilderDatePicker is set on server using wp_localize_script
+		// if(typeof FormBuilderDatePicker !== "undefined") {
+		// 	FormBuilderDatePicker.format = FormBuilderDatePicker.format;
+		// }
+
 
 		var datepickerListener = function (dateRangeStart, dateRangeEnd) {
 
@@ -134,11 +217,6 @@ jQuery(document).ready(function($){
 		errorCount: 0,
 		feedbackMessage: '', 
 		isValid: function isValid() {
-			// console.log('this.dataType', this.dataType);
-			// console.log('this.required', this.required);
-			// console.log('this.value', this.value);
-			// console.log('');
-			console.log(this);
 		  	var re;
 		  	if(this.required && this.value==='') {
 		  		return false;
@@ -153,15 +231,13 @@ jQuery(document).ready(function($){
 			      	re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
 			      	return re.test(this.value); 
 			    case 'select':	
-			    	return this.value.toLowerCase().substring(0, 6) !== 'select';		
+			    	return this.value.toLowerCase().substring(0, 6) !== 'select';	
+			    // case 'date_time':
+			    // 	return isValidDateTime(this.value);   	
 			    case 'date':
 			    	return isValidDate(this.value); 
-			    case 'checkbox':
-			    	console.log(this.id);
-			    	if (this.required && !$(this.id).prop('checked')) {
-			    		return false;
-			    	}
-			    	
+			    // case 'password':
+				   // 	return passwordCheck(this);
 			}
 			return true;
 	    }
@@ -171,71 +247,17 @@ jQuery(document).ready(function($){
 		var errorsInForm = 0;
 		for (var i = 0; i < form.length; i++) {
 			var input = new FormBuilderInput(form[i]);
-			// if(!input.isValid()) {
-			// 	$(input.id+'-form-group').addClass('has-error');
-			// 	errorsInForm++;
-			// }
-			// else {
-			// 	$(input.id+'-form-group').removeClass('has-error');
-			// }
-			errorsInForm = addClassAfterBlur(input, input.isValid());
+			if(!input.isValid()) {
+				$(input.id+'-form-group').addClass('has-error');
+				errorsInForm++;
+			}
+			else {
+				$(input.id+'-form-group').removeClass('has-error');
+			}
 		}
-		console.log('');
-		var $singleCheckboxes = $('input.js-single-checkbox');
-
-		if ($singleCheckboxes.length) {
-
-			$singleCheckboxes.each(function() {
-				if (!$('#'+this.id).prop('checked')) {
-					var input = new FormBuilderInput(this);
-					errorsInForm = addClassAfterBlur(input, input.isValid());
-				}
-
-
-
-
-				// console.log('#'+this.id);
-				// console.log($('#'+this.id).prop('checked'));
-				// console.log( $('#'+this.id).prop('required') );
-
-				// errorsInForm++;
-
-			});
-		}		
 		return errorsInForm;		
 	};
 	
-	// Validates that the input string is a valid date formatted as "dd-mm-yyyy"
-	var isValidDate = function isValidDate(dateString) {
-	    // First check for the pattern
-	    if(!dateString.match(/^(\d{1,2})-(\d{1,2})-(\d{4})$/)) {
-	    	return false;
-	    }
-	    // Parse the date parts to integers
-	    var parts = dateString.split("-");
-
-	    var day = parseInt(parts[0], 10);
-	    var month = parseInt(parts[1], 10);
-	    var year = parseInt(parts[2], 10);
-
-	    // Check the ranges of month and year
-	    var year_now = new Date().getFullYear();
-
-	    if(year < 1900 || year > 2100 || month === 0 || month > 12){
-	        return false;
-	    }
-
-	    var monthLength = [ 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 ];
-
-	    // Adjust for leap years
-	    if(year % 400 === 0 || (year % 100 !== 0 && year % 4 === 0)){
-	        monthLength[1] = 29;
-	    }
-
-	    // Check the range of the day
-	    return day > 0 && day <= monthLength[month - 1];
-	};
-
 	$('#request-form').submit(function(e){	
 		e.preventDefault();
 		var errorsInForm = validateForm( $(this).serializeArray() );
@@ -269,15 +291,13 @@ jQuery(document).ready(function($){
 		return false;
 	});
 
-	var addClassAfterBlur = function addClassAfterBlur(input, valid, errorsInForm) {
+	var addClassAfterBlur = function addClassAfterBlur(input, valid) {
 		if(!valid) {
 			$(input.id+'-form-group').addClass('has-error');
-			errorsInForm++;
 		}
 		else {
 			$(input.id+'-form-group').addClass('has-success');
 		}
-		return errorsInForm;
 	};
 	// When a user leaves a form input
 	$('body').on('blur', '.js-form-builder-control', function(e) {	
@@ -286,11 +306,11 @@ jQuery(document).ready(function($){
 		if (input.dataType === 'date') {
 			setTimeout(function() { 
 				input.value = $(input.id).val();
-				addClassAfterBlur(input, input.isValid(), 0);
+				addClassAfterBlur(input, input.isValid());
 			}, 200);
 		}
 		else {
-			addClassAfterBlur(input, input.isValid(), 0);
+			addClassAfterBlur(input, input.isValid());
 		}
 	});
 
@@ -298,12 +318,4 @@ jQuery(document).ready(function($){
 	$('body').on('focus', '.js-form-builder-control', function(e) {	
 		$('#'+this.id+'-form-group').removeClass('has-error').removeClass('has-success');
 	});
-	$("input.js-single-checkbox").change(function() {
-	    if(this.checked) {
-	        $('#'+this.id+'-form-group').removeClass('has-error').removeClass('has-success');
-	    }
-	    else {
-	    	$('#'+this.id+'-form-group').addClass('has-error').removeClass('has-success');
-	    }
-	});	
 });

@@ -95,6 +95,7 @@ require_once plugin_dir_path( __FILE__ ) . 'cpt/wp_swift_form_category.php';
  */ 
 require_once plugin_dir_path( __FILE__ ) . 'acf-field-groups/form-builder-inputs.php';
 require_once plugin_dir_path( __FILE__ ) . 'acf-field-groups/form-builder-input-sections.php';
+require_once plugin_dir_path( __FILE__ ) . 'acf-field-groups/_acf-field-group-contact-form.php';
 
 /**
  * The classes that handles the admin interface
