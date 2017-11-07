@@ -12,8 +12,7 @@
         // debugging info
         // 'updated' => date ("H:i:s - F d Y", $js_version),
     );   
-    $form_builder_date_picker = array( 'format' => 'dd-mm-yyyy');
-    // echo "<pre>"; var_dump($form_builder_date_picker); echo "</pre>";
+    $form_builder_date_picker = array( 'format' => FORM_BUILDER_DATE_FORMAT);
     if ( function_exists( 'foundationpress_scripts' ) ) {
     	wp_localize_script( 'foundation', 'FormBuilderAjax', $form_builder_ajax);
         wp_localize_script( 'foundation', 'FormBuilderDatePicker', $form_builder_date_picker);
@@ -25,7 +24,6 @@
     	wp_enqueue_script( 'form-builder-ajax', plugin_dir_url( __FILE__ ) . $js_file, array(), $js_version, true );
     	wp_localize_script( 'form-builder-ajax', 'FormBuilderAjax', $form_builder_ajax);
         wp_localize_script( 'form-builder-ajax', 'FormBuilderDatePicker', $form_builder_date_picker);
-    }
-    
+    } 
 }
 add_action( 'wp_enqueue_scripts', 'wp_swift_form_builder_localize_script', 20 );

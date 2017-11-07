@@ -148,6 +148,9 @@ function build_acf_form_array($inputs, $settings, $section=0) {
                 if ( $data_type === 'email' ||  $data_type === 'url') {
                     $help .= ' and must be valid';
                 }
+                elseif ( $data_type === 'date' ||  $data_type === 'date_range') {
+                    $help .= ' and must be formatted to '.FORM_BUILDER_DATE_FORMAT;
+                }
             }
             else {
                 $help = $label.' is not valid';

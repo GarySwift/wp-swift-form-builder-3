@@ -701,7 +701,7 @@ class WP_Swift_Form_Builder_Parent {
         <?php endif ?>
 
             <!-- @start form element -->
-            <div class="form-group<?php echo $has_error; echo $input["css_class"]; ?>" id="<?php echo $id; ?>-form-group">
+            <div class="form-group<?php echo $has_error; echo $input["css_class"]; //echo ' '.$input["data_type"]; ?>" id="<?php echo $id; ?>-form-group">
 
                 <!-- @start input anchor -->
                 <a href="<?php echo $id; ?>-anchor"></a>

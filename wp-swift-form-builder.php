@@ -73,6 +73,7 @@ define('FORM_BUILDER_SAVE_TO_JSON', false);
 define('FORM_BUILDER_DEFAULT_TERM', 'Contact Form');
 define('FORM_BUILDER_DEFAULT_SLUG', 'contact-form');
 define('FORM_BUILDER_DEFAULT_TAXONOMY', 'wp_swift_form_category');
+define('FORM_BUILDER_DATE_FORMAT', 'dd-mm-yyyy');
 
 /**
  * The FormBuilder class that handles all form logic
