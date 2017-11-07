@@ -203,7 +203,7 @@ class WP_Swift_Form_Builder_Parent {
         </form><!-- @end form -->
 
         <?php 
-        edit_post_link( '(Edit Form)', '<p>', '</p>',$this->get_form_post_id() );            
+        // edit_post_link( '(Edit Form)', '<p>', '</p>',$this->get_form_post_id() );           
     }// front_end_form()
 
     public function front_end_form_input_loop() {
@@ -512,7 +512,7 @@ class WP_Swift_Form_Builder_Parent {
         <select class="<?php echo $this->get_form_input_class(); ?>" id="<?php echo $id; ?>" name="<?php echo $id; ?>" data-type="select" tabindex="<?php echo $this->tab_index++; ?>" <?php echo $data['required']; echo $multiple; ?>>
 
             <?php if(!$multiple): ?>
-                <option value="">Please select an option...</option>
+                <option value="" class="placeholder">Please select an option...</option>
             <?php endif;
             foreach ($data['options'] as $option):
                 
