@@ -46,8 +46,16 @@ jQuery(document).ready(function($){
 			rightArrow:'>>',
 			closeIcon:'X',
 			closeButton: true
+		}).on('hide', function (ev) {
+			console.log('FormBuilderDatePicker');
 		});
 
+		// jQuery().fdatepicker.hide(function(e) {
+			
+		// });
+		// }).hide(function() {
+		// 	console.log('FormBuilderDatePicker');
+		// });
 		// Range
 
 		var nowTemp = new Date();
@@ -155,7 +163,10 @@ jQuery(document).ready(function($){
 			    case 'select':	
 			    	return this.value.toLowerCase().substring(0, 6) !== 'select';		
 			    case 'date':
-			    	return isValidDate(this.value); 
+			    	if(!jQuery().fdatepicker) {
+			    		return isValidDate(this.value);
+			    	}
+			    	
 			    case 'checkbox':
 			    	console.log(this.id);
 			    	if (this.required && !$(this.id).prop('checked')) {
