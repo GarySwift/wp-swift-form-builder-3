@@ -51,6 +51,10 @@ function wp_swift_form_data_loop($id) {
             }
         }
 
+        if( get_field('submit_button_text', $id) ) {
+            $settings['submit_button_text'] = get_field('submit_button_text', $id);
+        }
+
         if ( have_rows('sections', $id) ) :
 
             $section_count = 0;

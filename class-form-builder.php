@@ -86,12 +86,12 @@ class WP_Swift_Form_Builder_Parent {
             $this->submit_button_id = $this->submit_button_name;
         }
 
-        if(isset($args["button_text"])) {
-            $this->submit_button_text = $args["button_text"];
-        }
-        else {
-            $this->submit_button_text = "Submit Form";
-        }
+    if(isset($settings["submit_button_text"])) {
+        $this->submit_button_text = $settings["submit_button_text"];
+    }
+    else {
+        $this->submit_button_text = "Submit Form";
+    }
 
         if (isset($args["clear_after_submission"])) {
             $this->clear_after_submission = $args["clear_after_submission"];
