@@ -50,7 +50,7 @@ jQuery(document).ready(function($){
 			var input = new FormBuilderInput(form[i]);
 			errorsInForm = addClassAfterBlur(input, input.isValid(), errorsInForm);
 		}
-		console.log('');
+
 		var $singleCheckboxes = $('input.js-single-checkbox');
 
 		if ($singleCheckboxes.length) {
@@ -99,26 +99,34 @@ jQuery(document).ready(function($){
 	$('#request-form').submit(function(e){	
 		e.preventDefault();
 		var errorsInForm = validateForm( $(this).serializeArray() );
-		console.log('errorsInForm', errorsInForm);
-		var form = $(this);
-		var submit = form.find(":submit");
+
+		var $form = $(this);
+		var submit = $form.find(":submit");
 		submit.prop('disabled', true);
+
 
 		if (errorsInForm === 0) {
 			// FormBuilderAjax is set on server using wp_localize_script
 			if(typeof FormBuilderAjax !== "undefined") {
 				FormBuilderAjax.form = $(this).serializeArray();
-				FormBuilderAjax.id = form.data('id');
+				FormBuilderAjax.id = $form.data('id');
 				FormBuilderAjax.action = "wp_swift_submit_request_form";
 
 				$.post(FormBuilderAjax.ajaxurl, FormBuilderAjax, function(response) {
 					var serverResponse = JSON.parse(response);
+					submit.prop('disabled', false);
 					$('#form-builder-reveal-content').html(serverResponse.html);
 					var $modal = $('#form-builder-reveal');
-					
+
+					if (serverResponse.error_count === 0 && serverResponse.form_set === true) {
+						$form.each(function(){
+						    this.reset();
+						});							
+					}
+
 					if(typeof $modal !== "undefined") {
 						$modal.foundation('open');
-						submit.prop('disabled', false);	
+							
 					}
 				});	
 			}

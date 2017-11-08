@@ -114,6 +114,9 @@ function build_acf_form_array($inputs, $settings, $section=0) {
     $css_class_input = '';
     $other = false;
 
+    $rows = 2;
+    $maxlength = 1000;
+
     if( get_sub_field('id') ) {
         $id_group = get_sub_field('id');
         if ($id_group["name"]) {
@@ -197,7 +200,18 @@ function build_acf_form_array($inputs, $settings, $section=0) {
         if (!isset($settings["groupings"])) {
             $settings["groupings"] = true;
         }        
-    }    
+    }
+
+    if( $data_type === 'textarea' ) {
+        $textarea_settings_group = get_sub_field('textarea_settings');
+        if ($textarea_settings_group["rows"]) {
+            $rows = $textarea_settings_group["rows"];
+        }
+        if ($textarea_settings_group["maxlength"]) {
+            $maxlength = $textarea_settings_group["maxlength"];
+        }        
+    }   
+
     if( get_sub_field('select_options') ) {
         $select_options = get_sub_field('select_options');
         if ($data_type === 'checkbox' || $data_type === 'select' || $data_type === 'radio') {
@@ -220,7 +234,9 @@ function build_acf_form_array($inputs, $settings, $section=0) {
     }
 
     if( isset($settings['hide_labels']) ) {
-        $placeholder = $label;
+        if ($placeholder === '') {
+            $placeholder = $label;
+        }
     }
 
     /*
@@ -244,7 +260,8 @@ function build_acf_form_array($inputs, $settings, $section=0) {
             $inputs[$prefix.$id] = array("passed"=>false, "clean"=>"", "value"=>"", "section"=>$section, "required"=>$required, "type"=>$type, "data_type"=>$data_type,  "placeholder"=>$placeholder, "label"=>$label, "help"=>$help, "instructions" => $instructions, "grouping" => $grouping, "css_class" => $css_class);
             break;
         case "textarea":
-            $inputs[$prefix.$id] = array("passed"=>false, "clean"=>"", "value"=>"", "section"=>$section, "required"=>$required, "type"=>$type, "data_type"=>$data_type,  "placeholder"=>$placeholder, "label"=>$label, "help"=>$help, "instructions" => $instructions, "grouping" => $grouping, "css_class" => $css_class);
+            $inputs[$prefix.$id] = array("passed"=>false, "clean"=>"", "value"=>"", "section"=>$section, "required"=>$required, "type"=>$type, "data_type"=>$data_type,  "placeholder"=>$placeholder, "label"=>$label, "help"=>$help, "instructions" => $instructions, "grouping" => $grouping, "css_class" => $css_class, "rows" => $rows, "maxlength" => $maxlength);
+
             break; 
         case "select":
         case "multi_select":

@@ -5,14 +5,23 @@
 function wp_swift_submit_request_form_callback() {
     check_ajax_referer( 'form-builder-nonce', 'security' );
     $post = array();
-    $html = '';
+    $form_set = false;
     $form_id = intval( $_POST['id'] );
+
     if (isset($_POST['form'])) {
         $post = wp_swift_convert_json_to_post_array( $_POST['form'] );
     }
     $form_builder = new WP_Swift_Form_Builder_Contact_Form( $form_id ); 
     $html = $form_builder->process_form($post, true);
-    $response = array("post" => $post, "form_data" => $form_data, "html" => $html);
+
+    if ($form_builder->get_form_data()) {
+       $form_set = true;
+    }
+    $response = array(
+        "html" => $html, 
+        "form_set" => $form_set,
+        "error_count" => $form_builder->get_error_count(),
+    );
     echo json_encode( $response );
     die();
 }
