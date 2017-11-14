@@ -1,7 +1,7 @@
 console.info('wp-swift-form-builder-public.js');
 jQuery(document).ready(function($){
 	// FormBuilderDatePicker is set on server using wp_localize_script
-
+console.log('FormBuilderDatePicker is set on server using wp_localize_script');
 	// Form Input Object
 	var FormBuilderInput = function FormBuilderInput(input) {
 		this.name = input.name;
@@ -136,7 +136,10 @@ jQuery(document).ready(function($){
 			errorsInForm++;
 		}
 		else {
-			$(input.id+'-form-group').addClass('has-success');
+			if (input.value !== '') {
+				$(input.id+'-form-group').addClass('has-success');
+
+			}
 		}
 		return errorsInForm;
 	};
@@ -230,6 +233,15 @@ jQuery(document).ready(function($){
 				}
 				checkin.hide();
 				$(dateRangeEnd)[0].focus();
+			}).on('hide', function (ev) {
+	
+				console.log('dateRangeStart', dateRangeStart);
+				console.log('addClassAfterBlur');
+				var $dateRangeStart = document.getElementById( dateRangeStart.substring(1) );
+				console.log('$dateRangeStart', $dateRangeStart);
+
+				var input = new FormBuilderInput( $dateRangeStart );
+				addClassAfterBlur(input, input.isValid(), 0);
 			}).data('datepicker');
 
 			var checkout = $(dateRangeEnd).fdatepicker({
@@ -239,6 +251,14 @@ jQuery(document).ready(function($){
 				}
 			}).on('changeDate', function (ev) {
 				checkout.hide();
+			}).on('hide', function (ev) {
+				console.log('dateRangeEnd', dateRangeEnd);
+				console.log('addClassAfterBlur');
+				var $dateRangeEnd = document.getElementById( dateRangeEnd.substring(1) );
+				console.log('$dateRangeEnd', $dateRangeEnd);
+
+				var input = new FormBuilderInput( $dateRangeEnd );
+				addClassAfterBlur(input, input.isValid(), 0);
 			}).data('datepicker'); 
 
 		};

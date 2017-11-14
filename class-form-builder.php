@@ -183,7 +183,7 @@ class WP_Swift_Form_Builder_Parent {
             $framework = $options['wp_swift_form_builder_select_css_framework'];
         }
         ?>
-
+ 
         <!-- @start form -->
         <form method="post" <?php echo $this->action; ?> name="<?php echo $this->form_name; ?>" id="<?php echo $this->form_css_id; ?>" data-id="<?php echo $this->form_post_id ?>" class="<?php echo $framework.' '; echo $this->form_class.' '; echo $this->form_name ?>" novalidate<?php echo $this->enctype; ?>>
             <?php
@@ -682,11 +682,6 @@ class WP_Swift_Form_Builder_Parent {
      * Us the same fucntion to wrap all inputs
      */
     public function wrap_input($id, $input, $input_html, $section='') {
-        $has_error='';
-        if(!$this->form_pristine && $input['passed']==false && $input["type"] !== "checkbox") {
-            // This input has has error detected so add an error class to the surrounding div
-            $has_error = ' has-error';
-        }
 
         if(!$this->form_pristine) {
             if($this->clear_after_submission && $this->error_count===0) {
@@ -697,11 +692,11 @@ class WP_Swift_Form_Builder_Parent {
         if ($input["grouping"] && $input["grouping"] == "start"): ?>
 
             <!-- Start grouping -->
-            <div class="form-grid-grouping">         
+            <div class="<?php echo $this->get_css_form_grid_grouping(); ?>">         
         <?php endif ?>
 
             <!-- @start form element -->
-            <div class="form-group<?php echo $has_error; echo $input["css_class"]; //echo ' '.$input["data_type"]; ?>" id="<?php echo $id; ?>-form-group">
+            <div class="<?php echo $this->get_css_form_group($input) ?>" id="<?php echo $id; ?>-form-group">
 
                 <!-- @start input anchor -->
                 <a href="<?php echo $id; ?>-anchor"></a>
@@ -719,6 +714,8 @@ class WP_Swift_Form_Builder_Parent {
                 
                 <!-- @start input -->
                 <div class="form-input">
+                    
+                    <div class="form-builder-feedback"><span class="feedback icon-x"></span><span class="feedback icon-check"></span><span class="icon-circle-o-notch"></span></div>
                     <?php 
                         echo $input_html; 
 
@@ -739,6 +736,7 @@ class WP_Swift_Form_Builder_Parent {
                     <small class="instructions"><?php echo $input['instructions']; ?></small><?php 
                         endif;
                     ?>
+                    
 
                 </div>
                 <!-- @end input -->
@@ -750,6 +748,25 @@ class WP_Swift_Form_Builder_Parent {
             </div>
             <!-- end grouping -->    
         <?php endif;    
+    }
+
+    /*
+     * 
+     */
+    public function get_css_form_grid_grouping() {
+        return "form-grid-grouping grid-x";
+    }
+
+    /*
+     * 
+     */
+    public function get_css_form_group($input) {
+        $has_error='';
+        if(!$this->form_pristine && $input['passed']==false && $input["type"] !== "checkbox") {
+            // This input has has error detected so add an error class to the surrounding div
+            $has_error = ' has-error';
+        }        
+        return " form-group".$input["css_class"].$has_error." cell large-auto small-6";
     }
 
     /*

@@ -1,6 +1,6 @@
 /* @start FormBuilder style */
 $has-error: #cc0000;
-$has-success: #515151;
+$has-success: #4C4C4C;// #515151;
 $form-group-padding: 0.3rem;
 
 div.form-builder.wrap {
@@ -31,4 +31,56 @@ label.lbl-checkbox, label.lbl-radio {
 @import "form-message";
 @import "form-group";
 @import "form-groupings";
+@import "form-feedback";
 /* @end FormBuilder style */
+
+
+/* 
+ * @start fonts
+ */
+@font-face {
+  font-family: 'icomoon';
+  src:  url('fonts/icomoon.eot?kud616');
+  src:  url('fonts/icomoon.eot?kud616#iefix') format('embedded-opentype'),
+    url('fonts/icomoon.ttf?kud616') format('truetype'),
+    url('fonts/icomoon.woff?kud616') format('woff'),
+    url('fonts/icomoon.svg?kud616#icomoon') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+[class^="icon-"], [class*=" icon-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'icomoon' !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-circle-o-notch:before {
+  content: "\e902";
+}
+.icon-gear:before {
+  content: "\e903";
+}
+.icon-check:before {
+  content: "\e901";
+}
+.icon-x:before {
+  content: "\e900";
+}
+/* 
+ * @end fonts
+ */
+
+// Testing
+body {
+	// background-color: #ECDFF9 !important;
+}

@@ -165,3 +165,13 @@ function run_wp_swift_form_builder() {
 
 }
 run_wp_swift_form_builder();
+
+
+// function svg($filename, $folder='svg') {
+// 	$file = "/assets/images/$folder/$filename.svg";
+// 	$file_path = get_stylesheet_directory().$file;
+// 	$file_uri = get_stylesheet_directory_uri().$file;
+// 	if (file_exists ( $file_path )) {
+// 		return file_get_contents($file_uri);
+// 	}
+// }

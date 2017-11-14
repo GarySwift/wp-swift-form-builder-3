@@ -1,0 +1,56 @@
+.form-group {
+	div.form-builder-feedback {
+		position: relative;		
+		span {
+			$transition: opacity 0.3s ease-in;
+			-webkit-transition: $transition;
+			-moz-transition: $transition;
+			-ms-transition: $transition;
+			-o-transition: $transition;
+			transition: $transition;			
+			 visibility: hidden;
+			opacity: 0;
+			position: absolute;
+			right: 2px;
+			top: -20px;
+			color: $has-success;
+			font-size: 1rem;
+		}
+		span.icon-check {
+			color: $has-success;
+		}		
+		span.icon-x {
+			color: $has-error;
+		}
+	}
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+.form-group.has-success {
+	div.form-builder-feedback {
+		span.icon-check {
+			visibility: visible;
+			opacity: 1;
+		}
+	}
+}
+.form-group.has-error {
+	div.form-builder-feedback {
+		span.icon-x {
+			visibility: visible;
+			opacity: 1;
+		}
+	}
+}
+.form-group.processing {
+	div.form-builder-feedback {
+		span.icon-circle-o-notch {
+			visibility: visible;
+			opacity: 1;	
+			animation: spin 1s linear infinite;
+		}
+	}
+}
