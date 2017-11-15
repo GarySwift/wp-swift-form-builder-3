@@ -41,4 +41,4 @@ function wp_swift_form_builder_save_post($post_id) {
         }
     }
 }
-add_action( 'save_post', 'wp_swift_form_builder_save_post' );
+// add_action( 'save_post', 'wp_swift_form_builder_save_post' );

@@ -25,7 +25,7 @@ class WP_Swift_Form_Builder_Parent {
     private $form_pristine = true;
     private $enctype = '';
     private $error_count = 0;
-    private $tab_index = 1;
+    private $tab_index = 100;
     // private $extra_error_msgs = array();
     // private $extra_msgs = array();
     private $list_form_errors_in_warning_panel = true;
@@ -262,6 +262,9 @@ class WP_Swift_Form_Builder_Parent {
             else {
                 return $this->submit_form_failure($ajax);
             }
+        }
+        else {
+            return $this->form_failure($ajax);
         }        
     }
 /*
@@ -442,6 +445,34 @@ class WP_Swift_Form_Builder_Parent {
         return $html;
     }//@end submit_form_failure()
 
+    /*
+     * Build form message
+     */
+    public function form_failure($ajax) {
+        ob_start();
+
+        ?>
+
+        <!-- @start #form-error-message -->
+        <div id="form-error-message" class="form-message error<?php echo $ajax ? ' ajax':''; ?>">
+
+            <h3 class="heading">Form Error</h3>
+
+            <div class="error-content">
+                <p class="lead">We're sorry, there has been an error with the form input.</p>
+                <p>We were unable to locate this form for processing.</p>
+
+            </div>
+
+        </div>
+        <!-- @end #form-error-message -->
+
+        <?php
+        $html = ob_get_contents();
+        ob_end_clean();
+        
+        return $html;
+    }//@end submit_form_failure()
     /******************************************************
      * @start Form Inputs
      ******************************************************/
@@ -571,7 +602,15 @@ class WP_Swift_Form_Builder_Parent {
               $required = ' required';
         } 
 
-        $input_html = '<textarea rows="2"'.$data_type.$class.$id.$name.$tabindex.$placeholder.$section.$required.'>'.$value.'</textarea>';
+        $rows = '';
+        if ( isset($input["rows"])  & $input["rows"] !== '') {
+            $rows = ' rows="'.$input['rows'].'"';
+        }
+        $maxlength = '';
+        if ( isset($input["maxlength"])  & $input["maxlength"] !== '') {
+            $maxlength = ' maxlength="'.$input['maxlength'].'"';
+        }
+        $input_html = '<textarea'.$data_type.$class.$id.$name.$tabindex.$placeholder.$section.$required.$rows.$maxlength.'>'.$value.'</textarea>';
         return $input_html;    
 
     }

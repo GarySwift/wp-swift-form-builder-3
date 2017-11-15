@@ -157,12 +157,15 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
 
         // Add the table of values to the string
         $email_string .= $key_value_table;
-
+        $email_string .= $this->build_page_details();
         /*
          * Send the email to the admin/office
          */
         if ($send_email) {
             $status = wp_mail($to, $response_subject.' - '.date("D j M Y, H:i"). ' GMT', wp_swift_wrap_email($email_string), $headers);//wrap_email($email_string)
+        }
+        else {
+            error_log( $email_string );
         }
         /*
          * If the user has requested it, send an email acknowledgement
@@ -192,6 +195,28 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
         return $this->build_confirmation_output($class, $browser_output_header, $auto_response_message, $key_value_table, $user_output_footer);
     } 
 
+
+    private function build_page_details() {
+        $url     = wp_get_referer();
+        $post_id = url_to_postid( $url ); 
+
+        ob_start(); ?>
+            
+            <br>
+            <div id="page-details"> 
+
+                <div><small>Sent from page:</small></div>
+                <p><a href="<?php echo $url ?>" target="_blank"><b><?php echo get_the_title( $post_id ); ?></b> - <?php echo $url ?></a></p>
+
+            </div><!-- @end #page-details -->
+
+        <?php
+
+        $html = ob_get_contents();
+        ob_end_clean();
+        return $html;
+    }
+
     private function build_confirmation_output($class, $browser_output_header, $auto_response_message, $key_value_table, $user_output_footer) {
 
         ob_start(); ?>
@@ -213,7 +238,7 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
             </div><!-- @end #form-success-message -->
 
         <?php
-
+        // echo $this->build_page_details();
         $html = ob_get_contents();
         ob_end_clean();
         return $html;
