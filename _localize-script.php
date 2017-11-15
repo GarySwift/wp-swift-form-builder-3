@@ -10,7 +10,7 @@
         // generate a nonce with a unique ID so that you can check it later when an AJAX request is sent
         'security' => wp_create_nonce( 'form-builder-nonce' ),
         // debugging info
-        // 'updated' => date ("H:i:s - F d Y", $js_version),
+        'updated' => date ("H:i:s - F d Y", $js_version),
     );   
     $form_builder_date_picker = array( 'format' => FORM_BUILDER_DATE_FORMAT);
     if ( function_exists( 'foundationpress_scripts' ) ) {

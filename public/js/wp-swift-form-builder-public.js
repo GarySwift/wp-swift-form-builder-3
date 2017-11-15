@@ -1,7 +1,10 @@
 console.info('wp-swift-form-builder-public.js');
 jQuery(document).ready(function($){
+	if(typeof FormBuilderAjax !== "undefined") {
+		console.log(FormBuilderAjax.updated);
+	}
 	// FormBuilderDatePicker is set on server using wp_localize_script
-console.log('FormBuilderDatePicker is set on server using wp_localize_script');
+// console.log('FormBuilderDatePicker is set on server using wp_localize_script');
 	// Form Input Object
 	var FormBuilderInput = function FormBuilderInput(input) {
 		this.name = input.name;
@@ -119,7 +122,11 @@ console.log('FormBuilderDatePicker is set on server using wp_localize_script');
 					var $modal = $('#form-builder-reveal');
 
 					if (serverResponse.error_count === 0 && serverResponse.form_set === true) {
-						$form.each(function(){
+						$form.each(function() {
+							console.log(this);
+							var input = new FormBuilderInput(this);
+							console.log('input', input);
+							$(input.id+'-form-group').removeClass('has-error').removeClass('has-success');
 						    this.reset();
 						});							
 					}
@@ -162,8 +169,15 @@ console.log('FormBuilderDatePicker is set on server using wp_localize_script');
 			// 	input.value = $(input.id).val();
 			// 	addClassAfterBlur(input, input.isValid(), 0);
 			// }, 200);
+			//
 			if( !jQuery().fdatepicker ) {
 				addClassAfterBlur(input, input.isValid(), 0);
+			}
+			else {
+				if (input.isValid()) {
+					$(input.id+'-form-group').addClass('has-success');
+
+				}
 			}
 		}
 		else {
@@ -228,7 +242,10 @@ console.log('FormBuilderDatePicker is set on server using wp_localize_script');
 
 		var datepickerListener = function (dateRangeStart, dateRangeEnd) {
 
-			var checkin = $(dateRangeStart).fdatepicker({
+			var $dateRangeStart = $('#' + dateRangeStart);
+			var $dateRangeEnd = $('#' + dateRangeEnd);
+
+			var checkin = $dateRangeStart.fdatepicker({
 				format: FormBuilderDatePicker.format,
 				onRender: function (date) {
 					return date.valueOf() < now.valueOf() ? 'disabled' : '';
@@ -240,19 +257,13 @@ console.log('FormBuilderDatePicker is set on server using wp_localize_script');
 					checkout.update(newDate);
 				}
 				checkin.hide();
-				$(dateRangeEnd)[0].focus();
+				$dateRangeEnd[0].focus();
 			}).on('hide', function (ev) {
-	
-				console.log('dateRangeStart', dateRangeStart);
-				console.log('addClassAfterBlur');
-				var $dateRangeStart = document.getElementById( dateRangeStart.substring(1) );
-				console.log('$dateRangeStart', $dateRangeStart);
-
-				var input = new FormBuilderInput( $dateRangeStart );
+				var input = new FormBuilderInput( document.getElementById( dateRangeStart ) );
 				addClassAfterBlur(input, input.isValid(), 0);
 			}).data('datepicker');
 
-			var checkout = $(dateRangeEnd).fdatepicker({
+			var checkout = $dateRangeEnd.fdatepicker({
 				format: FormBuilderDatePicker.format,
 				onRender: function (date) {
 					return date.valueOf() <= checkin.date.valueOf() ? 'disabled' : '';
@@ -260,13 +271,8 @@ console.log('FormBuilderDatePicker is set on server using wp_localize_script');
 			}).on('changeDate', function (ev) {
 				checkout.hide();
 			}).on('hide', function (ev) {
-				console.log('dateRangeEnd', dateRangeEnd);
-				console.log('addClassAfterBlur');
-				var $dateRangeEnd = document.getElementById( dateRangeEnd.substring(1) );
-				console.log('$dateRangeEnd', $dateRangeEnd);
-
-				var input = new FormBuilderInput( $dateRangeEnd );
-				addClassAfterBlur(input, input.isValid(), 0);
+				var input = new FormBuilderInput( document.getElementById( dateRangeEnd ) );
+				addClassAfterBlur(input, input.isValid(), 0);				
 			}).data('datepicker'); 
 
 		};
@@ -274,7 +280,7 @@ console.log('FormBuilderDatePicker is set on server using wp_localize_script');
 		var $datePickerInput = $('input.js-date-picker-range');
 		if ($datePickerInput.length) {
 			$datePickerInput.each(function() {
-				var dateRangeStart = '#' + this.id;
+				var dateRangeStart = this.id;//'#' + 
 				var dateRangeEnd = dateRangeStart.substring(0, dateRangeStart.length - 6)+'-end';
 				datepickerListener( dateRangeStart, dateRangeEnd );
 			});

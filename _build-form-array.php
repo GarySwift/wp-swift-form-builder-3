@@ -55,6 +55,14 @@ function wp_swift_form_data_loop($id) {
             $settings['submit_button_text'] = get_field('submit_button_text', $id);
         }
 
+        if( get_field('user_confirmation_email', $id) ) {
+            $settings['user_confirmation_email'] = get_field('user_confirmation_email', $id);
+        }
+
+        if( get_field('show_edit_link', $id) ) {
+            $settings['show_edit_link'] = get_field('show_edit_link', $id);
+        }
+        
         if ( have_rows('sections', $id) ) :
 
             $section_count = 0;

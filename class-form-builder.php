@@ -21,7 +21,7 @@ class WP_Swift_Form_Builder_Parent {
     private $submit_button_name = '';
     private $submit_button_text = '';
     private $css_framework = "zurb_foundation";
-    // private $show_mail_receipt = false;
+// private $show_mail_receipt = true;
     private $form_pristine = true;
     private $enctype = '';
     private $error_count = 0;
@@ -37,6 +37,7 @@ class WP_Swift_Form_Builder_Parent {
     // private $option = '';
 
     private $form_error_messages = array();
+    private $user_confirmation_email = "ask";
     /*
         function guide
         acf_build_form()
@@ -113,7 +114,13 @@ class WP_Swift_Form_Builder_Parent {
         } 
         if (isset($settings["form_css_class"])) {
             $this->form_class .= $settings["form_css_class"];
-        }            
+        } 
+        if(isset($settings["user_confirmation_email"])) {
+            $this->user_confirmation_email = $settings["user_confirmation_email"];
+        }
+        // else {
+        //     $this->user_confirmation_email = "ask";
+        // }                   
     }
 
     public function run() {
@@ -192,7 +199,19 @@ class WP_Swift_Form_Builder_Parent {
 
             $this->before_submit_button_hook(); 
 
-            ?>
+            if ($this->user_confirmation_email === 'ask'): ?>
+
+            <!-- @start .mail-receipt -->
+            <div class="form-group mail-receipt">
+                <div class="form-label"></div>
+                <div class="form-input">
+                    <div class="checkbox">
+                      <input type="checkbox" value="" tabindex=<?php echo $this->get_tab_index(); ?> name="mail-receipt" id="mail-receipt" checked><label for="mail-receipt">Acknowledge me with a mail receipt</label>
+                    </div>
+                </div>                  
+            </div> 
+            <!-- @end .mail-receipt -->                
+            <?php endif ?>
 
             <!-- @start .button -->
             <div class="form-group button-group">
@@ -743,6 +762,8 @@ class WP_Swift_Form_Builder_Parent {
 
                 <!-- @start input label -->
                 <div class="form-label">
+
+                    <div class="form-builder-feedback"><span class="feedback icon-x"></span><span class="feedback icon-check"></span><span class="icon-circle-o-notch"></span></div>
                     <?php 
                     if ($input['label']!=''): 
                     ?><label for="<?php echo $id; ?>" class="control-label <?php echo $input['required']; ?>"><?php echo $input['label']; ?> <span></span></label><?php 
@@ -754,7 +775,6 @@ class WP_Swift_Form_Builder_Parent {
                 <!-- @start input -->
                 <div class="form-input">
                     
-                    <div class="form-builder-feedback"><span class="feedback icon-x"></span><span class="feedback icon-check"></span><span class="icon-circle-o-notch"></span></div>
                     <?php 
                         echo $input_html; 
 
@@ -927,5 +947,8 @@ class WP_Swift_Form_Builder_Parent {
     // }
     public function get_form_data() {
         return $this->form_data;
-    }        
+    } 
+    public function get_user_confirmation_email() {
+        return $this->user_confirmation_email;
+    }            
 }

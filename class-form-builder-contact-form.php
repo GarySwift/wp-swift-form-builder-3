@@ -165,6 +165,7 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
             $status = wp_mail($to, $response_subject.' - '.date("D j M Y, H:i"). ' GMT', wp_swift_wrap_email($email_string), $headers);//wrap_email($email_string)
         }
         else {
+            error_log( "Debugging mode is on so no emails are being sent." );
             error_log( $email_string );
         }
         /*
@@ -174,12 +175,14 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
         // if($this->get_show_mail_receipt()) {
 
         $user_email_string = $auto_response_message.'<p>A copy of your enquiry is shown below.</p>'.$key_value_table;
-        if ( isset($post["mail-receipt"]) ) {
+
+        $user_confirmation_email = parent::get_user_confirmation_email();
+        if ( ($user_confirmation_email=== 'ask' && isset($post["mail-receipt"])) || $user_confirmation_email=== 'send' )  {
+ 
             if ($send_email) {
                 if (isset($this->form_inputs['form-email']['clean'])) {
                     $status = wp_mail($this->form_inputs['form-email']['clean'], $auto_response_subject, wp_swift_wrap_email($user_email_string), $headers);// wrap_email($user_response_msg)
                 }
-                
             }
             else {
                 $user_output_footer = "<pre>Debugging mode is on so no emails are being sent.</pre>";
@@ -368,19 +371,7 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
      * Hookable function that
      */
     public function before_submit_button_hook() {
-    ?>
-        
-            <!-- @start .mail-receipt -->
-            <div class="form-group mail-receipt">
-                <div class="form-label"></div>
-                <div class="form-input">
-                    <div class="checkbox">
-                      <input type="checkbox" value="" tabindex=<?php echo parent::get_tab_index(); ?> name="mail-receipt" id="mail-receipt" checked><label for="mail-receipt">Acknowledge me with a mail receipt</label>
-                    </div>
-                </div>                  
-            </div> 
-            <!-- @end .mail-receipt -->
-    <?php
+
     }    
 }
 //     }
