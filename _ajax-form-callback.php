@@ -18,9 +18,9 @@ function wp_swift_submit_request_form_callback() {
        $form_set = true;
     }
     $response = array(
-        "html" => $html, 
         "form_set" => $form_set,
         "error_count" => $form_builder->get_error_count(),
+        "html" => $html,
     );
     echo json_encode( $response );
     die();

@@ -38,6 +38,7 @@ class WP_Swift_Form_Builder_Parent {
 
     private $form_error_messages = array();
     private $user_confirmation_email = "ask";
+    private $show_edit_link = false;
     /*
         function guide
         acf_build_form()
@@ -118,6 +119,10 @@ class WP_Swift_Form_Builder_Parent {
         if(isset($settings["user_confirmation_email"])) {
             $this->user_confirmation_email = $settings["user_confirmation_email"];
         }
+        if(isset($settings["show_edit_link"])) {
+            $this->show_edit_link = true;
+        }
+
         // else {
         //     $this->user_confirmation_email = "ask";
         // }                   
@@ -222,6 +227,9 @@ class WP_Swift_Form_Builder_Parent {
         </form><!-- @end form -->
 
         <?php 
+        if ( $this->show_edit_link === true ) {
+            edit_post_link( __( '(Edit Form)', 'wp-swift-form-builder' ), '<div class="edit-link">', '</div>', $this->form_post_id );
+        }
         // edit_post_link( '(Edit Form)', '<p>', '</p>',$this->get_form_post_id() );           
     }// front_end_form()
 

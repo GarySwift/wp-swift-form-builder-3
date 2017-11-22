@@ -1,4 +1,27 @@
 console.info('wp-swift-form-builder-public.js');
+/**
+ * Get a date in the past by reducing years from now date.
+ * Very basic. Does not include leap years.
+ * 
+ * @param int 		years
+ * @return string 	date
+ */
+var dateInPast = function dateInPast(years) {
+	var dateNow = new Date();
+	var dd = dateNow.getDate();
+	var mm = dateNow.getMonth()+1; //January is 0!
+	var yyyy = dateNow.getFullYear();
+
+	if(dd<10){
+	    dd='0'+dd;
+	} 
+	if(mm<10){
+	    mm='0'+mm;
+	} 
+	
+	var dateInPast = dd + '-' + mm + '-' + (yyyy-years);
+	return 	dateInPast;	
+};
 jQuery(document).ready(function($){
 	if(typeof FormBuilderAjax !== "undefined") {
 		console.log(FormBuilderAjax.updated);
@@ -67,6 +90,15 @@ jQuery(document).ready(function($){
 		}		
 		return errorsInForm;		
 	};
+
+	var resetForm = function(form) {
+		for (var i = 0; i < form.length; i++) {
+			var input = new FormBuilderInput(form[i]);
+			$(input.id+'-form-group').removeClass('has-error').removeClass('has-success');
+			$(input.id).val('');
+		    // this.reset();
+		}	
+	};
 	
 	// Validates that the input string is a valid date formatted as "dd-mm-yyyy"
 	var isValidDate = function isValidDate(dateString) {
@@ -99,60 +131,14 @@ jQuery(document).ready(function($){
 	    return day > 0 && day <= monthLength[month - 1];
 	};
 
-	$('#request-form').submit(function(e){	
-		e.preventDefault();
-		var errorsInForm = validateForm( $(this).serializeArray() );
-
-		var $form = $(this);
-		var submit = $form.find(":submit");
-		submit.prop('disabled', true);
-
-
-		if (errorsInForm === 0) {
-			// FormBuilderAjax is set on server using wp_localize_script
-			if(typeof FormBuilderAjax !== "undefined") {
-				FormBuilderAjax.form = $(this).serializeArray();
-				FormBuilderAjax.id = $form.data('id');
-				FormBuilderAjax.action = "wp_swift_submit_request_form";
-
-				$.post(FormBuilderAjax.ajaxurl, FormBuilderAjax, function(response) {
-					var serverResponse = JSON.parse(response);
-					submit.prop('disabled', false);
-					$('#form-builder-reveal-content').html(serverResponse.html);
-					var $modal = $('#form-builder-reveal');
-
-					if (serverResponse.error_count === 0 && serverResponse.form_set === true) {
-						$form.each(function() {
-							console.log(this);
-							var input = new FormBuilderInput(this);
-							console.log('input', input);
-							$(input.id+'-form-group').removeClass('has-error').removeClass('has-success');
-						    this.reset();
-						});							
-					}
-
-					if(typeof $modal !== "undefined") {
-						$modal.foundation('open');
-							
-					}
-				});	
-			}
-		}
-		else {
-			alert("Please fill in the required fields!");
-			submit.prop('disabled', false);
-		}
-		return false;
-	});
-
 	var addClassAfterBlur = function addClassAfterBlur(input, valid, errorsInForm) {
 		if(!valid) {
-			$(input.id+'-form-group').addClass('has-error');
+			$(input.id+'-form-group').addClass('has-error').removeClass('has-success');
 			errorsInForm++;
 		}
 		else {
 			if (input.value !== '') {
-				$(input.id+'-form-group').addClass('has-success');
+				$(input.id+'-form-group').removeClass('has-error').addClass('has-success');
 
 			}
 		}
@@ -175,7 +161,7 @@ jQuery(document).ready(function($){
 			}
 			else {
 				if (input.isValid()) {
-					$(input.id+'-form-group').addClass('has-success');
+					$(input.id+'-form-group').removeClass('has-error').addClass('has-success');
 
 				}
 			}
@@ -314,27 +300,44 @@ jQuery(document).ready(function($){
 			}
 		}		
 	});	
-});
-/**
- * Get a date in the past by reducing years from now date.
- * Very basic. Does not include leap years.
- * 
- * @param int 		years
- * @return string 	date
- */
-var dateInPast = function dateInPast(years) {
-	var dateNow = new Date();
-	var dd = dateNow.getDate();
-	var mm = dateNow.getMonth()+1; //January is 0!
-	var yyyy = dateNow.getFullYear();
 
-	if(dd<10){
-	    dd='0'+dd;
-	} 
-	if(mm<10){
-	    mm='0'+mm;
-	} 
-	
-	var dateInPast = dd + '-' + mm + '-' + (yyyy-years);
-	return 	dateInPast;	
-};
+	$('#request-form').submit(function(e) {
+
+		e.preventDefault();
+		var $form = $(this);
+		var submit = $form.find(":submit");
+		var errorsInForm = validateForm( $form.serializeArray() );
+		submit.prop('disabled', true);
+
+		errorsInForm = 0;
+		if (errorsInForm === 0) {
+			// FormBuilderAjax is set on server using wp_localize_script
+			if(typeof FormBuilderAjax !== "undefined") {
+				FormBuilderAjax.form = $form.serializeArray();
+				FormBuilderAjax.id = $form.data('id');
+				FormBuilderAjax.action = "wp_swift_submit_request_form";
+
+				$.post(FormBuilderAjax.ajaxurl, FormBuilderAjax, function(response) {
+					var serverResponse = JSON.parse(response);
+					$('#form-builder-reveal-content').html(serverResponse.html);
+					var $modal = $('#form-builder-reveal');
+					submit.prop('disabled', false);
+
+					if (serverResponse.error_count === 0 && serverResponse.form_set === true) {
+						resetForm( $form.serializeArray() );		
+					}
+
+					if(typeof $modal !== "undefined") {
+						$modal.foundation('open');	
+					}
+						
+				});	
+			}
+		}
+		else {
+			alert("Please fill in the required fields!");
+			submit.prop('disabled', false);
+		}
+		return false;
+	});	
+});
