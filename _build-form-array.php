@@ -1,6 +1,6 @@
 <?php 
 function wp_swift_get_form_data($id) {
-    return wp_swift_form_data_loop($id);
+    // return wp_swift_form_data_loop($id);
     if (FORM_BUILDER_SAVE_TO_JSON) {
 
         $upload_dir = wp_upload_dir();

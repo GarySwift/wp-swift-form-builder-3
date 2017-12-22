@@ -69,7 +69,7 @@ class WP_Swift_Form_Builder_Admin_Interface_Settings {
 			'wp_swift_form_builder_plugin_page_section' 
 	    );
 
-	    /*add_settings_field( 
+	    add_settings_field( 
 	        'wp_swift_form_builder_email_template_primary_color', 
 	        __( 'Email Template', 'wp-swift-form-builder' ), 
 	        array($this, 'wp_swift_form_builder_email_template_primary_color_render'), 
@@ -77,7 +77,7 @@ class WP_Swift_Form_Builder_Admin_Interface_Settings {
 	        'wp_swift_form_builder_plugin_page_section' 
 	    );
 
-	    add_settings_field( 
+	    /*add_settings_field( 
 	        'wp_swift_form_builder_email_template_secondary_color', 
 	        __( '', 'wp-swift-form-builder' ), 
 	        array($this, 'wp_swift_form_builder_email_template_secondary_color_render'), 

@@ -545,7 +545,7 @@ class WP_Swift_Form_Builder_Parent {
             $placeholder = ' placeholder="'.$input['placeholder'].'"';
         }
         $section = '';
-        if ( isset($input["section"])  & $input["section"] !== '') {
+        if ( isset($input["section"]) && $input["section"] !== '') {
             $section = ' data-section="'.$input['section'].'"';
         }
         $required = '';
@@ -621,7 +621,7 @@ class WP_Swift_Form_Builder_Parent {
             $placeholder = ' placeholder="'.$input['placeholder'].'"';
         }        
         $section = '';
-        if ( isset($input["section"])  & $input["section"] !== '') {
+        if ( isset($input["section"]) && $input["section"] !== '') {
             $section = ' data-section="'.$input['section'].'"';
         }
         $required = '';
@@ -630,11 +630,11 @@ class WP_Swift_Form_Builder_Parent {
         } 
 
         $rows = '';
-        if ( isset($input["rows"])  & $input["rows"] !== '') {
+        if ( isset($input["rows"]) && $input["rows"] !== '') {
             $rows = ' rows="'.$input['rows'].'"';
         }
         $maxlength = '';
-        if ( isset($input["maxlength"])  & $input["maxlength"] !== '') {
+        if ( isset($input["maxlength"]) && $input["maxlength"] !== '') {
             $maxlength = ' maxlength="'.$input['maxlength'].'"';
         }
         $input_html = '<textarea'.$data_type.$class.$id.$name.$tabindex.$placeholder.$section.$required.$rows.$maxlength.'>'.$value.'</textarea>';

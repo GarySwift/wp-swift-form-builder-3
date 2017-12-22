@@ -85,7 +85,7 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
         /*
          * Variables
          */
-        $send_email=false;//Debug variable. If false, emails will not be sent
+        $send_email=true;//Debug variable. If false, emails will not be sent
         if( get_field('debugging_stop_email', 'option') ) {
             $send_email = false;
         }  
@@ -177,11 +177,19 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
         $user_email_string = $auto_response_message.'<p>A copy of your enquiry is shown below.</p>'.$key_value_table;
 
         $user_confirmation_email = parent::get_user_confirmation_email();
+
+        $form_data = parent::get_form_data();
+        $form_data = $form_data[0];
+
         if ( ($user_confirmation_email=== 'ask' && isset($post["mail-receipt"])) || $user_confirmation_email=== 'send' )  {
  
             if ($send_email) {
-                if (isset($this->form_inputs['form-email']['clean'])) {
-                    $status = wp_mail($this->form_inputs['form-email']['clean'], $auto_response_subject, wp_swift_wrap_email($user_email_string), $headers);// wrap_email($user_response_msg)
+
+                if (isset($form_data["inputs"]['form-email']['clean'])) {
+                    $status = wp_mail($form_data["inputs"]['form-email']['clean'], $auto_response_subject, wp_swift_wrap_email($user_email_string), $headers);// wrap_email($user_response_msg)
+                }
+                else {
+                    write_log('email not found');
                 }
             }
             else {
