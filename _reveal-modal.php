@@ -1,12 +1,11 @@
 <?php
-// add_action( 'foundationpress_layout_end', array($this, 'foundationpress_layout_end_content')  );
-add_action( 'foundationpress_layout_end', 'foundationpress_layout_end_content');
+add_action( 'wp_footer', 'wp_swift_form_builder_modal_reveal', 1);
 /**
- * Load in the html for the footer bar
+ * Load in the html for the modal reveal
  *
  * @since    1.0.0
  */
-function foundationpress_layout_end_content() {
+function wp_swift_form_builder_modal_reveal() {
 ?>
 <div class="reveal" id="form-builder-reveal" data-reveal>
   <div id="form-builder-reveal-content"></div>
@@ -15,4 +14,4 @@ function foundationpress_layout_end_content() {
   </button>
 </div>
 <?php
-}	
+}
