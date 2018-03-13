@@ -1,11 +1,11 @@
 <?php
 if( function_exists('acf_add_local_field_group') ):
 
-acf_add_local_field_group(array (
+acf_add_local_field_group(array(
 	'key' => 'group_59cf729a5237d',
 	'title' => 'Form Builder: Input Sections',
-	'fields' => array (
-		array (
+	'fields' => array(
+		array(
 			'key' => 'field_59ec8f68aa374',
 			'label' => 'Inputs',
 			'name' => '',
@@ -13,7 +13,7 @@ acf_add_local_field_group(array (
 			'instructions' => '',
 			'required' => 0,
 			'conditional_logic' => 0,
-			'wrapper' => array (
+			'wrapper' => array(
 				'width' => '',
 				'class' => '',
 				'id' => '',
@@ -21,7 +21,7 @@ acf_add_local_field_group(array (
 			'placement' => 'top',
 			'endpoint' => 0,
 		),
-		array (
+		array(
 			'key' => 'field_59cf72b083b6d',
 			'label' => 'Sections',
 			'name' => 'sections',
@@ -29,7 +29,7 @@ acf_add_local_field_group(array (
 			'instructions' => '',
 			'required' => 0,
 			'conditional_logic' => 0,
-			'wrapper' => array (
+			'wrapper' => array(
 				'width' => '',
 				'class' => '',
 				'id' => 'form-builder-input-sections',
@@ -39,8 +39,8 @@ acf_add_local_field_group(array (
 			'max' => 0,
 			'layout' => 'row',
 			'button_label' => 'Add Section',
-			'sub_fields' => array (
-				array (
+			'sub_fields' => array(
+				array(
 					'key' => 'field_59cfa60dc0488',
 					'label' => 'Inputs',
 					'name' => '',
@@ -48,7 +48,7 @@ acf_add_local_field_group(array (
 					'instructions' => '',
 					'required' => 0,
 					'conditional_logic' => 0,
-					'wrapper' => array (
+					'wrapper' => array(
 						'width' => '',
 						'class' => '',
 						'id' => '',
@@ -56,7 +56,7 @@ acf_add_local_field_group(array (
 					'placement' => 'top',
 					'endpoint' => 0,
 				),
-				array (
+				array(
 					'key' => 'field_59d2045c948d4',
 					'label' => 'Form Inputs',
 					'name' => 'form_inputs',
@@ -64,12 +64,12 @@ acf_add_local_field_group(array (
 					'instructions' => '',
 					'required' => 0,
 					'conditional_logic' => 0,
-					'wrapper' => array (
+					'wrapper' => array(
 						'width' => '',
 						'class' => '',
 						'id' => '',
 					),
-					'clone' => array (
+					'clone' => array(
 						0 => 'group_57b6fd868aeca',
 					),
 					'display' => 'seamless',
@@ -77,7 +77,7 @@ acf_add_local_field_group(array (
 					'prefix_label' => 0,
 					'prefix_name' => 0,
 				),
-				array (
+				array(
 					'key' => 'field_59cfa6a6c0489',
 					'label' => 'Content',
 					'name' => '',
@@ -85,7 +85,7 @@ acf_add_local_field_group(array (
 					'instructions' => '',
 					'required' => 0,
 					'conditional_logic' => 0,
-					'wrapper' => array (
+					'wrapper' => array(
 						'width' => '',
 						'class' => '',
 						'id' => '',
@@ -93,7 +93,7 @@ acf_add_local_field_group(array (
 					'placement' => 'top',
 					'endpoint' => 0,
 				),
-				array (
+				array(
 					'key' => 'field_59cfa764c048a',
 					'label' => 'Section Header',
 					'name' => 'section_header',
@@ -101,7 +101,7 @@ acf_add_local_field_group(array (
 					'instructions' => '',
 					'required' => 0,
 					'conditional_logic' => 0,
-					'wrapper' => array (
+					'wrapper' => array(
 						'width' => '',
 						'class' => '',
 						'id' => '',
@@ -112,7 +112,7 @@ acf_add_local_field_group(array (
 					'append' => '',
 					'maxlength' => '',
 				),
-				array (
+				array(
 					'key' => 'field_59cfa773c048b',
 					'label' => 'Section Content',
 					'name' => 'section_content',
@@ -120,7 +120,7 @@ acf_add_local_field_group(array (
 					'instructions' => '',
 					'required' => 0,
 					'conditional_logic' => 0,
-					'wrapper' => array (
+					'wrapper' => array(
 						'width' => '',
 						'class' => '',
 						'id' => '',
@@ -133,7 +133,7 @@ acf_add_local_field_group(array (
 				),
 			),
 		),
-		array (
+		array(
 			'key' => 'field_59ec8f96aa375',
 			'label' => 'Settings',
 			'name' => '',
@@ -141,7 +141,7 @@ acf_add_local_field_group(array (
 			'instructions' => '',
 			'required' => 0,
 			'conditional_logic' => 0,
-			'wrapper' => array (
+			'wrapper' => array(
 				'width' => '',
 				'class' => '',
 				'id' => '',
@@ -149,7 +149,7 @@ acf_add_local_field_group(array (
 			'placement' => 'top',
 			'endpoint' => 0,
 		),
-		array (
+		array(
 			'key' => 'field_59ec8fa5aa376',
 			'label' => 'Hide Labels',
 			'name' => 'hide_labels',
@@ -157,7 +157,7 @@ acf_add_local_field_group(array (
 			'instructions' => '',
 			'required' => 0,
 			'conditional_logic' => 0,
-			'wrapper' => array (
+			'wrapper' => array(
 				'width' => '',
 				'class' => '',
 				'id' => '',
@@ -168,7 +168,7 @@ acf_add_local_field_group(array (
 			'ui_on_text' => '',
 			'ui_off_text' => '',
 		),
-		array (
+		array(
 			'key' => 'field_59ec9007aa377',
 			'label' => 'Wrap Form',
 			'name' => 'wrap_form',
@@ -176,7 +176,7 @@ acf_add_local_field_group(array (
 			'instructions' => '',
 			'required' => 0,
 			'conditional_logic' => 0,
-			'wrapper' => array (
+			'wrapper' => array(
 				'width' => '',
 				'class' => '',
 				'id' => '',
@@ -187,7 +187,7 @@ acf_add_local_field_group(array (
 			'ui_on_text' => '',
 			'ui_off_text' => '',
 		),
-		array (
+		array(
 			'key' => 'field_5a02c5255508c',
 			'label' => 'Submit Button Text',
 			'name' => 'submit_button_text',
@@ -195,7 +195,7 @@ acf_add_local_field_group(array (
 			'instructions' => 'Leave blank to use default.',
 			'required' => 0,
 			'conditional_logic' => 0,
-			'wrapper' => array (
+			'wrapper' => array(
 				'width' => '',
 				'class' => '',
 				'id' => '',
@@ -206,7 +206,7 @@ acf_add_local_field_group(array (
 			'append' => '',
 			'maxlength' => 30,
 		),
-		array (
+		array(
 			'key' => 'field_5a0c9ab591cc9',
 			'label' => 'User Confirmation Email',
 			'name' => 'user_confirmation_email',
@@ -214,17 +214,17 @@ acf_add_local_field_group(array (
 			'instructions' => 'How confirmations email are handled.',
 			'required' => 0,
 			'conditional_logic' => 0,
-			'wrapper' => array (
+			'wrapper' => array(
 				'width' => '',
 				'class' => '',
 				'id' => '',
 			),
-			'choices' => array (
+			'choices' => array(
 				'ask' => 'Always Ask User',
 				'send' => 'Always Send',
 				'never' => 'Never Send',
 			),
-			'default_value' => array (
+			'default_value' => array(
 				0 => 'ask',
 			),
 			'allow_null' => 1,
@@ -234,30 +234,30 @@ acf_add_local_field_group(array (
 			'return_format' => 'value',
 			'placeholder' => '',
 		),
-		array (
+		array(
 			'key' => 'field_5a0ca25ef7116',
 			'label' => 'Show Page in Email',
 			'name' => 'show_page_in_email',
 			'type' => 'true_false',
 			'instructions' => '',
 			'required' => 0,
-			'conditional_logic' => array (
-				array (
-					array (
+			'conditional_logic' => array(
+				array(
+					array(
 						'field' => 'field_5a0c9ab591cc9',
 						'operator' => '==',
 						'value' => 'ask',
 					),
 				),
-				array (
-					array (
+				array(
+					array(
 						'field' => 'field_5a0c9ab591cc9',
 						'operator' => '==',
 						'value' => 'send',
 					),
 				),
 			),
-			'wrapper' => array (
+			'wrapper' => array(
 				'width' => '',
 				'class' => '',
 				'id' => '',
@@ -268,7 +268,7 @@ acf_add_local_field_group(array (
 			'ui_on_text' => '',
 			'ui_off_text' => '',
 		),
-		array (
+		array(
 			'key' => 'field_5a0c9ce346991',
 			'label' => 'Show Edit Link',
 			'name' => 'show_edit_link',
@@ -276,7 +276,7 @@ acf_add_local_field_group(array (
 			'instructions' => '',
 			'required' => 0,
 			'conditional_logic' => 0,
-			'wrapper' => array (
+			'wrapper' => array(
 				'width' => '',
 				'class' => '',
 				'id' => '',
@@ -287,10 +287,29 @@ acf_add_local_field_group(array (
 			'ui_on_text' => '',
 			'ui_off_text' => '',
 		),
+		array(
+			'key' => 'field_5aa7d7df2f286',
+			'label' => 'Save Submission',
+			'name' => 'save_submission',
+			'type' => 'true_false',
+			'instructions' => '',
+			'required' => 0,
+			'conditional_logic' => 0,
+			'wrapper' => array(
+				'width' => '',
+				'class' => '',
+				'id' => '',
+			),
+			'message' => 'Save a permanent copy of each form submission in the WordPress backend.',
+			'default_value' => 0,
+			'ui' => 1,
+			'ui_on_text' => '',
+			'ui_off_text' => '',
+		),
 	),
-	'location' => array (
-		array (
-			array (
+	'location' => array(
+		array(
+			array(
 				'param' => 'post_type',
 				'operator' => '==',
 				'value' => 'wp_swift_form',

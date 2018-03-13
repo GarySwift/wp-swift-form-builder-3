@@ -85,11 +85,17 @@ require_once plugin_dir_path( __FILE__ ) . 'class-form-builder.php';
  */
 require_once plugin_dir_path( __FILE__ ) . 'class-form-builder-contact-form.php';
 
+/**
+ * A FormBuilder child class that handles contact forms
+ */
+require_once plugin_dir_path( __FILE__ ) . 'class-form-submission-cpt.php';
+
 /*
  * Form Custom Post Type and Taxonomies
  */
 require_once plugin_dir_path( __FILE__ ) . 'cpt/wp_swift_form.php';
 require_once plugin_dir_path( __FILE__ ) . 'cpt/wp_swift_form_category.php';
+require_once plugin_dir_path( __FILE__ ) . 'cpt/wp_swift_form_submit.php';
 
 /**
  * The ACF field groups

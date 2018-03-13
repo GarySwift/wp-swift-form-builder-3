@@ -1,16 +1,5 @@
 <?php
 /*
- * Check if WP_Swift_Form_Builder_Plugin exists.
- */
-// include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
-
-// if ( is_plugin_active( 'wp-swift-form-builder/form-builder.php' ) )  {
-
-//     include_once( plugin_dir_path( __DIR__ ) . 'wp-swift-form-builder/form-builder.php' );
-
-//     if(class_exists('WP_Swift_Form_Builder_Plugin')) {
-
-/*
  * Declare a new class that extends the form builder
  * 
  * @class       WP_Swift_Form_Builder_Login_Form
@@ -19,51 +8,28 @@
  */
 class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
 
-    // private $attributes = null;
-    // private $option = '';
-
+    private $to_email = null;
+    private $forward_email = null;
+    private $save_submission = null;
+    
     /*
      * Initializes the plugin.
      */
-    public function __construct( $form_id ) { //, $sections, $settings = false
-        // $args = $this->get_form_args();
-        parent::__construct( $form_id );//, $sections, $settings
+    public function __construct( $form_id, $args = array() ) {
+        if (count($args)) {
+            // echo "<pre>args: "; var_dump($args); echo "</pre>";
+            if (isset($args["to_email"]) && filter_var($args["to_email"], FILTER_VALIDATE_EMAIL)) {
+                $this->to_email = $args["to_email"];
+            }
+            if (isset($args["forward_email"]) && filter_var($args["forward_email"], FILTER_VALIDATE_EMAIL)) {
+                $this->forward_email = $args["forward_email"];
+            } 
+            if (isset($args["save_submission"])) {
+                $this->save_submission = $args["save_submission"];
+            }                        
+        }
+        parent::__construct( $form_id );
     }    
-
-    /*
-     * Process the form
-     * 
-     * Use the parent class to run the default validation on the form
-     * If default is passed, we let the child do additional checks required by this form such as existing email
-     * 
-     * Eg. The parent will check if the email exists, is valid etc but the child only knows if it needs to check for duplicates
-     * The parent does not know what to with a successful form, it just validates default settings
-     * The parent will handle errors if default errors have been found
-     */
-    // public function process_form($post, $ajax=false) {
-        
-    //     if ( parent::get_form_inputs() ) {
-    //         $form_inputs = parent::get_form_inputs();
-    //         // echo "1<pre>"; var_dump($form_inputs); echo "</pre>";
-    //         parent::validate_form($post);
-    //         $form_inputs = parent::get_form_inputs();
-    //         // echo "2<pre>"; var_dump($form_inputs); echo "</pre>";
-    //         if ($this->get_error_count()==0) {
-    //             // echo "<pre>2</pre>";
-    //             return $this->process_form_after_default_passed($post, $ajax);
-    //         }
-    //         else {
-    //             ob_start();
-    //             // echo "<pre>3</pre>";
-    //             $this->acf_build_form_message();
-    //             $html = ob_get_contents();
-    //             ob_end_clean();
-                
-    //             return $html;
-    //         }
-    //     }
-    // }
-
     
     /*
      * Form Processing
@@ -85,7 +51,7 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
         /*
          * Variables
          */
-        $send_email=true;//Debug variable. If false, emails will not be sent
+        $send_email=false;//Debug variable. If false, emails will not be sent
         if( get_field('debugging_stop_email', 'option') ) {
             $send_email = false;
         }  
@@ -108,7 +74,13 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
          * These are the default form settings
          */
         // If a debug email is set in ACF, send the email there instead of the admin email
-        $to = get_option('admin_email');
+        
+        if (isset($this->to_email)) {
+            $to = $this->to_email;
+        }
+        else {
+            $to = get_option('admin_email');
+        }
         // Set reponse subject for email
         $response_subject = "New Enquiry".$date;
         // Start the reponse message for the email
@@ -126,7 +98,7 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
         if (function_exists('get_field')) {
             $form_post_id = parent::get_form_post_id();
             // If a to_email is set in ACF, send the email there instead of the admin email
-            if (get_field('to_email', $form_post_id )) {
+            if (!$this->to_email && get_field('to_email', $form_post_id )) {
                 $to = get_field('to_email', $form_post_id ); 
             }
             // Set reponse subject for email
@@ -146,8 +118,17 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
                 $browser_output_header = get_field('browser_output_header', $form_post_id );
             } 
             // The auto-response subject
-            if( get_field('auto_response_subject') ) {
-                $auto_response_subject = get_field('auto_response_subject');
+            if( get_field('auto_response_subject', $form_post_id) ) {
+                $auto_response_subject = get_field('auto_response_subject', $form_post_id);
+            }
+            if( get_field('auto_response_subject', $form_post_id) ) {
+                $this->save_submission = array(                        
+                    "title" => get_the_title(),
+                    "attach" => array(
+                        "email" => $to,
+                        "post_id" => get_the_ID(),
+                    ),                  
+                );
             }
         }
 
@@ -162,11 +143,26 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
          * Send the email to the admin/office
          */
         if ($send_email) {
-            $status = wp_mail($to, $response_subject.' - '.date("D j M Y, H:i"). ' GMT', wp_swift_wrap_email($email_string), $headers);//wrap_email($email_string)
+            $status = wp_mail($to, $response_subject.' - '.$date, wp_swift_wrap_email($email_string), $headers);//wrap_email($email_string)
+            if (isset($this->forward_email)) {
+                $status = wp_mail($this->forward_email, '[Fwd:] '.$response_subject.' - '.$date, wp_swift_wrap_email($email_string), $headers);
+            }
         }
         else {
             error_log( "Debugging mode is on so no emails are being sent." );
             error_log( $email_string );
+        }
+
+        if ( $this->save_submission ) {
+            $attach = null; 
+            $save_submission_title = $response_subject . $date; 
+            if (isset($this->save_submission["title"])) {
+                 $save_submission_title = $this->save_submission["title"] . ' - ' . $save_submission_title;
+            }
+            if (isset($this->save_submission["attach"])) {
+               $attach = $this->save_submission["attach"]; 
+            }
+            $submission = new WP_Swift_Form_Submission( $save_submission_title, $email_string, $attach ); 
         }
         /*
          * If the user has requested it, send an email acknowledgement
@@ -208,12 +204,11 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
 
 
     private function build_page_details() {
-        $url     = wp_get_referer();
-        $post_id = url_to_postid( $url ); 
-
+        // $url     = wp_get_referer(); $post_id = url_to_postid( $url ); 
+        $post_id = get_the_id();
+        $url     = get_the_permalink( $post_id );
         ob_start(); ?>
             
-            <br>
             <div id="page-details"> 
 
                 <div><small>Sent from page:</small></div>

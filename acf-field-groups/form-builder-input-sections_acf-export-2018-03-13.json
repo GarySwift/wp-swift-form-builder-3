@@ -1,0 +1,326 @@
+[
+    {
+        "key": "group_59cf729a5237d",
+        "title": "Form Builder: Input Sections",
+        "fields": [
+            {
+                "key": "field_59ec8f68aa374",
+                "label": "Inputs",
+                "name": "",
+                "type": "tab",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "placement": "top",
+                "endpoint": 0
+            },
+            {
+                "key": "field_59cf72b083b6d",
+                "label": "Sections",
+                "name": "sections",
+                "type": "repeater",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": "form-builder-input-sections"
+                },
+                "collapsed": "field_59d2045c948d4",
+                "min": 1,
+                "max": 0,
+                "layout": "row",
+                "button_label": "Add Section",
+                "sub_fields": [
+                    {
+                        "key": "field_59cfa60dc0488",
+                        "label": "Inputs",
+                        "name": "",
+                        "type": "tab",
+                        "instructions": "",
+                        "required": 0,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "placement": "top",
+                        "endpoint": 0
+                    },
+                    {
+                        "key": "field_59d2045c948d4",
+                        "label": "Form Inputs",
+                        "name": "form_inputs",
+                        "type": "clone",
+                        "instructions": "",
+                        "required": 0,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "clone": [
+                            "group_57b6fd868aeca"
+                        ],
+                        "display": "seamless",
+                        "layout": "block",
+                        "prefix_label": 0,
+                        "prefix_name": 0
+                    },
+                    {
+                        "key": "field_59cfa6a6c0489",
+                        "label": "Content",
+                        "name": "",
+                        "type": "tab",
+                        "instructions": "",
+                        "required": 0,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "placement": "top",
+                        "endpoint": 0
+                    },
+                    {
+                        "key": "field_59cfa764c048a",
+                        "label": "Section Header",
+                        "name": "section_header",
+                        "type": "text",
+                        "instructions": "",
+                        "required": 0,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "default_value": "",
+                        "placeholder": "",
+                        "prepend": "",
+                        "append": "",
+                        "maxlength": ""
+                    },
+                    {
+                        "key": "field_59cfa773c048b",
+                        "label": "Section Content",
+                        "name": "section_content",
+                        "type": "wysiwyg",
+                        "instructions": "",
+                        "required": 0,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "default_value": "",
+                        "tabs": "all",
+                        "toolbar": "full",
+                        "media_upload": 0,
+                        "delay": 0
+                    }
+                ]
+            },
+            {
+                "key": "field_59ec8f96aa375",
+                "label": "Settings",
+                "name": "",
+                "type": "tab",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "placement": "top",
+                "endpoint": 0
+            },
+            {
+                "key": "field_59ec8fa5aa376",
+                "label": "Hide Labels",
+                "name": "hide_labels",
+                "type": "true_false",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "message": "Placeholders will be automatically added if labels are hidden.",
+                "default_value": 0,
+                "ui": 1,
+                "ui_on_text": "",
+                "ui_off_text": ""
+            },
+            {
+                "key": "field_59ec9007aa377",
+                "label": "Wrap Form",
+                "name": "wrap_form",
+                "type": "true_false",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "message": "Adds a border around the form and removes border from error messages.",
+                "default_value": 0,
+                "ui": 1,
+                "ui_on_text": "",
+                "ui_off_text": ""
+            },
+            {
+                "key": "field_5a02c5255508c",
+                "label": "Submit Button Text",
+                "name": "submit_button_text",
+                "type": "text",
+                "instructions": "Leave blank to use default.",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "default_value": "",
+                "placeholder": "Submit Form",
+                "prepend": "",
+                "append": "",
+                "maxlength": 30
+            },
+            {
+                "key": "field_5a0c9ab591cc9",
+                "label": "User Confirmation Email",
+                "name": "user_confirmation_email",
+                "type": "select",
+                "instructions": "How confirmations email are handled.",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "choices": {
+                    "ask": "Always Ask User",
+                    "send": "Always Send",
+                    "never": "Never Send"
+                },
+                "default_value": [
+                    "ask"
+                ],
+                "allow_null": 1,
+                "multiple": 0,
+                "ui": 0,
+                "ajax": 0,
+                "return_format": "value",
+                "placeholder": ""
+            },
+            {
+                "key": "field_5a0ca25ef7116",
+                "label": "Show Page in Email",
+                "name": "show_page_in_email",
+                "type": "true_false",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": [
+                    [
+                        {
+                            "field": "field_5a0c9ab591cc9",
+                            "operator": "==",
+                            "value": "ask"
+                        }
+                    ],
+                    [
+                        {
+                            "field": "field_5a0c9ab591cc9",
+                            "operator": "==",
+                            "value": "send"
+                        }
+                    ]
+                ],
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "message": "Show page name and link in email. (Useful if form appears on multiple pages.)",
+                "default_value": 0,
+                "ui": 1,
+                "ui_on_text": "",
+                "ui_off_text": ""
+            },
+            {
+                "key": "field_5a0c9ce346991",
+                "label": "Show Edit Link",
+                "name": "show_edit_link",
+                "type": "true_false",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "message": "Shows an <b>Edit Form<\/b> link to users with form editing capabilities.",
+                "default_value": 0,
+                "ui": 1,
+                "ui_on_text": "",
+                "ui_off_text": ""
+            },
+            {
+                "key": "field_5aa7d7df2f286",
+                "label": "Save Submission",
+                "name": "save_submission",
+                "type": "true_false",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "message": "Save a permanent copy of each form submission in the WordPress backend.",
+                "default_value": 0,
+                "ui": 1,
+                "ui_on_text": "",
+                "ui_off_text": ""
+            }
+        ],
+        "location": [
+            [
+                {
+                    "param": "post_type",
+                    "operator": "==",
+                    "value": "wp_swift_form"
+                }
+            ]
+        ],
+        "menu_order": 0,
+        "position": "normal",
+        "style": "default",
+        "label_placement": "top",
+        "instruction_placement": "label",
+        "hide_on_screen": "",
+        "active": 1,
+        "description": ""
+    }
+]

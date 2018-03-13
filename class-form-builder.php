@@ -797,7 +797,7 @@ class WP_Swift_Form_Builder_Parent {
                             $input['help'] = $help;
                         }   
                         if ($input['required']): echo PHP_EOL; ?>
-                    <small class="error"><?php echo $help; ?></small><?php 
+                    <small class="error" id="<?php echo $id; ?>-report"><?php echo $help; ?></small><?php 
                         endif;
                         if (isset($input['instructions']) && $input['instructions']): echo PHP_EOL; ?>
                     <small class="instructions"><?php echo $input['instructions']; ?></small><?php 

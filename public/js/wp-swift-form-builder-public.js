@@ -71,7 +71,10 @@ jQuery(document).ready(function($){
 	};
 
 	var validateForm = function(form) {
-		var errorsInForm = 0;
+		var errorsInForm = {
+			count: 0,
+			report: ''
+		};
 		for (var i = 0; i < form.length; i++) {
 			var input = new FormBuilderInput(form[i]);
 			errorsInForm = addClassAfterBlur(input, input.isValid(), errorsInForm);
@@ -134,7 +137,8 @@ jQuery(document).ready(function($){
 	var addClassAfterBlur = function addClassAfterBlur(input, valid, errorsInForm) {
 		if(!valid) {
 			$(input.id+'-form-group').addClass('has-error').removeClass('has-success');
-			errorsInForm++;
+			errorsInForm.count++;
+			errorsInForm.report += "<li>" + $(input.id+'-report').html() + "</li>";
 		}
 		else {
 			if (input.value !== '') {
@@ -301,7 +305,7 @@ jQuery(document).ready(function($){
 		}		
 	});	
 
-	$('#request-form').submit(function(e) {
+	$('_#request-form').submit(function(e) {
 
 		e.preventDefault();
 		var $form = $(this);
@@ -309,8 +313,9 @@ jQuery(document).ready(function($){
 		var errorsInForm = validateForm( $form.serializeArray() );
 		submit.prop('disabled', true);
 
-		errorsInForm = 0;
-		if (errorsInForm === 0) {
+		// console.log('errorsInForm', errorsInForm);
+		// errorsInForm.count = 0;
+		if (errorsInForm.count === 0) {
 			// FormBuilderAjax is set on server using wp_localize_script
 			if(typeof FormBuilderAjax !== "undefined") {
 				FormBuilderAjax.form = $form.serializeArray();
@@ -335,9 +340,28 @@ jQuery(document).ready(function($){
 			}
 		}
 		else {
-			alert("Please fill in the required fields!");
-			submit.prop('disabled', false);
+			
+			submit.prop('disabled', false);	
+			$('#form-builder-reveal-content').html( wrapErrorMessage(errorsInForm) );
+			var $modal = $('#form-builder-reveal');
+			if(typeof $modal !== "undefined") {
+				$modal.foundation('open');	
+			}
+			else {
+				alert("Please fill in the required fields!");
+			}				
 		}
 		return false;
 	});	
 });
+
+var wrapErrorMessage = function(errorsInForm) {
+	$html = '<div id="form-error-message" class="form-message error ajax">';
+	    $html += '<h3 class="heading">Errors Found</h3>';
+	    $html += '<div class="error-content">';
+	        $html += '<p>We\'re sorry, there has been an error with the form input. Please rectify the ' + errorsInForm.count + ' errors below and resubmit.</p>';   
+	        $html += '<ul>' + errorsInForm.report + '</ul>';
+	    $html += '</div>';
+	$html += '</div>';	
+	return $html;
+}

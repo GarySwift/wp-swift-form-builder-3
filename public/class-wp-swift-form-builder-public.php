@@ -65,20 +65,23 @@ class Wp_Swift_Form_Builder_Public {
     public function render_form( $atts = array(), $content = null ) {
         $a = shortcode_atts( array(
             'id' => false,
+	        'to-email' => null,
+	        'forward-email' => null,            
         ), $atts );
 
-    // if( get_field('sections', $a['id']) ) {
-    //     $sections = get_field('sections', $a['id']);
-    //     // echo "<pre>"; var_export($sections); echo "</pre>";
-    //     echo "<pre>"; 
-    //     	echo json_encode($sections);
-    //     echo "</pre>";
-    // }
-    // else {
-    //     write_log('no sections');
-    // }
+        $args = array();
+		$id = $a['id'];
+		$to_email = $a['to-email'];
+		$forward_email = $a['forward-email'];
+		
+		if ($to_email) {
+			$args["to_email"] = $to_email;
+		}
+		if ($forward_email) {
+			$args["forward_email"] = $forward_email;
+		}
 
-        $form_builder = new WP_Swift_Form_Builder_Contact_Form( $a['id'] );
+        $form_builder = new WP_Swift_Form_Builder_Contact_Form( $id, $args );
         return $form_builder->run();
     }
 
@@ -121,15 +124,10 @@ class Wp_Swift_Form_Builder_Public {
  */
 
 function wp_swift_get_contact_form($form_id) {
-    // $form_data = wp_swift_get_form_data($form_id);
-    // // if (class_exists('WP_Swift_Form_Builder_Contact_Form') && isset($form_data["sections"])) {
-    //     $sections = $form_data["sections"];
-    //     $settings = $form_data["settings"];
-        return new WP_Swift_Form_Builder_Contact_Form( $form_id ); 
-    // }
+    return new WP_Swift_Form_Builder_Contact_Form( $form_id ); 
 }
 
-function wp_swift_formbuilder_run($form_id) {
-    $form_builder = new WP_Swift_Form_Builder_Contact_Form( $form_id );
+function wp_swift_formbuilder_run($form_id, $args = array()) {
+    $form_builder = new WP_Swift_Form_Builder_Contact_Form( $form_id, $args );
     echo $form_builder->run();    
 }
