@@ -7,11 +7,14 @@ function wp_swift_submit_request_form_callback() {
     $post = array();
     $form_set = false;
     $form_id = intval( $_POST['id'] );
+    $post_id = intval( $_POST['post'] );
+    // echo $form_id;
+    // die();
 
     if (isset($_POST['form'])) {
         $post = wp_swift_convert_json_to_post_array( $_POST['form'] );
     }
-    $form_builder = new WP_Swift_Form_Builder_Contact_Form( $form_id ); 
+    $form_builder = new WP_Swift_Form_Builder_Contact_Form( $form_id, $post_id ); 
     $html = $form_builder->process_form($post, true);
 
     if ($form_builder->get_form_data()) {

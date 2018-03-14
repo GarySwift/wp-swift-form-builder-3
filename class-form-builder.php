@@ -16,6 +16,7 @@ class WP_Swift_Form_Builder_Parent {
     // private $post_id = null;
     private $form_css_id = '';
     private $form_post_id = '';
+    private $post_id = null;
     private $form_name = '';
     private $submit_button_id = '';
     private $submit_button_name = '';
@@ -49,8 +50,10 @@ class WP_Swift_Form_Builder_Parent {
     /*
      * Initializes the plugin.
      */
-    public function __construct($form_id) {// , $sections, $settings = false  //"option") {
+    public function __construct($form_id, $post_id) {// , $sections, $settings = false  //"option") {
         $form_data = wp_swift_get_form_data($form_id);
+        $this->post_id = $post_id;
+
         // echo "<pre>"; var_dump($form_data); echo "</pre>";
         $this->form_post_id = $form_id;
         if (isset($form_data["sections"])) {
@@ -197,7 +200,7 @@ class WP_Swift_Form_Builder_Parent {
         ?>
  
         <!-- @start form -->
-        <form method="post" <?php echo $this->action; ?> name="<?php echo $this->form_name; ?>" id="<?php echo $this->form_css_id; ?>" data-id="<?php echo $this->form_post_id ?>" class="<?php echo $framework.' '; echo $this->form_class.' '; echo $this->form_name ?>" novalidate<?php echo $this->enctype; ?>>
+        <form method="post" <?php echo $this->action; ?> name="<?php echo $this->form_name; ?>" id="<?php echo $this->form_css_id; ?>" data-id="<?php echo $this->form_post_id ?>" data-post-id="<?php echo $this->post_id ?>" class="<?php echo $framework.' '; echo $this->form_class.' '; echo $this->form_name ?>" novalidate<?php echo $this->enctype; ?>>
             <?php
             
             $this->front_end_form_input_loop($this->form_data, $this->tab_index, $this->form_pristine, $this->error_count);
@@ -856,7 +859,13 @@ class WP_Swift_Form_Builder_Parent {
      */
     public function get_form_post_id() {
         return $this->form_post_id;
-    }  
+    } 
+    /*
+     * Get form_post_id
+     */
+    public function get_post_id() {
+        return $this->post_id;
+    }      
     /*
      * Get form_pristine
      */

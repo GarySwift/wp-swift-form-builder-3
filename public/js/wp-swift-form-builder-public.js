@@ -27,7 +27,6 @@ jQuery(document).ready(function($){
 		console.log(FormBuilderAjax.updated);
 	}
 	// FormBuilderDatePicker is set on server using wp_localize_script
-// console.log('FormBuilderDatePicker is set on server using wp_localize_script');
 	// Form Input Object
 	var FormBuilderInput = function FormBuilderInput(input) {
 		this.name = input.name;
@@ -305,7 +304,7 @@ jQuery(document).ready(function($){
 		}		
 	});	
 
-	$('_#request-form').submit(function(e) {
+	$('#request-form').submit(function(e) {
 
 		e.preventDefault();
 		var $form = $(this);
@@ -313,13 +312,12 @@ jQuery(document).ready(function($){
 		var errorsInForm = validateForm( $form.serializeArray() );
 		submit.prop('disabled', true);
 
-		// console.log('errorsInForm', errorsInForm);
-		// errorsInForm.count = 0;
 		if (errorsInForm.count === 0) {
 			// FormBuilderAjax is set on server using wp_localize_script
 			if(typeof FormBuilderAjax !== "undefined") {
 				FormBuilderAjax.form = $form.serializeArray();
 				FormBuilderAjax.id = $form.data('id');
+				FormBuilderAjax.post = $form.data('post-id');
 				FormBuilderAjax.action = "wp_swift_submit_request_form";
 
 				$.post(FormBuilderAjax.ajaxurl, FormBuilderAjax, function(response) {
@@ -334,8 +332,7 @@ jQuery(document).ready(function($){
 
 					if(typeof $modal !== "undefined") {
 						$modal.foundation('open');	
-					}
-						
+					}						
 				});	
 			}
 		}

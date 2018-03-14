@@ -306,6 +306,24 @@ acf_add_local_field_group(array(
 			'ui_on_text' => '',
 			'ui_off_text' => '',
 		),
+		array(
+			'key' => 'field_5aa7f71875d0e',
+			'label' => 'Forwarding Email',
+			'name' => 'forward_email',
+			'type' => 'email',
+			'instructions' => 'Add a secondary email to which all form submissions will also be sent.',
+			'required' => 0,
+			'conditional_logic' => 0,
+			'wrapper' => array(
+				'width' => '',
+				'class' => '',
+				'id' => '',
+			),
+			'default_value' => '',
+			'placeholder' => '',
+			'prepend' => '',
+			'append' => '',
+		),
 	),
 	'location' => array(
 		array(

@@ -109,11 +109,11 @@ class Wp_Swift_Form_Builder_Public {
 	public function enqueue_scripts() {
 
 		$options = get_option( 'wp_swift_form_builder_settings' );
-        if ( !isset($options['wp_swift_form_builder_checkbox_javascript']) ) {
+        // if ( !isset($options['wp_swift_form_builder_checkbox_javascript']) ) {
 			$file = 'js/wp-swift-form-builder-public.js';
 			$version = filemtime(plugin_dir_path( __FILE__ ) . $file);
 			wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . $file, array( 'jquery' ), $version, true );
-		}
+		// }
 
 	}
 }//@end class Wp_Swift_Form_Builder_Public
@@ -127,7 +127,7 @@ function wp_swift_get_contact_form($form_id) {
     return new WP_Swift_Form_Builder_Contact_Form( $form_id ); 
 }
 
-function wp_swift_formbuilder_run($form_id, $args = array()) {
-    $form_builder = new WP_Swift_Form_Builder_Contact_Form( $form_id, $args );
+function wp_swift_formbuilder_run($form_id, $post_id = null, $args = array()) {
+    $form_builder = new WP_Swift_Form_Builder_Contact_Form( $form_id, $post_id, $args );
     echo $form_builder->run();    
 }
