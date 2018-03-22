@@ -65,7 +65,7 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
         /*
          * Variables
          */
-        $send_email=false;//Debug variable. If false, emails will not be sent
+        $send_email=true;//Debug variable. If false, emails will not be sent
         $form_post_id = parent::get_form_post_id();
         $post_id = parent::get_post_id();
 
@@ -165,7 +165,8 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
             }
         }
         // Debug override - send all mail to me
-        $to = "gary@brightlight.ie";
+        // $to = "gary@brightlight.ie";
+        $to = "eleanor@redco.ie";
 
         // Start making the string that will be sent in the email
         $email_string = $response_message;
