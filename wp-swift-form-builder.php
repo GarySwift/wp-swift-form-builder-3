@@ -84,6 +84,7 @@ require_once plugin_dir_path( __FILE__ ) . 'class-form-builder.php';
  * A FormBuilder child class that handles contact forms
  */
 require_once plugin_dir_path( __FILE__ ) . 'class-form-builder-contact-form.php';
+require_once plugin_dir_path( __FILE__ ) . 'class-form-builder-signup-form.php';
 
 /**
  * A FormBuilder child class that handles contact forms
@@ -154,6 +155,9 @@ require_once plugin_dir_path( __FILE__ ) . '_shortcode-metabox.php';
  * Add the FoundationPress reveal modal which shows submission response
  */
 require_once plugin_dir_path( __FILE__ ) . '_reveal-modal.php';
+
+
+require_once plugin_dir_path( __FILE__ ) . 'debug/write-log.php';
 
 /**
  * Begins execution of the plugin.

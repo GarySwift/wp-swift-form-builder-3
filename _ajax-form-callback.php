@@ -11,21 +11,29 @@ function wp_swift_submit_request_form_callback() {
     // echo $form_id;
     // die();
 
+// write_log($_POST);
     if (isset($_POST['form'])) {
         $post = wp_swift_convert_json_to_post_array( $_POST['form'] );
     }
-    $form_builder = new WP_Swift_Form_Builder_Contact_Form( $form_id, $post_id ); 
-    $html = $form_builder->process_form($post, true);
-
-    if ($form_builder->get_form_data()) {
-       $form_set = true;
+    if (isset($_POST['type']) && $_POST['type'] == "signup") {
+        write_log("WP_Swift_Form_Builder_Signup_Form");
+        $form_builder = new WP_Swift_Form_Builder_Signup_Form( $form_id, $post_id );
     }
-    $response = array(
-        "form_set" => $form_set,
-        "error_count" => $form_builder->get_error_count(),
-        "html" => $html,
-    );
-    echo json_encode( $response );
+    else {
+        $form_builder = new WP_Swift_Form_Builder_Contact_Form( $form_id, $post_id );
+    }
+    
+    // $html = $form_builder->process_form($post, true);
+
+    // if ($form_builder->get_form_data()) {
+    //    $form_set = true;
+    // }
+    // $response = array(
+    //     "form_set" => $form_set,
+    //     "error_count" => $form_builder->get_error_count(),
+    //     "html" => $html,
+    // );
+    echo json_encode( $form_builder->get_response($post) );
     die();
 }
 add_action( 'wp_ajax_wp_swift_submit_request_form', 'wp_swift_submit_request_form_callback' );

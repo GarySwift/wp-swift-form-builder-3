@@ -40,6 +40,9 @@ class WP_Swift_Form_Builder_Parent {
     private $form_error_messages = array();
     private $user_confirmation_email = "ask";
     private $show_edit_link = false;
+    private $hidden = null;
+
+    private $form_type;
     /*
         function guide
         acf_build_form()
@@ -50,9 +53,15 @@ class WP_Swift_Form_Builder_Parent {
     /*
      * Initializes the plugin.
      */
-    public function __construct($form_id, $post_id) {// , $sections, $settings = false  //"option") {
+    public function __construct($form_id, $post_id, $hidden = array(), $type = 'contact') {// , $sections, $settings = false  //"option") {
         $form_data = wp_swift_get_form_data($form_id);
         $this->post_id = $post_id;
+
+        $this->form_type = $type;
+
+        if (count($hidden)) {
+            $this->hidden = $hidden;
+        }
 
         // echo "<pre>"; var_dump($form_data); echo "</pre>";
         $this->form_post_id = $form_id;
@@ -200,8 +209,14 @@ class WP_Swift_Form_Builder_Parent {
         ?>
  
         <!-- @start form -->
-        <form method="post" <?php echo $this->action; ?> name="<?php echo $this->form_name; ?>" id="<?php echo $this->form_css_id; ?>" data-id="<?php echo $this->form_post_id ?>" data-post-id="<?php echo $this->post_id ?>" class="<?php echo $framework.' '; echo $this->form_class.' '; echo $this->form_name ?>" novalidate<?php echo $this->enctype; ?>>
-            <?php
+        <form method="post" <?php echo $this->action; ?> name="<?php echo $this->form_name; ?>" id="<?php echo $this->form_css_id; ?>" data-id="<?php echo $this->form_post_id ?>" data-post-id="<?php echo $this->post_id ?>" data-type="<?php echo $this->form_type ?>" class="<?php echo $framework.' '; echo $this->form_class.' '; echo $this->form_name ?>" novalidate<?php echo $this->enctype; ?>>
+
+            <?php if ( isset($this->hidden) && count($this->hidden)):
+            // echo "<pre>hidden: "; var_dump($this->hidden); echo "</pre>";
+                foreach ($this->hidden as $key => $hidden): ?>
+                    <input type="hidden" id="<?php echo $key ?>" name="<?php echo $key ?>" value="<?php echo $hidden ?>">
+                <?php endforeach;
+            endif;
             
             $this->front_end_form_input_loop($this->form_data, $this->tab_index, $this->form_pristine, $this->error_count);
 
@@ -220,12 +235,56 @@ class WP_Swift_Form_Builder_Parent {
             </div> 
             <!-- @end .mail-receipt -->                
             <?php endif ?>
+                
+            <?php 
+                $opt_in = true; 
+                $required_opt_in = false;
+            ?>
+            <?php if ($opt_in): ?>
+
+            <!-- @start .sign-up -->
+            <div class="form-group sign-up">
+                <div class="form-label"></div>
+                <div class="form-input">
+                    <div class="checkbox">
+                        <label id="sign-up-details">We would love to keep in touch with you, if you’re happy for us to do that please let us know below:</label>
+
+                        <label for="">I am happy to receive marketing information from Honda Ireland by: (please tick all that apply)</label>
+
+                        <input type="checkbox" value="email" tabindex=<?php echo $this->get_tab_index(); ?> name="sign-up[]" id="sign-up-email" class="sign-up"><label for="sign-up-email">Email</label>
+                        <input type="checkbox" value="sms" tabindex=<?php echo $this->get_tab_index(); ?> name="sign-up[]" id="sign-up-sms" class="sign-up"><label for="sign-up-sms">SMS</label> 
+
+                        <?php if ( $this->form_type === "contact" ): ?>
+
+                        <label for="">I am happy to receive marketing information from this dealer by: (please tick all that apply)</label>
+
+                        <input type="checkbox" value="email-dealer" tabindex=<?php echo $this->get_tab_index(); ?> name="sign-up[]" id="sign-up-email-dealer" class="sign-up"><label for="sign-up-email-dealer">Email</label>
+                        <input type="checkbox" value="sms-dealer" tabindex=<?php echo $this->get_tab_index(); ?> name="sign-up[]" id="sign-up-sms-dealer" class="sign-up"><label for="sign-up-sms-dealer">SMS</label>                            
+                        <?php endif ?>
+                         
+                    </div>
+                </div>                  
+            </div> 
+            <!-- @end .sign-up -->                
+            <?php endif;//@nd if ($opt_in) ?>
 
             <!-- @start .button -->
             <div class="form-group button-group">
-                <button type="submit" name="<?php echo $this->submit_button_name; ?>" id="<?php echo $this->submit_button_id; ?>" class="button large expanded" tabindex="<?php echo $this->tab_index++; ?>"><?php echo $this->submit_button_text; ?></button>
+                <button type="submit" name="<?php echo $this->submit_button_name; ?>" id="<?php echo $this->submit_button_id; ?>" class="button large expanded" tabindex="<?php echo $this->tab_index++; ?>"<?php if ($required_opt_in) echo ' disabled' ?>><?php echo $this->submit_button_text; ?></button>
             </div>
             <!-- @end .button -->
+
+            <?php if ($opt_in): ?>
+                <div class="form-group mail-receipt">
+                    <div class="policies">
+                        <p>You can opt out of receiving messages at any time by using the unsubscribe button on any of the messages you receive. You can withdraw your information at any time by emailing hello@hondaireland.ie.</p>
+                        <p>Marketing information refers to information on appointed reminders, news, products and services including competitions, promotions, offers, advertisements and prize draws.</p>
+                        <p><strong>Please note:</strong> Should your product be subject to warranty or product safety recalls Honda Ireland will contact you directly, using the information provided by your selling dealer. Please contact your selling dealer to ensure your product is registered for warranty. You do not have to subscribe to marketing information for any warranty or safety recall information.</p>
+                    </div>
+                </div>
+
+            <?php endif;//@nd if ($opt_in) ?>
+
 
         </form><!-- @end form -->
 

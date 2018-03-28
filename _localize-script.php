@@ -3,7 +3,12 @@
  * Create the ajax nonce and url
  */
  function wp_swift_form_builder_localize_script() {
-    $js_version = filemtime( get_stylesheet_directory().'/dist/assets/js/app.js' );
+    $file = get_stylesheet_directory().'/dist/assets/js/app.js';
+    $js_version = 1.0;
+    if (file_exists($file)) {
+         $js_version = filemtime( $file );
+    }
+   
 	$form_builder_ajax = array(
         // URL to wp-admin/admin-ajax.php to process the request
         'ajaxurl' => admin_url( 'admin-ajax.php' ),

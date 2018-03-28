@@ -15,7 +15,7 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
     /*
      * Initializes the plugin.
      */
-    public function __construct( $form_id, $post_id = null, $args = array() ) {
+    public function __construct( $form_id, $post_id = null, $hidden = array(), $type = 'contact' ) {//$args = array()
         // if (isset($post_id)) {
         //     $this->post_id = $post_id;
         // }
@@ -42,13 +42,27 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
         //         );
         //     }
         // echo "<pre>array: "; var_dump($this->save_submission); echo "</pre>";
-        parent::__construct( $form_id, $post_id );
+        parent::__construct( $form_id, $post_id, $hidden, $type );
     }    
     
     /*
      * Form Processing
      */
 
+
+    public function get_response($post) {
+        $form_set = false;
+        $html = parent::process_form($post, true);
+        if (parent::get_form_data()) {
+           $form_set = true;
+        }
+        $response = array(
+            "form_set" => $form_set,
+            "error_count" => parent::get_error_count(),
+            "html" => $html,
+        ); 
+        return $response;      
+    }
     /*
      * Default has passed so the child will continue processing
      *
@@ -62,10 +76,18 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
      * @return string               The html success message
      */
     public function submit_form_success($post, $ajax) {
+        write_log($post);
+
+        $form_data = parent::get_form_data();
+        $inputs = $form_data[0]["inputs"];
+
+        // write_log($form_data);
+        // write_log($inputs);
+
         /*
          * Variables
          */
-        $send_email=true;//Debug variable. If false, emails will not be sent
+        $send_email = true;//Debug variable. If false, emails will not be sent
         $form_post_id = parent::get_form_post_id();
         $post_id = parent::get_post_id();
 
@@ -76,8 +98,7 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
         if (isset($options['wp_swift_form_builder_checkbox_debug_mode']) && $options['wp_swift_form_builder_checkbox_debug_mode'] === '1') {
             $send_email=false;
         }
-        $date = ' - '.date("Y-m-d H:i:s").' GMT';
-        $post_id_or_acf_option= '';//We can specify if it is an option field or use a post_id (https://www.advancedcustomfields.com/add-ons/options-page/)
+        $date = ' - ' . date("Y-m-d H:i:s") . ' GMT';
         $headers = array('Content-Type: text/html; charset=UTF-8');
         $use_callout = true;
         if ($ajax) {
@@ -90,30 +111,43 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
         /*
          * These are the default form settings
          */
+        $blogname = get_option('blogname');
+        // $post_title = get_the_title($post_id);
+        $title = $blogname;
+
+        if ( isset($post["title"]) && !empty($post["title"]) ) {
+            // $message_title = 
+            $title = $post["title"];
+        }
         // If a debug email is set in ACF, send the email there instead of the admin email
         
         // if (isset($this->to_email)) {
         //     $to = $this->to_email;
         // }
         // else {
-            $to = get_option('admin_email');
+        $to = get_option('admin_email');
+        // }
+
+        // write_log($post);
+        // if (isset($post["email"])) {
+        //     $to = $post["email"];
         // }
         // Set reponse subject for email
         $response_subject = "New Enquiry".$date;
         // Set the response that is set back to the browser
         $browser_output_header = 'Hold Tight, We\'ll Get Back To You';
         // Start the reponse message for the email
-        $response_message ='<h3>For the attention of '.get_option('blogname').' Admin</h3>';
+        $response_message ='<h3>For the attention of '.$title.' Admin</h3>';
         $response_message .= '<p>A website user has made the following enquiry.</p>';
-        if ($post_id) {
-            $response_message ='<h3>For the attention of '.get_the_title($post_id).'</h3>';
-            $response_message .= '<p>A website user has made the following enquiry:</p>';
-        }
+        // if ( isset($post["title"]) ) {//$post_id
+        //     $response_message ='<h3>For the attention of '.$title.'</h3>';
+        //     $response_message .= '<p>A website user has made the following enquiry:</p>';
+        // }
         //Set auto_response_message
-        $auto_response_message = '<p>Thank you very much for your enquiry. A representative will be contacting you shortly.</p>';
-        if ($post_id) {
-            $auto_response_message = '<p>Thank you very much for your enquiry. A <b>'.get_the_title($post_id).'</b> representative will be contacting you shortly.</p>';
-        }
+        // $auto_response_message = '<p>Thank you very much for your enquiry. A representative will be contacting you shortly.</p>';
+        // if ($post_id) {
+            $auto_response_message = '<p>Thank you very much for your enquiry. A <b>'.$title.'</b> representative will be contacting you shortly.</p>';
+        // }
         // The auto-response subject
         $auto_response_subject='Auto-response (no-reply)';
 
@@ -124,7 +158,12 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
             
 
             if(get_field('email', $post_id) ) {
-                $to = get_field('email', $post_id);
+
+                $emails = get_field('email', $post_id);
+                $emails_array = explode(' ', $emails);                     
+                if ( count($emails_array) && filter_var($emails_array[0], FILTER_VALIDATE_EMAIL) ) {
+                    $to = $emails_array[0]; 
+                }
             }
             // If a to_email is set in ACF, send the email there instead of the admin email
             elseif (get_field('to_email', $form_post_id )) {
@@ -152,7 +191,7 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
             }
             if( get_field('auto_response_subject', $form_post_id) ) {
                 $this->save_submission = array(                        
-                    "title" => get_the_title($post_id),
+                    "title" => $title,
                     "attach" => array(
                         "email" => $to,
                         "post_id" => $post_id,
@@ -164,17 +203,29 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
                 $this->forward_email = $forward_email;
             }
         }
+
+        $signup = '';
+        if (isset($post["sign-up"])) {
+            $signup = $this->do_signup($post["sign-up"]);
+        }
+
+
         // Debug override - send all mail to me
-        // $to = "gary@brightlight.ie";
-        $to = "eleanor@redco.ie";
+        if ( $send_email ) {
+            $to = "gary@brightlight.ie";
+            // $to = "eleanor@redco.ie";
+        }
 
         // Start making the string that will be sent in the email
         $email_string = $response_message;
+        
+
         $key_value_table = $this->build_key_value_table();
 
         // Add the table of values to the string
         $email_string .= $key_value_table;
         $email_string .= $this->build_page_details();
+        $email_string .= $signup;
         /*
          * Send the email to the admin/office
          */
@@ -237,6 +288,24 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
         return $this->build_confirmation_output($class, $browser_output_header, $auto_response_message, $key_value_table, $user_output_footer);
     } 
 
+    private function do_signup($signups, $dealer='') {
+        $response = wp_swift_do_signup(parent::get_form_data(), $signups, array(5));  
+        write_log($response);  
+        ob_start();
+        ?>
+            <h4>Marketing Information</h4>
+            <p>I am happy to receive marketing information from Honda Ireland by:</p>
+            <p>Email: <?php echo in_array("email", $signups) ? "Yes" : "No"; ?>, SMS: <?php echo in_array("sms", $signups) ? "Yes" : "No"; ?></p>
+            <!-- <br> -->
+            <p>I am happy to receive marketing information from this dealer by:</p>
+            <p>Email: <?php echo in_array("email-dealer", $signups) ? "Yes" : "No"; ?>, SMS: <?php echo in_array("sms-dealer", $signups) ? "Yes" : "No"; ?></p>        
+            <!-- <br> -->
+        <?php
+        $html = ob_get_contents();
+        ob_end_clean();
+        
+        return $html;
+    }
 
     private function build_page_details() {
         $html = '';

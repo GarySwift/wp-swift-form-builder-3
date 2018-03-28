@@ -6,6 +6,9 @@ console.info('wp-swift-form-builder-public.js');
  * @param int 		years
  * @return string 	date
  */
+
+var sessionDetailsName = "form-session-details";
+
 var dateInPast = function dateInPast(years) {
 	var dateNow = new Date();
 	var dd = dateNow.getDate();
@@ -26,6 +29,43 @@ jQuery(document).ready(function($){
 	if(typeof FormBuilderAjax !== "undefined") {
 		console.log(FormBuilderAjax.updated);
 	}
+
+var details = getSessionDetails(sessionDetailsName);
+console.log('details', details);
+
+if (details) {
+	if(typeof details.email !== "undefined") {
+		document.getElementById( "form-email" ).value = details.email;
+	}
+	if(typeof details.email !== "undefined") {
+		document.getElementById( "form-first-name" ).value = details.first_name;
+	}
+	if(typeof details.email !== "undefined") {
+		document.getElementById( "form-last-name" ).value = details.last_name;
+	}
+	if(typeof details.email !== "undefined") {
+		document.getElementById( "form-phone" ).value = details.phone;
+	}	
+	$('.form-builder.groupings').slideUp();
+	$('#download-mask').removeClass('masked');
+}
+
+// $('input.sign-up').click(function() {
+// 	var checked = 0;
+// 	$('input.sign-up').each(function () {
+// 		console.log($(this).attr("id"), this.checked);
+// 	    if (this.checked) {
+// 	    	checked++;
+// 	    } 
+// 	});
+//     if (checked > 0) {
+//     	$('#submit-request-form').prop("disabled", false);
+//     }
+//     else {
+//     	$('#submit-request-form').prop("disabled", true);
+//     }
+// });
+
 	// FormBuilderDatePicker is set on server using wp_localize_script
 	// Form Input Object
 	var FormBuilderInput = function FormBuilderInput(input) {
@@ -304,6 +344,7 @@ jQuery(document).ready(function($){
 		}		
 	});	
 
+
 	$('#request-form').submit(function(e) {
 
 		e.preventDefault();
@@ -319,9 +360,16 @@ jQuery(document).ready(function($){
 				FormBuilderAjax.id = $form.data('id');
 				FormBuilderAjax.post = $form.data('post-id');
 				FormBuilderAjax.action = "wp_swift_submit_request_form";
+				FormBuilderAjax.type = $form.data('type');;
+				// var type = document.getElementById( "form-type" );
+				// if (type) {
+				// 	FormBuilderAjax.type = type.value;
+				// }
+
 
 				$.post(FormBuilderAjax.ajaxurl, FormBuilderAjax, function(response) {
 					var serverResponse = JSON.parse(response);
+					console.log(serverResponse);
 					$('#form-builder-reveal-content').html(serverResponse.html);
 					var $modal = $('#form-builder-reveal');
 					submit.prop('disabled', false);
@@ -332,6 +380,14 @@ jQuery(document).ready(function($){
 
 					if(typeof $modal !== "undefined") {
 						$modal.foundation('open');	
+					}
+					if (FormBuilderAjax.type === "signup") {
+						if (serverResponse.session) {
+							saveSessionDetails(sessionDetailsName, JSON.stringify(serverResponse.session) );
+
+	$('.form-builder.groupings').slideUp();
+	$('#download-mask').removeClass('masked');							
+						}	
 					}						
 				});	
 			}
@@ -350,7 +406,29 @@ jQuery(document).ready(function($){
 		}
 		return false;
 	});	
+
+
 });
+
+
+
+var saveSessionDetails = function(name, value) {
+	// window.sessionStorage
+	console.log('Saving: ', value);
+	if (typeof(Storage) !== "undefined") {
+		sessionStorage.setItem(name, value);
+	}	
+}
+
+var getSessionDetails = function(name) {
+	// window.sessionStorage
+	if (typeof(Storage) !== "undefined") {
+		var storedSessionDetails = JSON.parse(sessionStorage.getItem(name));
+		return storedSessionDetails;
+	}	
+}
+
+
 
 var wrapErrorMessage = function(errorsInForm) {
 	$html = '<div id="form-error-message" class="form-message error ajax">';
