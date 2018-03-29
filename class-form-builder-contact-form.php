@@ -76,7 +76,7 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
      * @return string               The html success message
      */
     public function submit_form_success($post, $ajax) {
-        write_log($post);
+        // write_log($post);
 
         $form_data = parent::get_form_data();
         $inputs = $form_data[0]["inputs"];
@@ -125,7 +125,7 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
         //     $to = $this->to_email;
         // }
         // else {
-        $to = get_option('admin_email');
+        $to = array(get_option('admin_email'));
         // }
 
         // write_log($post);
@@ -160,14 +160,21 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
             if(get_field('email', $post_id) ) {
 
                 $emails = get_field('email', $post_id);
-                $emails_array = explode(' ', $emails);                     
-                if ( count($emails_array) && filter_var($emails_array[0], FILTER_VALIDATE_EMAIL) ) {
-                    $to = $emails_array[0]; 
+                $emails_array = explode(' ', $emails);
+                    
+                if ( count($emails_array) ) {
+
+                    $to = array();
+                    foreach ($emails_array as $key => $email) {
+                        if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                            $to[] = $email;
+                        }
+                    }
                 }
             }
             // If a to_email is set in ACF, send the email there instead of the admin email
             elseif (get_field('to_email', $form_post_id )) {
-                $to = get_field('to_email', $form_post_id ); 
+                $to = array(get_field('to_email', $form_post_id )); 
             }
             // Set reponse subject for email
             if (get_field('response_subject', $form_post_id )) {
@@ -193,7 +200,7 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
                 $this->save_submission = array(                        
                     "title" => $title,
                     "attach" => array(
-                        "email" => $to,
+                        "email" => json_encode($to),
                         "post_id" => $post_id,
                     ),                  
                 );
@@ -208,12 +215,19 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
         if (isset($post["sign-up"])) {
             $signup = $this->do_signup($post["sign-up"]);
         }
+        else {
+            $signup = $this->do_signup(array());
+        }
 
 
         // Debug override - send all mail to me
         if ( $send_email ) {
-            $to = "gary@brightlight.ie";
+            // $to = "gary@brightlight.ie";
             // $to = "eleanor@redco.ie";
+            $to = array(
+                "gary@brightlight.ie",
+                "eleanor@redco.ie",
+            );
         }
 
         // Start making the string that will be sent in the email
@@ -225,14 +239,16 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
         // Add the table of values to the string
         $email_string .= $key_value_table;
         $email_string .= $this->build_page_details();
-        $email_string .= $signup;
+        $email_string .= $this->do_signup_dealer_wrap($signup);
         /*
          * Send the email to the admin/office
          */
         if ($send_email) {
-            $status = wp_mail($to, $response_subject.$date, wp_swift_wrap_email($email_string), $headers);
-            if (isset($this->forward_email)) {
-                $status = wp_mail($this->forward_email, '[Fwd:] '.$response_subject.$date, wp_swift_wrap_email($email_string), $headers);
+            foreach ($to as $key => $to_email) {
+                $status = wp_mail($to_email, $response_subject.$date, wp_swift_wrap_email($email_string), $headers);
+                if (isset($this->forward_email)) {
+                    $status = wp_mail($this->forward_email, '[Fwd:] '.$response_subject.$date, wp_swift_wrap_email($email_string), $headers);
+                }
             }
         }
         else {
@@ -257,7 +273,7 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
          */
         $user_output_footer = '';
 
-        $user_email_string = $auto_response_message.'<p>A copy of your enquiry is shown below.</p>'.$key_value_table;
+        $user_email_string = $auto_response_message.'<p>A copy of your enquiry is shown below.</p>'.$key_value_table.$this->do_signup_customer_wrap($signup);
 
         $user_confirmation_email = parent::get_user_confirmation_email();
 
@@ -285,21 +301,45 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
         /*
          * Return the html
          */              
-        return $this->build_confirmation_output($class, $browser_output_header, $auto_response_message, $key_value_table, $user_output_footer);
+        return $this->build_confirmation_output($class, $browser_output_header, $auto_response_message, $key_value_table, $user_output_footer, $signup);
     } 
 
-    private function do_signup($signups, $dealer='') {
-        $response = wp_swift_do_signup(parent::get_form_data(), $signups, array(5));  
-        write_log($response);  
+    private function do_signup_dealer_wrap($html) { 
         ob_start();
         ?>
             <h4>Marketing Information</h4>
+            <p>This customer has opted-in to receive marketing information through the following methods </p>
+            <?php echo $html ?>
+            <p>Please only contact the customer for MARKETING RELATED activity through the methods they have specified (opted in) too. If no methods are specified you cannot contact the customer for Marketing messages, only contact them in relation to this query and nothing else.</p> 
+        <?php
+        $html = ob_get_contents();
+        ob_end_clean();
+        
+        return $html;
+    } 
+    private function do_signup_customer_wrap($html) {  
+        ob_start();
+        ?>
+            <h4>Marketing Information</h4>
+            <?php echo $html ?>
+        <?php
+        $html = ob_get_contents();
+        ob_end_clean();
+        
+        return $html;
+    }     
+
+    private function do_signup($signups, $dealer='') {
+        $response = wp_swift_do_signup(parent::get_form_data(), $signups, array(5));  
+        // write_log($response);
+            //<h4>Marketing Information</h4>
+        ob_start();
+        ?>
             <p>I am happy to receive marketing information from Honda Ireland by:</p>
             <p>Email: <?php echo in_array("email", $signups) ? "Yes" : "No"; ?>, SMS: <?php echo in_array("sms", $signups) ? "Yes" : "No"; ?></p>
-            <!-- <br> -->
+
             <p>I am happy to receive marketing information from this dealer by:</p>
-            <p>Email: <?php echo in_array("email-dealer", $signups) ? "Yes" : "No"; ?>, SMS: <?php echo in_array("sms-dealer", $signups) ? "Yes" : "No"; ?></p>        
-            <!-- <br> -->
+            <p>Email: <?php echo in_array("email-dealer", $signups) ? "Yes" : "No"; ?>, SMS: <?php echo in_array("sms-dealer", $signups) ? "Yes" : "No"; ?></p> 
         <?php
         $html = ob_get_contents();
         ob_end_clean();
@@ -329,7 +369,7 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
         return $html;
     }
 
-    private function build_confirmation_output($class, $browser_output_header, $auto_response_message, $key_value_table, $user_output_footer) {
+    private function build_confirmation_output($class, $browser_output_header, $auto_response_message, $key_value_table, $user_output_footer, $signup = '') {
 
         ob_start(); ?>
 
@@ -342,6 +382,8 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
                 <p><?php _e( 'A copy of your enquiry is shown below.', 'wp-swift-form-builder' ); ?></p>
 
                 <?php echo $key_value_table; ?>
+
+                <?php echo $this->do_signup_customer_wrap($signup) ?>
 
                 <?php if ($user_output_footer): ?>
                     <p><?php _e( $user_output_footer, 'wp-swift-form-builder' ); ?></p>

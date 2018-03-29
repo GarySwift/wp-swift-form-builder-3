@@ -154,9 +154,19 @@ class WP_Swift_Form_Builder_Parent {
         ?>
         <div class="<?php echo $this->form_class; ?>">
         <?php
+            // echo "<pre>$this->submit_button_name</pre>";
+            // echo "<pre>_POST: "; var_dump($_POST); echo "</pre>";
         // if ($form_builder != null ) {
-            if( isset( $_POST[$this->get_submit_button_name()] ) ) { //check if form was submitted
-                echo $this->process_form($_POST); 
+            if( isset( $_POST[$this->submit_button_name] ) ) { //check if form was submitted
+                $process_form = $this->process_form($_POST); 
+                if (isset($process_form["html"])) {
+                    $html = $process_form["html"];
+                }
+                else {
+                    $html = $process_form;
+                }     
+                // echo "<pre>process_form: "; var_dump($process_form); echo "</pre>";
+                echo $html;
             }
             $this->front_end_form();
         // }
@@ -214,7 +224,7 @@ class WP_Swift_Form_Builder_Parent {
             <?php if ( isset($this->hidden) && count($this->hidden)):
             // echo "<pre>hidden: "; var_dump($this->hidden); echo "</pre>";
                 foreach ($this->hidden as $key => $hidden): ?>
-                    <input type="hidden" id="<?php echo $key ?>" name="<?php echo $key ?>" value="<?php echo $hidden ?>">
+                    <input type="hidden" data-type="hidden" id="<?php echo $key ?>" name="<?php echo $key ?>" value="<?php echo $hidden ?>">
                 <?php endforeach;
             endif;
             
@@ -360,16 +370,24 @@ class WP_Swift_Form_Builder_Parent {
  *
  */
     public function validate_form($post) {
-
+        // echo "<pre>post: "; var_dump($post); echo "</pre>";
+        // echo "<hr>";
         // The form is submitted by a user and so is no longer pristine
         $this->set_form_pristine(false);
-        foreach ($this->form_data as &$section) {
-            foreach ($section["inputs"] as $input_key => &$input) {
+        foreach ( $this->form_data as &$section ) {
+            foreach ( $section["inputs"] as $input_key => &$input ) {
+                // echo "<pre>input_key: $input_key</pre>";
+                write_log($input['label'] .' '. $input["required"]);
                 if (isset($post[$input_key])) {
                     $input['value'] = $post[$input_key];
                     $input = $this->validate_input($input);
                 }
+                elseif(isset($post[$input_key."-hidden"])) {
+                    $input['clean'] = 'No';
+                    $input['passed'] = true;
+                }
                 else {
+                    // echo "<pre>input: "; var_dump($input); echo "</pre>";
                     if ($input["data_type"] === "checkbox_single" && $input["required"] === "") {
                         $input['clean'] = 'No';
                         $input['passed'] = true;
@@ -387,6 +405,7 @@ class WP_Swift_Form_Builder_Parent {
                     else {
                         $this->form_error_messages[] = $input['label'] . ' is invalid';
                     }
+                    write_log($input['label'] . ' is invalid');
                 } 
             }
         }              
@@ -474,9 +493,12 @@ class WP_Swift_Form_Builder_Parent {
                     break; 
             case "checkbox":
                     $options = $input["options"];
+                    // echo "<pre>options: "; var_dump($options); echo "</pre>";
+                    // write_log('options');
+                    // write_log($options);
                     $clean = '';
                     foreach ($options as $option_key => $option) {
-                        if ( in_array($option["option_value"], $value)) {
+                        if ( in_array($option["option_value"], $input['value'])) {
                             $options[$option_key]["checked"] = true;
                             $clean .= $option["option"].', ';
                         }
@@ -748,26 +770,48 @@ class WP_Swift_Form_Builder_Parent {
             $name_append = '[]';
         }
         ob_start();
+
+        if ($id == "form-signup-options") {
+            $checked=' checked';
+        }
         foreach ($data['options'] as $option): $count++;
             $checked='';
-
+            //hack
+            // if ($id == "form-signup-options") {
+            //     $checked=' checked';
+            // } 
+            //@end hack       
             if ( $option['checked'] == true ){
                 $checked=' checked';
             }
+            // else {
+            //     $checked='';
+            // }
             if (isset($data['name'])) {
                 $name = $data['name'].$name_append;
+                if ($id == "form-signup-options") {
+                    $hidden_name = $data['name'].'-hidden'.$name_append;
+                }
+                
             }
             else {
                 $name = $id.''.$name_append;
+                if ($id == "form-signup-options") {
+                    $hidden_name = $id.'-hidden'.$name_append;
+                }
+                
             }
+
             ?>
 
                     <label for="<?php echo $id.'-'.$count ?>" class="lbl-checkbox">
                         <input id="<?php echo $id.'-'.$count ?>" name="<?php echo $name ?>" type="checkbox" data-type="checkbox" tabindex="<?php echo $this->tab_index++; ?>" value="<?php echo $option['option_value'] ?>"<?php echo $checked; ?>><?php echo $option['option'] ?>
                     
                     </label>
-            <?php 
-           
+            <?php
+            if ($id == "form-signup-options") ?>
+                <input name="<?php echo $hidden_name ?>" type="hidden" data-type="hidden" value="<?php echo $option['option_value'] ?>">
+            <?php
         endforeach;
         $input_html = ob_get_contents();
         ob_end_clean();

@@ -1,4 +1,4 @@
-console.info('wp-swift-form-builder-public.js');
+// console.info('wp-swift-form-builder-public.js');
 /**
  * Get a date in the past by reducing years from now date.
  * Very basic. Does not include leap years.
@@ -27,28 +27,10 @@ var dateInPast = function dateInPast(years) {
 };
 jQuery(document).ready(function($){
 	if(typeof FormBuilderAjax !== "undefined") {
-		console.log(FormBuilderAjax.updated);
+		// console.log(FormBuilderAjax.updated);
 	}
 
-var details = getSessionDetails(sessionDetailsName);
-console.log('details', details);
 
-if (details) {
-	if(typeof details.email !== "undefined") {
-		document.getElementById( "form-email" ).value = details.email;
-	}
-	if(typeof details.email !== "undefined") {
-		document.getElementById( "form-first-name" ).value = details.first_name;
-	}
-	if(typeof details.email !== "undefined") {
-		document.getElementById( "form-last-name" ).value = details.last_name;
-	}
-	if(typeof details.email !== "undefined") {
-		document.getElementById( "form-phone" ).value = details.phone;
-	}	
-	$('.form-builder.groupings').slideUp();
-	$('#download-mask').removeClass('masked');
-}
 
 // $('input.sign-up').click(function() {
 // 	var checked = 0;
@@ -353,6 +335,7 @@ if (details) {
 		var errorsInForm = validateForm( $form.serializeArray() );
 		submit.prop('disabled', true);
 
+		errorsInForm.count = 0;
 		if (errorsInForm.count === 0) {
 			// FormBuilderAjax is set on server using wp_localize_script
 			if(typeof FormBuilderAjax !== "undefined") {
@@ -360,7 +343,7 @@ if (details) {
 				FormBuilderAjax.id = $form.data('id');
 				FormBuilderAjax.post = $form.data('post-id');
 				FormBuilderAjax.action = "wp_swift_submit_request_form";
-				FormBuilderAjax.type = $form.data('type');;
+				FormBuilderAjax.type = $form.data('type');
 				// var type = document.getElementById( "form-type" );
 				// if (type) {
 				// 	FormBuilderAjax.type = type.value;
@@ -369,12 +352,12 @@ if (details) {
 
 				$.post(FormBuilderAjax.ajaxurl, FormBuilderAjax, function(response) {
 					var serverResponse = JSON.parse(response);
-					console.log(serverResponse);
+					// console.log(serverResponse);
 					$('#form-builder-reveal-content').html(serverResponse.html);
 					var $modal = $('#form-builder-reveal');
 					submit.prop('disabled', false);
 
-					if (serverResponse.error_count === 0 && serverResponse.form_set === true) {
+					if (serverResponse.error_count === 0 && serverResponse.form_set === true && FormBuilderAjax.type !== "signup") {
 						resetForm( $form.serializeArray() );		
 					}
 
@@ -382,11 +365,12 @@ if (details) {
 						$modal.foundation('open');	
 					}
 					if (FormBuilderAjax.type === "signup") {
-						if (serverResponse.session) {
+						if (serverResponse.session) {//!== "undefined"
 							saveSessionDetails(sessionDetailsName, JSON.stringify(serverResponse.session) );
 
-	$('.form-builder.groupings').slideUp();
-	$('#download-mask').removeClass('masked');							
+							// $('.form-builder.groupings').slideUp();
+							// $('#download-mask').removeClass('masked');	
+							hideForm();						
 						}	
 					}						
 				});	
@@ -414,21 +398,19 @@ if (details) {
 
 var saveSessionDetails = function(name, value) {
 	// window.sessionStorage
-	console.log('Saving: ', value);
+	// console.log('Saving: ', value);
 	if (typeof(Storage) !== "undefined") {
-		sessionStorage.setItem(name, value);
+		localStorage.setItem(name, value);
 	}	
 }
 
 var getSessionDetails = function(name) {
 	// window.sessionStorage
 	if (typeof(Storage) !== "undefined") {
-		var storedSessionDetails = JSON.parse(sessionStorage.getItem(name));
+		var storedSessionDetails = JSON.parse(localStorage.getItem(name));
 		return storedSessionDetails;
 	}	
 }
-
-
 
 var wrapErrorMessage = function(errorsInForm) {
 	$html = '<div id="form-error-message" class="form-message error ajax">';
@@ -439,4 +421,63 @@ var wrapErrorMessage = function(errorsInForm) {
 	    $html += '</div>';
 	$html += '</div>';	
 	return $html;
+}
+
+jQuery(document).ready(function($){
+	$('body').on('click', '#js-edit-form', function(e) {	
+		e.preventDefault();
+		editForm();
+	});	  
+	$('body').on('click', '#js-hide-form', function(e) {	
+		e.preventDefault();
+		hideForm();
+	});	
+
+var details = getSessionDetails(sessionDetailsName);
+// console.log('details', details);
+
+if (details) {
+	
+	if(typeof details.email !== "undefined" ) {
+		// document.getElementById( "form-email" ).value = details.email;
+		$('#form-email').val(details.email);
+	}
+	if(typeof details.email !== "undefined") {
+		// document.getElementById( "form-first-name" ).value = details.first_name;
+		$('#form-first-name').val(details.first_name);
+	}
+	if(typeof details.email !== "undefined") {
+		// document.getElementById( "form-last-name" ).value = details.last_name;
+		$('#form-last-name').val(details.last_name);
+	}
+	if(typeof details.phone !== "undefined") {
+		// document.getElementById( "form-phone" ).value = details.phone;
+		$('#form-phone').val(details.phone);
+	}	
+
+	// $('.form-builder.groupings').slideUp();
+	// $('#download-mask').removeClass('masked');
+	// localStorage.clear();
+	hideForm();
+}	  	  
+});
+
+function showDownloads() {
+	$('#download-mask').removeClass('masked');
+}
+function hideDownloads() {
+	$('#download-mask').addClass('masked');
+}
+function editForm() {
+	$('#signup-area-wrapper').removeClass('hide-form');
+	$('#edit-form-wrapper').addClass('hide');
+	$('#js-hide-form').show();
+	hideDownloads();
+}
+function hideForm() {
+	// console.log('hideForm');
+	$('#signup-area-wrapper').addClass('hide-form');
+	$('#edit-form-wrapper').removeClass('hide');
+	$('#js-hide-form').hide();
+	showDownloads();
 }

@@ -22,12 +22,19 @@ class WP_Swift_Form_Builder_Signup_Form extends WP_Swift_Form_Builder_Parent {
         if (parent::get_form_data()) {
            $form_set = true;
         }
+        if (isset($process_form["html"])) {
+            $html = $process_form["html"];
+        }
+        else {
+            $html = $process_form;
+        }
         $response = array(
             "form_set" => $form_set,
             "error_count" => parent::get_error_count(),
-            "html" => $process_form["html"],
-            "session" => $process_form["session"],
-            "response" => $process_form["response"],
+            "html" => $html,
+            "session" => isset($process_form["session"]) ? $process_form["session"] : null,
+            "response" => isset($process_form["response"]) ? $process_form["response"] : null,
+
         );
         write_log($response); 
         return $response;      
@@ -50,12 +57,26 @@ class WP_Swift_Form_Builder_Signup_Form extends WP_Swift_Form_Builder_Parent {
      * @return string               The html success message
      */
     public function submit_form_success($post, $ajax) {
+        write_log('@start submit_form_success');
+        // write_log($post);
+        $signups = isset($post["sign-up"]) ? $post["sign-up"] : array();
+        
+        $listid = array(5);
+        $listid_unlink = null;
+        if (isset($post["form-signup-options"]) && isset($post["form-signup-options-hidden"])) {
+            $listid = $post["form-signup-options"];
+            $listid_hidden = $post["form-signup-options-hidden"];
+            $listid_unlink = array_diff_assoc($listid_hidden, $listid);       
 
-        if (isset($post["sign-up"])) {
-            $response = wp_swift_do_signup(parent::get_form_data(), $post["sign-up"], array(5));
-            write_log($response);  
-            return $response;    
+            write_log($listid);
+            write_log($listid_hidden);
+            write_log($listid_unlink);
         }
+        write_log($signups);
+        write_log('@end submit_form_success');
+        $response = wp_swift_do_signup(parent::get_form_data(), $signups, $listid, $listid_unlink);
+        return $response;  
+        // return array("html" => wp_swift_signup_error_html(),  "session" => null, "response" => null);        
     }
 
 
@@ -169,80 +190,125 @@ class WP_Swift_Form_Builder_Signup_Form extends WP_Swift_Form_Builder_Parent {
 }
 
 function wp_swift_do_signup($form_data, $signups, $listid = array(), $listid_unlink = null) {
-
-    if (in_array("email", $signups) || in_array("sms", $signups)) {
-        $inputs = $form_data[0]["inputs"];
+    $inputs = $form_data[0]["inputs"];
+    write_log($inputs);
+    if (isset($inputs["form-first-name"]["clean"]) && isset($inputs["form-last-name"]["clean"])) {
+        // write_log('1 wp_swift_do_signup');
         $data = array();
-        if (isset($inputs["form-first-name"]["clean"]) && isset($inputs["form-last-name"]["clean"])) {
-            $session = array();
-            $first_name = $inputs["form-first-name"]["clean"];
-            $last_name = $inputs["form-last-name"]["clean"];
+        $save = false;
+            
+        $session = array();
+        $first_name = $inputs["form-first-name"]["clean"];
+        $last_name = $inputs["form-last-name"]["clean"];
 
-            $session = array ( 
-                "first_name" => $first_name,
-                "last_name" => $last_name,
-            );
+        $session = array ( 
+            "first_name" => $first_name,
+            "last_name" => $last_name,
+        );
 
-            $data = array( 
-                "attributes" => array( "FIRSTNAME" => $first_name, "LASTNAME" => $last_name ),
-                "listid" => $listid,
-            );      
+        $data = array( 
+            "attributes" => array( "FIRSTNAME" => $first_name, "LASTNAME" => $last_name ),//, "DOUBLE_OPT-IN" => 1
+            "listid" => $listid,
+        );      
 
-            if (isset( $inputs["form-email"]["clean"])) {
-                $email = $inputs["form-email"]["clean"];//strtolower()
-            }
-            if (isset( $inputs["form-phone"]["clean"])) {
-                $phone = $inputs["form-phone"]["clean"];
-                $phone = str_replace('+', '', $phone);
-                $phone = str_replace('-', '', $phone);
-            }
-         
-            // $data = array( 
-            //     "email" => $email,
-            //     "attributes" => array( "FIRSTNAME" => $first_name, "LASTNAME" => $last_name, "DOUBLE_OPT-IN" => $double_optin, "SMS" => "+199-73-9331169" ),
-            //     "listid" => $listid,//,
-            //     // "listid_unlink" => array(2,5)
-            // ); 
+        // if () {
+            
+        // }
+        // if () {
 
-            if (isset($email)) {
+        // }
+             
+        // $data = array( 
+        //     "email" => $email,
+        //     "attributes" => array( "FIRSTNAME" => $first_name, "LASTNAME" => $last_name, "DOUBLE_OPT-IN" => $double_optin, "SMS" => "+199-73-9331169" ),
+        //     "listid" => $listid,//,
+        //     // "listid_unlink" => array(2,5)
+        // ); 
+// if (in_array("email", $signups) || in_array("sms", $signups)) {
+        // write_log('2 wp_swift_do_signup');
+        if ( isset( $inputs["form-email"]["clean"]) ) {
+            $email = $inputs["form-email"]["clean"];//strtolower()
+            $session["email"] = $email;
+            if ( in_array("email", $signups) ) {
                 $data["email"] = $email;
-                $session["email"] = $email;
                 $save = true;
             }
-
-            if (isset($phone)) {
+        }
+        if ( isset( $inputs["form-phone"]["clean"]) ) {
+            $phone = $inputs["form-phone"]["clean"];
+            $session["phone"] = $phone;
+            $phone = str_replace('+', '', $phone);
+            $phone = str_replace('-', '', $phone);
+            if ( in_array("sms", $signups) ) {
                 $data["attributes"]["SMS"] = $phone;
-                $session["phone"] = $phone;
                 $save = true;
             }
+        }
+        // if ( in_array("email", $signups) && isset($email)) {
+        //     $data["email"] = $email;
+        //     $session["email"] = $email;
+            
+        // }        
 
-            if (is_array($listid_unlink )) {
-                $data["listid_unlink"] = $listid_unlink;
-            }
 
-            if ($save) {
-                write_log('save mailin.....');
-                $mailin = new Mailin('https://api.sendinblue.com/v2.0', '7k0yHG1javQ93zS2', 5000);//Optional parameter: Timeout in MS  
-                write_log($data);
-                $mailin_response =  $mailin->create_update_user($data);
+        // write_log('3 wp_swift_do_signup');
+        if (is_array( $listid_unlink )) {
+            $data["listid_unlink"] = $listid_unlink;
+        }
 
-                $response = array("html" => wp_swift_signup_html(),  "session" => $session, "response" => $mailin_response);
+        if ($save) {
+            write_log('save mailin.....');
+            // $mailin = null;
+            // $mailin_response = null;
+            $mailin = new Mailin('https://api.sendinblue.com/v2.0', wp_swift_get_mailin_api(), 5000);//Optional parameter: Timeout in MS  
+            write_log($data);
+            $mailin_response = $mailin->create_update_user($data);
 
-                return $response;
-            }
+            $response = array("html" => wp_swift_signup_html(),  "session" => $session, "response" => $mailin_response);
+            return $response;
+        }
+        else {
+            $response = array("html" => wp_swift_nosignup_html(),  "session" => $session, "response" => null);
+            return $response;
+        }
 
-        }//isset($inputs["form-first-name"]["clean"]) && isset($inputs["form-last-name"]["clean"])        
-    }//in_array("email", $signups) || in_array("sms", $signups)
-    return;
+    }//isset($inputs["form-first-name"]["clean"]) && isset($inputs["form-last-name"]["clean"])
+    $response = array("html" => wp_swift_signup_error_html(),  "session" => $session, "response" => null);
+    return $response;
 }
 
 function wp_swift_signup_html() {
     ob_start();
     ?>
-        <h3>You are Good to Go!</h3>
-        <p>Thank you for your datails. Your files are available below.</p>
+        <h3>You're good to go!</h3>
+        <p>Thanks for updating your preferences, your files are available below.</p>
     <?php
     $html = ob_get_contents();
     ob_end_clean();
     return $html;
+}
+
+function wp_swift_nosignup_html() {
+    ob_start();
+    ?>
+        <h3>Thank You</h3>
+        <p>Thanks for completing our marketing preferences form, if you would like to opt-in in the future just visit us again. The brochure library is now available for download.</p>
+    <?php
+    $html = ob_get_contents();
+    ob_end_clean();
+    return $html;
+}
+function wp_swift_signup_error_html() {
+    ob_start();
+    ?>
+        <h3>We're Sorry</h3>
+        <p>There was an error with the signup. Please contact site admin.</p>
+    <?php
+    $html = ob_get_contents();
+    ob_end_clean();
+    return $html;
+}
+
+function wp_swift_get_mailin_api() {
+    return '7k0yHG1javQ93zS2';
 }
