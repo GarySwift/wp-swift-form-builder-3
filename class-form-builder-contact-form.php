@@ -88,6 +88,7 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
          * Variables
          */
         $send_email = true;//Debug variable. If false, emails will not be sent
+        $send_marketing = true;//Debug variable. If false, users are not sent to marketing list
         $form_post_id = parent::get_form_post_id();
         $post_id = parent::get_post_id();
 
@@ -126,6 +127,7 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
         // }
         // else {
         $to = array(get_option('admin_email'));
+        write_log('admin_email $to:');write_log($to);
         // }
 
         // write_log($post);
@@ -170,11 +172,13 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
                             $to[] = $email;
                         }
                     }
+                    write_log('email $to:');write_log($to);
                 }
             }
             // If a to_email is set in ACF, send the email there instead of the admin email
             elseif (get_field('to_email', $form_post_id )) {
                 $to = array(get_field('to_email', $form_post_id )); 
+                write_log('to_email $to:');write_log($to);
             }
             // Set reponse subject for email
             if (get_field('response_subject', $form_post_id )) {
@@ -213,10 +217,10 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
 
         $signup = '';
         if (isset($post["sign-up"])) {
-            $signup = $this->do_signup($post["sign-up"]);
+            $signup = $this->do_signup( $post["sign-up"], $send_marketing );
         }
         else {
-            $signup = $this->do_signup(array());
+            $signup = $this->do_signup( array(), $send_marketing );
         }
 
 
@@ -224,10 +228,11 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
         if ( $send_email ) {
             // $to = "gary@brightlight.ie";
             // $to = "eleanor@redco.ie";
-            $to = array(
-                "gary@brightlight.ie",
-                "eleanor@redco.ie",
-            );
+            // $to = array(
+            //     "gary@brightlight.ie",
+            //     "eleanor@redco.ie",
+            // );
+            // write_log('debug $to:');write_log($to);
         }
 
         // Start making the string that will be sent in the email
@@ -245,14 +250,16 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
          */
         if ($send_email) {
             foreach ($to as $key => $to_email) {
+                write_log("to_email: ". $to_email);
                 $status = wp_mail($to_email, $response_subject.$date, wp_swift_wrap_email($email_string), $headers);
-                if (isset($this->forward_email)) {
-                    $status = wp_mail($this->forward_email, '[Fwd:] '.$response_subject.$date, wp_swift_wrap_email($email_string), $headers);
-                }
             }
+            if (isset($this->forward_email)) {
+                write_log("this->forward_email: ". $this->forward_email);
+                $status = wp_mail($this->forward_email, '[Fwd:] '.$response_subject.$date, wp_swift_wrap_email($email_string), $headers);
+            }            
         }
         else {
-            write_log('$to: ' .$to);
+            write_log('$to:');write_log($to);
             write_log('$this->forward_email: ' . $this->forward_email);
             error_log( "Debugging mode is on so no emails are being sent." );
         }
@@ -329,8 +336,13 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
         return $html;
     }     
 
-    private function do_signup($signups, $dealer='') {
-        $response = wp_swift_do_signup(parent::get_form_data(), $signups, array(5));  
+    private function do_signup($signups, $send_marketing=true, $dealer='') {
+        if ($send_marketing) {
+            $response = wp_swift_do_signup(parent::get_form_data(), $signups, array(5)); 
+        }
+        else {
+            write_log("Debug mode so customer has not been saved to marketing.");
+        }
         // write_log($response);
             //<h4>Marketing Information</h4>
         ob_start();
