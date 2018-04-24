@@ -329,7 +329,7 @@ jQuery(document).ready(function($){
 	});	
 
 
-	$('#_request-form').submit(function(e) {
+	$('#request-form').submit(function(e) {
 
 		e.preventDefault();
 		var $form = $(this);

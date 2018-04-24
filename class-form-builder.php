@@ -296,6 +296,11 @@ class WP_Swift_Form_Builder_Parent {
     public function front_end_form_input_loop() {
 
         foreach ($this->form_data as $key => $section) {
+
+            if (isset($section["section_content"])) {
+                $this->section_html( $section["section_content"] );
+            }            
+
             foreach ($section["inputs"] as $id => $input) {
 
                 if (isset($input['data_type'])) {
@@ -936,7 +941,7 @@ class WP_Swift_Form_Builder_Parent {
             // This input has has error detected so add an error class to the surrounding div
             $has_error = ' has-error';
         }        
-        return " form-group".$input["css_class"].$has_error." cell large-auto small-6";
+        return "form-group".$input["css_class"].$has_error."";//cell large-auto small-6
     }
 
     /*
@@ -1230,9 +1235,33 @@ class WP_Swift_Form_Builder_Parent {
         ?>
         <!-- @start .button -->
         <div class="form-group button-group">
-            <button type="submit" name="<?php echo $this->submit_button_name; ?>" id="<?php echo $this->submit_button_id; ?>" class="button large expanded" tabindex="<?php echo $this->get_tab_index(); ?>"><?php echo $this->submit_button_text; ?></button>
+
+            <!-- @start input -->
+            <div class="form-input">
+
+                <button type="submit" name="<?php echo $this->submit_button_name; ?>" id="<?php echo $this->submit_button_id; ?>" class="button" tabindex="<?php echo $this->get_tab_index(); ?>"><?php echo $this->submit_button_text; ?></button>
+
+
+            </div>
+            <!-- @end input -->            
         </div>
         <!-- @end .button -->
         <?php           
-    }              
+    }  
+    public function section_html( $content ) {
+        ?>
+        <!-- @start .button -->
+        <div class="form-group section-content">
+
+            <!-- @start input -->
+            <div class="form-input">
+
+                <?php echo $content; ?>
+
+            </div>
+            <!-- @end input -->            
+        </div>
+        <!-- @end .button -->
+        <?php           
+    }                  
 }
