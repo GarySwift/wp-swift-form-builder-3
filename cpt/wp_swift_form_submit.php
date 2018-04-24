@@ -1,8 +1,9 @@
 <?php
 function cptui_register_my_cpts_wp_swift_form_submit() {
-
 	/**
 	 * Post Type: Submissions.
+	 *
+	 * @link https://wordpress.stackexchange.com/questions/110562/is-it-possible-to-add-custom-post-type-menu-as-another-custom-post-type-sub-menu
 	 */
 
 	$labels = array(
@@ -21,8 +22,8 @@ function cptui_register_my_cpts_wp_swift_form_submit() {
 		"show_in_rest" => false,
 		"rest_base" => "",
 		"has_archive" => false,
-		"show_in_menu" => true,
-		// "show_in_menu_string" => "edit.php?post_type=wp_swift_form",
+		"show_in_menu" => false,//"edit.php?post_type=wp_swift_form",
+		"show_in_menu_string" => "edit.php?post_type=wp_swift_form",
 		"exclude_from_search" => true,
 		"capability_type" => "post",
 		"map_meta_cap" => true,
@@ -41,7 +42,7 @@ add_action( 'init', 'cptui_register_my_cpts_wp_swift_form_submit', 100);
 /**
  * Add wp_swift_form_submit CPT as a submenu under 'edit.php?post_type=wp_swift_form'
  */
-// add_action('admin_menu', 'wp_swift_form_submit_admin_menu'); 
+add_action('admin_menu', 'wp_swift_form_submit_admin_menu'); 
 function wp_swift_form_submit_admin_menu() { 
 	$posts = get_posts(array(
 		'posts_per_page'	=> 1,

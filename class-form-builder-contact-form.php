@@ -11,45 +11,33 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
     private $to_email = null;
     private $forward_email = null;
     private $save_submission = null;
-    
+
+    /*
+     * Variables
+     */
+    private $date;
+    private $send_email = false;//Debug variable. If false, emails will not be sent
+    private $send_marketing = false;
+    private $title;
+    private $response_subject;
+    private $browser_output_header;
+    private $response_message;
+    private $auto_response_message;
+    private $auto_response_subject;
+    private $to = array();
+    private $headers = array('Content-Type: text/html; charset=UTF-8');
+
+
     /*
      * Initializes the plugin.
      */
     public function __construct( $form_id, $post_id = null, $hidden = array(), $type = 'contact' ) {//$args = array()
-        // if (isset($post_id)) {
-        //     $this->post_id = $post_id;
-        // }
-        // if (count($args)) {
-        //     if (isset($args["to_email"]) && filter_var($args["to_email"], FILTER_VALIDATE_EMAIL)) {
-        //         $this->to_email = $args["to_email"];
-        //         write_log('$this->to_email: '.$this->to_email);
-        //     }
-            // if (isset($args["forward_email"]) && filter_var($args["forward_email"], FILTER_VALIDATE_EMAIL)) {
-            //     $this->forward_email = $args["forward_email"];
-            // } 
-            // if (isset($args["save_submission"])) {
-            //     $this->save_submission = $args["save_submission"];
-            // }                        
-        // }
-
-        // if( get_field('auto_response_subject', $form_id) ) {
-        //         $this->save_submission = array(                        
-        //             "title" => get_the_title($post_id),
-        //             "attach" => array(
-        //                 "email" => '$to',
-        //                 "post_id" => get_the_ID($post_id),
-        //             ),                  
-        //         );
-        //     }
-        // echo "<pre>array: "; var_dump($this->save_submission); echo "</pre>";
         parent::__construct( $form_id, $post_id, $hidden, $type );
     }    
     
     /*
      * Form Processing
      */
-
-
     public function get_response($post) {
         $form_set = false;
         $html = parent::process_form($post, true);
@@ -62,6 +50,117 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
             "html" => $html,
         ); 
         return $response;      
+    }
+
+    private function before_send_email() {
+        $form_post_id = parent::get_form_post_id();
+        $post_id = parent::get_post_id();        
+        $this->date = ' - ' . date("Y-m-d H:i:s") . ' GMT';
+        /*
+         * These are the default form settings
+         */
+        $blogname = get_option('blogname');
+        // $post_title = get_the_title($post_id);
+        $title = $blogname;
+
+        if ( isset($post["title"]) && !empty($post["title"]) ) {
+            $title = $post["title"];
+        }
+                                
+        // Set reponse subject for email
+        $this->response_subject = "New Enquiry".$this->date;
+        // Set the response that is set back to the browser
+        $this->browser_output_header = 'Hold Tight, We\'ll Get Back To You';
+        // Start the reponse message for the email
+        $this->response_message ='<h3>For the attention of '.$title.' Admin</h3>';
+        $this->response_message .= '<p>A website user has made the following enquiry.</p>';   
+
+
+        //Set auto_response_message
+        $this->auto_response_message = '<p>Thank you very much for your enquiry. A <b>'.$title.'</b> representative will be contacting you shortly.</p>';
+        // The auto-response subject
+        $this->auto_response_subject='Auto-response (no-reply)';   
+
+
+        $this->to = array(get_option('admin_email'));
+        // write_log('admin_email $this->to:');write_log($this->to);
+
+
+        // $this->send_email = false;//Debug variable. If false, emails will not be sent
+
+        
+
+
+        $options = get_option( 'wp_swift_form_builder_settings' );
+        if (isset($options['wp_swift_form_builder_checkbox_debug_mode']) && $options['wp_swift_form_builder_checkbox_debug_mode'] === '1') {
+            $this->send_email=false;
+        }
+
+
+        /*
+         * Now, we can override the default settings if they are set
+         */
+        if (function_exists('get_field')) {
+            
+            if( get_field('debugging_stop_email', 'option') ) {
+                $this->send_email = false;
+            } 
+
+            if(get_field('email', $post_id) ) {
+
+                $emails = get_field('email', $post_id);
+                $emails_array = explode(' ', $emails);
+                    
+                if ( count($emails_array) ) {
+
+                    $this->to = array();
+                    foreach ($emails_array as $key => $email) {
+                        if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                            $this->to[] = $email;
+                        }
+                    }
+                    // write_log('email $this->to:');write_log($this->to);
+                }
+            }
+            // If a to_email is set in ACF, send the email there instead of the admin email
+            elseif (get_field('to_email', $form_post_id )) {
+                $this->to = array(get_field('to_email', $form_post_id )); 
+                // write_log('to_email $this->to:');write_log($this->to);
+            }
+            // Set reponse subject for email
+            if (get_field('response_subject', $form_post_id )) {
+                $this->response_subject = get_field('response_subject', $form_post_id ); 
+            }
+            // Start the reponse message for the email
+            if ( !$post_id && get_field('response_message', $form_post_id ) ) {
+                $this->response_message = get_field('response_message', $form_post_id );
+            }
+            //Set auto_response_message
+            if ( !$post_id && get_field('auto_response_message', $form_post_id ) ) {
+                $this->auto_response_message = get_field('auto_response_message', $form_post_id );
+            }
+            // Set the response that is set back to the browser
+            if (get_field('browser_output_header', $form_post_id )) {
+                $this->browser_output_header = get_field('browser_output_header', $form_post_id );
+            } 
+            // The auto-response subject
+            if( get_field('auto_response_subject', $form_post_id) ) {
+                $this->auto_response_subject = get_field('auto_response_subject', $form_post_id);
+            }
+            if( get_field('auto_response_subject', $form_post_id) ) {
+                $this->save_submission = array(                        
+                    "title" => $title,
+                    "attach" => array(
+                        "email" => json_encode($this->to),
+                        "post_id" => $post_id,
+                    ),                  
+                );
+            }
+            $forward_email = get_field('forward_email', $form_post_id);
+            if ($forward_email) {
+                $this->forward_email = $forward_email;
+            }
+        }                          
     }
     /*
      * Default has passed so the child will continue processing
@@ -76,197 +175,41 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
      * @return string               The html success message
      */
     public function submit_form_success($post, $ajax) {
-        // write_log($post);
-
-        $form_data = parent::get_form_data();
-        $inputs = $form_data[0]["inputs"];
-
-        // write_log($form_data);
-        // write_log($inputs);
-
-        /*
-         * Variables
-         */
-        $send_email = true;//Debug variable. If false, emails will not be sent
-        $send_marketing = true;//Debug variable. If false, users are not sent to marketing list
-        $form_post_id = parent::get_form_post_id();
-        $post_id = parent::get_post_id();
-
-        if( get_field('debugging_stop_email', 'option') ) {
-            $send_email = false;
-        }  
-        $options = get_option( 'wp_swift_form_builder_settings' );
-        if (isset($options['wp_swift_form_builder_checkbox_debug_mode']) && $options['wp_swift_form_builder_checkbox_debug_mode'] === '1') {
-            $send_email=false;
-        }
-        $date = ' - ' . date("Y-m-d H:i:s") . ' GMT';
-        $headers = array('Content-Type: text/html; charset=UTF-8');
-        $use_callout = true;
-        if ($ajax) {
-            $use_callout = false;
-        }
-        if ($ajax)
-            $class = 'ajax';
-        else
-            $class = 'standard';
-        /*
-         * These are the default form settings
-         */
-        $blogname = get_option('blogname');
-        // $post_title = get_the_title($post_id);
-        $title = $blogname;
-
-        if ( isset($post["title"]) && !empty($post["title"]) ) {
-            // $message_title = 
-            $title = $post["title"];
-        }
-        // If a debug email is set in ACF, send the email there instead of the admin email
-        
-        // if (isset($this->to_email)) {
-        //     $to = $this->to_email;
-        // }
-        // else {
-        $to = array(get_option('admin_email'));
-        write_log('admin_email $to:');write_log($to);
-        // }
-
-        // write_log($post);
-        // if (isset($post["email"])) {
-        //     $to = $post["email"];
-        // }
-        // Set reponse subject for email
-        $response_subject = "New Enquiry".$date;
-        // Set the response that is set back to the browser
-        $browser_output_header = 'Hold Tight, We\'ll Get Back To You';
-        // Start the reponse message for the email
-        $response_message ='<h3>For the attention of '.$title.' Admin</h3>';
-        $response_message .= '<p>A website user has made the following enquiry.</p>';
-        // if ( isset($post["title"]) ) {//$post_id
-        //     $response_message ='<h3>For the attention of '.$title.'</h3>';
-        //     $response_message .= '<p>A website user has made the following enquiry:</p>';
-        // }
-        //Set auto_response_message
-        // $auto_response_message = '<p>Thank you very much for your enquiry. A representative will be contacting you shortly.</p>';
-        // if ($post_id) {
-            $auto_response_message = '<p>Thank you very much for your enquiry. A <b>'.$title.'</b> representative will be contacting you shortly.</p>';
-        // }
-        // The auto-response subject
-        $auto_response_subject='Auto-response (no-reply)';
-
-        /*
-         * Now, we can override the default settings if they are set
-         */
-        if (function_exists('get_field')) {
-            
-
-            if(get_field('email', $post_id) ) {
-
-                $emails = get_field('email', $post_id);
-                $emails_array = explode(' ', $emails);
-                    
-                if ( count($emails_array) ) {
-
-                    $to = array();
-                    foreach ($emails_array as $key => $email) {
-                        if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                            $to[] = $email;
-                        }
-                    }
-                    write_log('email $to:');write_log($to);
-                }
-            }
-            // If a to_email is set in ACF, send the email there instead of the admin email
-            elseif (get_field('to_email', $form_post_id )) {
-                $to = array(get_field('to_email', $form_post_id )); 
-                write_log('to_email $to:');write_log($to);
-            }
-            // Set reponse subject for email
-            if (get_field('response_subject', $form_post_id )) {
-                $response_subject = get_field('response_subject', $form_post_id ); 
-            }
-            // Start the reponse message for the email
-            if ( !$post_id && get_field('response_message', $form_post_id ) ) {
-                $response_message = get_field('response_message', $form_post_id );
-            }
-            //Set auto_response_message
-            if ( !$post_id && get_field('auto_response_message', $form_post_id ) ) {
-                $auto_response_message = get_field('auto_response_message', $form_post_id );
-            }
-            // Set the response that is set back to the browser
-            if (get_field('browser_output_header', $form_post_id )) {
-                $browser_output_header = get_field('browser_output_header', $form_post_id );
-            } 
-            // The auto-response subject
-            if( get_field('auto_response_subject', $form_post_id) ) {
-                $auto_response_subject = get_field('auto_response_subject', $form_post_id);
-            }
-            if( get_field('auto_response_subject', $form_post_id) ) {
-                $this->save_submission = array(                        
-                    "title" => $title,
-                    "attach" => array(
-                        "email" => json_encode($to),
-                        "post_id" => $post_id,
-                    ),                  
-                );
-            }
-            $forward_email = get_field('forward_email', $form_post_id);
-            if ($forward_email) {
-                $this->forward_email = $forward_email;
-            }
-        }
-
-        $signup = '';
-        if (isset($post["sign-up"])) {
-            $signup = $this->do_signup( $post["sign-up"], $send_marketing );
-        }
-        else {
-            $signup = $this->do_signup( array(), $send_marketing );
-        }
-
-
-        // Debug override - send all mail to me
-        if ( $send_email ) {
-            // $to = "gary@brightlight.ie";
-            // $to = "eleanor@redco.ie";
-            // $to = array(
-            //     "gary@brightlight.ie",
-            //     "eleanor@redco.ie",
-            // );
-            // write_log('debug $to:');write_log($to);
-        }
+        $this->before_send_email();
 
         // Start making the string that will be sent in the email
-        $email_string = $response_message;
-        
-
+        $email_string = $this->response_message;
         $key_value_table = $this->build_key_value_table();
-
-        // Add the table of values to the string
         $email_string .= $key_value_table;
         $email_string .= $this->build_page_details();
-        $email_string .= $this->do_signup_dealer_wrap($signup);
+        $signup = $this->do_signup( $post );
+        $email_string .= $this->do_signup_third_party_wrap($signup);
+
         /*
          * Send the email to the admin/office
          */
-        if ($send_email) {
-            foreach ($to as $key => $to_email) {
-                write_log("to_email: ". $to_email);
-                $status = wp_mail($to_email, $response_subject.$date, wp_swift_wrap_email($email_string), $headers);
+        if ($this->send_email) {
+            foreach ($this->to as $key => $to_email) {
+                $status = wp_mail($to_email, $this->response_subject.$this->date, wp_swift_wrap_email($email_string), $this->headers);
             }
             if (isset($this->forward_email)) {
-                write_log("this->forward_email: ". $this->forward_email);
-                $status = wp_mail($this->forward_email, '[Fwd:] '.$response_subject.$date, wp_swift_wrap_email($email_string), $headers);
+                $status = wp_mail($this->forward_email, '[Fwd:] '.$this->response_subject.$this->date, wp_swift_wrap_email($email_string), $this->headers);
             }            
         }
         else {
-            write_log('$to:');write_log($to);
-            write_log('$this->forward_email: ' . $this->forward_email);
-            error_log( "Debugging mode is on so no emails are being sent." );
+            if (function_exists('write_log')) {
+                write_log('$this->to:');write_log($this->to);
+                write_log('$this->forward_email: ' . $this->forward_email);
+                error_log( "Debugging mode is on so no emails are being sent." );
+            }
         }
 
+        /*
+         * Save submission as CPT
+         */
         if ( $this->save_submission ) {           
             $attach = null; 
-            $save_submission_title = $response_subject . $date; 
+            $save_submission_title = $this->response_subject . $this->date; 
             if (isset($this->save_submission["title"])) {
                  $save_submission_title = $this->save_submission["title"] . ' - ' . $save_submission_title;
             }
@@ -275,12 +218,13 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
             }
             $submission = new WP_Swift_Form_Submission( $save_submission_title, $email_string, $attach ); 
         }
+
         /*
          * If the user has requested it, send an email acknowledgement
          */
         $user_output_footer = '';
 
-        $user_email_string = $auto_response_message.'<p>A copy of your enquiry is shown below.</p>'.$key_value_table.$this->do_signup_customer_wrap($signup);
+        $user_email_string = $this->auto_response_message.'<p>A copy of your enquiry is shown below.</p>'.$key_value_table.$this->do_signup_customer_wrap($signup);
 
         $user_confirmation_email = parent::get_user_confirmation_email();
 
@@ -289,13 +233,10 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
 
         if ( ($user_confirmation_email=== 'ask' && isset($post["mail-receipt"])) || $user_confirmation_email=== 'send' )  {
  
-            if ($send_email) {
+            if ($this->send_email) {
 
                 if (isset($form_data["inputs"]['form-email']['clean'])) {
-                    $status = wp_mail($form_data["inputs"]['form-email']['clean'], $auto_response_subject, wp_swift_wrap_email($user_email_string), $headers);// wrap_email($user_response_msg)
-                }
-                else {
-                    write_log('email not found');
+                    $status = wp_mail($form_data["inputs"]['form-email']['clean'], $this->auto_response_subject, wp_swift_wrap_email($user_email_string), $this->headers);
                 }
             }
             else {
@@ -308,54 +249,74 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
         /*
          * Return the html
          */              
-        return $this->build_confirmation_output($class, $browser_output_header, $auto_response_message, $key_value_table, $user_output_footer, $signup);
+        return $this->build_confirmation_output($ajax, $this->browser_output_header, $this->auto_response_message, $key_value_table, $user_output_footer, $signup);
     } 
 
-    private function do_signup_dealer_wrap($html) { 
-        ob_start();
-        ?>
-            <h4>Marketing Information</h4>
-            <p>This customer has opted-in to receive marketing information through the following methods </p>
-            <?php echo $html ?>
-            <p>Please only contact the customer for MARKETING RELATED activity through the methods they have specified (opted in) too. If no methods are specified you cannot contact the customer for Marketing messages, only contact them in relation to this query and nothing else.</p> 
-        <?php
-        $html = ob_get_contents();
-        ob_end_clean();
-        
-        return $html;
+    private function do_signup_third_party_wrap($html) { 
+        if ($html) {
+            ob_start();
+            ?>
+                <h4>Marketing Information</h4>
+                <p>This customer has opted-in to receive marketing information through the following methods </p>
+                <?php echo $html ?>
+                <p>Please only contact the customer for MARKETING RELATED activity through the methods they have specified (opted in) too. If no methods are specified you cannot contact the customer for Marketing messages, only contact them in relation to this query and nothing else.</p> 
+            <?php
+            $html = ob_get_contents();
+            ob_end_clean();
+            
+            return $html;
+        }
     } 
     private function do_signup_customer_wrap($html) {  
-        ob_start();
-        ?>
-            <h4>Marketing Information</h4>
-            <?php echo $html ?>
-        <?php
-        $html = ob_get_contents();
-        ob_end_clean();
-        
-        return $html;
+        if ($html) {
+            ob_start();
+            ?>
+                <h4>Marketing Information</h4>
+                <?php echo $html ?>
+            <?php
+            $html = ob_get_contents();
+            ob_end_clean();
+            
+            return $html;
+        }
     }     
 
-    private function do_signup($signups, $send_marketing=true, $dealer='') {
-        if ($send_marketing) {
-            $response = wp_swift_do_signup(parent::get_form_data(), $signups, array(5)); 
-        }
-        else {
-            write_log("Debug mode so customer has not been saved to marketing.");
-        }
-        // write_log($response);
-            //<h4>Marketing Information</h4>
-        ob_start();
-        ?>
-            <p>I am happy to receive marketing information from Honda Ireland by:</p>
-            <p>Email: <?php echo in_array("email", $signups) ? "Yes" : "No"; ?>, SMS: <?php echo in_array("sms", $signups) ? "Yes" : "No"; ?></p>
+    private function do_signup( $post ) {
+        $gdpr_settings = parent::gdpr_settings();
+        $html = '';
 
-            <p>I am happy to receive marketing information from this dealer by:</p>
-            <p>Email: <?php echo in_array("email-dealer", $signups) ? "Yes" : "No"; ?>, SMS: <?php echo in_array("sms-dealer", $signups) ? "Yes" : "No"; ?></p> 
-        <?php
-        $html = ob_get_contents();
-        ob_end_clean();
-        
+        if ($gdpr_settings) {
+            if ($this->send_marketing) {
+                $response = wp_swift_do_signup(parent::get_form_data(), $signups, array(5)); 
+            }
+            else {
+                write_log("Debug mode so customer has not been saved to marketing.");
+            }
+            ob_start();
+            
+            foreach ($gdpr_settings["opt_in"] as $key => $opt_in): 
+                $email = "No";
+                $sms = "No";
+                if ( isset($post["sign-up-$key"]) ) {               
+                    if ( in_array("email", $post["sign-up-$key"]) ) {
+                        $email = "Yes";
+                    }
+                    if ( in_array("sms", $post["sign-up-$key"]) ) {
+                        $sms = "Yes";
+                    }                    
+                }
+                ?>
+
+                <p><?php echo $opt_in["message"] ?></p>
+
+                <p>Email: <?php echo $email; ?>, SMS: <?php echo $sms; ?></p>
+
+            <?php endforeach;
+
+            $html = ob_get_contents();
+            ob_end_clean();
+        }
+
         return $html;
     }
 
@@ -381,8 +342,11 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
         return $html;
     }
 
-    private function build_confirmation_output($class, $browser_output_header, $auto_response_message, $key_value_table, $user_output_footer, $signup = '') {
-
+    private function build_confirmation_output($ajax, $browser_output_header, $auto_response_message, $key_value_table, $user_output_footer, $signup = '') {
+        $class = 'standard';
+        if ($ajax) {
+            $class = 'ajax';
+        }  
         ob_start(); ?>
 
             <div id="form-success-message" class="form-message <?php echo $class ?>"> 
@@ -459,82 +423,7 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
         $header = ucwords(str_replace('-', ' ',substr($input_key, 5)));
         $header = str_replace(' Of ', ' of ', $header);
         echo $header;
-    }
-
-    private function build_confirmation_output_2($use_callout, $browser_output_header, $auto_response_message, $key_value_table, $user_output_footer) {
-
-        $framework = '';
-        $debugging_stop_email = false;//true;
-        $options = get_option( 'wp_swift_form_builder_settings' );
-        if (isset($options['wp_swift_form_builder_select_css_framework'])) {
-            $framework = $options['wp_swift_form_builder_select_css_framework'];
-        }
-        if( get_field('debugging_stop_email', 'option') ) {
-            $debugging_stop_email = true;
-        } 
-
-        $framework = "zurb_foundation";
-
-        ob_start();
-        if ($debugging_stop_email): ?>
-            <pre>
-                    <div><b>Debug Mode</b></div>
-                <!-- <br> --><?php //var_dump($_POST); ?>
-            </pre>
-        <?php endif ?>
-        <?php if ($use_callout):
-                if ($framework === "zurb_foundation"): ?>
-                    <div id="form-thank-you">
-                        <!-- <div class="callout secondary" data-closable="slide-out-right">    --> 
-                        <div id="form-success-panel">
-
-                <?php elseif ($framework === "bootstrap"): ?>
-                    <div class="panel panel-success" id="form-success-panel">
-                        <div class="panel-heading">
-                            <button type="button" class="close" data-target="#form-success-panel" data-dismiss="alert">
-                                <span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
-                            </button>
-                            <h3><?php echo $browser_output_header; ?></h3>
-                            
-                        </div>
-                        <div class="panel-body">              
-                <?php endif; ?>     
-        <?php endif ?>
-                <!-- <a href="#" >x</a> -->
-                <button id="close-form-success-panel" aria-label="Dismiss alert" type="button">
-                    <span aria-hidden="true">&times;</span>
-                </button>      
-                <?php if ($framework === "zurb_foundation"): ?>
-                    <h3><?php echo $browser_output_header; ?></h3>
-                <?php endif; ?>                             
-                <p><?php echo $auto_response_message; ?></p>
-                <p>A copy of your enquiry is shown below.</p>
-                <?php echo $key_value_table; ?>
-                <?php echo $user_output_footer; ?>
-
-        <?php if ($use_callout):  
-                if ($framework === "zurb_foundation"): ?>
-               <!--          <button class="close-button" aria-label="Dismiss alert" type="button" data-close>
-                            <span aria-hidden="true">&times;</span>
-                        </button> -->
-                    </div>        
-                <?php elseif ($framework === "bootstrap"): ?>
-                         </div>
-                    </div>                
-                <?php endif; ?>
-        <?php endif;
-
-        $html = ob_get_contents();
-        ob_end_clean();
-        return $html;
-    }
-
-    /*
-     * Hookable function that
-     */
-    public function before_submit_button_hook() {
-
-    }    
+    }   
 }
 //     }
 // }

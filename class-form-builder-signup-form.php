@@ -192,7 +192,7 @@ class WP_Swift_Form_Builder_Signup_Form extends WP_Swift_Form_Builder_Parent {
 function wp_swift_do_signup($form_data, $signups, $listid = array(), $listid_unlink = null) {
     $inputs = $form_data[0]["inputs"];
     write_log($inputs);
-    if (isset($inputs["form-first-name"]["clean"]) && isset($inputs["form-last-name"]["clean"])) {
+    if ( class_exists('Mailin') &&  isset($inputs["form-first-name"]["clean"]) && isset($inputs["form-last-name"]["clean"])) {
         // write_log('1 wp_swift_do_signup');
         $data = array();
         $save = false;
@@ -310,5 +310,8 @@ function wp_swift_signup_error_html() {
 }
 
 function wp_swift_get_mailin_api() {
-    return '7k0yHG1javQ93zS2';
+    $options = get_option( 'wp_swift_form_builder_settings' );
+    if (isset($options['wp_swift_form_builder_marketing_api']) && $options['wp_swift_form_builder_marketing_api'] != '') {
+        return $options['wp_swift_form_builder_marketing_api'];
+    } 
 }

@@ -43,6 +43,9 @@ class WP_Swift_Form_Builder_Parent {
     private $hidden = null;
 
     private $form_type;
+
+    private $gdpr_settings = null;
+    private $recaptcha = null;
     /*
         function guide
         acf_build_form()
@@ -65,6 +68,27 @@ class WP_Swift_Form_Builder_Parent {
 
         // echo "<pre>"; var_dump($form_data); echo "</pre>";
         $this->form_post_id = $form_id;
+
+        if( get_field('spam_prevention_type', $this->form_post_id ) ) {
+            $spam_prevention_type = get_field('spam_prevention_type', $this->form_post_id );
+            if ($spam_prevention_type === 'google') {
+
+                $options = get_option( 'wp_swift_form_builder_settings' );
+                $google_settings = $options['wp_swift_form_builder_google_recaptcha'];
+                // echo '<pre>'; var_dump($options['wp_swift_form_builder_google_recaptcha']); echo '</pre>';
+                // if (isset($options['wp_swift_form_builder_google_recaptcha']['site_key']) && $options['wp_swift_form_builder_google_recaptcha']['site_key'] != '') {
+                //     echo ''.$options['wp_swift_form_builder_google_recaptcha']['site_key'].'';
+                // }
+                // $google_settings =  get_field('google', $this->form_post_id );
+                // echo '<pre>'; var_dump($google_settings); echo '</pre>';
+                if ( $google_settings["site_key"] !== '' && $google_settings["secret_key"] !== '' ) {
+                    $this->recaptcha = $google_settings;
+                }
+            }
+        }
+        if( get_field('gdpr', $this->form_post_id ) ) {
+            $this->gdpr_settings = get_field('gdpr_settings', $this->form_post_id);
+        }        
         if (isset($form_data["sections"])) {
              $this->form_data = $form_data["sections"];
         }
@@ -229,71 +253,35 @@ class WP_Swift_Form_Builder_Parent {
             endif;
             
             $this->front_end_form_input_loop($this->form_data, $this->tab_index, $this->form_pristine, $this->error_count);
-
             $this->before_submit_button_hook(); 
-
-            if ($this->user_confirmation_email === 'ask'): ?>
-
-            <!-- @start .mail-receipt -->
-            <div class="form-group mail-receipt">
-                <div class="form-label"></div>
-                <div class="form-input">
-                    <div class="checkbox">
-                      <input type="checkbox" value="" tabindex=<?php echo $this->get_tab_index(); ?> name="mail-receipt" id="mail-receipt" checked><label for="mail-receipt">Acknowledge me with a mail receipt</label>
-                    </div>
-                </div>                  
-            </div> 
-            <!-- @end .mail-receipt -->                
-            <?php endif ?>
-                
-            <?php 
-                $opt_in = true; 
-                $required_opt_in = false;
+            $this->gdpr_html();
             ?>
-            <?php if ($opt_in): ?>
 
-            <!-- @start .sign-up -->
-            <div class="form-group sign-up">
-                <div class="form-label"></div>
-                <div class="form-input">
-                    <div class="checkbox">
-                        <label id="sign-up-details">We would love to keep in touch with you, if you’re happy for us to do that please let us know below:</label>
-
-                        <label for="">I am happy to receive marketing information from Honda Ireland by: (please tick all that apply)</label>
-
-                        <input type="checkbox" value="email" tabindex=<?php echo $this->get_tab_index(); ?> name="sign-up[]" id="sign-up-email" class="sign-up"><label for="sign-up-email">Email</label>
-                        <input type="checkbox" value="sms" tabindex=<?php echo $this->get_tab_index(); ?> name="sign-up[]" id="sign-up-sms" class="sign-up"><label for="sign-up-sms">SMS</label> 
-
-                        <?php if ( $this->form_type === "contact" ): ?>
-
-                        <label for="">I am happy to receive marketing information from this dealer by: (please tick all that apply)</label>
-
-                        <input type="checkbox" value="email-dealer" tabindex=<?php echo $this->get_tab_index(); ?> name="sign-up[]" id="sign-up-email-dealer" class="sign-up"><label for="sign-up-email-dealer">Email</label>
-                        <input type="checkbox" value="sms-dealer" tabindex=<?php echo $this->get_tab_index(); ?> name="sign-up[]" id="sign-up-sms-dealer" class="sign-up"><label for="sign-up-sms-dealer">SMS</label>                            
-                        <?php endif ?>
-                         
+            <?php if ( $this->recaptcha_site() ): ?>
+                <div class="grid-x">
+                    <div class="cell small-12 medium-6 large-5">
+                        <?php $this->recaptcha_html(); ?>
                     </div>
-                </div>                  
-            </div> 
-            <!-- @end .sign-up -->                
-            <?php endif;//@nd if ($opt_in) ?>
-
-            <!-- @start .button -->
-            <div class="form-group button-group">
-                <button type="submit" name="<?php echo $this->submit_button_name; ?>" id="<?php echo $this->submit_button_id; ?>" class="button large expanded" tabindex="<?php echo $this->tab_index++; ?>"<?php if ($required_opt_in) echo ' disabled' ?>><?php echo $this->submit_button_text; ?></button>
-            </div>
-            <!-- @end .button -->
-
-            <?php if ($opt_in): ?>
-                <div class="form-group mail-receipt">
-                    <div class="policies">
-                        <p>You can opt out of receiving messages at any time by using the unsubscribe button on any of the messages you receive. You can withdraw your information at any time by emailing hello@hondaireland.ie.</p>
-                        <p>Marketing information refers to information on appointed reminders, news, products and services including competitions, promotions, offers, advertisements and prize draws.</p>
-                        <p><strong>Please note:</strong> Should your product be subject to warranty or product safety recalls Honda Ireland will contact you directly, using the information provided by your selling dealer. Please contact your selling dealer to ensure your product is registered for warranty. You do not have to subscribe to marketing information for any warranty or safety recall information.</p>
+                    <div class="cell small-12 medium-6 large-7">
+                        <?php $this->mail_receipt_html() ?>
+                        <?php $this->button_html() ?>
                     </div>
                 </div>
+            <?php else: ?>
+                <?php 
+                    $this->mail_receipt_html();
+                    $this->button_html();
+                ?>                            
+            <?php endif ?>
 
-            <?php endif;//@nd if ($opt_in) ?>
+
+            <?php  ?>
+
+               
+
+
+            
+            <?php $this->gdpr_disclaimer() ?>
 
 
         </form><!-- @end form -->
@@ -353,7 +341,8 @@ class WP_Swift_Form_Builder_Parent {
     }
 
     public function process_form($post, $ajax=false) {
-        if ( $this->get_form_data() ) {
+
+        if ( $this->recaptcha_check($post) && $this->get_form_data() ) {
             $this->validate_form($post);
             if ( $this->get_error_count() === 0 ) {
                 return $this->submit_form_success($post, $ajax);
@@ -366,6 +355,7 @@ class WP_Swift_Form_Builder_Parent {
             return $this->form_failure($ajax);
         }        
     }
+   
 /*
  *
  */
@@ -377,7 +367,7 @@ class WP_Swift_Form_Builder_Parent {
         foreach ( $this->form_data as &$section ) {
             foreach ( $section["inputs"] as $input_key => &$input ) {
                 // echo "<pre>input_key: $input_key</pre>";
-                write_log($input['label'] .' '. $input["required"]);
+                // recaptcha_secret()($input['label'] .' '. $input["required"]);
                 if (isset($post[$input_key])) {
                     $input['value'] = $post[$input_key];
                     $input = $this->validate_input($input);
@@ -405,7 +395,7 @@ class WP_Swift_Form_Builder_Parent {
                     else {
                         $this->form_error_messages[] = $input['label'] . ' is invalid';
                     }
-                    write_log($input['label'] . ' is invalid');
+                    // recaptcha_secret()($input['label'] . ' is invalid');
                 } 
             }
         }              
@@ -494,8 +484,8 @@ class WP_Swift_Form_Builder_Parent {
             case "checkbox":
                     $options = $input["options"];
                     // echo "<pre>options: "; var_dump($options); echo "</pre>";
-                    // write_log('options');
-                    // write_log($options);
+                    // recaptcha_secret()('options');
+                    // recaptcha_secret()($options);
                     $clean = '';
                     foreach ($options as $option_key => $option) {
                         if ( in_array($option["option_value"], $input['value'])) {
@@ -571,7 +561,14 @@ class WP_Swift_Form_Builder_Parent {
 
             <div class="error-content">
                 <p class="lead">We're sorry, there has been an error with the form input.</p>
-                <p>We were unable to locate this form for processing.</p>
+
+                <?php if (count($this->form_error_messages)): ?>
+                    <?php foreach ($this->form_error_messages as $key => $msg): ?>
+                        <p><?php echo $msg ?></p>
+                    <?php endforeach ?>
+                <?php else: ?>
+                       <p>We were unable to locate this form for processing.</p>             
+                <?php endif ?>
 
             </div>
 
@@ -1062,13 +1059,180 @@ class WP_Swift_Form_Builder_Parent {
         return $this->tab_index;
     }
 
+
     // public function get_show_mail_receipt() {
     //     return $this->show_mail_receipt;
     // }
     public function get_form_data() {
         return $this->form_data;
-    } 
+    }
+    public function get_inputs() {
+        return $this->form_data[0]["inputs"];        
+    }     
     public function get_user_confirmation_email() {
         return $this->user_confirmation_email;
-    }            
+    }  
+    public function recaptcha_site() {
+        if (isset( $this->recaptcha["site_key"] )) {
+            return $this->recaptcha["site_key"];
+        } 
+    } 
+    public function recaptcha_secret() {
+        if (isset( $this->recaptcha["secret_key"] )) {
+            return $this->recaptcha["secret_key"];
+        } 
+    }
+
+    public function recaptcha_html() {
+
+        if ( $this->recaptcha_site() ): ?>
+
+            <div class="form-group" id="captcha-wrapper" style="padding-top: 4px">
+                <div class="g-recaptcha" data-sitekey="<?php echo $this->recaptcha_site() ?>" data-theme="light" data-tabindex="<?php echo $this->get_tab_index(); ?>" data-size="normal"></div>
+            </div>
+        <?php endif;//@nd if ($this->gdpr_settings)
+    } 
+
+    public function recaptcha_check($post) {
+        $response = array(
+            'status' => false,
+            'msg' => '',
+        );
+        if ( !$this->recaptcha_secret() ){
+            // recaptcha is not set so skip the check
+            return true;
+        }
+        elseif ( $this->recaptcha_secret() && $post["g-recaptcha-response"] ){
+
+            $g_response = $post["g-recaptcha-response"];
+
+            $url = 'https://www.google.com/recaptcha/api/siteverify';
+            $post_data = "secret=".$this->recaptcha_secret()."&response=".$g_response."&remoteip=".$_SERVER['REMOTE_ADDR'] ;
+            $ch = curl_init();  
+            curl_setopt($ch, CURLOPT_URL, $url);
+            curl_setopt($ch, CURLOPT_POST, true);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/x-www-form-urlencoded; charset=utf-8', 'Content-Length: ' . strlen($post_data)));
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data); 
+            $googresp = curl_exec($ch);       
+            $decgoogresp = json_decode($googresp);
+            curl_close($ch);
+
+            if ( $decgoogresp->success === false ) {
+                $this->increase_error_count();
+                $this->form_error_messages[] = "You are a bot! Go away!";    
+                return false;         
+            } 
+            elseif ( $decgoogresp->success === true ) {
+                return true;     
+            }
+        }
+        elseif ( $this->recaptcha_secret() ){
+            $this->increase_error_count();
+            $this->form_error_messages[] = "This form is expecting a recaptcha code to validate but none was found!";               
+            return false;
+        }
+              
+    } 
+
+    public function gdpr() {
+        if ( $this->gdpr_settings ) {
+            return true;
+        }
+    }
+
+    public function gdpr_settings() {
+        if ( $this->gdpr_settings ) {
+            return $this->gdpr_settings;
+        }
+    }    
+
+    public function gdpr_html() {
+
+        if ( $this->gdpr_settings ): ?>
+        <!-- @start .sign-up -->
+        <div class="form-group sign-up">
+            <div class="form-label"></div>
+            <div class="form-input">
+                <div class="checkbox">
+                    <label id="sign-up-details"><?php echo $this->gdpr_settings["main_message"] ?></label>
+
+                        <?php foreach ($this->gdpr_settings["opt_in"] as $key => $opt_in): ?>
+
+                            <?php if ( is_array($opt_in["options"]) && ( in_array("email", $opt_in["options"]) || in_array("sms", $opt_in["options"]) ) ): ?>
+
+                                <label for=""><?php echo $opt_in["message"] ?></label>
+
+                                <?php if ( in_array("email", $opt_in["options"]) ): ?>
+                                    <input type="checkbox" value="email" tabindex=<?php echo $this->get_tab_index(); ?> name="sign-up-<?php echo $key; ?>[]" id="sign-up-email" class="sign-up"><label for="sign-up-email">Email</label>
+                                <?php endif ?>                            
+                                <?php if ( in_array("sms", $opt_in["options"]) ): ?>
+                                    <input type="checkbox" value="sms" tabindex=<?php echo $this->get_tab_index(); ?> name="sign-up-<?php echo $key; ?>[]" id="sign-up-sms" class="sign-up"><label for="sign-up-sms">SMS</label> 
+                                <?php endif ?>  
+
+                            <?php endif ?>
+                            
+                        <?php endforeach ?>
+                    
+                    
+
+ <?php 
+ /* 
+                    <?php if ( $this->form_type === "contact" ): ?>
+ 
+                         <label for="">I am happy to receive marketing information from this dealer by: (please tick all that apply)</label>
+ 
+                         <input type="checkbox" value="email-dealer" tabindex=<?php echo $this->get_tab_index(); ?> name="sign-up[]" id="sign-up-email-dealer" class="sign-up"><label for="sign-up-email-dealer">Email</label>
+                         <input type="checkbox" value="sms-dealer" tabindex=<?php echo $this->get_tab_index(); ?> name="sign-up[]" id="sign-up-sms-dealer" class="sign-up"><label for="sign-up-sms-dealer">SMS</label>                            
+                         <?php endif ?> 
+ */ 
+ ?>
+                     
+                </div>
+            </div>                  
+        </div> 
+        <!-- @end .sign-up -->                
+        <?php endif;//@nd if ($this->gdpr_settings)
+    }
+
+
+    public function gdpr_disclaimer() {
+
+        if ( $this->gdpr_settings && $this->gdpr_settings["disclaimer"] ): ?>
+
+            <div class="form-group sign-up">
+                <div class="policies">
+                    <?php echo $this->gdpr_settings["disclaimer"] ?>
+                </div>
+            </div>
+
+        <?php endif;//@nd if ($this->gdpr_settings)
+    } 
+
+
+    public function mail_receipt_html() {
+        if ($this->user_confirmation_email === 'ask'): ?>
+
+            <!-- @start .mail-receipt -->
+            <div class="form-group mail-receipt">
+                <div class="form-label"></div>
+                <div class="form-input">
+                    <div class="checkbox">
+                      <input type="checkbox" value="" tabindex=<?php echo $this->get_tab_index(); ?> name="mail-receipt" id="mail-receipt" checked><label for="mail-receipt">Acknowledge me with a mail receipt</label>
+                    </div>
+                </div>                  
+            </div> 
+            <!-- @end .mail-receipt -->                
+        <?php endif;         
+    }    
+
+    public function button_html() {
+        ?>
+        <!-- @start .button -->
+        <div class="form-group button-group">
+            <button type="submit" name="<?php echo $this->submit_button_name; ?>" id="<?php echo $this->submit_button_id; ?>" class="button large expanded" tabindex="<?php echo $this->get_tab_index(); ?>"><?php echo $this->submit_button_text; ?></button>
+        </div>
+        <!-- @end .button -->
+        <?php           
+    }              
 }

@@ -29,6 +29,7 @@ jQuery(document).ready(function($){
 	if(typeof FormBuilderAjax !== "undefined") {
 		// console.log(FormBuilderAjax.updated);
 	}
+	// $('#captcha-wrapper').removeClass('hide').hide();
 
 
 
@@ -199,6 +200,7 @@ jQuery(document).ready(function($){
     // When a user enters a form input
 	$('body').on('focus', '.js-form-builder-control', function(e) {	
 		$('#'+this.id+'-form-group').removeClass('has-error').removeClass('has-success');
+		// $('#captcha-wrapper').show();
 	});
 
 	$("input.js-single-checkbox").change(function() {
@@ -327,7 +329,7 @@ jQuery(document).ready(function($){
 	});	
 
 
-	$('#request-form').submit(function(e) {
+	$('#_request-form').submit(function(e) {
 
 		e.preventDefault();
 		var $form = $(this);

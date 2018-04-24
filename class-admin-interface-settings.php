@@ -77,6 +77,31 @@ class WP_Swift_Form_Builder_Admin_Interface_Settings {
 	        'wp_swift_form_builder_plugin_page_section' 
 	    );
 
+	    add_settings_field( 
+	        'wp_swift_form_builder_email_template_primary_color', 
+	        __( 'Email Template', 'wp-swift-form-builder' ), 
+	        array($this, 'wp_swift_form_builder_email_template_primary_color_render'), 
+	        'form-builder', 
+	        'wp_swift_form_builder_plugin_page_section' 
+	    );	 
+	    
+
+	    add_settings_field( 
+	        'wp_swift_form_builder_google_recaptcha', 
+	        __( 'Google reCAPTCHA', 'wp-swift-form-builder' ), 
+	        array($this, 'wp_swift_form_builder_google_recaptcha_render'), 
+	        'form-builder', 
+	        'wp_swift_form_builder_plugin_page_section' 
+	    );	
+
+	    add_settings_field( 
+	        'wp_swift_form_builder_marketing_api', 
+	        __( 'Marketing API', 'wp-swift-form-builder' ), 
+	        array($this, 'wp_swift_form_builder_marketing_api_render'), 
+	        'form-builder', 
+	        'wp_swift_form_builder_plugin_page_section' 
+	    );		        
+
 	    /*add_settings_field( 
 	        'wp_swift_form_builder_email_template_secondary_color', 
 	        __( '', 'wp-swift-form-builder' ), 
@@ -101,6 +126,61 @@ class WP_Swift_Form_Builder_Admin_Interface_Settings {
 	    );*/
 	}
 
+	/*
+	 *
+	 */
+	public function wp_swift_form_builder_google_recaptcha_render(  ) { 
+	    $options = get_option( 'wp_swift_form_builder_settings' );
+	    ?>
+	    <p>Google reCAPTCHA protects internet users from spam and abuse wherever they go.</p>
+		<table id="table-wp-swift-form-builder-google-recaptcha">
+			<tr>
+				<td><input type="password" autocomplete="new-password" name="wp_swift_form_builder_settings[wp_swift_form_builder_google_recaptcha][site_key]" value="<?php
+			    	if (isset($options['wp_swift_form_builder_google_recaptcha']['site_key']) && $options['wp_swift_form_builder_google_recaptcha']['site_key'] != '') {
+			     		echo ''.$options['wp_swift_form_builder_google_recaptcha']['site_key'].'';
+			     	}?>">
+			     </td>
+				<td class="title">Site Key</td>
+				<td class="desc">Use this in the HTML code your site serves to users.</i></td>
+			</tr>
+			<tr>
+				<td><input type="password" autocomplete="new-password" name="wp_swift_form_builder_settings[wp_swift_form_builder_google_recaptcha][secret_key]" value="<?php
+			    	if (isset($options['wp_swift_form_builder_google_recaptcha']['secret_key']) && $options['wp_swift_form_builder_google_recaptcha']['secret_key'] != '') {
+			     		echo ''.$options['wp_swift_form_builder_google_recaptcha']['secret_key'].'';
+			     	}?>">
+			     </td>
+				<td class="title">Secret Key</td>
+				<td class="desc">Use this for communication between your site and Google.</i></td>
+			</tr>	
+			<tr>
+				<td><input type="email" name="wp_swift_form_builder_settings[wp_swift_form_builder_google_recaptcha][owner]" value="<?php
+			    	if (isset($options['wp_swift_form_builder_google_recaptcha']['owner']) && $options['wp_swift_form_builder_google_recaptcha']['owner'] != '') {
+			     		echo ''.$options['wp_swift_form_builder_google_recaptcha']['owner'].'';
+			     	}?>">
+			     </td>
+				<td class="title">Owner</td>
+				<td class="desc">The google account to which this is associated.</i></td>
+			</tr>						
+		</table>
+		<p><small>Google reCAPTCHAs must turned on each individual form via the settings tab.</small></p>
+	    <?php
+
+	}
+
+	/*
+	 *
+	 */
+	public function wp_swift_form_builder_marketing_api_render(  ) { 
+	    $options = get_option( 'wp_swift_form_builder_settings' );
+	    ?>
+	    <input type="password" autocomplete="new-password" name="wp_swift_form_builder_settings[wp_swift_form_builder_marketing_api]" value="<?php
+	    	if (isset($options['wp_swift_form_builder_marketing_api']) && $options['wp_swift_form_builder_marketing_api'] != '') {
+	     		echo ''.$options['wp_swift_form_builder_marketing_api'].'';
+	     	}
+	     	?>"> <small>This will be used for GDLP compliant sign up forms.</small>
+	    <?php
+
+	}
 
 	/*
 	 *
