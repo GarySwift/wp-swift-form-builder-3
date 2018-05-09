@@ -918,8 +918,12 @@ class WP_Swift_Form_Builder_Parent {
         if(!$this->form_pristine && $input['passed']==false && $input["type"] !== "checkbox") {
             // This input has has error detected so add an error class to the surrounding div
             $has_error = ' has-error';
-        }        
-        return "form-group".$input["css_class"].$has_error."";//cell large-auto small-6
+        } 
+        $framework_style = '';
+        if ( $this->css_framework === "zurb_foundation" ) {
+            $framework_style = ' cell large-auto small-6';
+        }       
+        return "form-group".$input["css_class"].$has_error.$framework_style;
     }
 
     /*
