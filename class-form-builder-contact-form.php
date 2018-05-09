@@ -16,7 +16,7 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
      * Variables
      */
     private $date;
-    private $send_email = false;//Debug variable. If false, emails will not be sent
+    private $send_email = true;//Debug variable. If false, emails will not be sent
     private $send_marketing = false;
     private $title;
     private $response_subject;

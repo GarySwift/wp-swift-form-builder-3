@@ -255,33 +255,11 @@ class WP_Swift_Form_Builder_Parent {
             $this->front_end_form_input_loop($this->form_data, $this->tab_index, $this->form_pristine, $this->error_count);
             $this->before_submit_button_hook(); 
             $this->gdpr_html();
+            $this->recaptcha_html();
+            $this->mail_receipt_html();
+            $this->button_html();
+            $this->gdpr_disclaimer() 
             ?>
-
-            <?php if ( $this->recaptcha_site() ): ?>
-                <div class="grid-x">
-                    <div class="cell small-12 medium-6 large-5">
-                        <?php $this->recaptcha_html(); ?>
-                    </div>
-                    <div class="cell small-12 medium-6 large-7">
-                        <?php $this->mail_receipt_html() ?>
-                        <?php $this->button_html() ?>
-                    </div>
-                </div>
-            <?php else: ?>
-                <?php 
-                    $this->mail_receipt_html();
-                    $this->button_html();
-                ?>                            
-            <?php endif ?>
-
-
-            <?php  ?>
-
-               
-
-
-            
-            <?php $this->gdpr_disclaimer() ?>
 
 
         </form><!-- @end form -->
@@ -853,7 +831,7 @@ class WP_Swift_Form_Builder_Parent {
      ******************************************************/
 
     /*
-     * Us the same fucntion to wrap all inputs
+     * Use the same function to wrap all inputs
      */
     public function wrap_input($id, $input, $input_html, $section='') {
 
@@ -1089,13 +1067,26 @@ class WP_Swift_Form_Builder_Parent {
     }
 
     public function recaptcha_html() {
+        $html = '';
+        if ( $this->recaptcha_site() ):
+            ob_start();
+            ?>
 
-        if ( $this->recaptcha_site() ): ?>
+                <div class="form-group hide" id="captcha-wrapper">
 
-            <div class="form-group" id="captcha-wrapper" style="padding-top: 4px">
-                <div class="g-recaptcha" data-sitekey="<?php echo $this->recaptcha_site() ?>" data-theme="light" data-tabindex="<?php echo $this->get_tab_index(); ?>" data-size="normal"></div>
-            </div>
-        <?php endif;//@nd if ($this->gdpr_settings)
+                    <!-- @start input -->
+                    <div class="form-input">
+                        <div class="g-recaptcha" data-sitekey="<?php echo $this->recaptcha_site() ?>" data-theme="dark" data-tabindex="<?php echo $this->get_tab_index(); ?>" data-size="normal"></div>
+
+                    </div>
+                    <!-- @end input -->
+
+                </div>
+            <?php
+            $html = ob_get_contents();
+            ob_end_clean();
+        endif;//@nd if ($this->gdpr_settings)
+        echo  $html;
     } 
 
     public function recaptcha_check($post) {
