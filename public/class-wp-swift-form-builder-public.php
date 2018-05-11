@@ -109,11 +109,11 @@ class Wp_Swift_Form_Builder_Public {
 	public function enqueue_scripts() {
 
 		$options = get_option( 'wp_swift_form_builder_settings' );
-        // if ( !isset($options['wp_swift_form_builder_checkbox_javascript']) ) {
+        if ( !isset($options['wp_swift_form_builder_checkbox_javascript']) ) {
 			$file = 'js/wp-swift-form-builder-public.js';
 			$version = filemtime(plugin_dir_path( __FILE__ ) . $file);
 			wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . $file, array( 'jquery' ), $version, true );
-		// }
+		}
 		wp_enqueue_script( 'g-recaptcha', 'https://www.google.com/recaptcha/api.js', '', '' );
 	}
 }//@end class Wp_Swift_Form_Builder_Public

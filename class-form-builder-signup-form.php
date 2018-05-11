@@ -90,7 +90,7 @@ class WP_Swift_Form_Builder_Signup_Form extends WP_Swift_Form_Builder_Parent {
         $email = $inputs["form-email"]["clean"];//strtolower()
 
         // require plugin_dir_path( __DIR__ ) . 'mailin-api-php/V2.0/Mailin.php';
-        $mailin = new Mailin('https://api.sendinblue.com/v2.0', '7k0yHG1javQ93zS2', 5000);    
+        $mailin = new Mailin('https://api.sendinblue.com/v2.0', '', 5000);    
         
         //Optional parameter: Timeout in MS
 

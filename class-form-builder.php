@@ -75,15 +75,17 @@ class WP_Swift_Form_Builder_Parent {
 
                 $options = get_option( 'wp_swift_form_builder_settings' );
                 $google_settings = $options['wp_swift_form_builder_google_recaptcha'];
-                // echo '<pre>'; var_dump($options['wp_swift_form_builder_google_recaptcha']); echo '</pre>';
-                // if (isset($options['wp_swift_form_builder_google_recaptcha']['site_key']) && $options['wp_swift_form_builder_google_recaptcha']['site_key'] != '') {
-                //     echo ''.$options['wp_swift_form_builder_google_recaptcha']['site_key'].'';
-                // }
-                // $google_settings =  get_field('google', $this->form_post_id );
-                // echo '<pre>'; var_dump($google_settings); echo '</pre>';
                 if ( $google_settings["site_key"] !== '' && $google_settings["secret_key"] !== '' ) {
                     $this->recaptcha = $google_settings;
                 }
+                if( get_field('recaptcha_settings', $this->form_post_id) ) {
+                    $recaptcha_settings = get_field('recaptcha_settings', $this->form_post_id);
+                    $this->recaptcha = array_merge( $this->recaptcha, $recaptcha_settings );
+                }
+                if( get_field('recaptcha_display_settings', $this->form_post_id) ) {
+                    $recaptcha_display_settings = get_field('recaptcha_display_settings', $this->form_post_id);
+                    $this->recaptcha = array_merge( $this->recaptcha, $recaptcha_display_settings );
+                }                
             }
         }
         if( get_field('gdpr', $this->form_post_id ) ) {
@@ -254,14 +256,16 @@ class WP_Swift_Form_Builder_Parent {
             
             $this->front_end_form_input_loop($this->form_data, $this->tab_index, $this->form_pristine, $this->error_count);
             $this->before_submit_button_hook(); 
-            $this->gdpr_html();
-            $this->recaptcha_html();
-            $this->mail_receipt_html();
-            $this->button_html();
-            $this->gdpr_disclaimer() 
+            $this->gdpr_html(); ?>
+            <div id="form-submission-wrapper"><?php 
+                $this->recaptcha_html(); ?>
+                <div id="form-submission"><?php 
+                    $this->mail_receipt_html();
+                    $this->button_html();
+                ?></div>
+            </div><?php
+            $this->gdpr_disclaimer();
             ?>
-
-
         </form><!-- @end form -->
 
         <?php 
@@ -276,7 +280,7 @@ class WP_Swift_Form_Builder_Parent {
         foreach ($this->form_data as $key => $section) {
 
             if (isset($section["section_content"])) {
-                $this->section_html( $section["section_content"] );
+                $this->section_html( $section );
             }            
 
             foreach ($section["inputs"] as $id => $input) {
@@ -883,7 +887,10 @@ class WP_Swift_Form_Builder_Parent {
                             $input['help'] = $help;
                         }   
                         if ($input['required']): echo PHP_EOL; ?>
-                    <small class="error" id="<?php echo $id; ?>-report"><?php echo $help; ?></small><?php 
+                    <div class="form-builder-error">
+                        <small class="error" id="<?php echo $id; ?>-report"><?php echo $help; ?></small>
+                    </div>
+                    <?php 
                         endif;
                         if (isset($input['instructions']) && $input['instructions']): echo PHP_EOL; ?>
                     <small class="instructions"><?php echo $input['instructions']; ?></small><?php 
@@ -907,7 +914,7 @@ class WP_Swift_Form_Builder_Parent {
      * 
      */
     public function get_css_form_grid_grouping() {
-        return "form-grid-grouping grid-x";
+        return "form-grid-grouping _grid-x";
     }
 
     /*
@@ -921,7 +928,7 @@ class WP_Swift_Form_Builder_Parent {
         } 
         $framework_style = '';
         if ( $this->css_framework === "zurb_foundation" ) {
-            $framework_style = ' cell large-auto small-6';
+            // $framework_style = ' cell large-auto small-6';
         }       
         return "form-group".$input["css_class"].$has_error.$framework_style;
     }
@@ -1070,17 +1077,34 @@ class WP_Swift_Form_Builder_Parent {
         } 
     }
 
+    public function recaptcha_theme() {
+        if (isset( $this->recaptcha["theme"] )) {
+            echo ' data-theme="'.$this->recaptcha["theme"].'"';
+        } 
+    }
+
+    public function recaptcha_size() {
+        if (isset( $this->recaptcha["size"] )) {
+            echo ' data-size="'.$this->recaptcha["size"].'"';
+        } 
+    }
+
+    public function recaptcha_group_class() {
+        if (isset( $this->recaptcha["hide_on_load"] ) && $this->recaptcha["hide_on_load"] ) {
+            echo ' hide init-hidden';
+        } 
+    }         
     public function recaptcha_html() {
         $html = '';
         if ( $this->recaptcha_site() ):
             ob_start();
             ?>
 
-                <div class="form-group hide" id="captcha-wrapper">
+                <div class="form-group <?php $this->recaptcha_group_class(); ?>" id="captcha-wrapper">
 
                     <!-- @start input -->
                     <div class="form-input">
-                        <div class="g-recaptcha" data-sitekey="<?php echo $this->recaptcha_site() ?>" data-theme="dark" data-tabindex="<?php echo $this->get_tab_index(); ?>" data-size="normal"></div>
+                        <div class="g-recaptcha" data-sitekey="<?php echo $this->recaptcha_site() ?>" <?php $this->recaptcha_theme(); $this->recaptcha_size(); ?> data-tabindex="<?php echo $this->get_tab_index(); ?>" data-size="normal"></div>
 
                     </div>
                     <!-- @end input -->
@@ -1245,18 +1269,22 @@ class WP_Swift_Form_Builder_Parent {
     }  
     public function section_html( $content ) {
         ?>
-        <!-- @start .button -->
+        <!-- @start .section-content -->
         <div class="form-group section-content">
 
             <!-- @start input -->
             <div class="form-input">
 
-                <?php echo $content; ?>
+                <?php if (isset($content["section_header"])): ?>
+                    <h3><?php echo $content["section_header"]; ?></h3>
+                <?php endif ?>
+
+                <?php echo $content["section_content"]; ?>
 
             </div>
             <!-- @end input -->            
         </div>
-        <!-- @end .button -->
+        <!-- @end .section-content -->
         <?php           
     }                  
 }

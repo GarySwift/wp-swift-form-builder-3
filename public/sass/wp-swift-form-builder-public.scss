@@ -6,18 +6,38 @@
 /* 
  * @start settings
  */ 
-$form-font-family: $header-font-family;//$body-font-family;
+$form-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+@if global-variable-exists( 'header-font-family' ) {
+    $form-font-family: $header-font-family;
+}
+$form-white: #fefefe;
+@if global-variable-exists( 'white' ) {
+    $form-white: $white;
+}
+$form-font-size: 100%;
+$form-font-weight: normal;
 $has-error: #cc0000;
-$has-success: #4C4C4C;// #515151;
+$has-success: #4C4C4C;
+$has-success-bg-color: #FBF5E4;//#F8F8F8;
 $form-group-padding: 0.3rem;
-$form-group-padding-bottom: 0.5rem;//0.6rem
-$form-color: $white;//$body-font-color;
-$show-required-star: false;//true
-$show-feedback-icons: false;//true
-$button-case: none;//uppercase
-// $button-class: secondary;/
-$button-class: ".secondary";// seperate classes with a comma
-// $button-size: default;//large
+$form-group-padding-bottom: 0.6rem;
+$form-color: #0a0a0a;
+$show-required-star: true;
+$show-feedback-icons: true;
+$button-case: uppercase;
+$button-class: ".primary";// seperate classes with a comma
+$button-size: ".large";// .default, .large
+
+@mixin form-builder-transition($property) {
+    -webkit-transition: $property;
+    -moz-transition: $property;
+    -ms-transition: $property; /* IE10 is actually unprefixed */
+    -o-transition: $property;
+    transition: $property;    
+}
+
+$form-transition-speed: 1;//0.3s;
+$form-transition-property: ease-in;//ease-in-out;// ease-in
 
 /* 
  * @start wrap
@@ -83,6 +103,10 @@ label.lbl-checkbox, label.lbl-radio {
     margin-bottom: 20px;
     border: 1px solid $has-error;
     color: $has-error;
+    font-family: $form-font-family;
+    .heading, a {
+        color: $has-error;
+    }
 }
 .form-message.error.ajax {
     border: none;
@@ -102,19 +126,23 @@ div.form-builder.wrap {
  */
 .form-group {
     padding-bottom: $form-group-padding-bottom;
+    .form-input {
+      
+    }  
+    .form-label, .form-input {
+        label {
+            color: $form-color;
+            font-weight: $form-font-weight;
+            font-family: $form-font-family;
+            font-size: $form-font-size;
+        }
+    }      
     button {
         font-weight: bold;
         text-transform: $button-case;
         font-family: $form-font-family;
-        @extend #{$button-class};
-        // @extend .#{$button-size};
-    }
-    .form-label, .form-input {
-        label {
-            color: $form-color;
-            font-weight: normal;
-            font-family: $form-font-family;
-        }
+        @extend #{$button-class} !optional;
+        @extend #{$button-size} !optional;
     }
     select, textarea, input[type=text], input[type=email], input[type=url], input[type=number], input[type=file], div.dummy-input {
         margin-bottom: 0;
@@ -127,20 +155,48 @@ div.form-builder.wrap {
     .control-label.required span {
       color: $has-error;
     }
-    small.error {
-        display: none;
-        color: $has-error;
-        font-weight:bold;
+    .form-builder-error {
+        position: relative;
     }
+    small.error {
+        $transition: opacity 0.3s ease-in, bottom 0.3s ease-in;
+        @include form-builder-transition($transition);  
+        font-family: $form-font-family;
+        color: $form-white;
+        display: block;
+        background-color: $has-error;
+        position: absolute;
+        right: 0;
+        bottom: -30px;
+        padding: 2px 10px;
+        visibility: hidden;
+        opacity: 0;              
+    }
+    small.error:after {
+        $size: 6px;
+        content: '';
+        position: absolute;
+        top: 0;
+        // left: 50%;
+        left: 30px;
+        width: 0;
+        height: 0;
+        border: $size solid transparent;
+        border-bottom-color: $has-error;
+        border-top: 0;
+        margin-left: -$size;
+        margin-top: -$size;
+    }     
 }
 .form-group.has-error {
     .form-label label{
         color: $has-error;
-        font-weight: bold;
-    }   
+    }  
     small.error {
-        display: block;
-    }
+        bottom: -15px;
+        visibility: visible;
+        opacity: 1;     
+    }    
     select, textarea, input[type=text], input[type=email], input[type=url], input[type=number], input[type=file], div.dummy-input {
         border-color: $has-error;
         box-shadow: inset 0 1px 2px rgba($has-error,0.1);
@@ -154,7 +210,7 @@ div.form-builder.wrap {
         border-color: lighten($has-success, 30%);
         box-shadow: inset 0 1px 2px rgba($has-success,0.3);
         color: $has-success;
-        background-color: #F8F8F8;
+        background-color: $has-success-bg-color;
     }
     .form-label label {
         color: $has-success;
@@ -163,7 +219,16 @@ div.form-builder.wrap {
         display: none;
     }       
 }
-
+.form-grid-grouping {
+    display: -ms-flexbox;
+    display: -webkit-flex; 
+    display: flex;
+    align-items: stretch;
+    .form-group {
+        flex-grow: 1;
+        max-width: 50%;
+    }
+}
 /* 
  * @start form-cell (groupings)
  */
@@ -183,12 +248,8 @@ div.form-builder.groupings {
             position: relative;     
             span {
                 $transition: opacity 0.3s ease-in;
-                -webkit-transition: $transition;
-                -moz-transition: $transition;
-                -ms-transition: $transition;
-                -o-transition: $transition;
-                transition: $transition;            
-                 visibility: hidden;
+                @include form-builder-transition($transition);          
+                visibility: hidden;
                 opacity: 0;
                 position: absolute;
                 right: 2px;
@@ -278,11 +339,4 @@ div.form-builder.groupings {
 }
 .icon-x:before {
     content: "\e900";
-}
-
-/* 
- * @start sign-up
- */
-.sign-up-details {
-    background-color: red;
 }
