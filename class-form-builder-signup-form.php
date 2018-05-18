@@ -57,213 +57,74 @@ class WP_Swift_Form_Builder_Signup_Form extends WP_Swift_Form_Builder_Parent {
      * @return string               The html success message
      */
     public function submit_form_success($post, $ajax) {
-        write_log('@start submit_form_success');
-        // write_log($post);
         $signups = isset($post["sign-up"]) ? $post["sign-up"] : array();
-        
         $listid = array(5);
         $listid_unlink = null;
         if (isset($post["form-signup-options"]) && isset($post["form-signup-options-hidden"])) {
             $listid = $post["form-signup-options"];
             $listid_hidden = $post["form-signup-options-hidden"];
             $listid_unlink = array_diff_assoc($listid_hidden, $listid);       
-
-            write_log($listid);
-            write_log($listid_hidden);
-            write_log($listid_unlink);
         }
-        write_log($signups);
-        write_log('@end submit_form_success');
         $response = wp_swift_do_signup(parent::get_form_data(), $signups, $listid, $listid_unlink);
         return $response;  
-        // return array("html" => wp_swift_signup_error_html(),  "session" => null, "response" => null);        
     }
-
-
-    public function submit_form_success_3($post, $ajax) {
-        $reponse = '';
-        $form_data = parent::get_form_data();
-        $inputs = $form_data[0]["inputs"];
-        $first_name = $inputs["form-first-name"]["clean"];
-        $last_name = $inputs["form-last-name"]["clean"];
-        // $username = $inputs["form-username"]["clean"];
-        $email = $inputs["form-email"]["clean"];//strtolower()
-
-        // require plugin_dir_path( __DIR__ ) . 'mailin-api-php/V2.0/Mailin.php';
-        $mailin = new Mailin('https://api.sendinblue.com/v2.0', '', 5000);    
-        
-        //Optional parameter: Timeout in MS
-
-        // $data = array( "id" => 2,
-        //       "users" => array('example1@example.net','example2@example.net')
-        //     );
-        $data = array( "email" => $email,
-            "attributes" => array( "FIRSTNAME" => $first_name, "LASTNAME" => $last_name, "DOUBLE_OPT-IN" => 1 ),
-            "listid" => array(5),
-            // "listid_unlink" => array(2,5)
-        ); 
-
-        $response = null;//$mailin->create_update_user($data);
-        write_log( $response );
-
-// echo "<pre>"; var_dump( $mailin->create_update_user($data) ); echo "</pre>";
-        return array( 
-            "html" => "Thank you for your details", 
-            "session" => array( 
-                "first_name" => $first_name,
-                "last_name" => $last_name,
-                "email" => $email,
-            ),
-            "response" => $response,
-        );
-    }    
-
-
-    public function submit_form_success_2($post, $ajax) {
-        // write_log($post);
-        // write_log($ajax);
-        $reponse = '';
-        $form_data = parent::get_form_data();
-        $inputs = $form_data[0]["inputs"];
-        $first_name = $inputs["form-first-name"]["clean"];
-        $last_name = $inputs["form-last-name"]["clean"];
-        $username = $inputs["form-username"]["clean"];
-        $email = $inputs["form-email"]["clean"];//strtolower()
-
-       
-        $username_exists = username_exists( $username );
-        $email_exists = email_exists($email);
-
-        if ( $username_exists ) {
-            $reponse .= '<p>This username already exists!</p>';
-        }
-        if ( $email_exists ) {
-            $reponse .= '<p>This email_exists already exists!</p>';
-        } 
-
-        if ( !$username_exists && !$email_exists ) {
-            $user_id = $this->save_user($email, $username, $first_name, $last_name);
-            $reponse .= '<p>Great. Please check your email for a link to see your downloads</p>';
-        }       
-        // if ( !$user_id and email_exists($user_email) == false ) {
-        //     $random_password = wp_generate_password( $length=20, $include_standard_special_chars=false );
-        //     $user_id = wp_create_user( $user_name, $random_password, $user_email );
-        //     $user_id = wp_update_user( array( 'first_name' => $user_first_name, 'last_name' => $user_last_name ) );
-        // } else {
-        //     $random_password = __('User already exists.  Password inherited.');
-        // }
-
-        $args = array(
-            'ID' => 1,
-            'role' => 'administrator',
-        );
-        wp_update_user($args);        
-        return $reponse;
-    }    
-
-
-    public function save_user($email, $username, $first_name, $last_name) {
-
-        $password = wp_generate_password( 20, true );
-        // $password = 'password';
-        $user_id = wp_create_user ( $username, $password, $email );
-        $display_name =  $first_name;
-
-        $args = array(
-            'ID' => $user_id,
-            'role' => 'subscriber',
-            'nickname' => $display_name,
-            'first_name' => $first_name,
-            'last_name' => $last_name,
-            'user_nicename' => $display_name,
-            'display_name' => $display_name,
-            // 'user_registered' => $this->date(),
-            'show_admin_bar_front' => 'false',
-        );
-        wp_update_user($args);
-        write_log($args);
-        // $user = new WP_User( $user_id );
-        // update_user_meta( $user_id, 'gdpr', $this->lp_code );
-        // wp_mail( $email_address, 'Welcome!', 'Your password is: ' . $password );
-        return $user_id;
-    }    
 }
 
-function wp_swift_do_signup($form_data, $signups, $listid = array(), $listid_unlink = null) {
-    $inputs = $form_data[0]["inputs"];
-    write_log($inputs);
-    if ( class_exists('Mailin') &&  isset($inputs["form-first-name"]["clean"]) && isset($inputs["form-last-name"]["clean"])) {
-        // write_log('1 wp_swift_do_signup');
-        $data = array();
-        $save = false;
-            
-        $session = array();
-        $first_name = $inputs["form-first-name"]["clean"];
-        $last_name = $inputs["form-last-name"]["clean"];
+function wp_swift_do_signup($form_data, $signups, $list_id_array = array(), $list_id_array_unlink = null) {   
+    $session = array();// This will send back the user data to store in local storage 
+    $data = array();// This will be the user data we send to SendInBlue
+    $save = false;// We will only save if SMS or Email is selected    
+    $mailin = null;// This will be instantiated into a MailIn object
+    $mailin_response = null;// This will be the response form the API call 
+    $mailin_api_url = 'https://api.sendinblue.com/v2.0';// sendinblue url
+    $mailin_api_key = wp_swift_get_mailin_api();// The user API key
+    $mailin_timeout = 5000;// Optional parameter: Timeout in MS    
+    $first_name = get_form_input($form_data, "form-first-name" );
+    $last_name = get_form_input($form_data, "form-last-name" );
+    $email = get_form_input($form_data, "form-email" );
+    $phone = get_form_input($form_data, "form-phone" );
 
+    if ( class_exists('Mailin') && $first_name && $last_name ) {
         $session = array ( 
             "first_name" => $first_name,
             "last_name" => $last_name,
         );
+        // $first_name = '';
+        // $last_name = '';
+        // $phone ='';
+        // 
+        $first_name_key = "NAME";
+        $last_name_key = "SURNAME";
+        
+        $first_name_key = "FIRSTNAME";
+        $last_name_key = "LASTNAME";
 
         $data = array( 
-            "attributes" => array( "FIRSTNAME" => $first_name, "LASTNAME" => $last_name ),//, "DOUBLE_OPT-IN" => 1
-            "listid" => $listid,
+            "attributes" => array( $first_name_key => $first_name, $last_name_key => $last_name ),//, "DOUBLE_OPT-IN" => 1
+            "listid" => $list_id_array,
         );      
 
-        // if () {
-            
-        // }
-        // if () {
-
-        // }
-             
-        // $data = array( 
-        //     "email" => $email,
-        //     "attributes" => array( "FIRSTNAME" => $first_name, "LASTNAME" => $last_name, "DOUBLE_OPT-IN" => $double_optin, "SMS" => "+199-73-9331169" ),
-        //     "listid" => $listid,//,
-        //     // "listid_unlink" => array(2,5)
-        // ); 
-// if (in_array("email", $signups) || in_array("sms", $signups)) {
-        // write_log('2 wp_swift_do_signup');
-        if ( isset( $inputs["form-email"]["clean"]) ) {
-            $email = $inputs["form-email"]["clean"];//strtolower()
+        if ( $email ) {
             $session["email"] = $email;
             if ( in_array("email", $signups) ) {
                 $data["email"] = $email;
                 $save = true;
             }
         }
-        if ( isset( $inputs["form-phone"]["clean"]) ) {
-            $phone = $inputs["form-phone"]["clean"];
+        if ( $phone ) {
+            // $phone = str_replace(' ', '', $phone);
             $session["phone"] = $phone;
-            $phone = str_replace('+', '', $phone);
-            $phone = str_replace('-', '', $phone);
             if ( in_array("sms", $signups) ) {
                 $data["attributes"]["SMS"] = $phone;
                 $save = true;
             }
         }
-        // if ( in_array("email", $signups) && isset($email)) {
-        //     $data["email"] = $email;
-        //     $session["email"] = $email;
-            
-        // }        
-
-
-        // write_log('3 wp_swift_do_signup');
-        if (is_array( $listid_unlink )) {
-            $data["listid_unlink"] = $listid_unlink;
+        if (is_array( $list_id_array_unlink )) {
+            $data["listid_unlink"] = $list_id_array_unlink;
         }
-
         if ($save) {
-            write_log('save mailin.....');
-            // $mailin = null;
-            // $mailin_response = null;
-            $mailin = new Mailin('https://api.sendinblue.com/v2.0', wp_swift_get_mailin_api(), 5000);//Optional parameter: Timeout in MS  
-            write_log($data);
-            $mailin_response = $mailin->create_update_user($data);
-
+            $mailin = new Mailin( $mailin_api_url, $mailin_api_key, $mailin_timeout );
+            $mailin_response = $mailin->create_update_user( $data );
             $response = array("html" => wp_swift_signup_html(),  "session" => $session, "response" => $mailin_response);
             return $response;
         }
@@ -272,7 +133,7 @@ function wp_swift_do_signup($form_data, $signups, $listid = array(), $listid_unl
             return $response;
         }
 
-    }//isset($inputs["form-first-name"]["clean"]) && isset($inputs["form-last-name"]["clean"])
+    }
     $response = array("html" => wp_swift_signup_error_html(),  "session" => $session, "response" => null);
     return $response;
 }
@@ -314,4 +175,10 @@ function wp_swift_get_mailin_api() {
     if (isset($options['wp_swift_form_builder_marketing_api']) && $options['wp_swift_form_builder_marketing_api'] != '') {
         return $options['wp_swift_form_builder_marketing_api'];
     } 
+}
+
+function get_form_input($form_data, $key) {
+    if (isset( $form_data[0]["inputs"][$key]["clean"] )) {
+        return $form_data[0]["inputs"][$key]["clean"];
+    }
 }

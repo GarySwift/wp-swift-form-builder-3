@@ -102,7 +102,7 @@ require_once plugin_dir_path( __FILE__ ) . 'cpt/wp_swift_form_submit.php';
  * The ACF field groups
  */ 
 require_once plugin_dir_path( __FILE__ ) . 'acf-field-groups/form-builder-inputs.php';
-require_once plugin_dir_path( __FILE__ ) . 'acf-field-groups/form-builder-input-sections.php';
+// require_once plugin_dir_path( __FILE__ ) . 'acf-field-groups/form-builder-input-sections.php';
 require_once plugin_dir_path( __FILE__ ) . 'acf-field-groups/_acf-field-group-contact-form.php';
 
 /**
@@ -114,7 +114,7 @@ require_once plugin_dir_path( __FILE__ ) . 'class-admin-interface-settings.php';
 /**
  * Function that wraps email message in a html template
  */
-require_once plugin_dir_path( __FILE__ ) . '/email-templates/wp-swift-email-templates.php';
+require_once plugin_dir_path( __FILE__ ) . 'email-templates/wp-swift-email-templates.php';
 
 /**
  * Create the ajax nonce and url

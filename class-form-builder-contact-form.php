@@ -6,18 +6,19 @@
  * @extends     WP_Swift_Form_Builder_Plugin
  *
  */
-class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
+class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {  
+   
+    /*
+     * Variables
+     */    
+    private $headers = array('Content-Type: text/html; charset=UTF-8');
     private $post_id = null;
     private $to_email = null;
     private $forward_email = null;
     private $save_submission = null;
-
-    /*
-     * Variables
-     */
     private $date;
     private $send_email = true;//Debug variable. If false, emails will not be sent
-    private $send_marketing = false;
+    private $send_marketing = true;
     private $title;
     private $response_subject;
     private $browser_output_header;
@@ -25,7 +26,7 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
     private $auto_response_message;
     private $auto_response_subject;
     private $to = array();
-    private $headers = array('Content-Type: text/html; charset=UTF-8');
+    
 
 
     /*
@@ -81,15 +82,7 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
         // The auto-response subject
         $this->auto_response_subject='Auto-response (no-reply)';   
 
-
         $this->to = array(get_option('admin_email'));
-        // write_log('admin_email $this->to:');write_log($this->to);
-
-
-        // $this->send_email = false;//Debug variable. If false, emails will not be sent
-
-        
-
 
         $options = get_option( 'wp_swift_form_builder_settings' );
         if (isset($options['wp_swift_form_builder_checkbox_debug_mode']) && $options['wp_swift_form_builder_checkbox_debug_mode'] === '1') {
@@ -119,13 +112,11 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
                             $this->to[] = $email;
                         }
                     }
-                    // write_log('email $this->to:');write_log($this->to);
                 }
             }
-            // If a to_email is set in ACF, send the email there instead of the admin email
             elseif (get_field('to_email', $form_post_id )) {
+                // If a to_email is set in ACF, send the email there instead of the admin email
                 $this->to = array(get_field('to_email', $form_post_id )); 
-                // write_log('to_email $this->to:');write_log($this->to);
             }
             // Set reponse subject for email
             if (get_field('response_subject', $form_post_id )) {
@@ -156,8 +147,8 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
                     ),                  
                 );
             }
-            $forward_email = get_field('forward_email', $form_post_id);
-            if ($forward_email) {
+            $forward_email = get_field('forwarding_emails', $form_post_id);
+            if (count($forward_email)) {
                 $this->forward_email = $forward_email;
             }
         }                          
@@ -182,7 +173,7 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
         $key_value_table = $this->build_key_value_table();
         $email_string .= $key_value_table;
         $email_string .= $this->build_page_details();
-        $signup = $this->do_signup( $post );
+        $signup = $this->do_signup_api( $post );
         $email_string .= $this->do_signup_third_party_wrap($signup);
 
         /*
@@ -192,9 +183,12 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
             foreach ($this->to as $key => $to_email) {
                 $status = wp_mail($to_email, $this->response_subject.$this->date, wp_swift_wrap_email($email_string), $this->headers);
             }
+
             if (isset($this->forward_email)) {
-                $status = wp_mail($this->forward_email, '[Fwd:] '.$this->response_subject.$this->date, wp_swift_wrap_email($email_string), $this->headers);
-            }            
+                foreach ($this->forward_email as $key => $forward_email) {
+                    $status = wp_mail($forward_email, '[Fwd:] '.$this->response_subject.$this->date, wp_swift_wrap_email($email_string), $this->headers);
+                }
+            }         
         }
         else {
             if (function_exists('write_log')) {
@@ -220,8 +214,9 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
         }
 
         /*
-         * If the user has requested it, send an email acknowledgement
+         * If the user has requested it, send an email acknowledgment
          */
+        
         $user_output_footer = '';
 
         $user_email_string = $this->auto_response_message.'<p>A copy of your enquiry is shown below.</p>'.$key_value_table.$this->do_signup_customer_wrap($signup);
@@ -229,6 +224,7 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
         $user_confirmation_email = parent::get_user_confirmation_email();
 
         $form_data = parent::get_form_data();
+
         $form_data = $form_data[0];
 
         if ( ($user_confirmation_email=== 'ask' && isset($post["mail-receipt"])) || $user_confirmation_email=== 'send' )  {
@@ -239,11 +235,12 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
                     $status = wp_mail($form_data["inputs"]['form-email']['clean'], $this->auto_response_subject, wp_swift_wrap_email($user_email_string), $this->headers);
                 }
             }
-            else {
-                $user_output_footer = "<pre>Debugging mode is on so no emails are being sent.</pre>";
-            }
         
             $user_output_footer .= '<p>A confirmation email has been sent to you including these details.</p>';
+        }
+
+        if ( !$this->send_email ) {
+            $user_output_footer .= "<pre>Debugging mode is on so no emails are being sent.</pre>";
         }
 
         /*
@@ -281,35 +278,53 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
         }
     }     
 
-    private function do_signup( $post ) {
+    private function do_signup_api( $post ) {
         $gdpr_settings = parent::gdpr_settings();
         $html = '';
+        $list_ids = array();
+        $list_id_array = array();
 
         if ($gdpr_settings) {
-            if ($this->send_marketing) {
-                $response = wp_swift_do_signup(parent::get_form_data(), $signups, array(5)); 
-            }
-            else {
-                write_log("Debug mode so customer has not been saved to marketing.");
-            }
             ob_start();
-            
             foreach ($gdpr_settings["opt_in"] as $key => $opt_in): 
                 $email = "No";
                 $sms = "No";
-                if ( isset($post["sign-up-$key"]) ) {               
-                    if ( in_array("email", $post["sign-up-$key"]) ) {
+                if ( isset($post["sign-up-$key"]) ) {   
+                        
+                    $signups = $post["sign-up-$key"];        
+
+                    if ( in_array("email", $signups) ) {
                         $email = "Yes";
                     }
-                    if ( in_array("sms", $post["sign-up-$key"]) ) {
+                    if ( in_array("sms", $signups) ) {
                         $sms = "Yes";
-                    }                    
+                    }  
+                    if ($email === "Yes" || $sms === "Yes") {
+                        
+                        if ( $opt_in['list_ids'] ) {
+                            $list_ids = $opt_in['list_ids'];
+                            $list_id_temp_array = explode(',', $list_ids);
+                            foreach ($list_id_temp_array as $id) {
+                                $int_id = (int) trim($id);
+                                if ( is_int( $int_id ) && $int_id > 0 ){
+                                    $list_id_array[] =  $int_id;
+                                }
+                            }
+                            if ( $this->send_marketing && count($list_id_array) ) {
+                                $response = wp_swift_do_signup( parent::get_form_data(), $signups, $list_id_array );  
+                            }                          
+                        }            
+                    }                  
                 }
                 ?>
 
                 <p><?php echo $opt_in["message"] ?></p>
 
                 <p>Email: <?php echo $email; ?>, SMS: <?php echo $sms; ?></p>
+
+                <?php if ( !$this->send_marketing ): ?>
+                    <pre>Marketing debugging is on so user details were not saved.</pre>
+                <?php endif ?>
 
             <?php endforeach;
 
@@ -368,7 +383,6 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
             </div><!-- @end #form-success-message -->
 
         <?php
-        // echo $this->build_page_details();
         $html = ob_get_contents();
         ob_end_clean();
         return $html;
@@ -425,5 +439,3 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
         echo $header;
     }   
 }
-//     }
-// }
