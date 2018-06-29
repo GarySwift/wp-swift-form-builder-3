@@ -13,7 +13,7 @@
  * @package           Wp_Swift_Form_Builder
  *
  * @wordpress-plugin
- * Plugin Name:       WP Swift: Form Builder 2
+ * Plugin Name:       WP Swift: Form Builder
  * Plugin URI:        https://github.com/wp-swift-wordpress-plugins/wp-swift-form-builder-2
  * Description:       This is a short description of what the plugin does. It's displayed in the WordPress admin area.
  * Version:           1.0.0

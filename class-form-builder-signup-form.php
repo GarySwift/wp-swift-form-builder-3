@@ -71,6 +71,7 @@ class WP_Swift_Form_Builder_Signup_Form extends WP_Swift_Form_Builder_Parent {
 }
 
 function wp_swift_do_signup($form_data, $signups, $list_id_array = array(), $list_id_array_unlink = null) {   
+    $sendinblue_account_type == 1;//
     $session = array();// This will send back the user data to store in local storage 
     $data = array();// This will be the user data we send to SendInBlue
     $save = false;// We will only save if SMS or Email is selected    
@@ -89,15 +90,23 @@ function wp_swift_do_signup($form_data, $signups, $list_id_array = array(), $lis
             "first_name" => $first_name,
             "last_name" => $last_name,
         );
-        // $first_name = '';
-        // $last_name = '';
-        // $phone ='';
-        // 
-        $first_name_key = "NAME";
-        $last_name_key = "SURNAME";
-        
-        $first_name_key = "FIRSTNAME";
-        $last_name_key = "LASTNAME";
+
+        /**
+         * SendinBlue uses different name fields for different accounts
+         * so if is not possible to have a universal API. This is crazy
+         * and I have contacted support about this but nothing can be 
+         * done at the moment.
+         *
+         * We need use this approach for the moment.
+         */
+        if ($sendinblue_account_type == 1) {
+            $first_name_key = "NAME";
+            $last_name_key = "SURNAME";
+        }
+        elseif ($sendinblue_account_type == 2) {
+            $first_name_key = "FIRSTNAME";
+            $last_name_key = "LASTNAME";
+        }
 
         $data = array( 
             "attributes" => array( $first_name_key => $first_name, $last_name_key => $last_name ),//, "DOUBLE_OPT-IN" => 1
