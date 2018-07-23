@@ -73,7 +73,7 @@ define('FORM_BUILDER_SAVE_TO_JSON', false);
 define('FORM_BUILDER_DEFAULT_TERM', 'Contact Form');
 define('FORM_BUILDER_DEFAULT_SLUG', 'contact-form');
 define('FORM_BUILDER_DEFAULT_TAXONOMY', 'wp_swift_form_category');
-define('FORM_BUILDER_DATE_FORMAT', 'dd-mm-yyyy');
+define('FORM_BUILDER_DATE_FORMAT', 'dd/mm/yyyy');
 
 /**
  * The FormBuilder class that handles all form logic
@@ -102,13 +102,14 @@ require_once plugin_dir_path( __FILE__ ) . 'cpt/wp_swift_form_submit.php';
  * The ACF field groups
  */ 
 require_once plugin_dir_path( __FILE__ ) . 'acf-field-groups/form-builder-inputs.php';
-// require_once plugin_dir_path( __FILE__ ) . 'acf-field-groups/form-builder-input-sections.php';
+require_once plugin_dir_path( __FILE__ ) . 'acf-field-groups/form-builder-input-sections.php';
 require_once plugin_dir_path( __FILE__ ) . 'acf-field-groups/_acf-field-group-contact-form.php';
 
 /**
  * The classes that handles the admin interface
  */
 require_once plugin_dir_path( __FILE__ ) . 'class-admin-interface-templates.php';
+require_once plugin_dir_path( __FILE__ ) . 'class-admin-interface-tools.php';
 require_once plugin_dir_path( __FILE__ ) . 'class-admin-interface-settings.php';
 
 /**
@@ -142,6 +143,11 @@ require_once plugin_dir_path( __FILE__ ) . '_save-post-action.php';
 require_once plugin_dir_path( __FILE__ ) . '_admin-notices.php';
 
 /**
+ * 
+ */
+require_once plugin_dir_path( __FILE__ ) . '_arrays.php';
+
+/**
  * Process ACF data into FormBuilder data
  */
 require_once plugin_dir_path( __FILE__ ) . '_build-form-array.php';
@@ -152,12 +158,35 @@ require_once plugin_dir_path( __FILE__ ) . '_build-form-array.php';
 require_once plugin_dir_path( __FILE__ ) . '_shortcode-metabox.php';
 
 /**
+ * Add custom query vars
+ */
+require_once plugin_dir_path( __FILE__ ) . '_custom-query-vars.php';
+
+/**
  * Add the FoundationPress reveal modal which shows submission response
  */
 require_once plugin_dir_path( __FILE__ ) . '_reveal-modal.php';
 
 
 require_once plugin_dir_path( __FILE__ ) . 'debug/write-log.php';
+
+
+
+/**
+ * Register the stylesheets for the public-facing side of the site.
+ *
+ * @since    1.0.0
+ */
+function enqueue_styles() {
+
+	// $options = get_option( 'wp_swift_form_builder_settings' );
+ //    if ( !isset($options['wp_swift_form_builder_checkbox_css']) ) {
+
+    // }
+
+}
+
+
 
 /**
  * Begins execution of the plugin.

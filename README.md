@@ -108,3 +108,10 @@ div.form-builder .form-group.button-group {
     }  
 }
 ```
+## Date picker
+```
+Install via Bower or NPM
+bower install foundation-datepicker
+
+npm install foundation-datepicker
+```

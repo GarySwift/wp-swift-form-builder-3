@@ -57,7 +57,19 @@ jQuery(document).ready(function($){
 		this.id = '#'+(this.name.replace(/[\[\]']+/g,''));
 		this.required = $(this.id).prop('required');
 		this.type = $(this.id).prop('type');
-		this.dataType = $(this.id).data('type');	
+		this.dataType = $(this.id).data('type');
+		var min = parseInt($(this.id).attr('min'));
+		if (!isNaN(min)) {
+			this.min = min;
+		}	
+		var max = parseInt($(this.id).attr('max'));	
+		if (!isNaN(max)) {
+			this.max = max;
+		}
+		var validation = $(this.id).data('validation');
+		if(typeof validation !== "undefined") {
+		  this.validation = validation;
+		}	
 	};
 
 	// Instance methods
@@ -66,9 +78,35 @@ jQuery(document).ready(function($){
 		feedbackMessage: '', 
 		isValid: function isValid() {
 		  	var re;
+		  	// var length = this.value.length;
+		  	// console.log('length', length);
 		  	if(this.required && this.value==='') {
 		  		return false;
 		  	}
+		  	if(this.dataType !== "repeat-section" && this.hasOwnProperty('min')) {
+		  		if (this.value.length < this.min) {
+		  			return false;
+		  		}
+		  	}
+		  	if(this.dataType !== "repeat-section" && this.hasOwnProperty('max')) {
+		  		if (this.value.length > this.max) {
+		  			return false;
+		  		}
+		  	}
+		  	// Advanced validation
+			switch (this.validation) {
+				case 'alphabetic':// Alphabetic
+					return /^[a-zA-Z]+$/.test(this.value);
+				case 'alphanumeric':// Alphanumeric
+					return /^[0-9a-zA-Z]+$/.test(this.value);	
+				case 'numeric': // Numeric
+					return !isNaN(this.value);
+				case 'uppercase_alphabetic':// Uppercase Alphabetic
+					return /^[A-Z]+$/.test(this.value); 	
+				case 'uppercase_alphanumeric':// Uppercase Alphanumeric
+					return /^[0-9A-Z]+$/.test(this.value);														
+			}
+
 			switch (this.dataType) {
 				case 'number':
 					return !isNaN(this.value);
@@ -99,6 +137,7 @@ jQuery(document).ready(function($){
 		};
 		for (var i = 0; i < form.length; i++) {
 			var input = new FormBuilderInput(form[i]);
+			// console.log('input', input);
 			errorsInForm = addClassAfterBlur(input, input.isValid(), errorsInForm);
 		}
 
@@ -128,11 +167,11 @@ jQuery(document).ready(function($){
 	// Validates that the input string is a valid date formatted as "dd-mm-yyyy"
 	var isValidDate = function isValidDate(dateString) {
 	    // First check for the pattern
-	    if(!dateString.match(/^(\d{1,2})-(\d{1,2})-(\d{4})$/)) {
+	    if(!dateString.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/)) {
 	    	return false;
 	    }
 	    // Parse the date parts to integers
-	    var parts = dateString.split("-");
+	    var parts = dateString.split("/");
 
 	    var day = parseInt(parts[0], 10);
 	    var month = parseInt(parts[1], 10);
@@ -159,7 +198,9 @@ jQuery(document).ready(function($){
 	var addClassAfterBlur = function addClassAfterBlur(input, valid, errorsInForm) {
 		if(!valid) {
 			$(input.id+'-form-group').addClass('has-error').removeClass('has-success');
+			// console.log('input', input);
 			errorsInForm.count++;
+
 			errorsInForm.report += "<li>" + $(input.id+'-report').html() + "</li>";
 		}
 		else {
@@ -337,15 +378,15 @@ jQuery(document).ready(function($){
 		var errorsInForm = validateForm( $form.serializeArray() );
 		submit.prop('disabled', true);
 
-		errorsInForm.count = 0;
+		// errorsInForm.count = 0;
 		if (errorsInForm.count === 0) {
 			// FormBuilderAjax is set on server using wp_localize_script
 			if(typeof FormBuilderAjax !== "undefined") {
 				FormBuilderAjax.form = $form.serializeArray();
 				FormBuilderAjax.id = $form.data('id');
 				FormBuilderAjax.post = $form.data('post-id');
-				FormBuilderAjax.action = "wp_swift_submit_request_form";
-				FormBuilderAjax.type = $form.data('type');
+				FormBuilderAjax.action = "wp_swift_submit_" + $form.data('type') + "_form";//"wp_swift_submit_request_form";
+				// FormBuilderAjax.type = $form.data('type');
 				// var type = document.getElementById( "form-type" );
 				// if (type) {
 				// 	FormBuilderAjax.type = type.value;
@@ -353,28 +394,35 @@ jQuery(document).ready(function($){
 
 
 				$.post(FormBuilderAjax.ajaxurl, FormBuilderAjax, function(response) {
+					// console.log('response', response);
 					var serverResponse = JSON.parse(response);
-					// console.log(serverResponse);
-					$('#form-builder-reveal-content').html(serverResponse.html);
-					var $modal = $('#form-builder-reveal');
-					submit.prop('disabled', false);
+					console.log(serverResponse);
 
-					if (serverResponse.error_count === 0 && serverResponse.form_set === true && FormBuilderAjax.type !== "signup") {
-						resetForm( $form.serializeArray() );		
+					if (serverResponse.location) {
+						window.location = serverResponse.location;
 					}
+					else {
+						$('#form-builder-reveal-content').html(serverResponse.html);
+						var $modal = $('#form-builder-reveal');
+						submit.prop('disabled', false);
 
-					if(typeof $modal !== "undefined") {
-						$modal.foundation('open');	
-					}
-					if (FormBuilderAjax.type === "signup") {
-						if (serverResponse.session) {//!== "undefined"
-							saveSessionDetails(sessionDetailsName, JSON.stringify(serverResponse.session) );
+						if (serverResponse.error_count === 0 && serverResponse.form_set === true && FormBuilderAjax.type !== "signup") {
+							resetForm( $form.serializeArray() );		
+						}
 
-							// $('.form-builder.groupings').slideUp();
-							// $('#download-mask').removeClass('masked');	
-							hideForm();						
+						if(typeof $modal !== "undefined") {
+							$modal.foundation('open');	
+						}
+						if (FormBuilderAjax.type === "signup") {
+							if (serverResponse.session) {//!== "undefined"
+								saveSessionDetails(sessionDetailsName, JSON.stringify(serverResponse.session) );
+
+								// $('.form-builder.groupings').slideUp();
+								// $('#download-mask').removeClass('masked');	
+								hideForm();						
+							}	
 						}	
-					}						
+					}					
 				});	
 			}
 		}
@@ -393,10 +441,165 @@ jQuery(document).ready(function($){
 		return false;
 	});	
 
+	$('a.js-add-row').click(function(e) {
 
+		e.preventDefault();
+		// var max = 3;
+		var $addButton = $(this);
+		// var count = $addButton.data('count');
+		// count++;$addButton.text(count);$addButton.data('count', count);
+		// var max = $addButton.data('max');
+		var $removeButton = $( $addButton.data('remove-button') );
+		var $countInput = $( $addButton.data('count-input-id') );
+		// $countInput.val(10);
+		var count = $countInput.val();
+		var min = parseInt($countInput.attr('min'));
+		var max = parseInt($countInput.attr('max'));
+		// return false;
+		disableAddRemoveButtons($addButton, $removeButton);	
+
+		if (count < max) {
+			FormBuilderAjax.count = count;
+			FormBuilderAjax.tabindex = parseInt( $addButton.attr('tabindex') );
+			FormBuilderAjax.formId = parseInt( $addButton.data('form-id') );
+			FormBuilderAjax.action = "wp_swift_" + $addButton.data('action');	
+			// console.log('ForFmBuilderAjax', FormBuilderAjax);
+			// $(this).attr('tabindex', 201);
+			$.post(FormBuilderAjax.ajaxurl, FormBuilderAjax, function(response) {
+				// console.log('response', response);
+				var serverResponse = JSON.parse(response);
+				count = serverResponse.count;
+				// console.log('count', serverResponse.count);
+				$( serverResponse.html ).insertBefore( "#" + $addButton.data('group') + "-add-remove-group" );
+				$addButton.attr('tabindex', serverResponse.tabindex);
+				$addButton.data('count', count);
+				$countInput.val(count);
+				// $addButton.text(serverResponse.count);
+				// $removeButton.data('count', serverResponse.count);
+				// $removeButton.text('Remove ' + serverResponse.count);
+				// $removeButton.attr('disabled', false);
+				// if (serverResponse.count === max) {
+				// 	$addButton.attr('disabled', true);
+				// }
+				checkAddRemoveButtons($addButton, $removeButton, count, max);	
+			});
+		}
+		else {
+			alert("Maximum Reached!\nSorry, you cannot add anymore rows.");
+		}
+	});	
+
+	$('a.js-remove-row').click(function(e) {
+
+		e.preventDefault();
+		var $removeButton = $(this);
+		var $addButton = $($removeButton.data('add-button'));
+		disableAddRemoveButtons($addButton, $removeButton);
+		// var $countInput = 
+		// $addButton.attr('disabled', true);
+		// $removeButton.attr('disabled', true);
+		// var count = $removeButton.data('count');
+		// var count = $addButton.data('count');
+		// console.log('count', count);
+		var $countInput = $( $addButton.data('count-input-id') );
+		// $countInput.val(10);
+		var count = $countInput.val();
+
+		// return false; 
+		
+		if ( count > 0 ) {
+			// var max = $addButton.data('max');
+		var min = parseInt($countInput.attr('min'));
+		var max = parseInt($countInput.attr('max'));			
+			var keys = $addButton.data('keys');
+			for (var i = 0; i < keys.length; i++) {
+				input = '#'+keys[i] + '-' + count;
+				var $inputGroup = $(input + '-form-group');
+				// var $input = $(input);
+				// $input.attr('disabled', true);
+				$inputGroup.remove();
+				// console.log(input + '-form-group');
+			}
+			count--;
+			// $addButton.data('count', count);
+			// console.log('count', count);
+			$countInput.val(count);
+
+
+			// $removeButton.data('count', count);
+
+			// $('#add-row').data('count', count);
+			// $('#remove-row').data('count', count);
+			// if (count === 0) {
+			// 	$removeButton.attr('disabled', true);
+			// 	$addButton.attr('disabled', false);
+			// } 
+			// // else if (count === 1) {
+			// // 	$removeButton.attr('disabled', true);
+			// // 	$addButton.attr('disabled', false);
+			// // }
+			// else if (count > 0 && count < max){
+			// 	$addButton.attr('disabled', false);
+			// }
+			// else if (count > 0 && count === max){
+			// 	$addButton.attr('disabled', true);
+			// 	$removeButton.attr('disabled', false);
+			// }	
+			checkAddRemoveButtons($addButton, $removeButton, count, max);
+		}
+		else {
+			alert("Minimum Reached!\nSorry, you cannot remmove anymore rows.");
+			$removeButton.attr('disabled', true);
+		}
+
+
+		// var $removeRow = $('#row-'+count);
+		// $removeRow.remove();
+
+		// 
+		// 
+	
+	});	
+
+	// var $addButton = $('#add-row-parts-list');	
+	// var keys = $addButton.data('keys');
+	// var input;
+	// for (var j = 1; j <= 10; j++) {
+	// 	for (var i = 0; i < keys.length; i++) {
+	// 		input = '#'+keys[i] + '-' + j;
+	// 		// var $inputGroup = $(input + '-form-group');
+	// 		// var $input = $(input);
+	// 		// $input.attr('disabled', true);
+	// 		// $inputGroup.remove();
+	// 		console.log(input + '-form-group');
+	// 	}
+	// 	console.log('');
+	// }
 });
 
-
+var disableAddRemoveButtons = function($addButton, $removeButton) {
+	$addButton.attr('disabled', true);
+	$removeButton.attr('disabled', true);	
+};
+var checkAddRemoveButtons = function($addButton, $removeButton, count, max) {
+	// console.log('count', count, 'max', max);
+	if (count === 0) {
+		$removeButton.attr('disabled', true);
+		$addButton.attr('disabled', false);
+	} 
+	// else if (count === 1) {
+	// 	$removeButton.attr('disabled', true);
+	// 	$addButton.attr('disabled', false);
+	// }
+	else if (count > 0 && count < max){
+		$addButton.attr('disabled', false);
+		$removeButton.attr('disabled', false);
+	}
+	else if (count > 0 && count === max){
+		$addButton.attr('disabled', true);
+		$removeButton.attr('disabled', false);
+	}
+};
 
 var saveSessionDetails = function(name, value) {
 	// window.sessionStorage
@@ -415,6 +618,7 @@ var getSessionDetails = function(name) {
 }
 
 var wrapErrorMessage = function(errorsInForm) {
+	// console.log('errorsInForm', errorsInForm);
 	$html = '<div id="form-error-message" class="form-message error ajax">';
 	    $html += '<h3 class="heading">Errors Found</h3>';
 	    $html += '<div class="error-content">';

@@ -1,0 +1,25 @@
+.postbox-header {
+	padding: 0 0.7em;;
+}
+#export-import-sections {
+	display: grid;
+	grid-template-columns: auto auto;
+	grid-column-gap: 30px;
+	grid-template-columns: 1fr 1fr;
+	.export-import-section {}
+}
+textarea.copy-area, textarea.paste-area {
+    display: block;
+    width: 100%;
+    min-height: 500px;
+    background: #EDEDED;
+    box-shadow: none;
+    padding: 7px;
+    border-radius: 3px;
+}
+textarea.copy-area {
+	 min-height: 300px;
+}
+textarea.paste-area {
+	min-height: 170px;
+}

@@ -1,0 +1,22 @@
+{
+  "name": "wp-swift-form-builder-2",
+  "version": "1.0.0",
+  "description": "#### Settings",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wp-swift-wordpress-plugins/wp-swift-form-builder-2.git"
+  },
+  "author": "Gary Swift",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/wp-swift-wordpress-plugins/wp-swift-form-builder-2/issues"
+  },
+  "homepage": "https://github.com/wp-swift-wordpress-plugins/wp-swift-form-builder-2#readme",
+  "dependencies": {
+    "foundation-datepicker": "^1.5.6"
+  }
+}

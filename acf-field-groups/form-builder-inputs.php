@@ -1,11 +1,11 @@
 <?php
 if( function_exists('acf_add_local_field_group') ):
 
-acf_add_local_field_group(array (
+acf_add_local_field_group(array(
 	'key' => 'group_57b6fd868aeca',
 	'title' => 'Form Builder: Inputs',
-	'fields' => array (
-		array (
+	'fields' => array(
+		array(
 			'key' => 'field_57b6fd8692eb1',
 			'label' => 'Form Inputs',
 			'name' => 'form_inputs',
@@ -13,7 +13,7 @@ acf_add_local_field_group(array (
 			'instructions' => '',
 			'required' => 0,
 			'conditional_logic' => 0,
-			'wrapper' => array (
+			'wrapper' => array(
 				'width' => '',
 				'class' => 'form-builder-inputs-repeater',
 				'id' => '',
@@ -23,8 +23,8 @@ acf_add_local_field_group(array (
 			'max' => 0,
 			'layout' => 'block',
 			'button_label' => 'Add Input',
-			'sub_fields' => array (
-				array (
+			'sub_fields' => array(
+				array(
 					'key' => 'field_59cfa87e380ec',
 					'label' => 'ID Group',
 					'name' => 'id',
@@ -32,14 +32,14 @@ acf_add_local_field_group(array (
 					'instructions' => '',
 					'required' => 0,
 					'conditional_logic' => 0,
-					'wrapper' => array (
+					'wrapper' => array(
 						'width' => '',
 						'class' => 'form-builder-input-group',
 						'id' => '',
 					),
 					'layout' => 'table',
-					'sub_fields' => array (
-						array (
+					'sub_fields' => array(
+						array(
 							'key' => 'field_59cfa8b2380ed',
 							'label' => 'Name',
 							'name' => 'name',
@@ -47,7 +47,7 @@ acf_add_local_field_group(array (
 							'instructions' => 'Input identifier',
 							'required' => 1,
 							'conditional_logic' => 0,
-							'wrapper' => array (
+							'wrapper' => array(
 								'width' => '',
 								'class' => '',
 								'id' => '',
@@ -58,7 +58,7 @@ acf_add_local_field_group(array (
 							'append' => '',
 							'maxlength' => '',
 						),
-						array (
+						array(
 							'key' => 'field_59cfa8d9380ee',
 							'label' => 'Label',
 							'name' => 'label',
@@ -66,7 +66,7 @@ acf_add_local_field_group(array (
 							'instructions' => 'If different from name',
 							'required' => 0,
 							'conditional_logic' => 0,
-							'wrapper' => array (
+							'wrapper' => array(
 								'width' => '',
 								'class' => '',
 								'id' => '',
@@ -79,7 +79,7 @@ acf_add_local_field_group(array (
 						),
 					),
 				),
-				array (
+				array(
 					'key' => 'field_59cfa9ddb6e14',
 					'label' => 'Reporting Group',
 					'name' => 'reporting',
@@ -87,14 +87,14 @@ acf_add_local_field_group(array (
 					'instructions' => '',
 					'required' => 0,
 					'conditional_logic' => 0,
-					'wrapper' => array (
+					'wrapper' => array(
 						'width' => '',
 						'class' => 'form-builder-input-group',
 						'id' => '',
 					),
 					'layout' => 'table',
-					'sub_fields' => array (
-						array (
+					'sub_fields' => array(
+						array(
 							'key' => 'field_59cfa9fab6e15',
 							'label' => 'Help Message',
 							'name' => 'help',
@@ -102,7 +102,7 @@ acf_add_local_field_group(array (
 							'instructions' => 'Displayed on error',
 							'required' => 0,
 							'conditional_logic' => 0,
-							'wrapper' => array (
+							'wrapper' => array(
 								'width' => '',
 								'class' => '',
 								'id' => '',
@@ -113,7 +113,7 @@ acf_add_local_field_group(array (
 							'append' => '',
 							'maxlength' => '',
 						),
-						array (
+						array(
 							'key' => 'field_59cfaaa2c2584',
 							'label' => 'Instructions',
 							'name' => 'instructions',
@@ -121,7 +121,7 @@ acf_add_local_field_group(array (
 							'instructions' => 'A visible message',
 							'required' => 0,
 							'conditional_logic' => 0,
-							'wrapper' => array (
+							'wrapper' => array(
 								'width' => '',
 								'class' => '',
 								'id' => '',
@@ -134,7 +134,7 @@ acf_add_local_field_group(array (
 						),
 					),
 				),
-				array (
+				array(
 					'key' => 'field_59cfb1a898f6b',
 					'label' => 'Settings Group',
 					'name' => 'settings',
@@ -142,14 +142,14 @@ acf_add_local_field_group(array (
 					'instructions' => '',
 					'required' => 0,
 					'conditional_logic' => 0,
-					'wrapper' => array (
+					'wrapper' => array(
 						'width' => '',
 						'class' => 'form-builder-input-group',
 						'id' => '',
 					),
 					'layout' => 'table',
-					'sub_fields' => array (
-						array (
+					'sub_fields' => array(
+						array(
 							'key' => 'field_59cfb32e98f6d',
 							'label' => 'Required',
 							'name' => 'required',
@@ -157,7 +157,7 @@ acf_add_local_field_group(array (
 							'instructions' => 'Force input from user',
 							'required' => 0,
 							'conditional_logic' => 0,
-							'wrapper' => array (
+							'wrapper' => array(
 								'width' => '50',
 								'class' => '',
 								'id' => '',
@@ -168,7 +168,7 @@ acf_add_local_field_group(array (
 							'ui_on_text' => '',
 							'ui_off_text' => '',
 						),
-						array (
+						array(
 							'key' => 'field_59cfb37e98f6e',
 							'label' => 'Grouping',
 							'name' => 'grouping',
@@ -176,17 +176,17 @@ acf_add_local_field_group(array (
 							'instructions' => 'Manage multiple inputs in a row',
 							'required' => 0,
 							'conditional_logic' => 0,
-							'wrapper' => array (
+							'wrapper' => array(
 								'width' => '',
 								'class' => '',
 								'id' => '',
 							),
-							'choices' => array (
+							'choices' => array(
 								'none' => 'None',
 								'start' => 'Start Group',
 								'end' => 'End Group',
 							),
-							'default_value' => array (
+							'default_value' => array(
 								0 => 'none',
 							),
 							'allow_null' => 0,
@@ -198,7 +198,7 @@ acf_add_local_field_group(array (
 						),
 					),
 				),
-				array (
+				array(
 					'key' => 'field_59cfb79c09c69',
 					'label' => 'Type',
 					'name' => 'type',
@@ -206,17 +206,17 @@ acf_add_local_field_group(array (
 					'instructions' => '',
 					'required' => 1,
 					'conditional_logic' => 0,
-					'wrapper' => array (
-						'width' => '',
+					'wrapper' => array(
+						'width' => '40',
 						'class' => 'form-builder-input-row',
 						'id' => '',
 					),
-					'choices' => array (
+					'choices' => array(
 						'text' => 'Text (Default)',
+						'textarea' => 'Text Area',
 						'email' => 'Email',
 						'number' => 'Number',
 						'url' => 'URL',
-						'textarea' => 'Text Area (Multi-line Text)',
 						'select' => 'Select',
 						'multi_select' => 'Multiple Select',
 						'checkbox' => 'Checkboxes',
@@ -226,8 +226,10 @@ acf_add_local_field_group(array (
 						'date' => 'Date',
 						'date_time' => 'Date & Time Combo',
 						'date_range' => 'Date Range',
+						'custom' => 'Custom',
+						'repeat_section' => 'Repeating Section',
 					),
-					'default_value' => array (
+					'default_value' => array(
 						0 => 'text',
 					),
 					'allow_null' => 0,
@@ -237,30 +239,68 @@ acf_add_local_field_group(array (
 					'return_format' => 'value',
 					'placeholder' => '',
 				),
-				array (
+				array(
+					'key' => 'field_5b4764b8dd926',
+					'label' => 'CSS Class',
+					'name' => 'css_class',
+					'type' => 'text',
+					'instructions' => '',
+					'required' => 0,
+					'conditional_logic' => 0,
+					'wrapper' => array(
+						'width' => '40',
+						'class' => 'form-builder-input-row',
+						'id' => '',
+					),
+					'default_value' => '',
+					'placeholder' => '',
+					'prepend' => '',
+					'append' => '',
+					'maxlength' => '',
+				),
+				array(
+					'key' => 'field_5b485b5c522da',
+					'label' => 'Disabled',
+					'name' => 'disabled',
+					'type' => 'true_false',
+					'instructions' => '',
+					'required' => 0,
+					'conditional_logic' => 0,
+					'wrapper' => array(
+						'width' => '20',
+						'class' => '',
+						'id' => '',
+					),
+					'message' => '',
+					'default_value' => 0,
+					'ui' => 0,
+					'ui_on_text' => '',
+					'ui_off_text' => '',
+				),
+				array(
 					'key' => 'field_5a0322be17edf',
 					'label' => 'Textarea Settings',
 					'name' => 'textarea_settings',
 					'type' => 'group',
 					'instructions' => '',
 					'required' => 0,
-					'conditional_logic' => array (
-						array (
-							array (
+					'conditional_logic' => array(
+						array(
+							array(
 								'field' => 'field_59cfb79c09c69',
 								'operator' => '==',
 								'value' => 'textarea',
 							),
 						),
 					),
-					'wrapper' => array (
+					'wrapper' => array(
 						'width' => '',
 						'class' => 'form-builder-input-group',
 						'id' => '',
 					),
 					'layout' => 'table',
-					'sub_fields' => array (
-						array (
+					'sub_fields' => array(
+						array(
 							'key' => 'field_5a0322e817ee0',
 							'label' => 'Rows',
 							'name' => 'rows',
@@ -268,7 +308,7 @@ acf_add_local_field_group(array (
 							'instructions' => 'Visible number of lines',
 							'required' => 0,
 							'conditional_logic' => 0,
-							'wrapper' => array (
+							'wrapper' => array(
 								'width' => '',
 								'class' => '',
 								'id' => '',
@@ -281,7 +321,7 @@ acf_add_local_field_group(array (
 							'max' => 30,
 							'step' => 1,
 						),
-						array (
+						array(
 							'key' => 'field_5a0323ad17ee1',
 							'label' => 'Max Length',
 							'name' => 'maxlength',
@@ -289,7 +329,7 @@ acf_add_local_field_group(array (
 							'instructions' => 'Maximum number of characters',
 							'required' => 0,
 							'conditional_logic' => 0,
-							'wrapper' => array (
+							'wrapper' => array(
 								'width' => '',
 								'class' => '',
 								'id' => '',
@@ -304,51 +344,51 @@ acf_add_local_field_group(array (
 						),
 					),
 				),
-				array (
+				array(
 					'key' => 'field_57b6fd86d2e5f',
 					'label' => 'Placeholder',
 					'name' => 'placeholder',
 					'type' => 'text',
 					'instructions' => 'Specifies a short hint for input',
 					'required' => 0,
-					'conditional_logic' => array (
-						array (
-							array (
+					'conditional_logic' => array(
+						array(
+							array(
 								'field' => 'field_59cfb79c09c69',
 								'operator' => '==',
 								'value' => 'text',
 							),
 						),
-						array (
-							array (
+						array(
+							array(
 								'field' => 'field_59cfb79c09c69',
 								'operator' => '==',
 								'value' => 'email',
 							),
 						),
-						array (
-							array (
+						array(
+							array(
 								'field' => 'field_59cfb79c09c69',
 								'operator' => '==',
 								'value' => 'number',
 							),
 						),
-						array (
-							array (
+						array(
+							array(
 								'field' => 'field_59cfb79c09c69',
 								'operator' => '==',
 								'value' => 'url',
 							),
 						),
-						array (
-							array (
+						array(
+							array(
 								'field' => 'field_59cfb79c09c69',
 								'operator' => '==',
 								'value' => 'textarea',
 							),
 						),
 					),
-					'wrapper' => array (
+					'wrapper' => array(
 						'width' => '',
 						'class' => 'form-builder-input-row',
 						'id' => '',
@@ -359,64 +399,64 @@ acf_add_local_field_group(array (
 					'append' => '',
 					'maxlength' => '',
 				),
-				array (
+				array(
 					'key' => 'field_57b6fd86d2e84',
 					'label' => 'Select Options',
 					'name' => 'select_options',
 					'type' => 'repeater',
 					'instructions' => '',
 					'required' => 0,
-					'conditional_logic' => array (
-						array (
-							array (
+					'conditional_logic' => array(
+						array(
+							array(
 								'field' => 'field_59cfb79c09c69',
 								'operator' => '==',
 								'value' => 'select',
 							),
-							array (
+							array(
 								'field' => 'field_57b6fd86d2e9f',
 								'operator' => '==',
 								'value' => 'user',
 							),
 						),
-						array (
-							array (
+						array(
+							array(
 								'field' => 'field_59cfb79c09c69',
 								'operator' => '==',
 								'value' => 'multi_select',
 							),
-							array (
+							array(
 								'field' => 'field_57b6fd86d2e9f',
 								'operator' => '==',
 								'value' => 'user',
 							),
 						),
-						array (
-							array (
+						array(
+							array(
 								'field' => 'field_59cfb79c09c69',
 								'operator' => '==',
 								'value' => 'checkbox',
 							),
-							array (
+							array(
 								'field' => 'field_57b6fd86d2e9f',
 								'operator' => '==',
 								'value' => 'user',
 							),
 						),
-						array (
-							array (
+						array(
+							array(
 								'field' => 'field_59cfb79c09c69',
 								'operator' => '==',
 								'value' => 'radio',
 							),
-							array (
+							array(
 								'field' => 'field_57b6fd86d2e9f',
 								'operator' => '==',
 								'value' => 'user',
 							),
 						),
 					),
-					'wrapper' => array (
+					'wrapper' => array(
 						'width' => '',
 						'class' => 'form-builder-input-row form-builder-nested-repeater',
 						'id' => '',
@@ -426,8 +466,8 @@ acf_add_local_field_group(array (
 					'max' => 0,
 					'layout' => 'table',
 					'button_label' => 'Add Option',
-					'sub_fields' => array (
-						array (
+					'sub_fields' => array(
+						array(
 							'key' => 'field_57b6fd86e9a8c',
 							'label' => 'Option',
 							'name' => 'option',
@@ -435,7 +475,7 @@ acf_add_local_field_group(array (
 							'instructions' => '',
 							'required' => 1,
 							'conditional_logic' => 0,
-							'wrapper' => array (
+							'wrapper' => array(
 								'width' => '',
 								'class' => '',
 								'id' => '',
@@ -448,7 +488,7 @@ acf_add_local_field_group(array (
 							'readonly' => 0,
 							'disabled' => 0,
 						),
-						array (
+						array(
 							'key' => 'field_57b6fd86e9aa8',
 							'label' => 'Option Value',
 							'name' => 'option_value',
@@ -456,7 +496,7 @@ acf_add_local_field_group(array (
 							'instructions' => '',
 							'required' => 0,
 							'conditional_logic' => 0,
-							'wrapper' => array (
+							'wrapper' => array(
 								'width' => '',
 								'class' => '',
 								'id' => '',
@@ -471,64 +511,64 @@ acf_add_local_field_group(array (
 						),
 					),
 				),
-				array (
+				array(
 					'key' => 'field_59e4c29aaa240',
 					'label' => 'Other Field',
 					'name' => 'other',
 					'type' => 'true_false',
 					'instructions' => '',
 					'required' => 0,
-					'conditional_logic' => array (
-						array (
-							array (
+					'conditional_logic' => array(
+						array(
+							array(
 								'field' => 'field_59cfb79c09c69',
 								'operator' => '==',
 								'value' => 'select',
 							),
-							array (
+							array(
 								'field' => 'field_57b6fd86d2e9f',
 								'operator' => '==',
 								'value' => 'user',
 							),
 						),
-						array (
-							array (
+						array(
+							array(
 								'field' => 'field_59cfb79c09c69',
 								'operator' => '==',
 								'value' => 'multi_select',
 							),
-							array (
+							array(
 								'field' => 'field_57b6fd86d2e9f',
 								'operator' => '==',
 								'value' => 'user',
 							),
 						),
-						array (
-							array (
+						array(
+							array(
 								'field' => 'field_59cfb79c09c69',
 								'operator' => '==',
 								'value' => 'checkbox',
 							),
-							array (
+							array(
 								'field' => 'field_57b6fd86d2e9f',
 								'operator' => '==',
 								'value' => 'user',
 							),
 						),
-						array (
-							array (
+						array(
+							array(
 								'field' => 'field_59cfb79c09c69',
 								'operator' => '==',
 								'value' => 'radio',
 							),
-							array (
+							array(
 								'field' => 'field_57b6fd86d2e9f',
 								'operator' => '==',
 								'value' => 'user',
 							),
 						),
 					),
-					'wrapper' => array (
+					'wrapper' => array(
 						'width' => '',
 						'class' => 'form-builder-input-row other-field',
 						'id' => '',
@@ -539,35 +579,35 @@ acf_add_local_field_group(array (
 					'ui_on_text' => '',
 					'ui_off_text' => '',
 				),
-				array (
+				array(
 					'key' => 'field_57b6fd86d2e9f',
 					'label' => 'Select Type',
 					'name' => 'select_type',
 					'type' => 'radio',
 					'instructions' => '',
 					'required' => 0,
-					'conditional_logic' => array (
-						array (
-							array (
+					'conditional_logic' => array(
+						array(
+							array(
 								'field' => 'field_59cfb79c09c69',
 								'operator' => '==',
 								'value' => 'select',
 							),
 						),
-						array (
-							array (
+						array(
+							array(
 								'field' => 'field_59cfb79c09c69',
 								'operator' => '==',
 								'value' => 'multi_select',
 							),
 						),
 					),
-					'wrapper' => array (
+					'wrapper' => array(
 						'width' => '',
 						'class' => 'form-builder-input-row',
 						'id' => '',
 					),
-					'choices' => array (
+					'choices' => array(
 						'user' => 'Manually Input',
 						'select' => 'Use Predefined Options',
 					),
@@ -578,49 +618,48 @@ acf_add_local_field_group(array (
 					'layout' => 'horizontal',
 					'return_format' => 'value',
 				),
-				array (
+				array(
 					'key' => 'field_57b6fd86d2eb9',
 					'label' => 'Predefined Options',
 					'name' => 'predefined_options',
 					'type' => 'select',
 					'instructions' => '',
 					'required' => 0,
-					'conditional_logic' => array (
-						array (
-							array (
+					'conditional_logic' => array(
+						array(
+							array(
 								'field' => 'field_59cfb79c09c69',
 								'operator' => '==',
 								'value' => 'select',
 							),
-							array (
+							array(
 								'field' => 'field_57b6fd86d2e9f',
 								'operator' => '==',
 								'value' => 'select',
 							),
 						),
-						array (
-							array (
+						array(
+							array(
 								'field' => 'field_59cfb79c09c69',
 								'operator' => '==',
 								'value' => 'multi_select',
 							),
-							array (
+							array(
 								'field' => 'field_57b6fd86d2e9f',
 								'operator' => '==',
 								'value' => 'select',
 							),
 						),
 					),
-					'wrapper' => array (
+					'wrapper' => array(
 						'width' => '',
 						'class' => 'form-builder-input-row',
 						'id' => '',
 					),
-					'choices' => array (
-						'countries' => 'Countries',
+					'choices' => array(
+						'counties' => 'Counties',
 					),
-					'default_value' => array (
-						0 => 'countries',
+					'default_value' => array(
 					),
 					'allow_null' => 0,
 					'multiple' => 0,
@@ -629,23 +668,23 @@ acf_add_local_field_group(array (
 					'return_format' => 'value',
 					'placeholder' => '',
 				),
-				array (
+				array(
 					'key' => 'field_5a0062d1939f1',
 					'label' => 'Checkbox Label',
 					'name' => 'checkbox_label',
 					'type' => 'text',
 					'instructions' => '',
 					'required' => 0,
-					'conditional_logic' => array (
-						array (
-							array (
+					'conditional_logic' => array(
+						array(
+							array(
 								'field' => 'field_59cfb79c09c69',
 								'operator' => '==',
 								'value' => 'checkbox_single',
 							),
 						),
 					),
-					'wrapper' => array (
+					'wrapper' => array(
 						'width' => '',
 						'class' => 'form-builder-input-row checkbox-single-label',
 						'id' => '',
@@ -656,12 +695,242 @@ acf_add_local_field_group(array (
 					'append' => '',
 					'maxlength' => '',
 				),
+				array(
+					'key' => 'field_5b3a47f6bdf60',
+					'label' => 'Custom Function Callback',
+					'name' => 'custom',
+					'type' => 'text',
+					'instructions' => '',
+					'required' => 0,
+					'conditional_logic' => array(
+						array(
+							array(
+								'field' => 'field_59cfb79c09c69',
+								'operator' => '==',
+								'value' => 'custom',
+							),
+						),
+					),
+					'wrapper' => array(
+						'width' => '',
+						'class' => '',
+						'id' => '',
+					),
+					'default_value' => '',
+					'placeholder' => '',
+					'prepend' => '',
+					'append' => '',
+					'maxlength' => '',
+				),
+				array(
+					'key' => 'field_5b3ce11ad5c06',
+					'label' => 'Repeating Section',
+					'name' => 'repeating_section',
+					'type' => 'group',
+					'instructions' => '',
+					'required' => 0,
+					'conditional_logic' => array(
+						array(
+							array(
+								'field' => 'field_59cfb79c09c69',
+								'operator' => '==',
+								'value' => 'repeat_section',
+							),
+						),
+					),
+					'wrapper' => array(
+						'width' => '',
+						'class' => 'form-builder-input-group',
+						'id' => '',
+					),
+					'layout' => 'table',
+					'sub_fields' => array(
+						array(
+							'key' => 'field_5b3ce13fd5c07',
+							'label' => 'Form ID',
+							'name' => 'form_id',
+							'type' => 'number',
+							'instructions' => '',
+							'required' => 0,
+							'conditional_logic' => 0,
+							'wrapper' => array(
+								'width' => '',
+								'class' => '',
+								'id' => '',
+							),
+							'default_value' => '',
+							'placeholder' => '',
+							'prepend' => '',
+							'append' => '',
+							'min' => '',
+							'max' => '',
+							'step' => '',
+						),
+						array(
+							'key' => 'field_5b3e0eb23a175',
+							'label' => 'Min',
+							'name' => 'min',
+							'type' => 'number',
+							'instructions' => '',
+							'required' => 0,
+							'conditional_logic' => 0,
+							'wrapper' => array(
+								'width' => '',
+								'class' => '',
+								'id' => '',
+							),
+							'default_value' => 1,
+							'placeholder' => '',
+							'prepend' => '',
+							'append' => '',
+							'min' => '',
+							'max' => '',
+							'step' => '',
+						),
+						array(
+							'key' => 'field_5b3e0ee13a176',
+							'label' => 'Max',
+							'name' => 'max',
+							'type' => 'number',
+							'instructions' => '',
+							'required' => 0,
+							'conditional_logic' => 0,
+							'wrapper' => array(
+								'width' => '',
+								'class' => '',
+								'id' => '',
+							),
+							'default_value' => 10,
+							'placeholder' => '',
+							'prepend' => '',
+							'append' => '',
+							'min' => '',
+							'max' => '',
+							'step' => '',
+						),
+						array(
+							'key' => 'field_5b3e0f1d3a177',
+							'label' => 'Button Text',
+							'name' => 'button_text',
+							'type' => 'text',
+							'instructions' => '',
+							'required' => 0,
+							'conditional_logic' => 0,
+							'wrapper' => array(
+								'width' => '',
+								'class' => '',
+								'id' => '',
+							),
+							'default_value' => 'Add Row',
+							'placeholder' => 'Add Row',
+							'prepend' => '',
+							'append' => '',
+							'maxlength' => '',
+						),
+					),
+				),
+				array(
+					'key' => 'field_5b433948cd5ee',
+					'label' => 'Validation',
+					'name' => 'validation',
+					'type' => 'group',
+					'instructions' => '',
+					'required' => 0,
+					'conditional_logic' => array(
+						array(
+							array(
+								'field' => 'field_59cfb79c09c69',
+								'operator' => '==',
+								'value' => 'text',
+							),
+						),
+					),
+					'wrapper' => array(
+						'width' => '',
+						'class' => 'form-builder-input-group',
+						'id' => '',
+					),
+					'layout' => 'table',
+					'sub_fields' => array(
+						array(
+							'key' => 'field_5b433987cd5f1',
+							'label' => 'Validation',
+							'name' => 'validation',
+							'type' => 'select',
+							'instructions' => '',
+							'required' => 0,
+							'conditional_logic' => 0,
+							'wrapper' => array(
+								'width' => '',
+								'class' => '',
+								'id' => '',
+							),
+							'choices' => array(
+								'alphabetic' => 'Alphabetic',
+								'alphanumeric' => 'Alphanumeric',
+								'numeric' => 'Numeric',
+								'uppercase_alphabetic' => 'Uppercase Alphabetic',
+								'uppercase_alphanumeric' => 'Uppercase Alphanumeric',
+							),
+							'default_value' => array(
+							),
+							'allow_null' => 1,
+							'multiple' => 0,
+							'ui' => 0,
+							'ajax' => 0,
+							'return_format' => 'value',
+							'placeholder' => '',
+						),
+						array(
+							'key' => 'field_5b433955cd5ef',
+							'label' => 'Min',
+							'name' => 'min',
+							'type' => 'number',
+							'instructions' => '',
+							'required' => 0,
+							'conditional_logic' => 0,
+							'wrapper' => array(
+								'width' => '',
+								'class' => '',
+								'id' => '',
+							),
+							'default_value' => '',
+							'placeholder' => '',
+							'prepend' => '',
+							'append' => '',
+							'min' => '',
+							'max' => '',
+							'step' => '',
+						),
+						array(
+							'key' => 'field_5b433977cd5f0',
+							'label' => 'Max',
+							'name' => 'max',
+							'type' => 'number',
+							'instructions' => '',
+							'required' => 0,
+							'conditional_logic' => 0,
+							'wrapper' => array(
+								'width' => '',
+								'class' => '',
+								'id' => '',
+							),
+							'default_value' => '',
+							'placeholder' => '',
+							'prepend' => '',
+							'append' => '',
+							'min' => '',
+							'max' => '',
+							'step' => '',
+						),
+					),
+				),
 			),
 		),
 	),
-	'location' => array (
-		array (
-			array (
+	'location' => array(
+		array(
+			array(
 				'param' => 'post_type',
 				'operator' => '==',
 				'value' => 'post',
