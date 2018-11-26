@@ -335,9 +335,7 @@ class WP_Swift_Form_Builder_Parent {
 
         foreach ($this->form_data as $key => $section) {
 
-            if (isset($section["section_content"])) {
-                $this->section_html( $section );
-            }            
+            $this->open_section_html( $section, $key );            
 
             foreach ($section["inputs"] as $id => $input) {
 
@@ -372,7 +370,7 @@ class WP_Swift_Form_Builder_Parent {
                             break;               
                         case "multi_select":
                         case "select":
-                            $input_html = $this->build_form_select($id, $input, '');
+                            $input_html = $this->build_form_select($id, $input);
                             echo $this->wrap_input($id, $input, $input_html);
                             break; 
                         case "repeat_section":
@@ -382,6 +380,9 @@ class WP_Swift_Form_Builder_Parent {
                 }
                      
             }
+
+            $this->close_section_html( $key );
+
         }
         return $this->tab_index;
     }
@@ -865,8 +866,10 @@ class WP_Swift_Form_Builder_Parent {
         return $input_html;       
     } 
 
-    private function build_form_select($id, $data, $multiple='') {
-        $readonly = "";
+    private function build_form_select($id, $data) {
+        $readonly = '';
+        $multiple = '';
+        $css_class = '';
         if(!$this->form_pristine) {
             if($this->clear_after_submission && $this->error_count===0) {
                 // No errors found so clear the selected value
@@ -880,26 +883,50 @@ class WP_Swift_Form_Builder_Parent {
         if (isset( $data['allow_null'] )) {
             $allow_null = $data['allow_null'];
         }
+        if ( $data['data_type'] == 'multi_select') {
+            $multiple = ' multiple';
+            $css_class = ' js-select2-multiple';
+        }
         ob_start();
+        // echo '<pre>$css_class: '; var_dump($css_class); echo '</pre>';
+        // echo '<pre>$data: '; var_dump($data); echo '</pre>';echo "<hr>";
         ?>
 
-        <select class="<?php echo $this->get_form_input_class(); ?>" id="<?php echo $id; ?>" name="<?php echo $id; ?>" data-type="select" tabindex="<?php echo $this->tab_index++; ?>" <?php echo $data['required']; echo $multiple; echo $readonly; ?>>
+        <select class="<?php echo $this->get_form_input_class($data, $css_class); ?>" id="<?php echo $id; ?>" name="<?php echo $id; ?>" data-type="select" tabindex="<?php echo $this->tab_index++; ?>" <?php echo $data['required']; echo $multiple; echo $readonly; ?>>
 
             <?php if($allow_null && !$multiple ): ?>
                 <option value="" class="placeholder">Please select an option...</option>
-            <?php endif;
-            foreach ($data['options'] as $option):
-                
+            <?php endif; ?>
+
+            <?php if (isset($data['option_group']) && $data['option_group']):
+                foreach ($data['options'] as $group_key => $optgroup):?>
+                    <optgroup label="<?php echo $group_key; ?>">
+                    <?php
+                    foreach ($optgroup as $option):
+                        
+                        if($option['option_value'] === $data['selected_option']) { 
+                            $selected=' selected'; 
+                        } else { 
+                            $selected=''; 
+                        }?>
+                        <option value="<?php echo $option['option_value']; ?>"<?php echo $selected; ?>><?php echo $option['option']; ?></option>
+                    <?php 
+                    endforeach;?>
+                    </optgroup>
+                <?php endforeach;
+            else:
+                foreach ($data['options'] as $option):
+                    
                     if($option['option_value'] === $data['selected_option']) { 
-                        $selected='selected'; 
+                        $selected=' selected'; 
                     } else { 
                         $selected=''; 
                     }?>
-                <option value="<?php echo  $option['option_value']; ?>" <?php echo $selected; ?>><?php echo $option['option']; ?></option>
-            <?php 
-            endforeach;
-            //Note: select closing tag (below) is indented to format correctly in browser 
-            ?>
+                    <option value="<?php echo  $option['option_value']; ?>"<?php echo $selected; ?>><?php echo $option['option']; ?></option>
+                <?php 
+                endforeach;
+                //Note: select closing tag (below) is indented to format correctly in browser                 
+            endif; ?>
 
         </select>
 
@@ -1003,9 +1030,9 @@ class WP_Swift_Form_Builder_Parent {
         }
         ob_start();
 
-        if ($id == "form-signup-options") {
-            $checked=' checked';
-        }
+        // if ($id == "form-signup-options") {
+        //     $checked=' checked';
+        // }
         foreach ($data['options'] as $option): $count++;
             $checked='';
             //hack
@@ -1041,9 +1068,10 @@ class WP_Swift_Form_Builder_Parent {
                     
                     </label>
             <?php
-            if ($id == "form-signup-options") ?>
-                <input name="<?php echo $hidden_name ?>" type="hidden" data-type="hidden" value="<?php echo $option['option_value'] ?>">
-            <?php
+      
+          /*  if ($id == "form-signup-options")
+                <input name="<?php echo $hidden_name ?>" type="text" data-type="hidden" value="<?php echo $option['option_value'] ?>">*/
+            
         endforeach;
         $input_html = ob_get_contents();
         ob_end_clean();
@@ -1185,7 +1213,7 @@ class WP_Swift_Form_Builder_Parent {
                 <!-- @start input label -->
                 <div class="form-label">
 
-                    <div class="form-builder-feedback"><span class="feedback icon-x"></span><span class="feedback icon-check"></span><span class="icon-circle-o-notch"></span></div>
+                    <div class="form-builder-feedback"><span class="feedback form-icon form-builder-x"></span><span class="feedback form-icon form-builder-check"></span><span class="form-icon form-builder-circle-o-notch"></span></div>
                     <?php 
                     if ($input['label']!=''): 
                     ?><label for="<?php echo $id; ?>" class="control-label <?php echo $input['required']; ?>"><?php echo $input['label']; ?> <span></span></label><?php 
@@ -1369,11 +1397,11 @@ class WP_Swift_Form_Builder_Parent {
     /*
      * Get the CSS class for the input
      */
-    private function get_form_input_class($input=false) {
+    private function get_form_input_class($input=false, $css_class='') {
         if (isset($input["css_class_input"])) {
-            return "js-form-builder-control " . $input["css_class_input"];
+            return "js-form-builder-control " . $input["css_class_input"] . $css_class;
         }
-        return "js-form-builder-control";// form-control form-builder-control 
+        return "js-form-builder-control" . $css_class;
     }
 
     /*
@@ -1635,24 +1663,45 @@ class WP_Swift_Form_Builder_Parent {
         <!-- @end .button -->
         <?php           
     }  
-    public function section_html( $content ) {
+    public function open_section_html( $content, $key = 0 ) {
         ?>
-        <!-- @start .section-content -->
-        <div class="form-group section-content">
 
-            <!-- @start input -->
-            <div class="form-input">
+        <!-- @start section #form-section-<?php echo $key ?> -->
+        <div id="form-section-<?php echo $key ?>">
+        <?php
+        if (isset($content["section_header"]) || isset($content["section_content"])): ?>
 
-                <?php if (isset($content["section_header"])): ?>
-                    <h3><?php echo $content["section_header"]; ?></h3>
-                <?php endif ?>
+            <!-- @start .section-content -->
+            <div class="form-group section-content">
 
-                <?php echo $content["section_content"]; ?>
+                <!-- @start input -->
+                <div class="form-input">
+                    <?php if (isset($content["section_header"])): ?>
 
+                    <h4><?php echo $content["section_header"]; ?></h4>
+
+                    <?php 
+                    endif;
+                    if (isset($content["section_content"])): ?>
+
+                    <div class="entry-content"><?php echo $content["section_content"]; ?></div>
+
+                    <?php endif ?>
+
+                </div>
+                <!-- @end input -->            
             </div>
-            <!-- @end input -->            
+            <!-- @end .section-content --> 
+
+        <?php endif;         
+    }  
+
+    public function close_section_html( $key ) {
+        ?>
+
         </div>
-        <!-- @end .section-content -->
-        <?php           
-    }                  
+        <!-- @end section #form-section-<?php echo $key ?> -->
+
+        <?php   
+    }                   
 }

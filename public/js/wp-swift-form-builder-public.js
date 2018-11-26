@@ -173,9 +173,18 @@ jQuery(document).ready(function($){
 	    // Parse the date parts to integers
 	    var parts = dateString.split("/");
 
-	    var day = parseInt(parts[0], 10);
-	    var month = parseInt(parts[1], 10);
 	    var year = parseInt(parts[2], 10);
+	    // We must get day and month dependent on the format set on server
+	    if ( FormBuilderDatePicker.format === 'dd/mm/yyyy' ) {
+	    	// Rest of wordld
+		    var day = parseInt(parts[0], 10);
+		    var month = parseInt(parts[1], 10);	    	
+	    }
+	    else if ( FormBuilderDatePicker.format === 'mm/dd/yyyy' ) {
+	    	// United States
+	    	var month = parseInt(parts[0], 10);
+		    var day = parseInt(parts[1], 10);	  
+	    }
 
 	    // Check the ranges of month and year
 	    var year_now = new Date().getFullYear();
@@ -190,6 +199,10 @@ jQuery(document).ready(function($){
 	    if(year % 400 === 0 || (year % 100 !== 0 && year % 4 === 0)){
 	        monthLength[1] = 29;
 	    }
+	    // console.log('day', day);
+	    // console.log('month', month);
+	    // console.log('year', year);
+	    // console.log(day > 0 && day <= monthLength[month - 1]);
 
 	    // Check the range of the day
 	    return day > 0 && day <= monthLength[month - 1];
@@ -260,7 +273,6 @@ jQuery(document).ready(function($){
 	});	
 
 	if(jQuery().fdatepicker) {
-
 		var today = new Date();
 		var dd = today.getDate();
 		var mm = today.getMonth()+1; //January is 0!
@@ -272,9 +284,14 @@ jQuery(document).ready(function($){
 		if(mm<10){
 		    mm='0'+mm;
 		} 
-		today = dd+'-'+mm+'-'+yyyy;		
+		today = dd+'/'+mm+'/'+yyyy;
+	    // We must set today dependent on the format set on server
+	    if ( FormBuilderDatePicker.format === 'mm/dd/yyyy' ) {
+	    	// United States
+	    	today = mm+'/'+dd+'/'+yyyy;		  
+	    }
 
-		$('.js-date-picker input').fdatepicker({
+		$('.js-date-picker.past input').fdatepicker({
 			// initialDate: today,
 			format: FormBuilderDatePicker.format,
 			endDate: today,//dateInPast(13),
@@ -288,7 +305,34 @@ jQuery(document).ready(function($){
 			var input = new FormBuilderInput(this);
 			addClassAfterBlur(input, input.isValid(), 0);
 		});
-		
+
+
+		$('.js-date-picker.future input').fdatepicker({
+			format: FormBuilderDatePicker.format,
+			// format: 'mm-dd-yyyy hh:ii',
+			startDate: today,
+			disableDblClickSelection: true,
+			leftArrow:'<<',
+			rightArrow:'>>',
+			closeIcon:'X',
+			closeButton: true
+		}).on('hide', function (ev) {
+			var input = new FormBuilderInput(this);
+			addClassAfterBlur(input, input.isValid(), 0);
+		});		
+
+		$('.js-date-picker.all input').fdatepicker({
+			format: FormBuilderDatePicker.format,
+			disableDblClickSelection: true,
+			leftArrow:'<<',
+			rightArrow:'>>',
+			closeIcon:'X',
+			closeButton: true
+		}).on('hide', function (ev) {
+			var input = new FormBuilderInput(this);
+			addClassAfterBlur(input, input.isValid(), 0);
+		});	
+
 		// Range
 
 		var nowTemp = new Date();

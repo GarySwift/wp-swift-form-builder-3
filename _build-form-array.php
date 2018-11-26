@@ -112,6 +112,7 @@ function build_acf_form_array($inputs, $settings, $section=0, $edit_id = false, 
     $id = '';
     $type = 'text';
     $data_type = get_sub_field('type');
+    // echo '<pre>$data_type: '; var_dump($data_type); echo '</pre>';
 
     $name = '';
     $label = '';
@@ -120,8 +121,10 @@ function build_acf_form_array($inputs, $settings, $section=0, $edit_id = false, 
     $instructions = '';
     $required = '';
     $grouping = false;
-    $select_options='';
+    $select_options= array();
     $selected_option = null;
+    $select_type = null;
+    $option_group = false;
     $allow_null = true;
     $prefix = 'form-';
     $css_class = '';
@@ -239,7 +242,7 @@ function build_acf_form_array($inputs, $settings, $section=0, $edit_id = false, 
     }
 
     if( $data_type === 'date' ) {
-        $css_class .= ' js-date-picker';
+        $css_class .= 'js-date-picker all';
     }
 
     if( $data_type === 'date_range' ) {
@@ -248,6 +251,13 @@ function build_acf_form_array($inputs, $settings, $section=0, $edit_id = false, 
         if (!isset($settings["groupings"])) {
             $settings["groupings"] = true;
         }        
+    }
+
+    if( $data_type === 'date' ) {
+        $date_ranges = get_sub_field('date_ranges');
+        if( $date_ranges ) {
+            $css_class .= ' ' . $date_ranges;
+        }
     }
 
     if( $data_type === 'textarea' ) {
@@ -262,6 +272,7 @@ function build_acf_form_array($inputs, $settings, $section=0, $edit_id = false, 
 
     if( get_sub_field('select_options') ) {
         $select_options = get_sub_field('select_options');
+        // echo '<pre>$data_type: '; var_dump($data_type); echo '</pre>';
         if ($data_type === 'checkbox' || $data_type === 'select' || $data_type === 'radio') {       
             foreach ($select_options as $key => $option) {
                 $option['checked'] = false;
@@ -281,37 +292,92 @@ function build_acf_form_array($inputs, $settings, $section=0, $edit_id = false, 
         }
 
     }
-
-    if( get_sub_field('select_type') ) {
-        $select_type = get_sub_field('select_type');
-
+    $select_type = get_sub_field('select_type');
+    if( ( $data_type == 'select' || $data_type == 'multi_select' || $data_type == 'checkbox' ) && $select_type ) {
+        
+        // echo "<hr>";
+        // echo '<h1>HELP</h1>';
+        // echo '<pre>$data_type: '; var_dump($data_type); echo '</pre>';
+        // echo '<pre>$name: '; var_dump($name); echo '</pre>';
+        // echo '<pre>$select_type: '; var_dump($select_type); echo '</pre>';
+        // echo '<h1>HELP</h1>';
         /*
          * The user has selected a predefined option
          */
-        if ($select_type === 'select') {
+        //|| $select_type === 'multi_select' || $select_type === 'checkbox'
+        if ( $select_type === 'select' ) {
+
+            /*
+             * $option_group determines if options have an <optgroup> tag
+             */
+            $option_group = get_sub_field("option_group");
+            // echo '<pre>$option_group: '; var_dump($option_group); echo '</pre>';
 
             $predefined_options = get_sub_field('predefined_options');
             // echo '<pre>$predefined_options: '; var_dump($predefined_options); echo '</pre>';
             if( $predefined_options ) {
-                
+                // echo '<pre>$data_type: '; var_dump($data_type); echo '</pre>';
                 $func = "wp_swift_form_builder_get_array_".$predefined_options;//The function name
                 // echo '<pre>$func: '; var_dump($func); echo '</pre>'; 
+                // echo "<hr>";
                 if (function_exists($func)) {
-                    $array = $func();//Call the function to get the predefined options array
+                    $response = $func();//Call the function to get the predefined options array
+                    // echo '<pre>$response: '; var_dump($response); echo '</pre>';
+                    $array = $response["array"];
+                    if (isset($response["option_group"])) $option_group = $response["option_group"];
+                    // if( $data_type === 'select' || $data_type === 'multi_select' || $data_type === 'checkbox') {
 
-                    if( $data_type === 'select' ) {
-                        $select_options = array();
-                        // Parse the array
-                        foreach ($array as $key => $option_value) {
-                            $select_options[] = array(
-                                'option' => $key,
-                                'option_value' => $option_value,
-                            );       
-                        }        
-                    }
-                    if (isset($value)) {
+                        if ($option_group) {
+
+                            $options_group = array();
+                           
+                            // echo '<pre>$array: '; var_dump($array); echo '</pre>';
+                            // Parse the array
+                            foreach ($array as $group_key => $group) {
+                                 $select_options = array();
+                                foreach ($group as $value_key => $option_value) {
+                                    $select_options[] = array(
+                                        'option' => $option_value,
+                                        'option_value' => $value_key,
+                                    );       
+                                } 
+                                $options_group[$group_key] = $select_options;
+
+                            }
+
+                          // echo '<pre>$options_group: '; var_dump($options_group); echo '</pre>';
+                          $select_options = $options_group;
+
+                        }
+                        else {
+
+                            $select_options = array();
+                            // Parse the array
+                            foreach ($array as $key => $option_value) {
+
+                                $option = array(
+                                    'option' => $option_value,
+                                    'option_value' => $key,
+                                );
+                                if ($data_type === 'checkbox') {
+                                    $option["checked"] = false;
+                                }
+                                $select_options[] = $option;       
+                            }  
+
+                            if (isset( $response["selected_option"] )) {
+                                $selected_option = $response["selected_option"];     
+                            }  
+
+                        }
+                    // }
+                    // elseif ($data_type === 'multi_select') {
+
+
+                    // }
+                    
+                    if (!$selected_option && isset($value)) {
                         $selected_option = $value;
-                        // echo '<pre>$selected_option: '; var_dump($selected_option); echo '</pre>';
                     } 
 
                 }            
@@ -408,7 +474,7 @@ function build_acf_form_array($inputs, $settings, $section=0, $edit_id = false, 
         case "multi_select":
         case "checkbox":
         case "radio":
-            $inputs[$prefix.$id] = array("passed"=>false, "clean"=>$value, "value"=>$value, "section"=>$section, "required"=>$required, "type"=>$type, "data_type"=>$data_type, "label"=>$label, "options"=>$select_options, "selected_option"=>$selected_option, "allow_null" => $allow_null, "help"=>$help, "instructions" => $instructions, "grouping" => $grouping, "css_class" => $css_class, "readonly" => $readonly);
+            $inputs[$prefix.$id] = array("passed"=>false, "clean"=>$value, "value"=>$value, "section"=>$section, "required"=>$required, "type"=>$type, "data_type"=>$data_type, "label"=>$label, "options"=>$select_options, "selected_option"=>$selected_option, "option_group"=>$option_group, "allow_null" => $allow_null, "help"=>$help, "instructions" => $instructions, "grouping" => $grouping, "css_class" => $css_class, "readonly" => $readonly);
             break; 
         case "checkbox_single":
              $inputs[$prefix.$id] = array("passed"=>false, "clean"=>$value, "value"=>$value, "section"=>$section, "required"=>$required, "type"=>"checkbox", "data_type"=>$data_type, "label"=>$label, "option"=>array("value" => 1, "key" => get_sub_field('checkbox_label'), 'checked' => false), "selected_option"=>"", "help"=>$help, "instructions" => $instructions, "grouping" => $grouping, "css_class" => $css_class);

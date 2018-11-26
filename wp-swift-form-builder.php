@@ -73,7 +73,8 @@ define('FORM_BUILDER_SAVE_TO_JSON', false);
 define('FORM_BUILDER_DEFAULT_TERM', 'Contact Form');
 define('FORM_BUILDER_DEFAULT_SLUG', 'contact-form');
 define('FORM_BUILDER_DEFAULT_TAXONOMY', 'wp_swift_form_category');
-define('FORM_BUILDER_DATE_FORMAT', 'dd/mm/yyyy');
+// define('FORM_BUILDER_DATE_FORMAT', 'dd/mm/yyyy');
+define('FORM_BUILDER_DATE_FORMAT', 'mm/dd/yyyy');
 
 /**
  * The FormBuilder class that handles all form logic
@@ -101,7 +102,7 @@ require_once plugin_dir_path( __FILE__ ) . 'cpt/wp_swift_form_submit.php';
 /**
  * The ACF field groups
  */ 
-require_once plugin_dir_path( __FILE__ ) . 'acf-field-groups/form-builder-inputs.php';
+// require_once plugin_dir_path( __FILE__ ) . 'acf-field-groups/form-builder-inputs.php';
 require_once plugin_dir_path( __FILE__ ) . 'acf-field-groups/form-builder-input-sections.php';
 require_once plugin_dir_path( __FILE__ ) . 'acf-field-groups/_acf-field-group-contact-form.php';
 

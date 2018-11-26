@@ -111,7 +111,11 @@ class Wp_Swift_Form_Builder_Public {
 				wp_enqueue_style( $this->plugin_name.'-datepicker-css', plugin_dir_url( __DIR__ ) . $datepicker_css_file, array(), $datepicker_css_version, 'all' );			
 			}
 
-
+			$select2_css_file = 'node_modules/select2/dist/css/select2.min.css';
+			if (file_exists(plugin_dir_path( __DIR__ ) . $select2_css_file)) {
+				$select2_css_version = filemtime(plugin_dir_path( __DIR__ ) . $select2_css_file);
+				wp_enqueue_style( $this->plugin_name.'-select2-css', plugin_dir_url( __DIR__ ) . $select2_css_file, array(), $select2_css_version, 'all' );			
+			}
         }
 
 	}
@@ -135,6 +139,13 @@ class Wp_Swift_Form_Builder_Public {
 				wp_enqueue_script( $this->plugin_name.'-datepicker-js', plugin_dir_url( __DIR__ ) . $datepicker_js_file, array( 'jquery' ), $datepicker_js_version, true );			
 	
 			}
+
+			$select2_js_file = 'node_modules/select2/dist/js/select2.min.js';
+			if (file_exists(plugin_dir_path( __DIR__ ) . $select2_js_file)) {
+				$select2_js_version = filemtime(plugin_dir_path( __DIR__ ) . $select2_js_file);
+				wp_enqueue_script( $this->plugin_name.'-select2-js', plugin_dir_url( __DIR__ ) . $select2_js_file, array( 'jquery' ), $select2_js_version, true );			
+	
+			}			
 		}
 		wp_enqueue_script( 'g-recaptcha', 'https://www.google.com/recaptcha/api.js', '', '' );
 	}

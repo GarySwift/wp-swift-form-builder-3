@@ -115,3 +115,14 @@ bower install foundation-datepicker
 
 npm install foundation-datepicker
 ```
+#### Sass
+```
+// Libraries
+@import "../../../node_modules/foundation-datepicker/css/foundation-datepicker.min";
+```
+
+#### JavaScript
+```
+// Installed via NPM
+import '../../../node_modules/foundation-datepicker/js/foundation-datepicker.min';
+```

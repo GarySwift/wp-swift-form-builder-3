@@ -39,6 +39,15 @@ $button-size: ".large";// .default, .large
 $form-transition-speed: 1;//0.3s;
 $form-transition-property: ease-in;//ease-in-out;// ease-in
 
+// Icomoon font vars
+$form-builder-font-family: "form-builder-icon-fonts" !default;
+$form-builder-font-path: "fonts" !default;
+
+$form-builder-x: "\fb900";
+$form-builder-check: "\fb901";
+$form-builder-circle-o-notch: "\fb902";
+$form-builder-gear: "\fb903";
+
 /* 
  * @start wrap
  */  
@@ -257,10 +266,10 @@ div.form-builder.groupings {
                 color: $has-success;
                 font-size: 0.9rem;
             }
-            span.icon-check {
+            span.form-builder-check {
                 color: $has-success;
             }       
-            span.icon-x {
+            span.form-builder-x {
                 color: $has-error;
             }
         }
@@ -271,7 +280,7 @@ div.form-builder.groupings {
     }
     .form-group.has-success {
         div.form-builder-feedback {
-            span.icon-check {
+            span.form-builder-check {
                 visibility: visible;
                 opacity: 1;
             }
@@ -279,7 +288,7 @@ div.form-builder.groupings {
     }
     .form-group.has-error {
         div.form-builder-feedback {
-            span.icon-x {
+            span.form-builder-x {
                 visibility: visible;
                 opacity: 1;
             }
@@ -287,7 +296,7 @@ div.form-builder.groupings {
     }
     .form-group.processing {
         div.form-builder-feedback {
-            span.icon-circle-o-notch {
+            span.form-builder-circle-o-notch {
                 visibility: visible;
                 opacity: 1; 
                 animation: spin 1s linear infinite;
@@ -302,41 +311,49 @@ div.form-builder.groupings {
     }
 }
 
-/* 
- * @start fonts
- */
+// Icomoon font icons
 @font-face {
-    font-family: 'icomoon';
-    src: url('../fonts/icomoon.eot?kud616');
-    src: url('../fonts/icomoon.eot?kud616#iefix') format('embedded-opentype'),
-        url('../fonts/icomoon.ttf?kud616') format('truetype'),
-        url('../fonts/icomoon.woff?kud616') format('woff'),
-        url('../fonts/icomoon.svg?kud616#icomoon') format('svg');
-    font-weight: normal;
-    font-style: normal;
+  font-family: '#{$form-builder-font-family}';
+  src:  url('../#{$form-builder-font-path}/#{$form-builder-font-family}.eot?y22y7f');
+  src:  url('../#{$form-builder-font-path}/#{$form-builder-font-family}.eot?y22y7f#iefix') format('embedded-opentype'),
+    url('../#{$form-builder-font-path}/#{$form-builder-font-family}.ttf?y22y7f') format('truetype'),
+    url('../#{$form-builder-font-path}/#{$form-builder-font-family}.woff?y22y7f') format('woff'),
+    url('../#{$form-builder-font-path}/#{$form-builder-font-family}.svg?y22y7f##{$form-builder-font-family}') format('svg');
+  font-weight: normal;
+  font-style: normal;
 }
-[class^="icon-"], [class*=" icon-"] {
-    /* use !important to prevent issues with browser extensions that change fonts */
-    font-family: 'icomoon' !important;
-    speak: none;
-    font-style: normal;
-    font-weight: normal;
-    font-variant: normal;
-    text-transform: none;
-    line-height: 1;
-    /* Better Font Rendering =========== */
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+
+.form-icon {
+  // use !important to prevent issues with browser extensions that change fonts
+  font-family: '#{$form-builder-font-family}' !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  // Better Font Rendering ===========
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
-.icon-circle-o-notch:before {
-    content: "\e902";
+
+.form-builder-x {
+  &:before {
+    content: $form-builder-x; 
+  }
 }
-.icon-gear:before {
-    content: "\e903";
+.form-builder-check {
+  &:before {
+    content: $form-builder-check; 
+  }
 }
-.icon-check:before {
-    content: "\e901";
+.form-builder-circle-o-notch {
+  &:before {
+    content: $form-builder-circle-o-notch; 
+  }
 }
-.icon-x:before {
-    content: "\e900";
+.form-builder-gear {
+  &:before {
+    content: $form-builder-gear; 
+  }
 }
