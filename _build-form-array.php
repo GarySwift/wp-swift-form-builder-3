@@ -82,7 +82,9 @@ function wp_swift_form_data_loop($id, $_post = null) {
                 }            
                 if ( have_rows('form_inputs') ) :
                     while( have_rows('form_inputs') ) : the_row();
-                        $inputs_settings_array = build_acf_form_array($inputs, $settings, $section_count, $edit_id, $switch_to_blog, $_post);  
+                        $row_layout = get_row_layout();
+                        // echo '<pre>$row_layout: '; var_dump($row_layout); echo '</pre>';
+                        $inputs_settings_array = build_acf_form_array($row_layout, $inputs, $settings, $section_count, $edit_id, $switch_to_blog, $_post);  
                         $settings = $inputs_settings_array["settings"];
                         $inputs = $inputs_settings_array["inputs"];
                         $input_count++;
@@ -105,15 +107,12 @@ function wp_swift_form_data_loop($id, $_post = null) {
     return $form_data; 
 }
 
-function build_acf_form_array($inputs, $settings, $section=0, $edit_id = false, $switch_to_blog = false, $_post = null) {
-    // echo '<pre>$edit_id: '; var_dump($edit_id); echo '</pre>';
-    // echo '<pre>$switch_to_blog: '; var_dump($switch_to_blog); echo '</pre>';
+function build_acf_form_array($row_layout, $inputs, $settings, $section=0, $edit_id = false, $switch_to_blog = false, $_post = null) {
+
     global $post;
     $id = '';
     $type = 'text';
-    $data_type = get_sub_field('type');
-    // echo '<pre>$data_type: '; var_dump($data_type); echo '</pre>';
-
+    $data_type = $row_layout;
     $name = '';
     $label = '';
     $placeholder = '';
@@ -137,18 +136,24 @@ function build_acf_form_array($inputs, $settings, $section=0, $edit_id = false, 
     $validation = null;
     $disabled = false;
 
+    $name =  get_sub_field('name');
+    $label =  get_sub_field('label');
 
-    if( get_sub_field('id') ) {
-        $id_group = get_sub_field('id');
-        if ($id_group["name"]) {
-            $name = $id_group["name"];
+    if( $name ) {
+        if ( !$label ) {
+            $label = $name;
+        } 
+            // $id_group = get_sub_field('name');
+        // echo '<pre>$id_group: '; var_dump($id_group); echo '</pre>';
+        // if ($id_group["name"]) {
+        //     $name = $id_group["name"];
             $id = sanitize_title_with_dashes( $name );
-            if ($id_group["label"]) {
-                $label = $id_group["label"];
-            }
-            else {
-                $label = $name;
-            }
+            // if ($id_group["label"]) {
+            //     $label = $id_group["label"];
+            // }
+            // else {
+            //     $label = $name;
+            // }
 
             if ($edit_id) {
                 // echo '<pre>$switch_to_blog: '; var_dump($switch_to_blog); echo '</pre>';
@@ -162,15 +167,17 @@ function build_acf_form_array($inputs, $settings, $section=0, $edit_id = false, 
                 // echo "<hr>";
                 if ($switch_to_blog) restore_current_blog();
             }            
-        }
+        // }
     }
 
 
-
-    if( get_sub_field('settings') ) {
-        $settings_group = get_sub_field('settings');
-        $required = $settings_group["required"];
-        $grouping = $settings_group["grouping"];
+    $required = get_sub_field('required');
+    // echo '<pre>$required: '; var_dump($required); echo '</pre>';
+    $grouping = get_sub_field('grouping');
+    // if( get_sub_field('settings') ) {
+    //     $settings_group = get_sub_field('settings');
+    //     $required = $settings_group["required"];
+    //     $grouping = $settings_group["grouping"];
         if ($grouping == 'none') {
             $grouping = false;
         }
@@ -179,12 +186,13 @@ function build_acf_form_array($inputs, $settings, $section=0, $edit_id = false, 
                 $settings["groupings"] = true;
             }
         }
-    }
-
-    if( get_sub_field('reporting') ) {
-        $reporting_group = get_sub_field('reporting');
-        $instructions = $reporting_group["instructions"];
-        $help = $reporting_group["help"];
+    // }
+    $help = get_sub_field('help');
+    $instructions = get_sub_field('instructions');
+    // if( get_sub_field('reporting') ) {
+    //     $reporting_group = get_sub_field('reporting');
+    //     $instructions = $reporting_group["instructions"];
+    //     $help = $reporting_group["help"];
         if ($help === '') {
             if ($required) {
                 $help = $label.' is required';
@@ -199,7 +207,7 @@ function build_acf_form_array($inputs, $settings, $section=0, $edit_id = false, 
                 $help = $label.' is not valid';
             }
         }
-    }
+    // }
     
     if($required) {
         $required = 'required';
@@ -208,14 +216,15 @@ function build_acf_form_array($inputs, $settings, $section=0, $edit_id = false, 
         $required = '';
     }
 
-    if( get_sub_field('type') ) {
-        $type = get_sub_field('type');
-        $data_type = get_sub_field('type');
-    }
+// if( get_sub_field('type') ) {
+//     $type = get_sub_field('type');
+//     $data_type = get_sub_field('type');
+// }
 
-    if ($type === 'text') {
+    if ($data_type === 'text') {
         if( get_sub_field('validation') ) {
             $validation_group = get_sub_field('validation');
+            // echo '<pre>$validation_group: '; var_dump($validation_group); echo '</pre>';
             $min = $validation_group["min"];
             $max = $validation_group["max"];
             // $type_field = $validation_group["type_field"];
@@ -228,8 +237,11 @@ function build_acf_form_array($inputs, $settings, $section=0, $edit_id = false, 
         }
     }
 
-    if( $type === 'date' || $type === 'date_time' || $type === 'date_range' ) {
-        $type='text';
+    if( $data_type === 'date' || $data_type === 'date_time' || $data_type === 'date_range' ) {
+        $type = 'text';
+    }
+    else {
+        $type = $data_type;
     }
 
     if( get_sub_field('placeholder') ) {
@@ -239,26 +251,36 @@ function build_acf_form_array($inputs, $settings, $section=0, $edit_id = false, 
     if( get_sub_field('other') ) {
         $other = true;
         $css_class .= ' js-other-value-event';
+        // echo $id;echo "<hr>";
+    }
+
+    $date_ranges = '';
+    if( $data_type === 'date' || $data_type === 'date_range' ) {
+        $date_ranges = get_sub_field('date_ranges');
     }
 
     if( $data_type === 'date' ) {
-        $css_class .= 'js-date-picker all';
+        $css_class .= 'js-date-picker ' . $date_ranges;
     }
 
+
     if( $data_type === 'date_range' ) {
-        $css_class .= ' js-date-picker-range';
+         
+        // echo '<pre>$date_ranges: '; var_dump($date_ranges); echo '</pre>';       
+        $css_class .= ' js-date-picker-range ' . $date_ranges;
         $css_class_input = 'js-date-picker-range';
         if (!isset($settings["groupings"])) {
             $settings["groupings"] = true;
         }        
     }
 
-    if( $data_type === 'date' ) {
-        $date_ranges = get_sub_field('date_ranges');
-        if( $date_ranges ) {
-            $css_class .= ' ' . $date_ranges;
-        }
-    }
+    // if( $data_type === 'date' ) {
+    //     $date_ranges = get_sub_field('date_ranges');
+    //     // echo '<pre>$date_ranges: '; var_dump($date_ranges); echo '</pre>';
+    //     if( $date_ranges ) {
+    //         $css_class .= ' ' . $date_ranges;
+    //     }
+    // }
 
     if( $data_type === 'textarea' ) {
         $textarea_settings_group = get_sub_field('textarea_settings');
@@ -269,9 +291,9 @@ function build_acf_form_array($inputs, $settings, $section=0, $edit_id = false, 
             $maxlength = $textarea_settings_group["maxlength"];
         }        
     }   
-
-    if( get_sub_field('select_options') ) {
-        $select_options = get_sub_field('select_options');
+    $select_options = get_sub_field('options');
+    if( $select_options ) {
+        // $select_options = get_sub_field('select_options');
         // echo '<pre>$data_type: '; var_dump($data_type); echo '</pre>';
         if ($data_type === 'checkbox' || $data_type === 'select' || $data_type === 'radio') {       
             foreach ($select_options as $key => $option) {
@@ -388,7 +410,7 @@ function build_acf_form_array($inputs, $settings, $section=0, $edit_id = false, 
     if( get_sub_field('css_class') ) {
         $css_class = $css_class_input = get_sub_field('css_class');
     }
-
+    $disabled = false;
     if( get_sub_field('disabled') ) {
         $disabled = true;
     }    
@@ -485,8 +507,8 @@ function build_acf_form_array($inputs, $settings, $section=0, $edit_id = false, 
             $inputs[$prefix.$id] = array("passed"=>false, "clean"=>$value, "value"=>$value, "section"=>$section, "required"=>$required, "type"=>$type, "data_type"=>$data_type,  "placeholder"=>$placeholder, "label"=>$label, "accept"=>"pdf", "help"=>$help, "instructions" => $instructions, "grouping" => $grouping, "css_class" => $css_class);
             break;              
         case "date_range":
-            $inputs[$prefix.$id.'-start'] = array("passed"=>false, "clean"=>$value, "value"=>$value, "section"=>$section, "required"=>$required, "type"=>$type, "data_type"=>"date", "label"=>"Date From", "help"=>$help, "instructions" => $instructions, "grouping" => 'start', "css_class" => $css_class.' js-date-range', 'css_class_input' => $css_class_input, 'order'=>0, 'parent_label'=>$label);
-            $inputs[$prefix.$id.'-end'] = array("passed"=>false, "clean"=>$value, "value"=>$value, "section"=>$section, "required"=>$required, "type"=>$type, "data_type"=>"date", "label"=>"Date To", "help"=>$help, "instructions" => $instructions, "grouping" => 'end', "css_class" => $css_class.' js-date-range', 'order'=>1, 'parent_label'=>$label);
+            $inputs[$prefix.$id.'-start'] = array("passed"=>false, "clean"=>$value, "value"=>$value, "section"=>$section, "required"=>$required, "type"=>$type, "data_type"=>"date", "label"=>"Date From", "help"=>$help, "instructions" => $instructions, "grouping" => 'start', "css_class" => $css_class.' js-date-range', 'css_class_input' => $css_class_input, 'order'=>0, 'parent_label'=>$label, 'disabled' => $disabled);
+            $inputs[$prefix.$id.'-end'] = array("passed"=>false, "clean"=>$value, "value"=>$value, "section"=>$section, "required"=>$required, "type"=>$type, "data_type"=>"date", "label"=>"Date To", "help"=>$help, "instructions" => $instructions, "grouping" => 'end', "css_class" => $css_class.' js-date-range', 'order'=>1, 'parent_label'=>$label, 'disabled' => $disabled);
             break;  
         case "repeat_section":
             $repeat_section = wp_swift_get_repeating_section_form_data( $prefix, $id, get_sub_field('repeating_section'), $inputs, $edit_id, $switch_to_blog, $_post );
@@ -497,7 +519,7 @@ function build_acf_form_array($inputs, $settings, $section=0, $edit_id = false, 
             break;                                             
     }
     if( $other ) {
-        $inputs[$prefix.$id.'-other'] = array("passed"=>false, "clean"=>$value, "value"=>$value, "section"=>$section, "required"=>'', "type"=>"text", "data_type"=>"text",  "placeholder"=>$placeholder, "label"=>"Other ".$label, "help"=>$help, "instructions" => $instructions, "grouping" => false, "css_class" => " js-other-value css-hide");
+        $inputs[$prefix.$id.'-other'] = array("passed"=>false, "clean"=>$value, "value"=>$value, "section"=>$section, "required"=>'', "type"=>"text", "data_type"=>"text",  "placeholder"=>$placeholder, "label"=>"Other ".$label, "help"=>$help, "instructions" => $instructions, "grouping" => false, "css_class" => " js-other-value hide", 'disabled' => true);
     }    
     return array("inputs" => $inputs, "settings" => $settings);       
 }

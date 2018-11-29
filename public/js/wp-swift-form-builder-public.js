@@ -272,7 +272,7 @@ jQuery(document).ready(function($){
 	    }
 	});	
 
-	if(jQuery().fdatepicker) {
+	var getDatepickerToday = function () {
 		var today = new Date();
 		var dd = today.getDate();
 		var mm = today.getMonth()+1; //January is 0!
@@ -290,7 +290,29 @@ jQuery(document).ready(function($){
 	    	// United States
 	    	today = mm+'/'+dd+'/'+yyyy;		  
 	    }
+	    return today;
+	};
 
+	if(jQuery().fdatepicker) {
+		// var today = new Date();
+		// var dd = today.getDate();
+		// var mm = today.getMonth()+1; //January is 0!
+		// var yyyy = today.getFullYear();
+		
+		// if(dd<10){
+		//     dd='0'+dd;
+		// } 
+		// if(mm<10){
+		//     mm='0'+mm;
+		// } 
+		// today = dd+'/'+mm+'/'+yyyy;
+	 //    // We must set today dependent on the format set on server
+	 //    if ( FormBuilderDatePicker.format === 'mm/dd/yyyy' ) {
+	 //    	// United States
+	 //    	today = mm+'/'+dd+'/'+yyyy;		  
+	 //    }
+
+	 	var today = getDatepickerToday();
 		$('.js-date-picker.past input').fdatepicker({
 			// initialDate: today,
 			format: FormBuilderDatePicker.format,
@@ -339,7 +361,7 @@ jQuery(document).ready(function($){
 		var now = new Date(nowTemp.getFullYear(), nowTemp.getMonth(), nowTemp.getDate(), 0, 0, 0, 0);
 
 		var datepickerListener = function (dateRangeStart, dateRangeEnd) {
-
+			// var today = getDatepickerToday();
 			var $dateRangeStart = $('#' + dateRangeStart);
 			var $dateRangeEnd = $('#' + dateRangeEnd);
 
@@ -385,16 +407,15 @@ jQuery(document).ready(function($){
 		}		
 	}	
 
-	$('.js-other-value').removeClass('css-hide').hide();
+	$('.js-other-value').removeClass('hide').hide();
 
 	$('.js-other-value-event select').change(function() {
 		var input = new FormBuilderInput( $(this).serializeArray()[0] );
 		if (input.value === 'other') {
-			$(input.id + '-other-form-group').slideDown();
+			showOtherField(input.id);
 		}
 		else {
-			$(input.id + '-other-form-group').slideUp();
-			$(input.id + '-other').val('');
+			hideOtherField(input.id);
 		}
 	});
 
@@ -402,18 +423,38 @@ jQuery(document).ready(function($){
 	$('.js-other-value-event input[type=checkbox]').change(function() {
 		var input = new FormBuilderInput( this );
 		if (input.value === 'other') {
-			
+			console.log('input.id', input.id);
 			if (this.checked) {
-				$(input.id + '-other-form-group').slideDown();
+				showOtherField(input.id);
 			}
 			else {
-				$(input.id + '-other-form-group').slideUp();
-				$(input.id + '-other').val('');
+				hideOtherField(input.id);
 			}
 		}		
-	});	
+	});
 
+	$('.js-other-value-event input[type=radio]').change(function() {
+		var input = new FormBuilderInput( this );
+		var id = '#' + $(this).data("id");
+		if (input.value === 'other' && this.checked) {
+			showOtherField(id);
+		}
+		else {
+			hideOtherField(id);
+		}		
+	});		
 
+	function showOtherField(id) {
+		$(id + '-other').prop( "disabled", false );
+		$(id + '-other-form-group').slideDown();
+	}
+
+	function hideOtherField(id) {
+		$(id + '-other-form-group').slideUp(function(e) {
+			$(id + '-other').prop( "disabled", true );
+			$(id + '-other').val('');
+		});
+	}
 	$('#request-form').submit(function(e) {
 
 		e.preventDefault();

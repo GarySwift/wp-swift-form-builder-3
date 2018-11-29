@@ -986,6 +986,7 @@ class WP_Swift_Form_Builder_Parent {
     }
 
     private function build_form_radio($id, $input) {
+        // echo '<pre>$input: '; var_dump($input); echo '</pre>';
         if(!$this->form_pristine) {
             if($this->clear_after_submission && $this->error_count===0) {
                 // No errors found so clear the selected value
@@ -995,15 +996,22 @@ class WP_Swift_Form_Builder_Parent {
 
         $count=0;  
         $checked='';
+        $data_id = ' data-id="'.$id.'"';
         ob_start();
         foreach ($input['options'] as $option): $count++;
             if ( $input['selected_option'] !== '' && ($input['selected_option'] === $option['option_value']) ){
                 $checked=' checked';
             }
+            $css_class = '';
+            // if ($option['option_value'] === 'other' && strrpos( $input['css_class'], "js-other-value-event") ) {
+            //     // echo '<pre>'; var_dump( strrpos( $input['css_class'], "js-other-value-event") ); echo '</pre>';;echo "<hr>";
+            //     $css_class = ' class="radio js-other-value-event"';
+            // }
+            if ($input['css_class']) $css_class = ' class="'.trim($input['css_class']).'"';
             ?>
                     
                     <label for="<?php echo $id.'-'.$count ?>" class="lbl-radio">
-                        <input id="<?php echo $id.'-'.$count ?>" name="<?php echo $id ?>-radio" type="radio" data-type="radio" tabindex="<?php echo $this->tab_index++; ?>" value="<?php echo $option['option_value'] ?>"<?php echo $checked; ?>><?php echo $option['option'] ?>
+                        <input id="<?php echo $id.'-'.$count ?>" name="<?php echo $id ?>-radio" type="radio" data-type="radio" tabindex="<?php echo $this->tab_index++; ?>" value="<?php echo $option['option_value'] ?>"<?php echo $data_id; echo $css_class; echo $checked; ?>><?php echo $option['option'] ?>
 
                     </label>
             <?php 

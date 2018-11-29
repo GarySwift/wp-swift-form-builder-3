@@ -103,7 +103,7 @@ require_once plugin_dir_path( __FILE__ ) . 'cpt/wp_swift_form_submit.php';
  * The ACF field groups
  */ 
 // require_once plugin_dir_path( __FILE__ ) . 'acf-field-groups/form-builder-inputs.php';
-require_once plugin_dir_path( __FILE__ ) . 'acf-field-groups/form-builder-input-sections.php';
+// require_once plugin_dir_path( __FILE__ ) . 'acf-field-groups/form-builder-input-sections.php';
 require_once plugin_dir_path( __FILE__ ) . 'acf-field-groups/_acf-field-group-contact-form.php';
 
 /**
@@ -205,3 +205,24 @@ function run_wp_swift_form_builder() {
 
 }
 run_wp_swift_form_builder();
+
+
+/*************************************************************/
+/*   Friendly Block Titles                                  */
+/***********************************************************/
+
+function my_layout_title($title, $field, $layout, $i) {
+	if($value = get_sub_field('name')) {
+		return $value . ' <sup>(' . $title . ')</sup>';
+	} else {
+		foreach($layout['sub_fields'] as $sub) {
+			if($sub['name'] == 'name') {
+				$key = $sub['key'];
+				if(array_key_exists($i, $field['value']) && $value = $field['value'][$i][$key])
+					return $value . ' ('.$key.')';
+			}
+		}
+	}
+	return $title;
+}
+add_filter('acf/fields/flexible_content/layout_title', 'my_layout_title', 10, 4);
