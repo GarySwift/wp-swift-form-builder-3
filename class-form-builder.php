@@ -59,6 +59,7 @@ class WP_Swift_Form_Builder_Parent {
      */
     public function __construct($form_id, $post_id, $hidden = array(), $type = 'request', $args = array(), $_post = null ) {// , $sections, $settings = false  //"option") {
         $form_data = wp_swift_get_form_data($form_id, $_post);
+        // echo '<pre>$form_data: '; var_dump($form_data); echo '</pre>';
         // write_log(array('$_post', $_post));
         $this->post_id = $post_id;
 
@@ -172,6 +173,10 @@ class WP_Swift_Form_Builder_Parent {
         }
         if(isset($settings["show_edit_link"])) {
             $this->show_edit_link = true;
+        }
+        if (isset($settings["enctype"])) {
+             $this->enctype = $settings["enctype"];
+             // echo '<pre> $this->enctype: '; var_dump( $this->enctype); echo '</pre>';
         }
 
         // else {
@@ -375,7 +380,11 @@ class WP_Swift_Form_Builder_Parent {
                             break; 
                         case "repeat_section":
                             echo $this->build_form_repeat_section($id, $input);
-                            break;                                                                                    
+                            break;
+                        case "file":
+                            $input_html = $this->build_form_input($id, $input);
+                            echo $this->wrap_input($id, $input, $input_html);
+                            break;                                                                                                                
                     }  
                 }
                      
@@ -388,6 +397,55 @@ class WP_Swift_Form_Builder_Parent {
     }
 
     public function process_form($post, $ajax=false) {
+
+
+// $form_pristine=false;
+// $mail_receipt=false;//auto-reponse flag
+$attachments = array();
+$path_array  = wp_upload_dir();
+$path = str_replace('\\', '/', $path_array['path']);//Uploads Folder
+echo '<pre>$path: '; var_dump($path); echo '</pre>';
+
+$home_path = get_home_path(); //Root folder
+echo '<pre>1 $home_path: '; var_dump($home_path); echo '</pre>';
+$home_path.='uploads';
+echo '<pre>2 $home_path: '; var_dump($home_path); echo '</pre>';
+$path=$home_path;
+
+$key = 'form-cv';
+echo '<pre>$path_array'; var_dump($path_array); echo '</pre>';
+echo '<pre>$path: '; var_dump($path); echo '</pre>';
+echo '<pre>$home_path: '; var_dump($home_path); echo '</pre>';
+
+if($_FILES[$key]) {
+    echo "<hr>";
+    echo '<pre>$_FILES: '; var_dump($_FILES); echo '</pre>';
+    $old_name = $_FILES[$key]["name"];
+    $split_name = explode('.',$old_name);
+    $time = 'file_'.rand(1000, 9999).'_'.time();
+    echo $time;
+    // $file_name = $time.".".$split_name[1];
+
+    // $now =date("Y-m-d_H-i-s"). '_gmt_'.rand(1000, 9999);
+    // $file_name = $now."_".$split_name[1];
+    // echo $file_name;
+    // echo '<pre>$file_name: '; var_dump($file_name); echo '</pre>';
+    echo '<pre>$path. "/" . $time._.$old_name: '; var_dump($path. "/" . $time.'_'.$old_name); echo '</pre>';
+    if(move_uploaded_file( $_FILES[$key]["tmp_name"], $path. "/" . $time.'_'.$old_name )) {
+        $form_data[$key]['passed'] = true;
+        $attach_file=true;
+        $attachments[]= $path. "/" . $time.'_'.$old_name;
+        echo '<pre>$attachments: '; var_dump($attachments); echo '</pre>';
+        // $form_data[$key]['clean'] = $time.'_'.$old_name.'';
+    }
+
+
+}
+else {
+
+
+}
+
 
         if ( $this->recaptcha_check($post) && $this->get_form_data() ) {
             $this->validate_form($post);
@@ -640,7 +698,8 @@ class WP_Swift_Form_Builder_Parent {
                 // return $input;
                  // echo '<pre>2 $input: '; var_dump($input); echo '</pre>';echo "<hr>";echo "<hr>";
                 break;
-            case "file":     
+            case "file": 
+                $input['passed'] = true;    
                 break; 
             case "hidden":
                 if (isset($input['nonce'])) {
@@ -870,6 +929,10 @@ class WP_Swift_Form_Builder_Parent {
         $readonly = '';
         $multiple = '';
         $css_class = '';
+        $disabled = '';
+        if ($data["disabled"]) {
+            $disabled = ' disabled';
+        }        
         if(!$this->form_pristine) {
             if($this->clear_after_submission && $this->error_count===0) {
                 // No errors found so clear the selected value
@@ -887,12 +950,11 @@ class WP_Swift_Form_Builder_Parent {
             $multiple = ' multiple';
             $css_class = ' js-select2-multiple';
         }
+
         ob_start();
-        // echo '<pre>$css_class: '; var_dump($css_class); echo '</pre>';
-        // echo '<pre>$data: '; var_dump($data); echo '</pre>';echo "<hr>";
         ?>
 
-        <select class="<?php echo $this->get_form_input_class($data, $css_class); ?>" id="<?php echo $id; ?>" name="<?php echo $id; ?>" data-type="select" tabindex="<?php echo $this->tab_index++; ?>" <?php echo $data['required']; echo $multiple; echo $readonly; ?>>
+        <select class="<?php echo $this->get_form_input_class($data, $css_class); ?>" id="<?php echo $id; ?>" name="<?php echo $id; ?>" data-type="select" tabindex="<?php echo $this->tab_index++; ?>" <?php echo $data['required']; echo $multiple; echo $readonly; echo $disabled ?>>
 
             <?php if($allow_null && !$multiple ): ?>
                 <option value="" class="placeholder">Please select an option...</option>

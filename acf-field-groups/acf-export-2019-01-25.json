@@ -1,0 +1,2272 @@
+[
+    {
+        "key": "group_5bfbe43dbc9a8",
+        "title": "Form Builder Clone Group: Default Settings",
+        "fields": [
+            {
+                "key": "field_5bfbe460feba9",
+                "label": "ID Group",
+                "name": "id_group",
+                "type": "clone",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "clone": [
+                    "group_5bfbdda24b2a3"
+                ],
+                "display": "seamless",
+                "layout": "block",
+                "prefix_label": 0,
+                "prefix_name": 0
+            },
+            {
+                "key": "field_5bfbe49cfebaa",
+                "label": "Reporting Group",
+                "name": "reporting_group",
+                "type": "clone",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "clone": [
+                    "group_5bfbe09d3bf4f"
+                ],
+                "display": "seamless",
+                "layout": "block",
+                "prefix_label": 0,
+                "prefix_name": 0
+            },
+            {
+                "key": "field_5bfbf33de1eda",
+                "label": "Settings Group",
+                "name": "settings_group",
+                "type": "clone",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "clone": [
+                    "group_5bfbf20f00155"
+                ],
+                "display": "seamless",
+                "layout": "block",
+                "prefix_label": 0,
+                "prefix_name": 0
+            }
+        ],
+        "location": [
+            [
+                {
+                    "param": "post_type",
+                    "operator": "==",
+                    "value": "post"
+                }
+            ]
+        ],
+        "menu_order": 0,
+        "position": "normal",
+        "style": "default",
+        "label_placement": "top",
+        "instruction_placement": "label",
+        "hide_on_screen": "",
+        "active": 0,
+        "description": ""
+    },
+    {
+        "key": "group_5c00082667cf5",
+        "title": "Form Builder Clone: CSS",
+        "fields": [
+            {
+                "key": "field_5c00082679dba",
+                "label": "Group CSS",
+                "name": "group_css",
+                "type": "text",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "50",
+                    "class": "group-start",
+                    "id": ""
+                },
+                "default_value": "",
+                "placeholder": "",
+                "prepend": "",
+                "append": "",
+                "maxlength": ""
+            },
+            {
+                "key": "field_5c00082679dca",
+                "label": "Input CSS",
+                "name": "input_css",
+                "type": "text",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "50",
+                    "class": "group-end",
+                    "id": ""
+                },
+                "default_value": "",
+                "placeholder": "",
+                "prepend": "",
+                "append": "",
+                "maxlength": ""
+            }
+        ],
+        "location": [
+            [
+                {
+                    "param": "post_type",
+                    "operator": "==",
+                    "value": "post"
+                }
+            ]
+        ],
+        "menu_order": 0,
+        "position": "normal",
+        "style": "default",
+        "label_placement": "top",
+        "instruction_placement": "label",
+        "hide_on_screen": "",
+        "active": 0,
+        "description": ""
+    },
+    {
+        "key": "group_5c0006eaba5e2",
+        "title": "Form Builder Clone: CSS and Disabled",
+        "fields": [
+            {
+                "key": "field_5c0006f387ce3",
+                "label": "Group CSS",
+                "name": "group_css",
+                "type": "text",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "33.3",
+                    "class": "group-start",
+                    "id": ""
+                },
+                "default_value": "",
+                "placeholder": "",
+                "prepend": "",
+                "append": "",
+                "maxlength": ""
+            },
+            {
+                "key": "field_5c00072187ce4",
+                "label": "Input CSS",
+                "name": "input_css",
+                "type": "text",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "33.3",
+                    "class": "group-end",
+                    "id": ""
+                },
+                "default_value": "",
+                "placeholder": "",
+                "prepend": "",
+                "append": "",
+                "maxlength": ""
+            },
+            {
+                "key": "field_5c00076387ce5",
+                "label": "Disabled",
+                "name": "disabled",
+                "type": "true_false",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "33.3",
+                    "class": "group-end",
+                    "id": ""
+                },
+                "message": "",
+                "default_value": 0,
+                "ui": 1,
+                "ui_on_text": "",
+                "ui_off_text": ""
+            }
+        ],
+        "location": [
+            [
+                {
+                    "param": "post_type",
+                    "operator": "==",
+                    "value": "post"
+                }
+            ]
+        ],
+        "menu_order": 0,
+        "position": "normal",
+        "style": "default",
+        "label_placement": "top",
+        "instruction_placement": "label",
+        "hide_on_screen": "",
+        "active": 0,
+        "description": ""
+    },
+    {
+        "key": "group_5bfc115dc78ac",
+        "title": "Form Builder Clone: Date Ranges",
+        "fields": [
+            {
+                "key": "field_5bfc1171671f5",
+                "label": "Date Ranges",
+                "name": "date_ranges",
+                "type": "radio",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "full-width-settings",
+                    "id": ""
+                },
+                "choices": {
+                    "all": "All",
+                    "past": "Past",
+                    "future": "Future"
+                },
+                "allow_null": 0,
+                "other_choice": 0,
+                "save_other_choice": 0,
+                "default_value": "past_future",
+                "layout": "horizontal",
+                "return_format": "value"
+            }
+        ],
+        "location": [
+            [
+                {
+                    "param": "post_type",
+                    "operator": "==",
+                    "value": "post"
+                }
+            ]
+        ],
+        "menu_order": 0,
+        "position": "normal",
+        "style": "default",
+        "label_placement": "top",
+        "instruction_placement": "label",
+        "hide_on_screen": "",
+        "active": 0,
+        "description": ""
+    },
+    {
+        "key": "group_5bfbdda24b2a3",
+        "title": "Form Builder Clone: ID Group",
+        "fields": [
+            {
+                "key": "field_5bfbde4c9c69c",
+                "label": "Name",
+                "name": "name",
+                "type": "text",
+                "instructions": "Input identifier",
+                "required": 1,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "50",
+                    "class": "group-start",
+                    "id": ""
+                },
+                "default_value": "",
+                "placeholder": "Eg. First Name",
+                "prepend": "",
+                "append": "",
+                "maxlength": ""
+            },
+            {
+                "key": "field_5bfbde229c69b",
+                "label": "Label",
+                "name": "label",
+                "type": "text",
+                "instructions": "If different from name",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "50",
+                    "class": "group-end",
+                    "id": ""
+                },
+                "default_value": "",
+                "placeholder": "",
+                "prepend": "",
+                "append": "",
+                "maxlength": ""
+            }
+        ],
+        "location": [
+            [
+                {
+                    "param": "post_type",
+                    "operator": "==",
+                    "value": "post"
+                }
+            ]
+        ],
+        "menu_order": 0,
+        "position": "normal",
+        "style": "default",
+        "label_placement": "top",
+        "instruction_placement": "label",
+        "hide_on_screen": "",
+        "active": 0,
+        "description": ""
+    },
+    {
+        "key": "group_5bfbfa5f2b3c5",
+        "title": "Form Builder Clone: Input Validation",
+        "fields": [
+            {
+                "key": "field_5bfc00274de95",
+                "label": "Validation Grouping",
+                "name": "validation_grouping",
+                "type": "group",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "grouping-table",
+                    "id": ""
+                },
+                "layout": "table",
+                "sub_fields": [
+                    {
+                        "key": "field_5bfbfa7d8da71",
+                        "label": "Validation",
+                        "name": "validation",
+                        "type": "select",
+                        "instructions": "",
+                        "required": 0,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "choices": {
+                            "alphabetic": "Alphabetic",
+                            "alphanumeric": "Alphanumeric",
+                            "numeric": "Numeric",
+                            "uppercase_alphabetic": "Uppercase Alphabetic",
+                            "uppercase_alphanumeric": "Uppercase Alphanumeric"
+                        },
+                        "default_value": [],
+                        "allow_null": 1,
+                        "multiple": 0,
+                        "ui": 0,
+                        "return_format": "value",
+                        "ajax": 0,
+                        "placeholder": ""
+                    },
+                    {
+                        "key": "field_5bfbfa5f2d945",
+                        "label": "Min",
+                        "name": "Max",
+                        "type": "number",
+                        "instructions": "",
+                        "required": 0,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "default_value": "",
+                        "placeholder": "",
+                        "prepend": "",
+                        "append": "",
+                        "min": "",
+                        "max": "",
+                        "step": ""
+                    },
+                    {
+                        "key": "field_5bfbfa5f2d962",
+                        "label": "Max",
+                        "name": "max",
+                        "type": "number",
+                        "instructions": "",
+                        "required": 0,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "default_value": "",
+                        "placeholder": "",
+                        "prepend": "",
+                        "append": "",
+                        "min": "",
+                        "max": "",
+                        "step": ""
+                    }
+                ]
+            }
+        ],
+        "location": [
+            [
+                {
+                    "param": "post_type",
+                    "operator": "==",
+                    "value": "post"
+                }
+            ]
+        ],
+        "menu_order": 0,
+        "position": "normal",
+        "style": "default",
+        "label_placement": "top",
+        "instruction_placement": "label",
+        "hide_on_screen": "",
+        "active": 0,
+        "description": ""
+    },
+    {
+        "key": "group_5bfbf616f078b",
+        "title": "Form Builder Clone: Number Attributes",
+        "fields": [
+            {
+                "key": "field_5bfbf63b7569e",
+                "label": "Min",
+                "name": "Max",
+                "type": "number",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "33.33",
+                    "class": "group-start",
+                    "id": ""
+                },
+                "default_value": "",
+                "placeholder": "",
+                "prepend": "",
+                "append": "",
+                "min": "",
+                "max": "",
+                "step": ""
+            },
+            {
+                "key": "field_5bfbf6647569f",
+                "label": "Max",
+                "name": "max",
+                "type": "number",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "33.33",
+                    "class": "group-middle",
+                    "id": ""
+                },
+                "default_value": "",
+                "placeholder": "",
+                "prepend": "",
+                "append": "",
+                "min": "",
+                "max": "",
+                "step": ""
+            },
+            {
+                "key": "field_5bfbf673756a0",
+                "label": "Step",
+                "name": "step",
+                "type": "number",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "33.33",
+                    "class": "group-end",
+                    "id": ""
+                },
+                "default_value": "",
+                "placeholder": "",
+                "prepend": "",
+                "append": "",
+                "min": "",
+                "max": "",
+                "step": ""
+            }
+        ],
+        "location": [
+            [
+                {
+                    "param": "post_type",
+                    "operator": "==",
+                    "value": "post"
+                }
+            ]
+        ],
+        "menu_order": 0,
+        "position": "normal",
+        "style": "default",
+        "label_placement": "top",
+        "instruction_placement": "label",
+        "hide_on_screen": "",
+        "active": 0,
+        "description": ""
+    },
+    {
+        "key": "group_5bfc1a3251d65",
+        "title": "Form Builder Clone: Options",
+        "fields": [
+            {
+                "key": "field_5bfc20097aedd",
+                "label": "Default Group",
+                "name": "default_group",
+                "type": "clone",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "clone": [
+                    "group_5bfbe43dbc9a8"
+                ],
+                "display": "seamless",
+                "layout": "block",
+                "prefix_label": 0,
+                "prefix_name": 0
+            },
+            {
+                "key": "field_5bfc1ab5b48fb",
+                "label": "Select Type",
+                "name": "select_type",
+                "type": "radio",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "full-width-settings",
+                    "id": ""
+                },
+                "choices": {
+                    "user": "Manually Input",
+                    "select": "Predefined Options"
+                },
+                "allow_null": 0,
+                "other_choice": 0,
+                "save_other_choice": 0,
+                "default_value": "user",
+                "layout": "horizontal",
+                "return_format": "value"
+            },
+            {
+                "key": "field_5bfc1a4bb48f8",
+                "label": "Options",
+                "name": "options",
+                "type": "repeater",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": [
+                    [
+                        {
+                            "field": "field_5bfc1ab5b48fb",
+                            "operator": "==",
+                            "value": "user"
+                        }
+                    ]
+                ],
+                "wrapper": {
+                    "width": "",
+                    "class": "full-width-settings",
+                    "id": ""
+                },
+                "collapsed": "field_5bfc1a79b48f9",
+                "min": 0,
+                "max": 0,
+                "layout": "table",
+                "button_label": "Add Option",
+                "sub_fields": [
+                    {
+                        "key": "field_5bfc1a79b48f9",
+                        "label": "Option",
+                        "name": "option",
+                        "type": "text",
+                        "instructions": "",
+                        "required": 1,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "default_value": "",
+                        "placeholder": "",
+                        "prepend": "",
+                        "append": "",
+                        "maxlength": ""
+                    },
+                    {
+                        "key": "field_5bfc1a83b48fa",
+                        "label": "Option Value",
+                        "name": "option_value",
+                        "type": "text",
+                        "instructions": "",
+                        "required": 0,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "default_value": "",
+                        "placeholder": "",
+                        "prepend": "",
+                        "append": "",
+                        "maxlength": ""
+                    }
+                ]
+            },
+            {
+                "key": "field_5bfc1cc1d6516",
+                "label": "Other Field",
+                "name": "other",
+                "type": "true_false",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": [
+                    [
+                        {
+                            "field": "field_5bfc1ab5b48fb",
+                            "operator": "==",
+                            "value": "user"
+                        }
+                    ]
+                ],
+                "wrapper": {
+                    "width": "",
+                    "class": "full-width-settings",
+                    "id": ""
+                },
+                "message": "Automatically append 'Other' field to <b>Select Options<\/b> which toggles a text input field that allow users type an option.",
+                "default_value": 0,
+                "ui": 0,
+                "ui_on_text": "",
+                "ui_off_text": ""
+            },
+            {
+                "key": "field_5bfc1efaf75a4",
+                "label": "Predefined Options",
+                "name": "predefined_options",
+                "type": "select",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": [
+                    [
+                        {
+                            "field": "field_5bfc1ab5b48fb",
+                            "operator": "==",
+                            "value": "select"
+                        }
+                    ]
+                ],
+                "wrapper": {
+                    "width": "",
+                    "class": "full-width-settings",
+                    "id": ""
+                },
+                "choices": {
+                    "counties": "Counties",
+                    "countries": "Countries",
+                    "us_states": "US States",
+                    "industries": "Industries",
+                    "products": "Products",
+                    "services": "Services",
+                    "standard_freq": "Standard Freqencies",
+                    "frequencies": "Freqencies",
+                    "umts_frequencies": "UMTS-FDD 3G Bands",
+                    "e_utra_frequencies": "E-UTRA Bands 4G\/LTE"
+                },
+                "default_value": [],
+                "allow_null": 0,
+                "multiple": 0,
+                "ui": 0,
+                "ajax": 0,
+                "return_format": "value",
+                "placeholder": ""
+            }
+        ],
+        "location": [
+            [
+                {
+                    "param": "post_type",
+                    "operator": "==",
+                    "value": "post"
+                }
+            ]
+        ],
+        "menu_order": 0,
+        "position": "normal",
+        "style": "default",
+        "label_placement": "top",
+        "instruction_placement": "label",
+        "hide_on_screen": "",
+        "active": 0,
+        "description": ""
+    },
+    {
+        "key": "group_5bfbe09d3bf4f",
+        "title": "Form Builder Clone: Reporting Group",
+        "fields": [
+            {
+                "key": "field_5bfbe09d3e240",
+                "label": "Help Message",
+                "name": "help",
+                "type": "text",
+                "instructions": "Displayed on error",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "50",
+                    "class": "group-start",
+                    "id": ""
+                },
+                "default_value": "",
+                "placeholder": "Eg. Email is not required but must be valid",
+                "prepend": "",
+                "append": "",
+                "maxlength": ""
+            },
+            {
+                "key": "field_5bfbe09d3e26c",
+                "label": "Instructions",
+                "name": "instructions",
+                "type": "text",
+                "instructions": "Always visible message",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "50",
+                    "class": "group-end",
+                    "id": ""
+                },
+                "default_value": "",
+                "placeholder": "",
+                "prepend": "",
+                "append": "",
+                "maxlength": ""
+            }
+        ],
+        "location": [
+            [
+                {
+                    "param": "post_type",
+                    "operator": "==",
+                    "value": "post"
+                }
+            ]
+        ],
+        "menu_order": 0,
+        "position": "normal",
+        "style": "default",
+        "label_placement": "top",
+        "instruction_placement": "label",
+        "hide_on_screen": "",
+        "active": 0,
+        "description": ""
+    },
+    {
+        "key": "group_5bffdbed2c31f",
+        "title": "Form Builder Clone: Select Options",
+        "fields": [
+            {
+                "key": "field_5bffdc006bab8",
+                "label": "Multiple Select",
+                "name": "multiple_select",
+                "type": "true_false",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "50",
+                    "class": "group-start",
+                    "id": ""
+                },
+                "message": "",
+                "default_value": 0,
+                "ui": 1,
+                "ui_on_text": "",
+                "ui_off_text": ""
+            },
+            {
+                "key": "field_5bffdc636bab9",
+                "label": "Stylised UI",
+                "name": "stylised_ui",
+                "type": "true_false",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "50",
+                    "class": "group-end",
+                    "id": ""
+                },
+                "message": "",
+                "default_value": 0,
+                "ui": 1,
+                "ui_on_text": "",
+                "ui_off_text": ""
+            }
+        ],
+        "location": [
+            [
+                {
+                    "param": "post_type",
+                    "operator": "==",
+                    "value": "post"
+                }
+            ]
+        ],
+        "menu_order": 0,
+        "position": "normal",
+        "style": "default",
+        "label_placement": "top",
+        "instruction_placement": "label",
+        "hide_on_screen": "",
+        "active": 0,
+        "description": ""
+    },
+    {
+        "key": "group_5bfbf20f00155",
+        "title": "Form Builder Clone: Settings Group",
+        "fields": [
+            {
+                "key": "field_5bfbf20f0645c",
+                "label": "Required",
+                "name": "required",
+                "type": "true_false",
+                "instructions": "Force input from user",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "50",
+                    "class": "group-start",
+                    "id": ""
+                },
+                "message": "",
+                "default_value": 1,
+                "ui": 1,
+                "ui_on_text": "",
+                "ui_off_text": ""
+            },
+            {
+                "key": "field_5bfbf249611f7",
+                "label": "Grouping",
+                "name": "grouping",
+                "type": "select",
+                "instructions": "Manage multiple inputs in a row",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "50",
+                    "class": "group-end",
+                    "id": ""
+                },
+                "choices": {
+                    "none": "None",
+                    "start": "Start Group",
+                    "end": "End Group"
+                },
+                "default_value": [
+                    "none"
+                ],
+                "allow_null": 0,
+                "multiple": 0,
+                "ui": 0,
+                "ajax": 0,
+                "return_format": "value",
+                "placeholder": ""
+            }
+        ],
+        "location": [
+            [
+                {
+                    "param": "post_type",
+                    "operator": "==",
+                    "value": "post"
+                }
+            ]
+        ],
+        "menu_order": 0,
+        "position": "normal",
+        "style": "default",
+        "label_placement": "top",
+        "instruction_placement": "label",
+        "hide_on_screen": "",
+        "active": 0,
+        "description": ""
+    },
+    {
+        "key": "group_5bfc056f8d9d6",
+        "title": "Form Builder Clone: Textarea Attributes",
+        "fields": [
+            {
+                "key": "field_5bfc056f8f7d2",
+                "label": "Rows",
+                "name": "rows",
+                "type": "number",
+                "instructions": "Number of lines",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "50",
+                    "class": "group-start",
+                    "id": ""
+                },
+                "default_value": "",
+                "placeholder": "",
+                "prepend": "",
+                "append": "",
+                "min": "",
+                "max": "",
+                "step": ""
+            },
+            {
+                "key": "field_5bfc056f8f7f6",
+                "label": "Max Length",
+                "name": "maxlength",
+                "type": "number",
+                "instructions": "Maximum number of characters",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "50",
+                    "class": "group-end",
+                    "id": ""
+                },
+                "default_value": "",
+                "placeholder": "",
+                "prepend": "",
+                "append": "",
+                "min": "",
+                "max": "",
+                "step": ""
+            }
+        ],
+        "location": [
+            [
+                {
+                    "param": "post_type",
+                    "operator": "==",
+                    "value": "post"
+                }
+            ]
+        ],
+        "menu_order": 0,
+        "position": "normal",
+        "style": "default",
+        "label_placement": "top",
+        "instruction_placement": "label",
+        "hide_on_screen": "",
+        "active": 0,
+        "description": ""
+    },
+    {
+        "key": "group_59cf729a5237d",
+        "title": "Form Builder: Input Sections",
+        "fields": [
+            {
+                "key": "field_5afd52dc39f96",
+                "label": "",
+                "name": "",
+                "type": "message",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "message": "Form builder is still in beta so please refer to the developer before changing advanced features of this form.",
+                "new_lines": "wpautop",
+                "esc_html": 0
+            },
+            {
+                "key": "field_59ec8f68aa374",
+                "label": "Inputs",
+                "name": "",
+                "type": "tab",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "placement": "top",
+                "endpoint": 0
+            },
+            {
+                "key": "field_59cf72b083b6d",
+                "label": "Sections",
+                "name": "sections",
+                "type": "repeater",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": "form-builder-input-sections"
+                },
+                "collapsed": "field_59cfa764c048a",
+                "min": 1,
+                "max": 0,
+                "layout": "row",
+                "button_label": "Add Section",
+                "sub_fields": [
+                    {
+                        "key": "field_59cfa60dc0488",
+                        "label": "Inputs",
+                        "name": "",
+                        "type": "tab",
+                        "instructions": "",
+                        "required": 0,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "placement": "top",
+                        "endpoint": 0
+                    },
+                    {
+                        "key": "field_59d2045c948d4",
+                        "label": "Form Inputs",
+                        "name": "form_inputs",
+                        "type": "clone",
+                        "instructions": "",
+                        "required": 0,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "clone": [
+                            "group_57b6fd868aeca"
+                        ],
+                        "display": "seamless",
+                        "layout": "block",
+                        "prefix_label": 0,
+                        "prefix_name": 0
+                    },
+                    {
+                        "key": "field_59cfa6a6c0489",
+                        "label": "Content",
+                        "name": "",
+                        "type": "tab",
+                        "instructions": "",
+                        "required": 0,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "placement": "top",
+                        "endpoint": 0
+                    },
+                    {
+                        "key": "field_59cfa764c048a",
+                        "label": "Section Header",
+                        "name": "section_header",
+                        "type": "text",
+                        "instructions": "",
+                        "required": 0,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "default_value": "",
+                        "placeholder": "",
+                        "prepend": "",
+                        "append": "",
+                        "maxlength": ""
+                    },
+                    {
+                        "key": "field_59cfa773c048b",
+                        "label": "Section Content",
+                        "name": "section_content",
+                        "type": "wysiwyg",
+                        "instructions": "",
+                        "required": 0,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "default_value": "",
+                        "tabs": "all",
+                        "toolbar": "full",
+                        "media_upload": 0,
+                        "delay": 0
+                    }
+                ]
+            },
+            {
+                "key": "field_59ec8f96aa375",
+                "label": "General Settings",
+                "name": "",
+                "type": "tab",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "placement": "top",
+                "endpoint": 0
+            },
+            {
+                "key": "field_59ec8fa5aa376",
+                "label": "Hide Labels",
+                "name": "hide_labels",
+                "type": "true_false",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "message": "Placeholders will be automatically added if labels are hidden.",
+                "default_value": 0,
+                "ui": 1,
+                "ui_on_text": "",
+                "ui_off_text": ""
+            },
+            {
+                "key": "field_59ec9007aa377",
+                "label": "Wrap Form",
+                "name": "wrap_form",
+                "type": "true_false",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "message": "Adds a border around the form and removes border from error messages.",
+                "default_value": 0,
+                "ui": 1,
+                "ui_on_text": "",
+                "ui_off_text": ""
+            },
+            {
+                "key": "field_5a02c5255508c",
+                "label": "Submit Button Text",
+                "name": "submit_button_text",
+                "type": "text",
+                "instructions": "Leave blank to use default.",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "default_value": "",
+                "placeholder": "Submit Form",
+                "prepend": "",
+                "append": "",
+                "maxlength": 30
+            },
+            {
+                "key": "field_5a0c9ab591cc9",
+                "label": "User Confirmation Email",
+                "name": "user_confirmation_email",
+                "type": "select",
+                "instructions": "How confirmations email are handled.",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "choices": {
+                    "ask": "Always Ask User",
+                    "send": "Always Send",
+                    "never": "Never Send"
+                },
+                "default_value": [
+                    "ask"
+                ],
+                "allow_null": 1,
+                "multiple": 0,
+                "ui": 0,
+                "ajax": 0,
+                "return_format": "value",
+                "placeholder": ""
+            },
+            {
+                "key": "field_5a0ca25ef7116",
+                "label": "Show Page in Email",
+                "name": "show_page_in_email",
+                "type": "true_false",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": [
+                    [
+                        {
+                            "field": "field_5a0c9ab591cc9",
+                            "operator": "==",
+                            "value": "ask"
+                        }
+                    ],
+                    [
+                        {
+                            "field": "field_5a0c9ab591cc9",
+                            "operator": "==",
+                            "value": "send"
+                        }
+                    ]
+                ],
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "message": "Show page name and link in email. (Useful if form appears on multiple pages.)",
+                "default_value": 0,
+                "ui": 1,
+                "ui_on_text": "",
+                "ui_off_text": ""
+            },
+            {
+                "key": "field_5a0c9ce346991",
+                "label": "Show Edit Link",
+                "name": "show_edit_link",
+                "type": "true_false",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "message": "Shows an <b>Edit Form<\/b> link to users with form editing capabilities.",
+                "default_value": 0,
+                "ui": 1,
+                "ui_on_text": "",
+                "ui_off_text": ""
+            },
+            {
+                "key": "field_5aa7d7df2f286",
+                "label": "Save Submission",
+                "name": "save_submission",
+                "type": "true_false",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "message": "Save a permanent copy of each form submission in the WordPress backend.",
+                "default_value": 0,
+                "ui": 1,
+                "ui_on_text": "",
+                "ui_off_text": ""
+            },
+            {
+                "key": "field_5af44f85be7cb",
+                "label": "Spam Prevention",
+                "name": "",
+                "type": "tab",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "placement": "top",
+                "endpoint": 0
+            },
+            {
+                "key": "field_5ad4674d8339f",
+                "label": "Spam Prevention",
+                "name": "spam_prevention_type",
+                "type": "radio",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "choices": {
+                    "none": "None",
+                    "google": "Google reCAPTCHA"
+                },
+                "allow_null": 0,
+                "other_choice": 0,
+                "save_other_choice": 0,
+                "default_value": "none",
+                "layout": "horizontal",
+                "return_format": "value"
+            },
+            {
+                "key": "field_5af450cd6baed",
+                "label": "reCAPTCHA Settings",
+                "name": "recaptcha_settings",
+                "type": "group",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": [
+                    [
+                        {
+                            "field": "field_5ad4674d8339f",
+                            "operator": "==",
+                            "value": "google"
+                        }
+                    ]
+                ],
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "layout": "table",
+                "sub_fields": [
+                    {
+                        "key": "field_5af450ec6baee",
+                        "label": "Theme",
+                        "name": "theme",
+                        "type": "select",
+                        "instructions": "",
+                        "required": 0,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "choices": {
+                            "dark": "Dark",
+                            "light": "Light"
+                        },
+                        "default_value": [
+                            "light"
+                        ],
+                        "allow_null": 0,
+                        "multiple": 0,
+                        "ui": 0,
+                        "ajax": 0,
+                        "return_format": "value",
+                        "placeholder": ""
+                    },
+                    {
+                        "key": "field_5af4512b6baef",
+                        "label": "Size",
+                        "name": "size",
+                        "type": "select",
+                        "instructions": "",
+                        "required": 0,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "choices": {
+                            "compact": "Compact",
+                            "normal": "Normal"
+                        },
+                        "default_value": [
+                            "normal"
+                        ],
+                        "allow_null": 0,
+                        "multiple": 0,
+                        "ui": 0,
+                        "ajax": 0,
+                        "return_format": "value",
+                        "placeholder": ""
+                    }
+                ]
+            },
+            {
+                "key": "field_5af455951b950",
+                "label": "Display Settings",
+                "name": "recaptcha_display_settings",
+                "type": "group",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": [
+                    [
+                        {
+                            "field": "field_5ad4674d8339f",
+                            "operator": "==",
+                            "value": "google"
+                        }
+                    ]
+                ],
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "layout": "block",
+                "sub_fields": [
+                    {
+                        "key": "field_5af455ba1b951",
+                        "label": "Hide On Load",
+                        "name": "hide_on_load",
+                        "type": "true_false",
+                        "instructions": "",
+                        "required": 0,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "message": "",
+                        "default_value": 0,
+                        "ui": 1,
+                        "ui_on_text": "",
+                        "ui_off_text": ""
+                    }
+                ]
+            },
+            {
+                "key": "field_5ad46a79d7cb4",
+                "label": "GDPR",
+                "name": "",
+                "type": "tab",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "placement": "top",
+                "endpoint": 0
+            },
+            {
+                "key": "field_5ad46b1bd7cb5",
+                "label": "GDPR",
+                "name": "gdpr",
+                "type": "true_false",
+                "instructions": "The General Data Protection Regulation (GDPR) is a regulation in EU law on data protection and privacy for all individuals within the European Union.",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "message": "Show GDPR sign up options.",
+                "default_value": 0,
+                "ui": 1,
+                "ui_on_text": "",
+                "ui_off_text": ""
+            },
+            {
+                "key": "field_5ad46b6ad7cb6",
+                "label": "GDPR Settings",
+                "name": "gdpr_settings",
+                "type": "group",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": [
+                    [
+                        {
+                            "field": "field_5ad46b1bd7cb5",
+                            "operator": "==",
+                            "value": "1"
+                        }
+                    ]
+                ],
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "layout": "block",
+                "sub_fields": [
+                    {
+                        "key": "field_5ad46b93d7cb7",
+                        "label": "Main message",
+                        "name": "main_message",
+                        "type": "textarea",
+                        "instructions": "",
+                        "required": 0,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "default_value": "We would love to keep in touch with you, if you’re happy for us to do that please let us know below:",
+                        "placeholder": "",
+                        "maxlength": "",
+                        "rows": 2,
+                        "new_lines": ""
+                    },
+                    {
+                        "key": "field_5ad46bddd7cb8",
+                        "label": "Opt in",
+                        "name": "opt_in",
+                        "type": "repeater",
+                        "instructions": "This will determine what options you show to the end user.",
+                        "required": 0,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "collapsed": "field_5ad46c39d7cb9",
+                        "min": 1,
+                        "max": 3,
+                        "layout": "table",
+                        "button_label": "Add Opt in",
+                        "sub_fields": [
+                            {
+                                "key": "field_5ad46c39d7cb9",
+                                "label": "Message",
+                                "name": "message",
+                                "type": "textarea",
+                                "instructions": "Edit this so it is GDPR compliant",
+                                "required": 0,
+                                "conditional_logic": 0,
+                                "wrapper": {
+                                    "width": "50",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "default_value": "I am happy to receive marketing information from [YOUR_SITE] by: (please tick all that apply)",
+                                "placeholder": "",
+                                "maxlength": "",
+                                "rows": 2,
+                                "new_lines": ""
+                            },
+                            {
+                                "key": "field_5ad46c84d7cba",
+                                "label": "Options",
+                                "name": "options",
+                                "type": "checkbox",
+                                "instructions": "What we show user",
+                                "required": 0,
+                                "conditional_logic": 0,
+                                "wrapper": {
+                                    "width": "25",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "choices": {
+                                    "email": "Email",
+                                    "sms": "SMS"
+                                },
+                                "allow_custom": 0,
+                                "save_custom": 0,
+                                "default_value": [],
+                                "layout": "horizontal",
+                                "toggle": 0,
+                                "return_format": "value"
+                            },
+                            {
+                                "key": "field_5afc36b540767",
+                                "label": "List IDs",
+                                "name": "list_ids",
+                                "type": "number",
+                                "instructions": "SendInBlue Group ID",
+                                "required": 0,
+                                "conditional_logic": 0,
+                                "wrapper": {
+                                    "width": "25",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "default_value": "",
+                                "placeholder": "",
+                                "prepend": "",
+                                "append": "",
+                                "min": "",
+                                "max": "",
+                                "step": ""
+                            }
+                        ]
+                    },
+                    {
+                        "key": "field_5ad471d8af991",
+                        "label": "Disclaimer",
+                        "name": "disclaimer",
+                        "type": "wysiwyg",
+                        "instructions": "An additional message explaining to the user what their rights are.",
+                        "required": 0,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "default_value": "You can opt out of receiving messages at any time by using the unsubscribe button on any of the messages you receive. You can withdraw your information at any time by emailing [YOUR_EMAIL].\r\n\r\nMarketing information refers to information on appointed reminders, news, products and services including competitions, promotions, offers, advertisements and prize draws.",
+                        "tabs": "visual",
+                        "toolbar": "basic",
+                        "media_upload": 0,
+                        "delay": 1
+                    }
+                ]
+            }
+        ],
+        "location": [
+            [
+                {
+                    "param": "post_type",
+                    "operator": "==",
+                    "value": "wp_swift_form"
+                }
+            ]
+        ],
+        "menu_order": 0,
+        "position": "normal",
+        "style": "default",
+        "label_placement": "top",
+        "instruction_placement": "label",
+        "hide_on_screen": "",
+        "active": 1,
+        "description": ""
+    },
+    {
+        "key": "group_57b6fd868aeca",
+        "title": "Form Builder: Inputs",
+        "fields": [
+            {
+                "key": "field_5bfbdbf17c286",
+                "label": "Form Inputs",
+                "name": "form_inputs",
+                "type": "flexible_content",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "layouts": {
+                    "5bfbdc059cf1f": {
+                        "key": "5bfbdc059cf1f",
+                        "name": "text",
+                        "label": "Text",
+                        "display": "block",
+                        "sub_fields": [
+                            {
+                                "key": "field_5bfbe1fa8489d",
+                                "label": "Default Group",
+                                "name": "default_group",
+                                "type": "clone",
+                                "instructions": "",
+                                "required": 0,
+                                "conditional_logic": 0,
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "clone": [
+                                    "group_5bfbe43dbc9a8"
+                                ],
+                                "display": "seamless",
+                                "layout": "block",
+                                "prefix_label": 0,
+                                "prefix_name": 0
+                            },
+                            {
+                                "key": "field_5bfbfb3a38d65",
+                                "label": "Input Validation",
+                                "name": "input_validation",
+                                "type": "clone",
+                                "instructions": "",
+                                "required": 0,
+                                "conditional_logic": 0,
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "clone": [
+                                    "group_5bfbfa5f2b3c5"
+                                ],
+                                "display": "seamless",
+                                "layout": "block",
+                                "prefix_label": 0,
+                                "prefix_name": 0
+                            },
+                            {
+                                "key": "field_5c000ed2fca73",
+                                "label": "CSS",
+                                "name": "css",
+                                "type": "clone",
+                                "instructions": "",
+                                "required": 0,
+                                "conditional_logic": 0,
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "clone": [
+                                    "group_5c0006eaba5e2"
+                                ],
+                                "display": "seamless",
+                                "layout": "block",
+                                "prefix_label": 0,
+                                "prefix_name": 0
+                            }
+                        ],
+                        "min": "",
+                        "max": ""
+                    },
+                    "5bfbe529c4e24": {
+                        "key": "5bfbe529c4e24",
+                        "name": "number",
+                        "label": "Number",
+                        "display": "block",
+                        "sub_fields": [
+                            {
+                                "key": "field_5bfbe529c4e25",
+                                "label": "Default Group",
+                                "name": "default_group",
+                                "type": "clone",
+                                "instructions": "",
+                                "required": 0,
+                                "conditional_logic": 0,
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "clone": [
+                                    "group_5bfbe43dbc9a8"
+                                ],
+                                "display": "seamless",
+                                "layout": "block",
+                                "prefix_label": 0,
+                                "prefix_name": 0
+                            },
+                            {
+                                "key": "field_5bfbf6b7cf6b1",
+                                "label": "Number Attributes",
+                                "name": "number_attributes",
+                                "type": "clone",
+                                "instructions": "",
+                                "required": 0,
+                                "conditional_logic": 0,
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "clone": [
+                                    "group_5bfbf616f078b"
+                                ],
+                                "display": "seamless",
+                                "layout": "block",
+                                "prefix_label": 0,
+                                "prefix_name": 0
+                            }
+                        ],
+                        "min": "",
+                        "max": ""
+                    },
+                    "5bfbe541c4e26": {
+                        "key": "5bfbe541c4e26",
+                        "name": "email",
+                        "label": "Email",
+                        "display": "block",
+                        "sub_fields": [
+                            {
+                                "key": "field_5bfbe541c4e27",
+                                "label": "Default Group",
+                                "name": "default_group",
+                                "type": "clone",
+                                "instructions": "",
+                                "required": 0,
+                                "conditional_logic": 0,
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "clone": [
+                                    "group_5bfbe43dbc9a8"
+                                ],
+                                "display": "seamless",
+                                "layout": "block",
+                                "prefix_label": 0,
+                                "prefix_name": 0
+                            }
+                        ],
+                        "min": "",
+                        "max": ""
+                    },
+                    "5bfc1076266b8": {
+                        "key": "5bfc1076266b8",
+                        "name": "url",
+                        "label": "URL",
+                        "display": "block",
+                        "sub_fields": [
+                            {
+                                "key": "field_5bfc1076266b9",
+                                "label": "Default Group",
+                                "name": "default_group",
+                                "type": "clone",
+                                "instructions": "",
+                                "required": 0,
+                                "conditional_logic": 0,
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "clone": [
+                                    "group_5bfbe43dbc9a8"
+                                ],
+                                "display": "seamless",
+                                "layout": "block",
+                                "prefix_label": 0,
+                                "prefix_name": 0
+                            }
+                        ],
+                        "min": "",
+                        "max": ""
+                    },
+                    "5bfc04cea33af": {
+                        "key": "5bfc04cea33af",
+                        "name": "textarea",
+                        "label": "Textarea",
+                        "display": "block",
+                        "sub_fields": [
+                            {
+                                "key": "field_5bfc04cea33b0",
+                                "label": "Default Group",
+                                "name": "default_group",
+                                "type": "clone",
+                                "instructions": "",
+                                "required": 0,
+                                "conditional_logic": 0,
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "clone": [
+                                    "group_5bfbe43dbc9a8"
+                                ],
+                                "display": "seamless",
+                                "layout": "block",
+                                "prefix_label": 0,
+                                "prefix_name": 0
+                            },
+                            {
+                                "key": "field_5bfc0609a33b1",
+                                "label": "Textarea Attributes",
+                                "name": "textarea_attributes",
+                                "type": "clone",
+                                "instructions": "",
+                                "required": 0,
+                                "conditional_logic": 0,
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "clone": [
+                                    "group_5bfc056f8d9d6"
+                                ],
+                                "display": "seamless",
+                                "layout": "block",
+                                "prefix_label": 0,
+                                "prefix_name": 0
+                            }
+                        ],
+                        "min": "",
+                        "max": ""
+                    },
+                    "5bfc10ee90f64": {
+                        "key": "5bfc10ee90f64",
+                        "name": "date",
+                        "label": "Date",
+                        "display": "block",
+                        "sub_fields": [
+                            {
+                                "key": "field_5bfc10ee90f65",
+                                "label": "Default Group",
+                                "name": "default_group",
+                                "type": "clone",
+                                "instructions": "",
+                                "required": 0,
+                                "conditional_logic": 0,
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "clone": [
+                                    "group_5bfbe43dbc9a8"
+                                ],
+                                "display": "seamless",
+                                "layout": "block",
+                                "prefix_label": 0,
+                                "prefix_name": 0
+                            },
+                            {
+                                "key": "field_5bfc11cc90f66",
+                                "label": "Date Ranges",
+                                "name": "date_ranges",
+                                "type": "clone",
+                                "instructions": "",
+                                "required": 0,
+                                "conditional_logic": 0,
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "clone": [
+                                    "group_5bfc115dc78ac"
+                                ],
+                                "display": "seamless",
+                                "layout": "block",
+                                "prefix_label": 0,
+                                "prefix_name": 0
+                            }
+                        ],
+                        "min": "",
+                        "max": ""
+                    },
+                    "5bfc148c130f2": {
+                        "key": "5bfc148c130f2",
+                        "name": "date_range",
+                        "label": "Date Range",
+                        "display": "block",
+                        "sub_fields": [
+                            {
+                                "key": "field_5bfc148c130f3",
+                                "label": "ID Group",
+                                "name": "id_group",
+                                "type": "clone",
+                                "instructions": "",
+                                "required": 0,
+                                "conditional_logic": 0,
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "clone": [
+                                    "group_5bfbdda24b2a3"
+                                ],
+                                "display": "seamless",
+                                "layout": "block",
+                                "prefix_label": 0,
+                                "prefix_name": 0
+                            },
+                            {
+                                "key": "field_5bfc14cd130f5",
+                                "label": "Reporting Group",
+                                "name": "reporting_group",
+                                "type": "clone",
+                                "instructions": "",
+                                "required": 0,
+                                "conditional_logic": 0,
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "clone": [
+                                    "group_5bfbe09d3bf4f"
+                                ],
+                                "display": "seamless",
+                                "layout": "block",
+                                "prefix_label": 0,
+                                "prefix_name": 0
+                            }
+                        ],
+                        "min": "",
+                        "max": ""
+                    },
+                    "5bfc19def84e5": {
+                        "key": "5bfc19def84e5",
+                        "name": "select",
+                        "label": "Select",
+                        "display": "block",
+                        "sub_fields": [
+                            {
+                                "key": "field_5bfc1b467a6e5",
+                                "label": "Options Clone",
+                                "name": "options_clone",
+                                "type": "clone",
+                                "instructions": "",
+                                "required": 0,
+                                "conditional_logic": 0,
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "clone": [
+                                    "group_5bfc1a3251d65"
+                                ],
+                                "display": "seamless",
+                                "layout": "block",
+                                "prefix_label": 0,
+                                "prefix_name": 0
+                            },
+                            {
+                                "key": "field_5bffdcaac79e0",
+                                "label": "Select Options",
+                                "name": "select_options",
+                                "type": "clone",
+                                "instructions": "",
+                                "required": 0,
+                                "conditional_logic": 0,
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "clone": [
+                                    "group_5bffdbed2c31f"
+                                ],
+                                "display": "seamless",
+                                "layout": "block",
+                                "prefix_label": 0,
+                                "prefix_name": 0
+                            },
+                            {
+                                "key": "field_5c0012f1f36d6",
+                                "label": "CSS",
+                                "name": "css",
+                                "type": "clone",
+                                "instructions": "",
+                                "required": 0,
+                                "conditional_logic": 0,
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "clone": [
+                                    "group_5c0006eaba5e2"
+                                ],
+                                "display": "seamless",
+                                "layout": "block",
+                                "prefix_label": 0,
+                                "prefix_name": 0
+                            }
+                        ],
+                        "min": "",
+                        "max": ""
+                    },
+                    "5bfc274ab2982": {
+                        "key": "5bfc274ab2982",
+                        "name": "checkbox",
+                        "label": "Checkbox",
+                        "display": "block",
+                        "sub_fields": [
+                            {
+                                "key": "field_5bfc274ab2983",
+                                "label": "Options Clone",
+                                "name": "options_clone",
+                                "type": "clone",
+                                "instructions": "",
+                                "required": 0,
+                                "conditional_logic": 0,
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "clone": [
+                                    "group_5bfc1a3251d65"
+                                ],
+                                "display": "seamless",
+                                "layout": "block",
+                                "prefix_label": 0,
+                                "prefix_name": 0
+                            },
+                            {
+                                "key": "field_5c00098ae33da",
+                                "label": "CSS",
+                                "name": "css",
+                                "type": "clone",
+                                "instructions": "",
+                                "required": 0,
+                                "conditional_logic": 0,
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "clone": [
+                                    "group_5c00082667cf5"
+                                ],
+                                "display": "seamless",
+                                "layout": "block",
+                                "prefix_label": 0,
+                                "prefix_name": 0
+                            }
+                        ],
+                        "min": "",
+                        "max": ""
+                    },
+                    "5bfd0506f4506": {
+                        "key": "5bfd0506f4506",
+                        "name": "radio",
+                        "label": "Radio Button",
+                        "display": "block",
+                        "sub_fields": [
+                            {
+                                "key": "field_5bfd0506f4507",
+                                "label": "Options Clone",
+                                "name": "options_clone",
+                                "type": "clone",
+                                "instructions": "",
+                                "required": 0,
+                                "conditional_logic": 0,
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "clone": [
+                                    "group_5bfc1a3251d65"
+                                ],
+                                "display": "seamless",
+                                "layout": "block",
+                                "prefix_label": 0,
+                                "prefix_name": 0
+                            }
+                        ],
+                        "min": "",
+                        "max": ""
+                    },
+                    "layout_5c0110f6844d6": {
+                        "key": "layout_5c0110f6844d6",
+                        "name": "file",
+                        "label": "File",
+                        "display": "block",
+                        "sub_fields": [
+                            {
+                                "key": "field_5c011109844d7",
+                                "label": "Default Group",
+                                "name": "default_group",
+                                "type": "clone",
+                                "instructions": "",
+                                "required": 0,
+                                "conditional_logic": 0,
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "clone": [
+                                    "group_5bfbe43dbc9a8"
+                                ],
+                                "display": "seamless",
+                                "layout": "block",
+                                "prefix_label": 0,
+                                "prefix_name": 0
+                            },
+                            {
+                                "key": "field_5c011142844d8",
+                                "label": "Save Location",
+                                "name": "save_location",
+                                "type": "text",
+                                "instructions": "Ensure that Directory Listing is disabled on this folder for sensitive files.",
+                                "required": 0,
+                                "conditional_logic": 0,
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "default_value": "wp-content\/uploads\/form-builder",
+                                "placeholder": "wp-content\/uploads\/form-builder",
+                                "prepend": "",
+                                "append": "",
+                                "maxlength": ""
+                            }
+                        ],
+                        "min": "",
+                        "max": ""
+                    }
+                },
+                "button_label": "Add Input",
+                "min": "",
+                "max": ""
+            }
+        ],
+        "location": [
+            [
+                {
+                    "param": "post_type",
+                    "operator": "==",
+                    "value": "post"
+                }
+            ]
+        ],
+        "menu_order": 0,
+        "position": "normal",
+        "style": "default",
+        "label_placement": "top",
+        "instruction_placement": "label",
+        "hide_on_screen": "",
+        "active": 0,
+        "description": ""
+    }
+]

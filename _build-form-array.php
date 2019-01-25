@@ -169,7 +169,18 @@ function build_acf_form_array($row_layout, $inputs, $settings, $section=0, $edit
             }            
         // }
     }
-
+    $css_class = get_sub_field('group_css');
+    $css_class_input = get_sub_field('input_css');
+    // if( get_sub_field('css_class') ) {
+    //     $css_class = $css_class_input = get_sub_field('css_class');
+    // }
+    // if( get_sub_field('css_class') ) {
+    //     $css_class = $css_class_input = get_sub_field('css_class');
+    // }    
+    $disabled = false;
+    if( get_sub_field('disabled') ) {
+        $disabled = true;
+    }    
 
     $required = get_sub_field('required');
     // echo '<pre>$required: '; var_dump($required); echo '</pre>';
@@ -263,7 +274,9 @@ function build_acf_form_array($row_layout, $inputs, $settings, $section=0, $edit
         $css_class .= 'js-date-picker ' . $date_ranges;
     }
 
-
+    if( $data_type === 'file' ) {
+        $css_class .= 'file-upload';
+    }
     if( $data_type === 'date_range' ) {
          
         // echo '<pre>$date_ranges: '; var_dump($date_ranges); echo '</pre>';       
@@ -314,7 +327,23 @@ function build_acf_form_array($row_layout, $inputs, $settings, $section=0, $edit
         }
 
     }
+
     $select_type = get_sub_field('select_type');
+    $multiple_select = get_sub_field('multiple_select');
+    
+    if ($multiple_select) {
+        $data_type = 'multi_select';
+        $stylised_ui = get_sub_field('stylised_ui');
+        // if ($stylised_ui) $css_class .= ' js-select2-multiple';
+
+    }
+    //     $data_type = 'multi_select';
+    //     echo "<hr>";
+    //     echo '<pre>2 $data_type: '; var_dump($data_type); echo '</pre>';
+    //     echo '<pre>$multiple_select: '; var_dump($multiple_select); echo '</pre>';echo '<pre>$id: '; var_dump($id); echo '</pre>';
+
+    // }
+    
     if( ( $data_type == 'select' || $data_type == 'multi_select' || $data_type == 'checkbox' ) && $select_type ) {
         
         // echo "<hr>";
@@ -407,13 +436,7 @@ function build_acf_form_array($row_layout, $inputs, $settings, $section=0, $edit
         }
     }
 
-    if( get_sub_field('css_class') ) {
-        $css_class = $css_class_input = get_sub_field('css_class');
-    }
-    $disabled = false;
-    if( get_sub_field('disabled') ) {
-        $disabled = true;
-    }    
+
 
     /**
      * We will use a custom function outside this plugin to get this input settings.
@@ -496,15 +519,17 @@ function build_acf_form_array($row_layout, $inputs, $settings, $section=0, $edit
         case "multi_select":
         case "checkbox":
         case "radio":
-            $inputs[$prefix.$id] = array("passed"=>false, "clean"=>$value, "value"=>$value, "section"=>$section, "required"=>$required, "type"=>$type, "data_type"=>$data_type, "label"=>$label, "options"=>$select_options, "selected_option"=>$selected_option, "option_group"=>$option_group, "allow_null" => $allow_null, "help"=>$help, "instructions" => $instructions, "grouping" => $grouping, "css_class" => $css_class, "readonly" => $readonly);
+            $inputs[$prefix.$id] = array("passed"=>false, "clean"=>$value, "value"=>$value, "section"=>$section, "required"=>$required, "type"=>$type, "data_type"=>$data_type, "label"=>$label, "options"=>$select_options, "selected_option"=>$selected_option, "option_group"=>$option_group, "allow_null" => $allow_null, "help"=>$help, "instructions" => $instructions, "grouping" => $grouping, "css_class" => $css_class, "readonly" => $readonly, 'disabled' => $disabled);
             break; 
         case "checkbox_single":
              $inputs[$prefix.$id] = array("passed"=>false, "clean"=>$value, "value"=>$value, "section"=>$section, "required"=>$required, "type"=>"checkbox", "data_type"=>$data_type, "label"=>$label, "option"=>array("value" => 1, "key" => get_sub_field('checkbox_label'), 'checked' => false), "selected_option"=>"", "help"=>$help, "instructions" => $instructions, "grouping" => $grouping, "css_class" => $css_class);
             break;       
         case "file":
-            $enctype = 'enctype="multipart/form-data"';
+            // $enctype = 'enctype="multipart/form-data"';
+            // echo '<pre>$enctype: '; var_dump($enctype); echo '</pre>';
+            $settings["enctype"] = ' enctype="multipart/form-data"';
             $form_class = 'js-check-form-file';
-            $inputs[$prefix.$id] = array("passed"=>false, "clean"=>$value, "value"=>$value, "section"=>$section, "required"=>$required, "type"=>$type, "data_type"=>$data_type,  "placeholder"=>$placeholder, "label"=>$label, "accept"=>"pdf", "help"=>$help, "instructions" => $instructions, "grouping" => $grouping, "css_class" => $css_class);
+            $inputs[$prefix.$id] = array("passed"=>false, "clean"=>$value, "value"=>$value, "section"=>$section, "required"=>$required, "type"=>$type, "data_type"=>$data_type,  "placeholder"=>$placeholder, "label"=>$label, "accept"=>"pdf", "help"=>$help, "instructions" => $instructions, "grouping" => $grouping, "css_class" => $css_class, 'disabled' => $disabled);
             break;              
         case "date_range":
             $inputs[$prefix.$id.'-start'] = array("passed"=>false, "clean"=>$value, "value"=>$value, "section"=>$section, "required"=>$required, "type"=>$type, "data_type"=>"date", "label"=>"Date From", "help"=>$help, "instructions" => $instructions, "grouping" => 'start', "css_class" => $css_class.' js-date-range', 'css_class_input' => $css_class_input, 'order'=>0, 'parent_label'=>$label, 'disabled' => $disabled);
