@@ -4,12 +4,6 @@
  * This will declare all menu pages, tabs and inputs etc but it does not
  * handle any business logic related to form functionality.
  */
-// require_once 'form-builder-wordpress-admin-interface.php';
-// require_once 'email-templates/wp-swift-email-templates.php';
-/*
- * The main plugin class that will handle business logic related to form 
- * functionality.
- */
 class WP_Swift_Form_Submission {
 
     /*

@@ -27,15 +27,10 @@ class WP_Swift_Form_Builder_Parent {
         $this->html_builder = new WP_Swift_Form_Builder_Html($this->helper);              
     }
 
+    /**
+     * Start form process and output html
+     */
     public function run() {
-        // if ($this->form_data) {
-            // return $this->get_form();
-        //     return $this->html_builder->run( $this->helper );
-        // }
-        // return $this->html_builder->get_form( $this->helper, $this->validate );
-        // else {
-        //     return "<pre>Form not found</pre>";
-        // }
         return $this->get_form();
     }
 
@@ -143,7 +138,7 @@ class WP_Swift_Form_Builder_Parent {
      * Get user_confirmation_email
      */
     public function get_user_confirmation_email() {
-        return$this->helper->get_user_confirmation_email();
+        return $this->helper->get_user_confirmation_email();
     }  
     /*
      * Get gdpr_settings

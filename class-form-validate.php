@@ -19,7 +19,7 @@ class WP_Swift_Form_Builder_Validate {
             
             // The form is submitted by a user and so is no longer pristine
             $helper->set_form_pristine(false);
-            // check for repeat 
+            // Check for repeating section 
             $j = 0;
             foreach ( $form_data as &$section ) {
                 $j++;
@@ -49,14 +49,10 @@ class WP_Swift_Form_Builder_Validate {
                     $set = isset($post[$input_key]);
 
                     if (isset($post[$input_key]) && $input['data_type'] !== "repeat_section") {
-                        // echo '<pre>$input_key: '; var_dump($input_key); echo '</pre>';
-
                         $input['value'] = $post[$input_key];
                         $input = $this->validate_input($input, $input_key);
-                        // echo "<hr>";
                     }
                     elseif (isset($_FILES[$input_key])) {
-                        // echo '<pre>isset($_FILES[$input_key] </pre>';echo "<hr>";echo "<hr>";echo "<hr>";
                         $input = $this->validate_input($input, $input_key, $helper);
                     }
                     elseif(isset($post[$input_key."-hidden"])) {
@@ -64,7 +60,6 @@ class WP_Swift_Form_Builder_Validate {
                         $input['passed'] = true;
                     }
                     else {
-                        // echo "<pre>input: "; var_dump($input); echo "</pre>";
                         if ($input["data_type"] === "checkbox_single" && $input["required"] === "") {
                             $input['clean'] = 'No';
                             $input['passed'] = true;
@@ -82,27 +77,18 @@ class WP_Swift_Form_Builder_Validate {
                     if (isset($input['passed']) && !$input['passed'] && !$input["required"] ) { //&& ($input["type"] === "text" || $input["type"] === "number" )  
                         $input['passed'] = true;
                     }
-                    // echo "<pre>"; echo $input["data_type"]." - ".$input["required"];echo "</pre>";
 
-                    // echo "<pre>";  echo "</pre>";
                     if (isset($input['passed']) && !$input['passed']) {
-                        // echo '<pre>$input: '; var_dump($input["data_type"]); echo '</pre>';
                         $helper->increase_error_count();
                         if ($input['help'] !== '') {
-                            // echo '<pre>$input: '; var_dump($input); echo '</pre>';
                             $helper->add_form_error_message( $input['help'] );
                         }
                         else {
-
                             $helper->add_form_error_message( $input['label'] . ' is invalid' );
                         }
-                        // recaptcha_secret()($input['label'] . ' is invalid');
                     } 
                 }
-            }  
-
-            // $form->increase_error_count();
-            // $form->form_error_messages[] = "Debugging!";    
+            }
             $helper->set_form_data( $form_data );              
         }
 
@@ -135,9 +121,13 @@ class WP_Swift_Form_Builder_Validate {
             $input['value'] = trim($input['value']);
         }
 
+        /**
+         * Special validation
+         *
+         * alphabetic, alphanumeric, numeric, uppercase_alphabetic, uppercase_alphanumeric
+         */
         if ( isset($input["validation"]) && is_array($input["validation"])) {
             $length = strlen($input['value']);
-            // echo '<pre>$length: '; var_dump($length); echo '</pre>';
             if (isset( $input["validation"]["min"])) {
                 $min = (int) $input["validation"]["min"];
                 if ( $length < $min ) {
@@ -176,11 +166,11 @@ class WP_Swift_Form_Builder_Validate {
                         break;                                                      
                 }                
             }
-            // echo '<pre>$min: '; var_dump($min); echo '</pre>'; 
-            // echo '<pre>$max: '; var_dump($max); echo '</pre>';          
-            // echo '<pre>$input["validation"]: '; var_dump($input["validation"]); echo '</pre>';echo "<hr>";
         }
-        // echo '<pre>$input["data_type"]: '; var_dump($input['data_type']); echo '</pre>';
+
+        /**
+         * Default validation based on input type
+         */
         switch ($input['data_type']) {
             case "text":
             case "textarea":
@@ -287,7 +277,6 @@ class WP_Swift_Form_Builder_Validate {
                 else {
                     $input['clean'] = $y.$m.$d;//date('Ymd', strtotime( $y.$m.$d ));
                     //$date[1] . ' ' . $date[0] . ' ' . $date[2] //$input['value']
-                    // echo '<pre>$input[clean]: '; var_dump($input['clean']); echo '</pre>';
                 }
                 $input['passed'] = true;
                 break;
@@ -300,7 +289,6 @@ class WP_Swift_Form_Builder_Validate {
 
 
     private function process_file($files, $input, $key, $helper) {
-        // echo '<pre>$input: '; var_dump($input); echo '</pre>';
         $attachments = array();
         $uploads_path = $helper->get_uploads_path();
         $uploads_path_exists = false;
@@ -378,14 +366,14 @@ class WP_Swift_Form_Builder_Validate {
         }    
     } 
 
-    public function recaptcha_site() {
-        if (isset( $this->recaptcha["site_key"] )) {
-            return $this->recaptcha["site_key"];
-        } 
-    } 
-    public function recaptcha_secret() {
-        if (isset( $this->recaptcha["secret_key"] )) {
-            return $this->recaptcha["secret_key"];
-        } 
-    }                  
+    // public function recaptcha_site() {
+    //     if (isset( $this->recaptcha["site_key"] )) {
+    //         return $this->recaptcha["site_key"];
+    //     } 
+    // } 
+    // public function recaptcha_secret() {
+    //     if (isset( $this->recaptcha["secret_key"] )) {
+    //         return $this->recaptcha["secret_key"];
+    //     } 
+    // }                  
 }

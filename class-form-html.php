@@ -12,8 +12,6 @@
  */
 class WP_Swift_Form_Builder_Html {
     private $action='';
-    // public $form_data = null;
-    // private $post_id = null;
     private $form_css_id = '';
     private $form_post_id = '';
     private $post_id = null;
@@ -50,63 +48,18 @@ class WP_Swift_Form_Builder_Html {
     private $uploads_dir = '';
     private $attachments = array();
     private $validate;
-    /*
-        function guide
-        acf_build_form()
-
-
-    */
    
     /*
      * Initializes the class.
      */
     public function __construct( $helper ) {
-       // echo '<pre>$form_data: '; var_dump($form_data); echo '</pre>';
-        // write_log(array('$_post', $_post));
+
         $this->post_id = $helper->get_post_id();
-
         // $this->form_type = $helper->type();
-        // echo '<pre>$this->form_action: '; var_dump($this->form_action); echo '</pre>';
-
         // if (count($hidden)) {
         //     $this->hidden = $hidden;
         // }
-
-        // echo "<pre>"; var_dump($form_data); echo "</pre>";
         $this->form_post_id = $helper->get_form_post_id();
-
-        // if( get_field('spam_prevention_type', $this->form_post_id ) ) {
-        //     $spam_prevention_type = get_field('spam_prevention_type', $this->form_post_id );
-        //     if ($spam_prevention_type === 'google') {
-
-        //         $options = get_option( 'wp_swift_form_builder_settings' );
-        //         $google_settings = $options['wp_swift_form_builder_google_recaptcha'];
-        //         if ( $google_settings["site_key"] !== '' && $google_settings["secret_key"] !== '' ) {
-        //             $this->recaptcha = $google_settings;
-        //         }
-        //         if( get_field('recaptcha_settings', $this->form_post_id) ) {
-        //             $recaptcha_settings = get_field('recaptcha_settings', $this->form_post_id);
-        //             $this->recaptcha = array_merge( $this->recaptcha, $recaptcha_settings );
-        //         }
-        //         if( get_field('recaptcha_display_settings', $this->form_post_id) ) {
-        //             $recaptcha_display_settings = get_field('recaptcha_display_settings', $this->form_post_id);
-        //             $this->recaptcha = array_merge( $this->recaptcha, $recaptcha_display_settings );
-        //         }                
-        //     }
-        // }
-        if( get_field('gdpr', $this->form_post_id ) ) {
-            $this->gdpr_settings = get_field('gdpr_settings', $this->form_post_id);
-        }        
-// if (isset($form_data["sections"])) {
-//      $this->form_data = $form_data["sections"];
-//     // echo '<pre>1 $this->form_data: '; var_dump($this->form_data); echo '</pre>';
-//     // echo "<hr>";echo "<hr>";echo "<hr>";echo "<hr>";echo "<hr>";
-//     // $test = $this->increment_form_data( 2 );
-//     // echo '<pre>2 $this->form_data: '; var_dump($this->form_data); echo '</pre>';
-// }
-        // if (isset($form_data["settings"])) {
-        //     $settings = $form_data["settings"];
-        // }
         $settings = $helper->get_settings();
         $args = $helper->get_args();
         if(isset($args["form_name"])) {
@@ -178,116 +131,23 @@ class WP_Swift_Form_Builder_Html {
         }
         if (isset($settings["enctype"])) {
              $this->enctype = $settings["enctype"];
-             // echo '<pre> $this->enctype: '; var_dump( $this->enctype); echo '</pre>';
-        }   
-        // echo '<pre>$this->get_submit_button_name(): '; var_dump($this->get_submit_button_name()); echo '</pre>'; 
-   }
-
-    public function run($helper, $validate) {
-        // echo '<pre>$helper: '; var_dump($helper); echo '</pre>';
-        if ($helper->get_form_data()) {
-            return $this->get_form($helper, $validate);
         }
-        // else {
-        //     return "<pre>Form not found</pre>";
-        // }
     }
-
-    // /**
-    //  * Form Processing
-    //  */
-    // public function get_response($post) {
-    //     $form_set = false;
-    //     $html = $this::process_form($post, true);
-    //     if ($this::get_form_data()) {
-    //        $form_set = true;
-    //     }
-    //     if ($this->clear_after_submission) {
-            
-    //     }
-    //     // write_log(array('$this->clear_after_submission', $this->clear_after_submission));
-    //     $form_set = false;
-    //     // $form_set = $this->clear_after_submission;
-    //     $response = array(
-    //         "form_set" => $form_set,
-    //         "error_count" => $this::get_error_count(),
-    //         "html" => $html,
-    //     ); 
-    //     if ($this->clear_after_submission) {
-    //         $response["form_clear"] = 0;
-    //     }        
-    //     return $response;      
-    // }
 
     public function get_form($helper, $validate) {
         ob_start();
-        //echo "<pre>"; var_dump('Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iusto, totam, voluptatem! Adipisci nulla ea sint, accusantium iste delectus autem temporibus eius distinctio ipsam deleniti dolorem aperiam, suscipit est magnam nihil.'); echo "</pre>";
-        // if( isset( $_POST[$this->get_submit_button_name()] ) ) { //check if form was submitted
-        //     $process_form = $this->process_form($_POST); 
-        //     if (isset($process_form["html"])) {
-        //         $html_response = $process_form["html"];
-        //     }
-        //     else {
-        //         $html_response = $process_form;
-        //     }     
-        // }
         $this->front_end_form( $helper, $helper->get_form_response($this->get_submit_button_name()) );
-   
         $html = ob_get_contents();
         ob_end_clean();
         return $html; 
     }
 
-    // public function get_form_response() {
-    //     $html_response = '';
-    //     if( isset( $_POST[$this->get_submit_button_name()] ) ) { //check if form was submitted
-    //         // echo '<pre>$_POST: '; var_dump($_POST); echo '</pre>';
-    //         $process_form = $this->process_form($_POST); 
-    //         if (isset($process_form["html"])) {
-    //             $html_response = $process_form["html"];
-    //         }
-    //         else {
-    //             $html_response = $process_form;
-    //         }     
-    //     }  
-    //     return $html_response;      
-    // }
-
-    /**
-     * @function  set_form_data
-     * Set the form data
-     *
-     * @param       $form_post_id   int     the id of the form CPT
-     * @param       $form_inputs    array   the array of inputs
-     * @param       $args           array   additional arguments
-     */
-    // public function set_form_data($form_post_id, $form_inputs=array(), $args=false) {
-   
-    // }
-    //@end set_form_data()
-
-  /*
-     * Build the form
-     */
-    // public function acf_build_form($submit_form_failure=true) {
-    //     // if ($submit_form_failure) {
-    //     //    $this->submit_form_failure();
-    //     // }
-    //     $this->front_end_form();
-    // }//@end acf_build_form()
-
-    public function submit_form_success($post, $ajax) {
-
-    }
-
-
-
     public function front_end_form($helper, $html_response = null, $msg = null  ) {
         $framework='';
-        $options = get_option( 'wp_swift_form_builder_settings' );
-        if (isset($options['wp_swift_form_builder_select_css_framework'])) {
-            $framework = $options['wp_swift_form_builder_select_css_framework'];
-        }
+        // $options = get_option( 'wp_swift_form_builder_settings' );
+        // if (isset($options['wp_swift_form_builder_select_css_framework'])) {
+        //     $framework = $options['wp_swift_form_builder_select_css_framework'];
+        // }
         ?>
         <div class="<?php echo $this->get_form_class(); ?>"><!-- @start form-wrapper -->
 
@@ -329,15 +189,12 @@ class WP_Swift_Form_Builder_Html {
         if ( $this->show_edit_link === true ) {
             edit_post_link( __( '(Edit Form)', 'wp-swift-form-builder' ), '<div class="edit-link">', '</div>', $this->form_post_id );
         }
-        // edit_post_link( '(Edit Form)', '<p>', '</p>',$this->get_form_post_id() );           
     }// front_end_form()
 
     public function front_end_form_input_loop( $helper, $tab_index = false, $increment = false ) {
         if ( $tab_index ) {
             $this->tab_index = $tab_index;
         }
-
-        // echo '<pre>$this->form_data: '; var_dump($this->form_data); echo '</pre>';
 
         foreach ($helper->get_form_data() as $key => $section) {
 
@@ -850,6 +707,17 @@ class WP_Swift_Form_Builder_Html {
         
         return $html;
     }//@end submit_form_failure()
+
+    private clear_input($helper) {
+        if(!$helper->get_form_pristine()) {
+            if($helper->get_clear_after_submission() && $helper->get_error_count() === 0) {
+                // No errors found so clear the values
+                $input['value']=''; 
+                return true;
+            }
+        }     
+        return false;   
+    }
     /******************************************************
      * @start Form Inputs
      ******************************************************/
@@ -859,11 +727,14 @@ class WP_Swift_Form_Builder_Html {
         $has_error='';
         // echo '<pre>$this->error_count: '; var_dump($this->error_count); echo '</pre>';
         // echo '<pre>$this->clear_after_submission: '; var_dump($this->clear_after_submission); echo '</pre>';
-        if(!$helper->get_form_pristine()) {
-            if($helper->get_clear_after_submission() && $helper->get_error_count() === 0) {
-                // No errors found so clear the values
-                $input['value']=''; 
-            }
+        // if(!$helper->get_form_pristine()) {
+        //     if($helper->get_clear_after_submission() && $helper->get_error_count() === 0) {
+        //         // No errors found so clear the values
+        //         $input['value']=''; 
+        //     }
+        // }
+        if ($this->clear_input($helper)) {
+            $input['value'] = '';
         }
         // data_type is the same as $data['type'] unless it is an invalid attributes type such as username
         // $data_type = $input['type'];
@@ -936,7 +807,7 @@ class WP_Swift_Form_Builder_Html {
         return $input_html;       
     } 
 
-    private function build_form_select($id, $data) {
+    private function build_form_select($helper, $id, $data) {
         $readonly = '';
         $multiple = '';
         $css_class = '';
@@ -944,11 +815,16 @@ class WP_Swift_Form_Builder_Html {
         if ($data["disabled"]) {
             $disabled = ' disabled';
         }        
-        if(!$this->form_pristine) {
-            if($this->clear_after_submission && $this->error_count===0) {
-                // No errors found so clear the selected value
-                $data['selected_option']=''; 
-            }
+        // if(!$this->form_pristine) {
+            // if($this->clear_after_submission && $this->error_count===0) {\
+        // if(!$helper->get_form_pristine()) {
+        //     if($helper->get_clear_after_submission() && $helper->get_error_count() === 0) {
+        //         // No errors found so clear the selected value
+        //         $data['selected_option']=''; 
+        //     }
+        // }
+        if ($this->clear_input($helper)) {
+            $data['selected_option'] = ''; 
         }
         if (isset( $data['readonly'] ) && $data['readonly']) {
             $readonly = " disabled";
@@ -1009,14 +885,17 @@ class WP_Swift_Form_Builder_Html {
         return $input_html;
     }
 
-    private function build_form_textarea($id, $input) {
+    private function build_form_textarea($helper, $id, $input) {
         $has_error='';
-        if(!$this->form_pristine) {
-            if($this->clear_after_submission && $this->error_count===0) {
-                // No errors found so clear the values
-                $input['value']=''; 
-            }
-        }     
+        // if(!$this->form_pristine) {
+        //     if($this->clear_after_submission && $this->error_count===0) {
+        //         // No errors found so clear the values
+        //         $input['value']=''; 
+        //     }
+        // } 
+        if ($this->clear_input($helper)) {
+            $input['value'] = '';
+        }            
         if (isset($input['name'])) {
             $name = $input['name'];
         }
@@ -1058,15 +937,17 @@ class WP_Swift_Form_Builder_Html {
 
     }
 
-    private function build_form_radio($id, $input) {
+    private function build_form_radio($helper, $id, $input) {
         // echo '<pre>$input: '; var_dump($input); echo '</pre>';
-        if(!$this->form_pristine) {
-            if($this->clear_after_submission && $this->error_count===0) {
-                // No errors found so clear the selected value
-                $input['selected_option']=''; 
-            }
-        }
-
+        // if(!$this->form_pristine) {
+        //     if($this->clear_after_submission && $this->error_count===0) {
+        //         // No errors found so clear the selected value
+        //         $input['selected_option']=''; 
+        //     }
+        // }
+        if ($this->clear_input($helper)) {
+           $input['selected_option'] = ''; 
+        }  
         $count=0;  
         $checked='';
         $data_id = ' data-id="'.$id.'"';
@@ -1094,39 +975,32 @@ class WP_Swift_Form_Builder_Html {
         return $html;            
     }
 
-    private function build_form_checkbox($id, $data) {
-        if(!$this->form_pristine) {
-            if($this->clear_after_submission && $this->error_count===0) {
-                // No errors found so clear the checked values
-                foreach ($data['options'] as $key => $option) {
-                    $data['options'][$key]['checked'] = false;
-                }
+    private function build_form_checkbox($helper, $id, $data) {
+        // if(!$this->form_pristine) {
+        //     if($this->clear_after_submission && $this->error_count===0) {
+        //         // No errors found so clear the checked values
+        //         foreach ($data['options'] as $key => $option) {
+        //             $data['options'][$key]['checked'] = false;
+        //         }
+        //     }
+        // }
+        if ($this->clear_input($helper)) {
+            // No errors found so clear the checked values
+            foreach ($data['options'] as $key => $option) {
+                $data['options'][$key]['checked'] = false;
             }
-        }
-
+        }  
         $count=0;  
         $name_append = '';
         if (count($data['options']) > 1) {
             $name_append = '[]';
         }
         ob_start();
-
-        // if ($id == "form-signup-options") {
-        //     $checked=' checked';
-        // }
         foreach ($data['options'] as $option): $count++;
-            $checked='';
-            //hack
-            // if ($id == "form-signup-options") {
-            //     $checked=' checked';
-            // } 
-            //@end hack       
+            $checked='';      
             if ( $option['checked'] == true ){
                 $checked=' checked';
             }
-            // else {
-            //     $checked='';
-            // }
             if (isset($data['name'])) {
                 $name = $data['name'].$name_append;
                 if ($id == "form-signup-options") {
@@ -1189,9 +1063,6 @@ class WP_Swift_Form_Builder_Html {
 
     private function build_form_repeat_section($id, $input) {      
         ob_start();
-   //      echo "<pre>id: $id</pre>";
-   // echo '<pre>$input: '; var_dump($input); echo '</pre>';
-
         $button = $input["buttons"];
         $button_id = $input["id"];
         $add_button_text = $input["buttons"]["add_button"]["button_text"];
@@ -1270,7 +1141,6 @@ class WP_Swift_Form_Builder_Html {
      * Use the same function to wrap all inputs
      */
     public function wrap_input($id, $input, $input_html, $section='') {
-        // echo '<pre>$input: '; var_dump($input); echo '</pre>';
 
         if(!$this->form_pristine) {
             if($this->clear_after_submission && $this->error_count===0) {
@@ -1348,31 +1218,25 @@ class WP_Swift_Form_Builder_Html {
      * 
      */
     public function get_css_form_grid_grouping() {
-        return "form-grid-grouping _grid-x";
+        return "form-grid-grouping";
     }
 
     /*
      * 
      */
     public function get_css_form_group($input) {
+        // todo
         $has_error='';
         if(!$this->form_pristine && $input['passed']==false && $input["type"] !== "checkbox") {
             // This input has has error detected so add an error class to the surrounding div
             $has_error = ' has-error';
         } 
-        $framework_style = '';
-        if ( $this->css_framework === "zurb_foundation" ) {
-            // $framework_style = ' cell large-auto small-6';
-        }       
-        return "form-group ".$input["css_class"].$has_error.$framework_style;
+        // $framework_style = '';
+        // if ( $this->css_framework === "zurb_foundation" ) {
+        //     // $framework_style = ' cell large-auto small-6';
+        // }       
+        return "form-group ".$input["css_class"].$has_error;//.$framework_style;
     }
-
-    /*
-     * Hookable function that
-     */
-    // public function before_submit_button_hook() {
-
-    // }
 
     public function form_data_types() {
         if ($this->clear_after_submission) {
@@ -1393,7 +1257,20 @@ class WP_Swift_Form_Builder_Html {
      */
     public function get_form_class() {
         return $this->form_class;
-    }      
+    } 
+
+    /*
+     * Get form_pristine
+     */
+    public function get_form_pristine() {
+        return $this->form_pristine;
+    }
+    /*
+     * Set form_pristine
+     */
+    public function set_form_pristine($form_pristine) {
+        $this->form_pristine = $form_pristine;
+    }         
     // /*
     //  * Get form_post_id
     //  */
@@ -1406,18 +1283,7 @@ class WP_Swift_Form_Builder_Html {
     // public function get_post_id() {
     //     return $this->post_id;
     // }      
-    /*
-     * Get form_pristine
-     */
-    public function get_form_pristine() {
-        return $this->form_pristine;
-    }
-    /*
-     * Set form_pristine
-     */
-    public function set_form_pristine($form_pristine) {
-        $this->form_pristine = $form_pristine;
-    }
+    // 
     // /*
     //  * Get error_count
     //  */
@@ -1498,66 +1364,7 @@ class WP_Swift_Form_Builder_Html {
         }
         return $this->tab_index;
     }
-
-
-    // // public function get_show_mail_receipt() {
-    // //     return $this->show_mail_receipt;
-    // // }
-    // public function get_form_data( $sections = true) {
-    //     if ($sections) {
-    //         return $this->form_data;
-    //     }
-    //     else {
-    //         $form_data = array();
-    //         foreach ($this->form_data as $section) {
-    //             foreach ($section["inputs"] as $key => $input) {
-    //                 $form_data[$key] = $input;
-    //             }
-    //         }
-    //         return $form_data;
-    //     }
-        
-    // }
-   // public function increment_form_data( $count ) {
-   //      // return $this->form_data;
-   //      // if ($sections) {
-   //      //     return $this->form_data;
-   //      // }
-   //      // else {
-   //      //     $form_data = array();
-   //          foreach ($this->form_data as &$section) {
-   //              foreach ($section["inputs"] as $key => $input) {
-   //                  // $form_data[$key] = $input;
-   //                  $section["inputs"][$key.'-'.$count] = $input;
-   //                  unset( $section["inputs"][$key] );
-   //                  // echo '<pre>$key: '; var_dump($key.'-'.$count); echo '</pre>';
-   //              }
-   //          }
-   //      //     return $form_data;
-   //      // }
-        
-   //  }    
-    // public function get_inputs() {
-    //     return $this->form_data[0]["inputs"];        
-    // }     
-    // public function get_user_confirmation_email() {
-    //     return $this->user_confirmation_email;
-    // }  
-
-    // public function get_attachments() {
-    //     return $this->attachments;
-    // }      
-    // public function recaptcha_site() {
-    //     if (isset( $this->recaptcha["site_key"] )) {
-    //         return $this->recaptcha["site_key"];
-    //     } 
-    // } 
-    // public function recaptcha_secret() {
-    //     if (isset( $this->recaptcha["secret_key"] )) {
-    //         return $this->recaptcha["secret_key"];
-    //     } 
-    // }
-
+  
     public function recaptcha_theme($helper) {
         if (isset( $helper->recaptcha["theme"] )) {
             echo ' data-theme="'.$helper->recaptcha["theme"].'"';
@@ -1575,6 +1382,7 @@ class WP_Swift_Form_Builder_Html {
             echo ' hide init-hidden';
         } 
     }         
+
     public function recaptcha_html($helper) {
         $html = '';
         if ( $helper->recaptcha_site() ):
@@ -1596,61 +1404,7 @@ class WP_Swift_Form_Builder_Html {
             ob_end_clean();
         endif;//@nd if ($this->gdpr_settings)
         echo  $html;
-    } 
-
-    // public function recaptcha_check($post) {
-    //     $response = array(
-    //         'status' => false,
-    //         'msg' => '',
-    //     );
-    //     if ( !$this->recaptcha_secret() ){
-    //         // recaptcha is not set so skip the check
-    //         return true;
-    //     }
-    //     elseif ( $this->recaptcha_secret() && $post["g-recaptcha-response"] ){
-
-    //         $g_response = $post["g-recaptcha-response"];
-
-    //         $url = 'https://www.google.com/recaptcha/api/siteverify';
-    //         $post_data = "secret=".$this->recaptcha_secret()."&response=".$g_response."&remoteip=".$_SERVER['REMOTE_ADDR'] ;
-    //         $ch = curl_init();  
-    //         curl_setopt($ch, CURLOPT_URL, $url);
-    //         curl_setopt($ch, CURLOPT_POST, true);
-    //         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-    //         curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/x-www-form-urlencoded; charset=utf-8', 'Content-Length: ' . strlen($post_data)));
-    //         curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data); 
-    //         $googresp = curl_exec($ch);       
-    //         $decgoogresp = json_decode($googresp);
-    //         curl_close($ch);
-
-    //         if ( $decgoogresp->success === false ) {
-    //             $this->increase_error_count();
-    //             $this->form_error_messages[] = "You are a bot! Go away!";    
-    //             return false;         
-    //         } 
-    //         elseif ( $decgoogresp->success === true ) {
-    //             return true;     
-    //         }
-    //     }
-    //     elseif ( $this->recaptcha_secret() ){
-    //         $this->increase_error_count();
-    //         $this->form_error_messages[] = "This form is expecting a recaptcha code to validate but none was found!";               
-    //         return false;
-    //     }
-              
-    // } 
-
-    // public function gdpr() {
-    //     if ( $this->gdpr_settings ) {
-    //         return true;
-    //     }
-    // }
-
-    // public function gdpr_settings() {
-    //     if ( $this->gdpr_settings ) {
-    //         return $this->gdpr_settings;
-    //     }
-    // }    
+    }  
 
     public function gdpr_html() {
 
@@ -1678,20 +1432,6 @@ class WP_Swift_Form_Builder_Html {
                             <?php endif ?>
                             
                         <?php endforeach ?>
-                    
-                    
-
- <?php 
- /* 
-                    <?php if ( $this->form_type === "contact" ): ?>
- 
-                         <label for="">I am happy to receive marketing information from this dealer by: (please tick all that apply)</label>
- 
-                         <input type="checkbox" value="email-dealer" tabindex=<?php echo $this->get_tab_index(); ?> name="sign-up[]" id="sign-up-email-dealer" class="sign-up"><label for="sign-up-email-dealer">Email</label>
-                         <input type="checkbox" value="sms-dealer" tabindex=<?php echo $this->get_tab_index(); ?> name="sign-up[]" id="sign-up-sms-dealer" class="sign-up"><label for="sign-up-sms-dealer">SMS</label>                            
-                         <?php endif ?> 
- */ 
- ?>
                      
                 </div>
             </div>                  
