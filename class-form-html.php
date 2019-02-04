@@ -163,7 +163,6 @@ class WP_Swift_Form_Builder_Html {
             <form method="post"<?php echo $this->action; ?> name="<?php echo $this->form_name; ?>" id="<?php echo $this->form_css_id; ?>" data-id="<?php echo $this->form_post_id ?>" data-post-id="<?php echo $this->post_id ?>" data-type="<?php echo $this->form_type ?>"<?php $this->form_data_types() ?> class="<?php echo $framework.' '; echo $this->get_form_class().' '; echo $this->form_name ?>" novalidate<?php echo $this->enctype;?>>
 
                 <?php if ( isset($this->hidden) && count($this->hidden)):
-                // echo "<pre>hidden: "; var_dump($this->hidden); echo "</pre>";
                     foreach ($this->hidden as $key => $hidden): ?>
                         <input type="hidden" data-type="hidden" id="<?php echo $key ?>" name="<?php echo $key ?>" value="<?php echo $hidden ?>">
                     <?php endforeach;
