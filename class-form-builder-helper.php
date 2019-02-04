@@ -37,6 +37,7 @@ class WP_Swift_Form_Builder_Helper {
 
     private $gdpr_settings = null;
     private $uploads_dir = '';
+    private $attachments = array();
     /*
         function guide
         acf_build_form()
@@ -65,7 +66,7 @@ class WP_Swift_Form_Builder_Helper {
         if (count($hidden)) {
             $this->hidden = $hidden;
         }
-        $this->uploads_dir = get_home_path().'uploads';
+        $this->uploads_dir = ABSPATH.'uploads';
 
         if (function_exists("get_field")) {
             if( get_field('spam_prevention_type', $this->form_post_id ) ) {
@@ -350,7 +351,13 @@ class WP_Swift_Form_Builder_Helper {
 
     public function get_attachments() {
         return $this->attachments;
-    }      
+    }  
+    public function set_attachments($attachments) {
+        return $this->attachments = $attachments;
+    } 
+    public function add_attachment($attachment) {
+        return $this->attachments[] = $attachment;
+    }                
     public function recaptcha_site() {
         if (isset( $this->recaptcha["site_key"] )) {
             return $this->recaptcha["site_key"];
@@ -402,5 +409,10 @@ class WP_Swift_Form_Builder_Helper {
     } 
     public function get_clear_after_submission() {
         return $this->clear_after_submission;
-    }                           
+    } 
+
+    public function get_uploads_path() {       
+        return $this->uploads_dir; // Root folder + uploads 
+    }
+
 }

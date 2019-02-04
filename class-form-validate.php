@@ -57,7 +57,7 @@ class WP_Swift_Form_Builder_Validate {
                     }
                     elseif (isset($_FILES[$input_key])) {
                         // echo '<pre>isset($_FILES[$input_key] </pre>';echo "<hr>";echo "<hr>";echo "<hr>";
-                        $input = $this->validate_input($input, $input_key);
+                        $input = $this->validate_input($input, $input_key, $helper);
                     }
                     elseif(isset($post[$input_key."-hidden"])) {
                         $input['clean'] = 'No';
@@ -116,7 +116,7 @@ class WP_Swift_Form_Builder_Validate {
      *
      * @return $input
      */
-    public function validate_input($input, $key) {
+    public function validate_input($input, $key, $helper=null) {
         // echo '<pre>$key: '; var_dump($key); echo '</pre>';
         // echo '<pre>$input: '; var_dump($input); echo '</pre>';echo "<hr>";
      
@@ -154,32 +154,26 @@ class WP_Swift_Form_Builder_Validate {
             } 
             if (isset( $input["validation"]["validation"])) {
                 $validation = $input["validation"]["validation"];
-                // switch ($validation) {
-                //     case "uppercase_alphanumeric":
-                //         preg_match('/^[0-9A-Z]+$/', $input['value'], $matches, PREG_OFFSET_CAPTURE);
-                //         if (count($matches) == 0) return $input;
-                //         break;
-                //     case "uppercase_alphanumeric":
-                //         preg_match('/^[0-9A-Z]+$/', $input['value'], $matches, PREG_OFFSET_CAPTURE);
-                //         if (count($matches) == 0) return $input;
-                //         break;
-
-                // }
                 switch ($validation) {
                     case 'alphabetic':// Alphabetic
                         preg_match('/^[a-zA-Z]+$/', $input['value'], $matches, PREG_OFFSET_CAPTURE);
                         if (count($matches) == 0) return $input;
+                        break;
                     case 'alphanumeric':// Alphanumeric
                         preg_match('/^[0-9a-zA-Z]+$/', $input['value'], $matches, PREG_OFFSET_CAPTURE);
-                        if (count($matches) == 0) return $input;   
+                        if (count($matches) == 0) return $input;
+                        break;   
                     case 'numeric': // Numeric
                         if ( !ctype_digit($input['value']) ) return $input;
+                        break;
                     case 'uppercase_alphabetic':// Uppercase Alphabetic
                         preg_match('/^[A-Z]+$/', $input['value'], $matches, PREG_OFFSET_CAPTURE);
-                        if (count($matches) == 0) return $input;     
+                        if (count($matches) == 0) return $input;
+                        break;     
                     case 'uppercase_alphanumeric':// Uppercase Alphanumeric
                         preg_match('/^[0-9A-Z]+$/', $input['value'], $matches, PREG_OFFSET_CAPTURE);
-                        if (count($matches) == 0) return $input;                                                      
+                        if (count($matches) == 0) return $input;
+                        break;                                                      
                 }                
             }
             // echo '<pre>$min: '; var_dump($min); echo '</pre>'; 
@@ -237,7 +231,7 @@ class WP_Swift_Form_Builder_Validate {
                  // echo '<pre>2 $input: '; var_dump($input); echo '</pre>';echo "<hr>";echo "<hr>";
                 break;
             case "file": 
-                $input = $form->process_file($_FILES, $input, $key);
+                $input = $this->process_file($_FILES, $input, $key, $helper);
                 // echo '<pre>$attachments: '; var_dump($attachments); echo '</pre>';     
                 //         $input['passed'] = true;    
                 break; 
@@ -281,14 +275,11 @@ class WP_Swift_Form_Builder_Validate {
                 $input['passed'] = true;
                 break; 
             case "date":
-                // 
                 // $d = DateTime::createFromFormat($format, $input['value']);  
-                // echo '<pre>$input[value]: '; var_dump($input['value']); echo '</pre>';    
                 $date  = explode('/', $input['value']);
                 $d = $date[0];
                 $m = $date[1];
                 $y = $date[2];
-                // echo '<pre>$date: '; var_dump($date); echo '</pre>';
                 # bool checkdate ( int $month , int $day , int $year )
                 if (!checkdate($m, $d, $y)) {
                     return $input;
@@ -303,17 +294,15 @@ class WP_Swift_Form_Builder_Validate {
 
   
         }
-        // echo '<pre>$input: '; var_dump($input); echo '</pre>';echo "<hr>";
-        // $input['passed'] = true;
         return $input;   
     }//@end validate_input 
 
 
 
-    private function process_file($files, $input, $key) {
+    private function process_file($files, $input, $key, $helper) {
         // echo '<pre>$input: '; var_dump($input); echo '</pre>';
         $attachments = array();
-        $uploads_path = $form->get_uploads_path();
+        $uploads_path = $helper->get_uploads_path();
         $uploads_path_exists = false;
         // Create folder if none exists
         if(!is_dir($uploads_path))
@@ -333,7 +322,7 @@ class WP_Swift_Form_Builder_Validate {
                 $input["clean"] = $old_name;
                 $input["value"] = $new_name_with_path;
                 $input['passed'] = true;
-                $form->attachments[] = $new_name_with_path;
+                $helper->add_attachment( $new_name_with_path );
                 // $input["value"] = $new_name_with_path;              
                 // $form_data[$key]['clean'] = $time.'_'.$old_name.'';
             }

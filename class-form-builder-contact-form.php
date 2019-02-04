@@ -175,13 +175,22 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
         $email_string .= $this->build_page_details();
         $signup = $this->do_signup_api( $post );
         $email_string .= $this->do_signup_third_party_wrap($signup);
+        $attachments = parent::get_attachments();
+        $debug_info = '';
+        // echo '<pre>3 $attachments = parent::get_attachments(): '; var_dump($attachments); echo '</pre>';
 
         /*
          * Send the email to the admin/office
          */
         if ($this->send_email) {
             foreach ($this->to as $key => $to_email) {
-                $status = wp_mail($to_email, $this->response_subject.$this->date, wp_swift_wrap_email($email_string), $this->headers);
+                if (empty($attachments)) {
+                    $status = wp_mail($to_email, $this->response_subject.$this->date, wp_swift_wrap_email($email_string), $this->headers);
+                }
+                else {
+                    $status = wp_mail($to_email, $this->response_subject.$this->date, wp_swift_wrap_email($email_string), $this->headers, $attachments);
+                }
+                
             }
 
             if (isset($this->forward_email)) {
@@ -191,11 +200,27 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
             }         
         }
         else {
+            $debug_info .= "<pre>Debugging mode is on so no emails are being sent.</pre>";
+            $debug_info .= "<br><p>Emails will beair sent to here: </p>";
+            if (count($attachments)) {
+                echo '<pre>$attachments: '; var_dump($attachments); echo '</pre>';
+            }
+            // $attachments = 
+            // echo '<pre>3 $helper->get_attachments(): '; var_dump($parent->helper->get_attachments()); echo '</pre>';
             if (function_exists('write_log')) {
                 write_log('$this->to:');write_log($this->to);
                 write_log('$this->forward_email: ' . $this->forward_email);
                 error_log( "Debugging mode is on so no emails are being sent." );
             }
+            foreach ($this->to as $key => $to_email) {
+                $debug_info .= $to_email.'<br>';
+            }
+
+            if (isset($this->forward_email)) {
+                foreach ($this->forward_email as $key => $forward_email) {
+                    $debug_info .= '[Fwd:] '.$forward_email.'<br>';
+                }
+            }              
         }
 
         /*
@@ -240,7 +265,7 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
         }
 
         if ( !$this->send_email ) {
-            $user_output_footer .= "<pre>Debugging mode is on so no emails are being sent.</pre>";
+            $user_output_footer .= $debug_info;           
         }
 
         /*

@@ -215,6 +215,10 @@ run_wp_swift_form_builder();
 /***********************************************************/
 
 function form_builder_acf_layout_title($title, $field, $layout, $i) {
+	// global $post;
+	// $post_type = get_post_type();
+	// if ($post_type !== 'wp_swift_form') return $title;
+
 	if($value = get_sub_field('name')) {
 		return $value . ' <sup>(' . $title . ')</sup>';
 	} else {
@@ -228,4 +232,4 @@ function form_builder_acf_layout_title($title, $field, $layout, $i) {
 	}
 	return $title;
 }
-// add_filter('acf/fields/flexible_content/layout_title', 'form_builder_acf_layout_title', 10, 4);
+add_filter('acf/fields/flexible_content/layout_title', 'form_builder_acf_layout_title', 10, 4);
