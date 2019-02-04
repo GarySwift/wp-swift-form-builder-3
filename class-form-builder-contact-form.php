@@ -148,7 +148,7 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
                 );
             }
             $forward_email = get_field('forwarding_emails', $form_post_id);
-            if (count($forward_email)) {
+            if (!empty($forward_email)) {
                 $this->forward_email = $forward_email;
             }
         }                          
@@ -402,14 +402,14 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
                             if ($type=='section'): ?>
                         <tr>
                             <th colspan="2" style="width:100%; text-align:center">
-                                <h3><?php $this->table_cell_header($input_key) ?></h3>
+                                <h3><?php $this->table_cell_header($input_key, $section_input) ?></h3>
                             </th>
                         </tr>
                             <?php 
                             else: 
                                 if ($section_input['clean'] !== ''): ?>
                         <tr>
-                            <th style="width:30%; text-align:left"><?php $this->table_cell_header($input_key) ?></th>
+                            <th style="width:30%; text-align:left"><?php $this->table_cell_header($input_key, $section_input) ?></th>
                             <td><?php 
                                     if ($section_input['type']=='select') {
                                         echo ucwords(str_replace('-', ' ',$section_input['clean']));
@@ -433,9 +433,7 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
         return $html;
     }
 
-    private function table_cell_header($input_key) {
-        $header = ucwords(str_replace('-', ' ',substr($input_key, 5)));
-        $header = str_replace(' Of ', ' of ', $header);
-        echo $header;
+    private function table_cell_header($input_key, $input) {
+        echo $input["label"];
     }   
 }

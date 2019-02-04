@@ -80,7 +80,10 @@ define('FORM_BUILDER_DATE_FORMAT', 'mm/dd/yyyy');
  * The FormBuilder class that handles all form logic
  */
 require_once plugin_dir_path( __FILE__ ) . 'class-form-builder.php';
-
+// validate
+require_once plugin_dir_path( __FILE__ ) . 'class-form-validate.php';
+require_once plugin_dir_path( __FILE__ ) . 'class-form-html.php';
+require_once plugin_dir_path( __FILE__ ) . 'class-form-builder-helper.php';
 /**
  * A FormBuilder child class that handles contact forms
  */
