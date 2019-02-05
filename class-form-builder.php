@@ -34,14 +34,17 @@ class WP_Swift_Form_Builder_Parent {
         return $this->get_form();
     }
 
+    /**
+     * Build the form html (including submit information (success/error details) if relevant)
+     *
+     * @return  $string     Return the html to output from a shortcode or a function
+     */
     public function get_form() {
-        $form_response = $this->process_form_non_ajax($_POST);
         ob_start();
-        // Build the form html (including submit information if relevant)
+        $form_response = $this->process_form_non_ajax($_POST);// Get success/error details
         $this->html_builder->front_end_form( $this->helper, $form_response);
         $html = ob_get_contents();
         ob_end_clean();
-        // Return the html to output from a shortcode or a function
         return $html; 
     }
 
@@ -73,10 +76,9 @@ class WP_Swift_Form_Builder_Parent {
     }
 
     public function process_form_non_ajax($post) { 
-        // echo '<pre>1 $helper->get_attachments(): '; var_dump($this->helper->get_attachments()); echo '</pre>';
         $form_response = '';     
         // Check if form was submitted
-        if( isset( $post[$this->html_builder->get_submit_button_name()] ) ) { 
+        if( isset( $post[$this->helper->get_submit_button_name()] ) ) {
             $process_form = $this->process_form($post);// This will do validation and return a user message
             if (isset($process_form["html"])) {
                 $form_response = $process_form["html"];
@@ -85,7 +87,6 @@ class WP_Swift_Form_Builder_Parent {
                 $form_response = $process_form;
             }     
         }
-         // echo '<pre>2 $helper->get_attachments(): '; var_dump($this->helper->get_attachments()); echo '</pre>';
         return $form_response;        
     }
     public function process_form($post, $ajax=false) {
@@ -143,8 +144,8 @@ class WP_Swift_Form_Builder_Parent {
     /*
      * Get gdpr_settings
      */
-    public function gdpr_settings() {
-        return $this->helper->gdpr_settings();
+    public function get_gdpr_settings() {
+        return $this->helper->get_gdpr_settings();
     } 
     /*
      * Get attachments

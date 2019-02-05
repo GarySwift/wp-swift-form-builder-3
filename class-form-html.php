@@ -19,9 +19,9 @@ class WP_Swift_Form_Builder_Html {
     private $submit_button_id = '';
     private $submit_button_name = '';
     private $submit_button_text = '';
-    private $css_framework = "zurb_foundation";
+    // private $css_framework = "zurb_foundation";
 // private $show_mail_receipt = true;
-    private $form_pristine = true;
+    // private $form_pristine = true;
     private $enctype = '';
 // private $error_count = 0;
     private $tab_index = 100;
@@ -36,18 +36,18 @@ class WP_Swift_Form_Builder_Html {
     // private $option = '';
 
     private $form_error_messages = array();
-    private $user_confirmation_email = "ask";
+    // private $user_confirmation_email = "ask";
     private $show_edit_link = false;
     private $hidden = null;
 
     // private $form_action;
     private $form_type;
 
-    private $gdpr_settings = null;
-    private $recaptcha = null;
-    private $uploads_dir = '';
-    private $attachments = array();
-    private $validate;
+    // private $gdpr_settings = null;
+    // private $recaptcha = null;
+    // private $uploads_dir = '';
+    // private $attachments = array();
+    // private $validate;
    
     /*
      * Initializes the class.
@@ -123,9 +123,9 @@ class WP_Swift_Form_Builder_Html {
         if (isset($settings["form_css_class"])) {
             $this->form_class .= $settings["form_css_class"];
         } 
-        if(isset($settings["user_confirmation_email"])) {
-            $this->user_confirmation_email = $settings["user_confirmation_email"];
-        }
+        // if(isset($settings["user_confirmation_email"])) {
+        //     $this->user_confirmation_email = $settings["user_confirmation_email"];
+        // }
         if(isset($settings["show_edit_link"])) {
             $this->show_edit_link = true;
         }
@@ -160,7 +160,7 @@ class WP_Swift_Form_Builder_Html {
             <?php endif ?>
             
             <!-- @start form -->
-            <form method="post"<?php echo $this->action; ?> name="<?php echo $this->form_name; ?>" id="<?php echo $this->form_css_id; ?>" data-id="<?php echo $this->form_post_id ?>" data-post-id="<?php echo $this->post_id ?>" data-type="<?php echo $this->form_type ?>"<?php $this->form_data_types() ?> class="<?php echo $framework.' '; echo $this->get_form_class().' '; echo $this->form_name ?>" novalidate<?php echo $this->enctype;?>>
+            <form method="post"<?php echo $this->action; ?> name="<?php echo $this->form_name; ?>" id="<?php echo $this->form_css_id; ?>" data-id="<?php echo $this->form_post_id ?>" data-post-id="<?php echo $this->post_id ?>" data-type="<?php echo $helper->get_form_type() ?>"<?php $this->form_data_types() ?> class="<?php echo $framework.' '; echo $this->get_form_class().' '; echo $this->form_name ?>" novalidate<?php echo $this->enctype;?>>
 
                 <?php if ( isset($this->hidden) && count($this->hidden)):
                     foreach ($this->hidden as $key => $hidden): ?>
@@ -172,15 +172,15 @@ class WP_Swift_Form_Builder_Html {
                 // $this->before_submit_button_hook(); 
                 // add_action( "wp_swift_formbuilder_before_submit_button_hook", $function_to_add, 10, 1 );
                 do_action( 'wp_swift_formbuilder_before_submit_button_hook' );
-                $this->gdpr_html(); ?>
+                $this->gdpr_html($helper); ?>
                 <div id="form-submission-wrapper"><?php 
                     $this->recaptcha_html($helper); ?>
                     <div id="form-submission"><?php 
-                        $this->mail_receipt_html();
-                        $this->button_html();
+                        $this->mail_receipt_html($helper);
+                        $this->button_html($helper);
                     ?></div>
                 </div><?php
-                $this->gdpr_disclaimer();
+                $this->gdpr_disclaimer($helper);
                 ?>
             </form><!-- @end form -->
         </div><!-- @end form-wrapper -->
@@ -212,35 +212,35 @@ class WP_Swift_Form_Builder_Html {
                         case "date":
                         case "date_range":
                             $input_html = $this->build_form_input($helper, $id, $input);
-                            echo $this->wrap_input($id, $input, $input_html);
+                            echo $this->wrap_input($helper, $id, $input, $input_html);
                             break;
                         case "textarea":
-                            $input_html = $this->build_form_textarea($id, $input);
-                            echo $this->wrap_input($id, $input, $input_html);
+                            $input_html = $this->build_form_textarea($helper, $id, $input);
+                            echo $this->wrap_input($helper, $id, $input, $input_html);
                             break; 
                         case "radio":
-                            $input_html = $this->build_form_radio($id, $input);
-                            echo $this->wrap_input($id, $input, $input_html);
+                            $input_html = $this->build_form_radio($helper, $id, $input);
+                            echo $this->wrap_input($helper, $id, $input, $input_html);
                             break; 
                         case "checkbox":
-                            $input_html = $this->build_form_checkbox($id, $input);
-                            echo $this->wrap_input($id, $input, $input_html);
+                            $input_html = $this->build_form_checkbox($helper, $id, $input);
+                            echo $this->wrap_input($helper, $id, $input, $input_html);
                             break; 
                         case "checkbox_single":
-                            $input_html = $this->build_form_checkbox_single($id, $input);
-                            echo $this->wrap_input($id, $input, $input_html);
+                            $input_html = $this->build_form_checkbox_single($helper, $id, $input);
+                            echo $this->wrap_input($helper, $id, $input, $input_html);
                             break;               
                         case "multi_select":
                         case "select":
-                            $input_html = $this->build_form_select($id, $input);
-                            echo $this->wrap_input($id, $input, $input_html);
+                            $input_html = $this->build_form_select($helper, $id, $input);
+                            echo $this->wrap_input($helper, $id, $input, $input_html);
                             break; 
                         case "repeat_section":
-                            echo $this->build_form_repeat_section($id, $input);
+                            echo $this->build_form_repeat_section($helper, $id, $input);
                             break;
                         case "file":
                             $input_html = $this->build_form_input($helper, $id, $input);
-                            echo $this->wrap_input($id, $input, $input_html);
+                            echo $this->wrap_input($helper, $id, $input, $input_html);
                             break;                                                                                                                
                     }  
                 }
@@ -255,343 +255,343 @@ class WP_Swift_Form_Builder_Html {
 
     
 
-    public function process_form($post, $ajax=false) {
+    // public function process_form($post, $ajax=false) {
 
 
 
 
-        if ( $this->recaptcha_check($post) && $this->get_form_data() ) {
-            // $this->validate_form($post);
-            echo '<pre>$form_pristine: '; var_dump($this->form_pristine); echo '</pre>';
-            $this->form_data = $this->validate->run($this, $post, $ajax);
-            echo '<pre>$form_pristine: '; var_dump($this->form_pristine); echo '</pre>';
-            if ( $this->get_error_count() === 0 ) {
-                return $this->submit_form_success($post, $ajax);
-            }
-            else {
-                return $this->submit_form_failure($ajax);
-            }
-        }
-        else {
-            return $this->form_failure($ajax);
-        }        
-    }
+    //     if ( $this->recaptcha_check($post) && $this->get_form_data() ) {
+    //         // $this->validate_form($post);
+    //         echo '<pre>$form_pristine: '; var_dump($this->form_pristine); echo '</pre>';
+    //         $this->form_data = $this->validate->run($this, $post, $ajax);
+    //         echo '<pre>$form_pristine: '; var_dump($this->form_pristine); echo '</pre>';
+    //         if ( $this->get_error_count() === 0 ) {
+    //             return $this->submit_form_success($post, $ajax);
+    //         }
+    //         else {
+    //             return $this->submit_form_failure($ajax);
+    //         }
+    //     }
+    //     else {
+    //         return $this->form_failure($ajax);
+    //     }        
+    // }
    
 /*
  *
  */
-    public function validate_form($post) {
-        // echo "<pre>post: "; var_dump($post); echo "</pre>";echo "<hr>";
-        // The form is submitted by a user and so is no longer pristine
-        $this->set_form_pristine(false);
-        // check for repeat 
-        // echo '<pre>$this->form_data: '; var_dump($this->form_data); echo '</pre>';echo "<hr>";
-        $j = 0;
-        foreach ( $this->form_data as &$section ) {
-            $j++;
-            // echo '<pre>$j: '; var_dump($j); echo '</pre>';
-            foreach ( $section["inputs"] as $input_key => &$input ) {
-                // echo '<pre>$input["data_type"]: '; var_dump($input["data_type"]); echo '</pre>';
-                if ( $input["data_type"] === "repeat_section" ) {
-                    if (isset($post[$input_key])) {
-                        // echo '<pre>$post[$input_key]: '; var_dump($post[$input_key]); echo '</pre>';echo "<hr>";
-                        // echo '<pre>$input: '; var_dump($input); echo '</pre>';
-                        $input["count"] = (int) $post[$input_key];
-                    }
-                    // echo "<hr>";
-                    // echo '<pre>$input: '; var_dump($input); echo '</pre>';
-                    if (isset( $post[$input["prefix"].$input["id"]] )) {
-                        $count = (int) $post[$input["prefix"].$input["id"]];
+//     public function validate_form($post) {
+//         // echo "<pre>post: "; var_dump($post); echo "</pre>";echo "<hr>";
+//         // The form is submitted by a user and so is no longer pristine
+//         $this->set_form_pristine(false);
+//         // check for repeat 
+//         // echo '<pre>$this->form_data: '; var_dump($this->form_data); echo '</pre>';echo "<hr>";
+//         $j = 0;
+//         foreach ( $this->form_data as &$section ) {
+//             $j++;
+//             // echo '<pre>$j: '; var_dump($j); echo '</pre>';
+//             foreach ( $section["inputs"] as $input_key => &$input ) {
+//                 // echo '<pre>$input["data_type"]: '; var_dump($input["data_type"]); echo '</pre>';
+//                 if ( $input["data_type"] === "repeat_section" ) {
+//                     if (isset($post[$input_key])) {
+//                         // echo '<pre>$post[$input_key]: '; var_dump($post[$input_key]); echo '</pre>';echo "<hr>";
+//                         // echo '<pre>$input: '; var_dump($input); echo '</pre>';
+//                         $input["count"] = (int) $post[$input_key];
+//                     }
+//                     // echo "<hr>";
+//                     // echo '<pre>$input: '; var_dump($input); echo '</pre>';
+//                     if (isset( $post[$input["prefix"].$input["id"]] )) {
+//                         $count = (int) $post[$input["prefix"].$input["id"]];
 
-                        // echo "<hr>";
-                        // echo '<pre>$post[$input["prefix"].$input["id"]]: '; var_dump($post[$input["prefix"].$input["id"]]); echo '</pre>';
-                        // echo "<br>";
-                        // echo '<pre>$section: '; var_dump($section); echo '</pre>';
-                        // echo "<br>";
-                        for ($i = 1; $i <= $count; $i++) {
-                            foreach ($input["input_keys"] as $key => $input_key) {
-                                $input_array = $input["input_arrays"][$input_key];
+//                         // echo "<hr>";
+//                         // echo '<pre>$post[$input["prefix"].$input["id"]]: '; var_dump($post[$input["prefix"].$input["id"]]); echo '</pre>';
+//                         // echo "<br>";
+//                         // echo '<pre>$section: '; var_dump($section); echo '</pre>';
+//                         // echo "<br>";
+//                         for ($i = 1; $i <= $count; $i++) {
+//                             foreach ($input["input_keys"] as $key => $input_key) {
+//                                 $input_array = $input["input_arrays"][$input_key];
 
-                                // echo '<pre>$input_array: '; var_dump($input_array); echo '</pre>';
-                                $repeat_key = $input_key."-".$i;
-                                // echo '<pre>$array: '; var_dump($array); echo '</pre>';
-                                // echo "<pre>$repeat_key</pre>";
-                                if (!isset($section["inputs"][$repeat_key])) {
-                                    $section["inputs"][$repeat_key] = $input_array;
-                                }
-                            }
-                        }
-                            // foreach ($input["input_keys"] as $key => $input_key) {
+//                                 // echo '<pre>$input_array: '; var_dump($input_array); echo '</pre>';
+//                                 $repeat_key = $input_key."-".$i;
+//                                 // echo '<pre>$array: '; var_dump($array); echo '</pre>';
+//                                 // echo "<pre>$repeat_key</pre>";
+//                                 if (!isset($section["inputs"][$repeat_key])) {
+//                                     $section["inputs"][$repeat_key] = $input_array;
+//                                 }
+//                             }
+//                         }
+//                             // foreach ($input["input_keys"] as $key => $input_key) {
                                 
-                            // }
-                        // echo "<hr>";
-                    }
-                }
-            }
-        }
-        // echo '<pre>$this->form_data: '; var_dump($this->form_data); echo '</pre>';echo "<hr>";echo "<hr>";echo "<hr>";
-        foreach ( $this->form_data as &$section ) {
-            foreach ( $section["inputs"] as $input_key => &$input ) {
-                // write_log($input);
-                // echo "<pre>input_key: $input_key</pre>";
-                $set = isset($post[$input_key]);
-                // echo '<pre>isset($post[$input_key]: '; var_dump($set); echo '</pre>';
-// echo '<pre>$input: '; var_dump($input); echo '</pre>';
-                // recaptcha_secret()($input['label'] .' '. $input["required"]);
-                if (isset($post[$input_key]) && $input['data_type'] !== "repeat_section") {
-                    // echo '<pre>$input_key: '; var_dump($input_key); echo '</pre>';
+//                             // }
+//                         // echo "<hr>";
+//                     }
+//                 }
+//             }
+//         }
+//         // echo '<pre>$this->form_data: '; var_dump($this->form_data); echo '</pre>';echo "<hr>";echo "<hr>";echo "<hr>";
+//         foreach ( $this->form_data as &$section ) {
+//             foreach ( $section["inputs"] as $input_key => &$input ) {
+//                 // write_log($input);
+//                 // echo "<pre>input_key: $input_key</pre>";
+//                 $set = isset($post[$input_key]);
+//                 // echo '<pre>isset($post[$input_key]: '; var_dump($set); echo '</pre>';
+// // echo '<pre>$input: '; var_dump($input); echo '</pre>';
+//                 // recaptcha_secret()($input['label'] .' '. $input["required"]);
+//                 if (isset($post[$input_key]) && $input['data_type'] !== "repeat_section") {
+//                     // echo '<pre>$input_key: '; var_dump($input_key); echo '</pre>';
 
-                    $input['value'] = $post[$input_key];
-                    $input = $this->validate_input($input, $input_key);
-                    // echo "<hr>";
-                }
-                elseif (isset($_FILES[$input_key])) {
-                    // echo '<pre>isset($_FILES[$input_key] </pre>';echo "<hr>";echo "<hr>";echo "<hr>";
-                    $input = $this->validate_input($input, $input_key);
-                }
-                elseif(isset($post[$input_key."-hidden"])) {
-                    $input['clean'] = 'No';
-                    $input['passed'] = true;
-                }
-                else {
-                    // echo "<pre>input: "; var_dump($input); echo "</pre>";
-                    if ($input["data_type"] === "checkbox_single" && $input["required"] === "") {
-                        $input['clean'] = 'No';
-                        $input['passed'] = true;
-                    }
-                    elseif ( $input["data_type"] === "text" && !$input["required"] ) {
-                        // Catch for unrequired (and disabled) text elements that are not sent in POST object
-                        $input['passed'] = true;                   
-                    }                    
-                }
+//                     $input['value'] = $post[$input_key];
+//                     $input = $this->validate_input($input, $input_key);
+//                     // echo "<hr>";
+//                 }
+//                 elseif (isset($_FILES[$input_key])) {
+//                     // echo '<pre>isset($_FILES[$input_key] </pre>';echo "<hr>";echo "<hr>";echo "<hr>";
+//                     $input = $this->validate_input($input, $input_key);
+//                 }
+//                 elseif(isset($post[$input_key."-hidden"])) {
+//                     $input['clean'] = 'No';
+//                     $input['passed'] = true;
+//                 }
+//                 else {
+//                     // echo "<pre>input: "; var_dump($input); echo "</pre>";
+//                     if ($input["data_type"] === "checkbox_single" && $input["required"] === "") {
+//                         $input['clean'] = 'No';
+//                         $input['passed'] = true;
+//                     }
+//                     elseif ( $input["data_type"] === "text" && !$input["required"] ) {
+//                         // Catch for unrequired (and disabled) text elements that are not sent in POST object
+//                         $input['passed'] = true;                   
+//                     }                    
+//                 }
 
                 
-                // if (isset($input['passed']) && !$input['passed'] && $input["type"] === "text" && !$input["required"] ) {
-                //     $input['passed'] = true;
-                // }
-                if (isset($input['passed']) && !$input['passed'] && !$input["required"] ) { //&& ($input["type"] === "text" || $input["type"] === "number" )  
-                    $input['passed'] = true;
-                }
-                // echo "<pre>"; echo $input["data_type"]." - ".$input["required"];echo "</pre>";
+//                 // if (isset($input['passed']) && !$input['passed'] && $input["type"] === "text" && !$input["required"] ) {
+//                 //     $input['passed'] = true;
+//                 // }
+//                 if (isset($input['passed']) && !$input['passed'] && !$input["required"] ) { //&& ($input["type"] === "text" || $input["type"] === "number" )  
+//                     $input['passed'] = true;
+//                 }
+//                 // echo "<pre>"; echo $input["data_type"]." - ".$input["required"];echo "</pre>";
 
-                // echo "<pre>";  echo "</pre>";
-                if (isset($input['passed']) && !$input['passed']) {
-                    // echo '<pre>$input: '; var_dump($input["data_type"]); echo '</pre>';
-                    $this->increase_error_count();
-                    if ($input['help'] !== '') {
-                        // echo '<pre>$input: '; var_dump($input); echo '</pre>';
-                        $this->form_error_messages[] = $input['help'];
-                    }
-                    else {
+//                 // echo "<pre>";  echo "</pre>";
+//                 if (isset($input['passed']) && !$input['passed']) {
+//                     // echo '<pre>$input: '; var_dump($input["data_type"]); echo '</pre>';
+//                     $this->increase_error_count();
+//                     if ($input['help'] !== '') {
+//                         // echo '<pre>$input: '; var_dump($input); echo '</pre>';
+//                         $this->form_error_messages[] = $input['help'];
+//                     }
+//                     else {
 
-                        $this->form_error_messages[] = $input['label'] . ' is invalid';
-                    }
-                    // recaptcha_secret()($input['label'] . ' is invalid');
-                } 
-            }
-        }  
+//                         $this->form_error_messages[] = $input['label'] . ' is invalid';
+//                     }
+//                     // recaptcha_secret()($input['label'] . ' is invalid');
+//                 } 
+//             }
+//         }  
 
-        // $this->increase_error_count();
-        // $this->form_error_messages[] = "Debugging!";           
-    }
+//         // $this->increase_error_count();
+//         // $this->form_error_messages[] = "Debugging!";           
+//     }
 
-    /*
-     * Check an individual form input field and sets the array with the findings 
-     *
-     * @param $input
-     *
-     * @return $input
-     */
-    public function validate_input($input, $key) {
-        // echo '<pre>$input: '; var_dump($input); echo '</pre>';echo "<hr>";
+    // /*
+    //  * Check an individual form input field and sets the array with the findings 
+    //  *
+    //  * @param $input
+    //  *
+    //  * @return $input
+    //  */
+    // public function validate_input($input, $key) {
+    //     // echo '<pre>$input: '; var_dump($input); echo '</pre>';echo "<hr>";
      
-        if ($input["data_type"] !== 'file') {
-            if($input['required'] && $input['value']=='') {
-                return $input;
-            }
-            elseif(!$input['required'] && $input['value']=='') {
-                $input['passed'] = true;
-                return $input;
-            }            
-        }
+    //     if ($input["data_type"] !== 'file') {
+    //         if($input['required'] && $input['value']=='') {
+    //             return $input;
+    //         }
+    //         elseif(!$input['required'] && $input['value']=='') {
+    //             $input['passed'] = true;
+    //             return $input;
+    //         }            
+    //     }
 
 
-        if(!is_array($input['value'])) {
-            $input['value'] = trim($input['value']);
-        }
+    //     if(!is_array($input['value'])) {
+    //         $input['value'] = trim($input['value']);
+    //     }
 
-        if ( isset($input["validation"]) && is_array($input["validation"])) {
-            $length = strlen($input['value']);
-            // echo '<pre>$length: '; var_dump($length); echo '</pre>';
-            if (isset( $input["validation"]["min"])) {
-                $min = (int) $input["validation"]["min"];
-                if ( $length < $min ) {
-                    // $input["help"] = "This must be at least $min characters";
-                    return $input;
-                }
-            }
-            if (isset( $input["validation"]["max"])) {
-                $max = (int) $input["validation"]["max"];
-                if ( $length > $max ) {
-                    // $input["help"] = "This cannot be more than $max characters";
-                    return $input;
-                }
-            } 
-            if (isset( $input["validation"]["validation"])) {
-                $validation = $input["validation"]["validation"];
-                // switch ($validation) {
-                //     case "uppercase_alphanumeric":
-                //         preg_match('/^[0-9A-Z]+$/', $input['value'], $matches, PREG_OFFSET_CAPTURE);
-                //         if (count($matches) == 0) return $input;
-                //         break;
-                //     case "uppercase_alphanumeric":
-                //         preg_match('/^[0-9A-Z]+$/', $input['value'], $matches, PREG_OFFSET_CAPTURE);
-                //         if (count($matches) == 0) return $input;
-                //         break;
+    //     if ( isset($input["validation"]) && is_array($input["validation"])) {
+    //         $length = strlen($input['value']);
+    //         // echo '<pre>$length: '; var_dump($length); echo '</pre>';
+    //         if (isset( $input["validation"]["min"])) {
+    //             $min = (int) $input["validation"]["min"];
+    //             if ( $length < $min ) {
+    //                 // $input["help"] = "This must be at least $min characters";
+    //                 return $input;
+    //             }
+    //         }
+    //         if (isset( $input["validation"]["max"])) {
+    //             $max = (int) $input["validation"]["max"];
+    //             if ( $length > $max ) {
+    //                 // $input["help"] = "This cannot be more than $max characters";
+    //                 return $input;
+    //             }
+    //         } 
+    //         if (isset( $input["validation"]["validation"])) {
+    //             $validation = $input["validation"]["validation"];
+    //             // switch ($validation) {
+    //             //     case "uppercase_alphanumeric":
+    //             //         preg_match('/^[0-9A-Z]+$/', $input['value'], $matches, PREG_OFFSET_CAPTURE);
+    //             //         if (count($matches) == 0) return $input;
+    //             //         break;
+    //             //     case "uppercase_alphanumeric":
+    //             //         preg_match('/^[0-9A-Z]+$/', $input['value'], $matches, PREG_OFFSET_CAPTURE);
+    //             //         if (count($matches) == 0) return $input;
+    //             //         break;
 
-                // }
-                switch ($validation) {
-                    case 'alphabetic':// Alphabetic
-                        preg_match('/^[a-zA-Z]+$/', $input['value'], $matches, PREG_OFFSET_CAPTURE);
-                        if (count($matches) == 0) return $input;
-                    case 'alphanumeric':// Alphanumeric
-                        preg_match('/^[0-9a-zA-Z]+$/', $input['value'], $matches, PREG_OFFSET_CAPTURE);
-                        if (count($matches) == 0) return $input;   
-                    case 'numeric': // Numeric
-                        if ( !ctype_digit($input['value']) ) return $input;
-                    case 'uppercase_alphabetic':// Uppercase Alphabetic
-                        preg_match('/^[A-Z]+$/', $input['value'], $matches, PREG_OFFSET_CAPTURE);
-                        if (count($matches) == 0) return $input;     
-                    case 'uppercase_alphanumeric':// Uppercase Alphanumeric
-                        preg_match('/^[0-9A-Z]+$/', $input['value'], $matches, PREG_OFFSET_CAPTURE);
-                        if (count($matches) == 0) return $input;                                                      
-                }                
-            }
-            // echo '<pre>$min: '; var_dump($min); echo '</pre>'; 
-            // echo '<pre>$max: '; var_dump($max); echo '</pre>';          
-            // echo '<pre>$input["validation"]: '; var_dump($input["validation"]); echo '</pre>';echo "<hr>";
-        }
-        // echo '<pre>$input["data_type"]: '; var_dump($input['data_type']); echo '</pre>';
-        switch ($input['data_type']) {
-            case "text":
-            case "textarea":
-                $input['clean'] = sanitize_text_field( $input['value'] );
-                $input['passed'] = true;
-                break;
-            case "username":
-                $username_strlen = strlen ( $input['value']  );
-                if ($username_strlen<4 || $username_strlen>30) {
-                    return $input;
-                }
-                $input['clean'] = sanitize_user( $input['value'], $strict=true ); 
-                $input['passed'] = true;
-                break;
-            case "email":
-                if ( !is_email( $input['value'] ) ) { 
-                    return $input; 
-                }
-                else {
-                    $input['clean'] = sanitize_email( $input['value'] );  
-                }
-                $input['passed'] = true;
-                break;
-            case "number":
-                if ( !is_numeric( $input['value'] ) ) { 
-                    return $input; 
-                }
-                else {
-                    $input['clean'] = $input['value'];  
-                }
-                $input['passed'] = true;
-                break;        
-            case "url":
-                if (filter_var($input['value'], FILTER_VALIDATE_URL) === false) {
-                    return $input;
-                }
-                else {
-                    $input['clean'] = $input['value'];
-                }
-                break;
-            case "select2":
-            case "select":
-                // echo '<pre>1 $input: '; var_dump($input); echo '</pre>';echo "<hr>";
-                $input['selected_option'] = $input['value'];
-                $input['clean'] = $input['value'];
-                $input['passed'] = true;
-                // return $input;
-                 // echo '<pre>2 $input: '; var_dump($input); echo '</pre>';echo "<hr>";echo "<hr>";
-                break;
-            case "file": 
-                $input = $this->process_file($_FILES, $input, $key);
-                // echo '<pre>$attachments: '; var_dump($attachments); echo '</pre>';     
-                //         $input['passed'] = true;    
-                break; 
-            case "hidden":
-                if (isset($input['nonce'])) {
-                    $retrieved_nonce = $value;
-                    if (!wp_verify_nonce($retrieved_nonce, 'search_nonce' ) ) {
-                        die( 'Failed security check' );
-                        return $input;  
-                    }
-                }
-                if (isset($input['expected'])) {
-                    if ($input['expected'] != $value ) {
-                        return $input;  
-                    }
-                }
-                $input['passed'] = true;             
-                break; 
-            case "password":
-                    break; 
-            case "checkbox":
-                $options = $input["options"];
-                // echo "<pre>options: "; var_dump($options); echo "</pre>";
-                // recaptcha_secret()('options');
-                // recaptcha_secret()($options);
-                $clean = '';
-                foreach ($options as $option_key => $option) {
-                    if ( in_array($option["option_value"], $input['value'])) {
-                        $options[$option_key]["checked"] = true;
-                        $clean .= $option["option"].', ';
-                    }
-                }
-                $clean = rtrim( $clean, ', ');
-                $input["options"] = $options;
-                $input['clean'] = $clean;
-                $input['passed'] = true;
-                break;                        
-            case "checkbox_single":
-                $input["option"]["checked"] = 1;
-                $input['clean'] = "Yes";//"Yes <small>(".$input["option"]["key"].")</small>";
-                $input['passed'] = true;
-                break; 
-            case "date":
-                // 
-                // $d = DateTime::createFromFormat($format, $input['value']);  
-                // echo '<pre>$input[value]: '; var_dump($input['value']); echo '</pre>';    
-                $date  = explode('/', $input['value']);
-                $d = $date[0];
-                $m = $date[1];
-                $y = $date[2];
-                // echo '<pre>$date: '; var_dump($date); echo '</pre>';
-                # bool checkdate ( int $month , int $day , int $year )
-                if (!checkdate($m, $d, $y)) {
-                    return $input;
-                }
-                else {
-                    $input['clean'] = $y.$m.$d;//date('Ymd', strtotime( $y.$m.$d ));
-                    //$date[1] . ' ' . $date[0] . ' ' . $date[2] //$input['value']
-                    // echo '<pre>$input[clean]: '; var_dump($input['clean']); echo '</pre>';
-                }
-                $input['passed'] = true;
-                break;
+    //             // }
+    //             switch ($validation) {
+    //                 case 'alphabetic':// Alphabetic
+    //                     preg_match('/^[a-zA-Z]+$/', $input['value'], $matches, PREG_OFFSET_CAPTURE);
+    //                     if (count($matches) == 0) return $input;
+    //                 case 'alphanumeric':// Alphanumeric
+    //                     preg_match('/^[0-9a-zA-Z]+$/', $input['value'], $matches, PREG_OFFSET_CAPTURE);
+    //                     if (count($matches) == 0) return $input;   
+    //                 case 'numeric': // Numeric
+    //                     if ( !ctype_digit($input['value']) ) return $input;
+    //                 case 'uppercase_alphabetic':// Uppercase Alphabetic
+    //                     preg_match('/^[A-Z]+$/', $input['value'], $matches, PREG_OFFSET_CAPTURE);
+    //                     if (count($matches) == 0) return $input;     
+    //                 case 'uppercase_alphanumeric':// Uppercase Alphanumeric
+    //                     preg_match('/^[0-9A-Z]+$/', $input['value'], $matches, PREG_OFFSET_CAPTURE);
+    //                     if (count($matches) == 0) return $input;                                                      
+    //             }                
+    //         }
+    //         // echo '<pre>$min: '; var_dump($min); echo '</pre>'; 
+    //         // echo '<pre>$max: '; var_dump($max); echo '</pre>';          
+    //         // echo '<pre>$input["validation"]: '; var_dump($input["validation"]); echo '</pre>';echo "<hr>";
+    //     }
+    //     // echo '<pre>$input["data_type"]: '; var_dump($input['data_type']); echo '</pre>';
+    //     switch ($input['data_type']) {
+    //         case "text":
+    //         case "textarea":
+    //             $input['clean'] = sanitize_text_field( $input['value'] );
+    //             $input['passed'] = true;
+    //             break;
+    //         case "username":
+    //             $username_strlen = strlen ( $input['value']  );
+    //             if ($username_strlen<4 || $username_strlen>30) {
+    //                 return $input;
+    //             }
+    //             $input['clean'] = sanitize_user( $input['value'], $strict=true ); 
+    //             $input['passed'] = true;
+    //             break;
+    //         case "email":
+    //             if ( !is_email( $input['value'] ) ) { 
+    //                 return $input; 
+    //             }
+    //             else {
+    //                 $input['clean'] = sanitize_email( $input['value'] );  
+    //             }
+    //             $input['passed'] = true;
+    //             break;
+    //         case "number":
+    //             if ( !is_numeric( $input['value'] ) ) { 
+    //                 return $input; 
+    //             }
+    //             else {
+    //                 $input['clean'] = $input['value'];  
+    //             }
+    //             $input['passed'] = true;
+    //             break;        
+    //         case "url":
+    //             if (filter_var($input['value'], FILTER_VALIDATE_URL) === false) {
+    //                 return $input;
+    //             }
+    //             else {
+    //                 $input['clean'] = $input['value'];
+    //             }
+    //             break;
+    //         case "select2":
+    //         case "select":
+    //             // echo '<pre>1 $input: '; var_dump($input); echo '</pre>';echo "<hr>";
+    //             $input['selected_option'] = $input['value'];
+    //             $input['clean'] = $input['value'];
+    //             $input['passed'] = true;
+    //             // return $input;
+    //              // echo '<pre>2 $input: '; var_dump($input); echo '</pre>';echo "<hr>";echo "<hr>";
+    //             break;
+    //         case "file": 
+    //             $input = $this->process_file($_FILES, $input, $key);
+    //             // echo '<pre>$attachments: '; var_dump($attachments); echo '</pre>';     
+    //             //         $input['passed'] = true;    
+    //             break; 
+    //         case "hidden":
+    //             if (isset($input['nonce'])) {
+    //                 $retrieved_nonce = $value;
+    //                 if (!wp_verify_nonce($retrieved_nonce, 'search_nonce' ) ) {
+    //                     die( 'Failed security check' );
+    //                     return $input;  
+    //                 }
+    //             }
+    //             if (isset($input['expected'])) {
+    //                 if ($input['expected'] != $value ) {
+    //                     return $input;  
+    //                 }
+    //             }
+    //             $input['passed'] = true;             
+    //             break; 
+    //         case "password":
+    //                 break; 
+    //         case "checkbox":
+    //             $options = $input["options"];
+    //             // echo "<pre>options: "; var_dump($options); echo "</pre>";
+    //             // recaptcha_secret()('options');
+    //             // recaptcha_secret()($options);
+    //             $clean = '';
+    //             foreach ($options as $option_key => $option) {
+    //                 if ( in_array($option["option_value"], $input['value'])) {
+    //                     $options[$option_key]["checked"] = true;
+    //                     $clean .= $option["option"].', ';
+    //                 }
+    //             }
+    //             $clean = rtrim( $clean, ', ');
+    //             $input["options"] = $options;
+    //             $input['clean'] = $clean;
+    //             $input['passed'] = true;
+    //             break;                        
+    //         case "checkbox_single":
+    //             $input["option"]["checked"] = 1;
+    //             $input['clean'] = "Yes";//"Yes <small>(".$input["option"]["key"].")</small>";
+    //             $input['passed'] = true;
+    //             break; 
+    //         case "date":
+    //             // 
+    //             // $d = DateTime::createFromFormat($format, $input['value']);  
+    //             // echo '<pre>$input[value]: '; var_dump($input['value']); echo '</pre>';    
+    //             $date  = explode('/', $input['value']);
+    //             $d = $date[0];
+    //             $m = $date[1];
+    //             $y = $date[2];
+    //             // echo '<pre>$date: '; var_dump($date); echo '</pre>';
+    //             # bool checkdate ( int $month , int $day , int $year )
+    //             if (!checkdate($m, $d, $y)) {
+    //                 return $input;
+    //             }
+    //             else {
+    //                 $input['clean'] = $y.$m.$d;//date('Ymd', strtotime( $y.$m.$d ));
+    //                 //$date[1] . ' ' . $date[0] . ' ' . $date[2] //$input['value']
+    //                 // echo '<pre>$input[clean]: '; var_dump($input['clean']); echo '</pre>';
+    //             }
+    //             $input['passed'] = true;
+    //             break;
 
   
-        }
-        // echo '<pre>$input: '; var_dump($input); echo '</pre>';echo "<hr>";
-        // $input['passed'] = true;
-        return $input;   
-    }//@end validate_input 
+    //     }
+    //     // echo '<pre>$input: '; var_dump($input); echo '</pre>';echo "<hr>";
+    //     // $input['passed'] = true;
+    //     return $input;   
+    // }//@end validate_input 
 
 
     private function get_uploads_path() {       
@@ -674,6 +674,8 @@ class WP_Swift_Form_Builder_Html {
     /*
      * Build form message
      */
+
+/* 
     public function form_failure($ajax) {
         ob_start();
 
@@ -705,9 +707,11 @@ class WP_Swift_Form_Builder_Html {
         ob_end_clean();
         
         return $html;
-    }//@end submit_form_failure()
+    }//@end submit_form_failure() 
+*/ 
 
-    private clear_input($helper) {
+
+    private function clear_input($helper) {
         if(!$helper->get_form_pristine()) {
             if($helper->get_clear_after_submission() && $helper->get_error_count() === 0) {
                 // No errors found so clear the values
@@ -1032,7 +1036,7 @@ class WP_Swift_Form_Builder_Html {
         return $input_html;  
     }
 
-    private function build_form_checkbox_single($id, $input) {
+    private function build_form_checkbox_single($helper, $id, $input) {
         $checked='';
         if ( $input["option"]["checked"]){
             $checked=' checked';
@@ -1139,14 +1143,14 @@ class WP_Swift_Form_Builder_Html {
     /*
      * Use the same function to wrap all inputs
      */
-    public function wrap_input($id, $input, $input_html, $section='') {
+    public function wrap_input($helper, $id, $input, $input_html, $section='') {
 
-        if(!$this->form_pristine) {
-            if($this->clear_after_submission && $this->error_count===0) {
-                // No errors found so clear the values
-                $input['value']=''; 
-            }
-        }
+        // if(!$this->form_pristine) {
+        //     if($this->clear_after_submission && $this->error_count===0) {
+        //         // No errors found so clear the values
+        //         $input['value']=''; 
+        //     }
+        // }
         if ($input["grouping"] && $input["grouping"] == "start"): ?>
 
             <!-- Start grouping -->
@@ -1154,7 +1158,7 @@ class WP_Swift_Form_Builder_Html {
         <?php endif ?>
 
             <!-- @start form element -->
-            <div class="<?php echo $this->get_css_form_group($input) ?>" id="<?php echo $id; ?>-form-group">
+            <div class="<?php echo $this->get_css_form_group($helper, $input) ?>" id="<?php echo $id; ?>-form-group">
 
                 <!-- @start input anchor -->
                 <a href="<?php echo $id; ?>-anchor"></a>
@@ -1221,13 +1225,13 @@ class WP_Swift_Form_Builder_Html {
     }
 
     /*
-     * 
+     * to do
      */
-    public function get_css_form_group($input) {
+    public function get_css_form_group($helper, $input) {
         // todo
         $has_error='';
-        if(!$this->form_pristine && $input['passed']==false && $input["type"] !== "checkbox") {
-            // This input has has error detected so add an error class to the surrounding div
+        if(!$helper->get_form_pristine() && $input['passed']==false && $input["type"] !== "checkbox") {
+            // This input has an error detected so add an error class to the surrounding div
             $has_error = ' has-error';
         } 
         // $framework_style = '';
@@ -1247,9 +1251,9 @@ class WP_Swift_Form_Builder_Html {
      * Get the submit button name 
      * This can be used to check if this POST object was set
      */
-    public function get_submit_button_name() {
-        return $this->submit_button_name;
-    }  
+    // public function get_submit_button_name() {
+    //     return $this->submit_button_name;
+    // }  
 
     /**
      * Get the form wrapper class
@@ -1261,15 +1265,15 @@ class WP_Swift_Form_Builder_Html {
     /*
      * Get form_pristine
      */
-    public function get_form_pristine() {
-        return $this->form_pristine;
-    }
+    // public function get_form_pristine() {
+    //     return $this->form_pristine;
+    // }
     /*
      * Set form_pristine
      */
-    public function set_form_pristine($form_pristine) {
-        $this->form_pristine = $form_pristine;
-    }         
+    // public function set_form_pristine($form_pristine) {
+    //     $this->form_pristine = $form_pristine;
+    // }         
     // /*
     //  * Get form_post_id
     //  */
@@ -1401,21 +1405,22 @@ class WP_Swift_Form_Builder_Html {
             <?php
             $html = ob_get_contents();
             ob_end_clean();
-        endif;//@nd if ($this->gdpr_settings)
+        endif;//@nd if ($helper->recaptcha_site())
         echo  $html;
     }  
 
-    public function gdpr_html() {
+    public function gdpr_html($helper) {
+        $gdpr_settings = $helper->get_gdpr_settings();
+        if ( isset($gdpr_settings["opt_in"]) ): ?>
 
-        if ( $this->gdpr_settings ): ?>
         <!-- @start .sign-up -->
         <div class="form-group sign-up">
             <div class="form-label"></div>
             <div class="form-input">
                 <div class="checkbox">
-                    <label id="sign-up-details"><?php echo $this->gdpr_settings["main_message"] ?></label>
+                    <label id="sign-up-details"><?php echo $gdpr_settings["main_message"] ?></label>
 
-                        <?php foreach ($this->gdpr_settings["opt_in"] as $key => $opt_in): ?>
+                        <?php foreach ($gdpr_settings["opt_in"] as $key => $opt_in): ?>
 
                             <?php if ( is_array($opt_in["options"]) && ( in_array("email", $opt_in["options"]) || in_array("sms", $opt_in["options"]) ) ): ?>
 
@@ -1435,18 +1440,19 @@ class WP_Swift_Form_Builder_Html {
                 </div>
             </div>                  
         </div> 
-        <!-- @end .sign-up -->                
+        <!-- @end .sign-up -->           
+
         <?php endif;//@nd if ($this->gdpr_settings)
     }
 
 
-    public function gdpr_disclaimer() {
-
-        if ( $this->gdpr_settings && $this->gdpr_settings["disclaimer"] ): ?>
+    public function gdpr_disclaimer($helper) {
+        $gdpr_settings = $helper->get_gdpr_settings();
+        if ( isset($gdpr_settings["disclaimer"]) ): ?>
 
             <div class="form-group sign-up">
                 <div class="policies">
-                    <?php echo $this->gdpr_settings["disclaimer"] ?>
+                    <?php echo $gdpr_settings["disclaimer"] ?>
                 </div>
             </div>
 
@@ -1454,8 +1460,8 @@ class WP_Swift_Form_Builder_Html {
     } 
 
 
-    public function mail_receipt_html() {
-        if ($this->user_confirmation_email === 'ask'): ?>
+    public function mail_receipt_html($helper) {
+        if ($helper->get_user_confirmation_email() === 'ask'): ?>
 
             <!-- @start .mail-receipt -->
             <div class="form-group mail-receipt">
@@ -1466,11 +1472,13 @@ class WP_Swift_Form_Builder_Html {
                     </div>
                 </div>                  
             </div> 
-            <!-- @end .mail-receipt -->                
+            <!-- @end .mail-receipt -->          
+
         <?php endif;         
     }    
 
-    public function button_html() {
+    //todo - does submit_button_name come from helper
+    public function button_html($helper) {
         ?>
         <!-- @start .button -->
         <div class="form-group button-group">
@@ -1478,7 +1486,7 @@ class WP_Swift_Form_Builder_Html {
             <!-- @start input -->
             <div class="form-input">
 
-                <button type="submit" name="<?php echo $this->submit_button_name; ?>" id="<?php echo $this->submit_button_id; ?>" class="button" tabindex="<?php echo $this->get_tab_index(); ?>"><?php echo $this->submit_button_text; ?></button>
+                <button type="submit" name="<?php echo $helper->get_submit_button_name(); ?>" id="<?php echo $helper->get_submit_button_id(); ?>" class="button" tabindex="<?php echo $this->get_tab_index(); ?>"><?php echo $helper->get_submit_button_text(); ?></button>
 
 
             </div>

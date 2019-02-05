@@ -1,14 +1,6 @@
 <?php
 /*
- * Include the WordPress Admin API interface settings for this plugin.
- * This will declare all menu pages, tabs and inputs etc but it does not
- * handle any business logic related to form functionality.
- */
-// require_once 'form-builder-wordpress-admin-interface.php';
-// require_once 'email-templates/wp-swift-email-templates.php';
-/*
- * The main plugin class that will handle business logic related to form 
- * functionality.
+ * The main plugin class that will handle form validation and attachment processing.
  */
 class WP_Swift_Form_Builder_Validate {
     public function validate_form($helper, $post, $ajax) {
@@ -103,9 +95,7 @@ class WP_Swift_Form_Builder_Validate {
      * @return $input
      */
     public function validate_input($input, $key, $helper=null) {
-        // echo '<pre>$key: '; var_dump($key); echo '</pre>';
-        // echo '<pre>$input: '; var_dump($input); echo '</pre>';echo "<hr>";
-     
+
         if ($input["data_type"] !== 'file') {
             if($input['required'] && $input['value']=='') {
                 return $input;
@@ -115,7 +105,6 @@ class WP_Swift_Form_Builder_Validate {
                 return $input;
             }            
         }
-
 
         if(!is_array($input['value'])) {
             $input['value'] = trim($input['value']);
@@ -213,17 +202,12 @@ class WP_Swift_Form_Builder_Validate {
                 break;
             case "select2":
             case "select":
-                // echo '<pre>1 $input: '; var_dump($input); echo '</pre>';echo "<hr>";
                 $input['selected_option'] = $input['value'];
                 $input['clean'] = $input['value'];
                 $input['passed'] = true;
-                // return $input;
-                 // echo '<pre>2 $input: '; var_dump($input); echo '</pre>';echo "<hr>";echo "<hr>";
                 break;
             case "file": 
-                $input = $this->process_file($_FILES, $input, $key, $helper);
-                // echo '<pre>$attachments: '; var_dump($attachments); echo '</pre>';     
-                //         $input['passed'] = true;    
+                $input = $this->process_file($_FILES, $input, $key, $helper);  
                 break; 
             case "hidden":
                 if (isset($input['nonce'])) {
@@ -244,9 +228,6 @@ class WP_Swift_Form_Builder_Validate {
                     break; 
             case "checkbox":
                 $options = $input["options"];
-                // echo "<pre>options: "; var_dump($options); echo "</pre>";
-                // recaptcha_secret()('options');
-                // recaptcha_secret()($options);
                 $clean = '';
                 foreach ($options as $option_key => $option) {
                     if ( in_array($option["option_value"], $input['value'])) {
@@ -290,8 +271,9 @@ class WP_Swift_Form_Builder_Validate {
 
     private function process_file($files, $input, $key, $helper) {
         $attachments = array();
-        $uploads_path = $helper->get_uploads_path();
+        $uploads_path = ABSPATH.$input["save_location"];
         $uploads_path_exists = false;
+
         // Create folder if none exists
         if(!is_dir($uploads_path))
             $uploads_path_exists = mkdir($uploads_path, 0700);
@@ -311,12 +293,7 @@ class WP_Swift_Form_Builder_Validate {
                 $input["value"] = $new_name_with_path;
                 $input['passed'] = true;
                 $helper->add_attachment( $new_name_with_path );
-                // $input["value"] = $new_name_with_path;              
-                // $form_data[$key]['clean'] = $time.'_'.$old_name.'';
             }
-        }
-        else {
-
         }
         return $input;
     }
@@ -339,7 +316,7 @@ class WP_Swift_Form_Builder_Validate {
             $g_response = $post["g-recaptcha-response"];
 
             $url = 'https://www.google.com/recaptcha/api/siteverify';
-            $post_data = "secret=".$this->recaptcha_secret()."&response=".$g_response."&remoteip=".$_SERVER['REMOTE_ADDR'] ;
+            $post_data = "secret=".$helper->recaptcha_secret()."&response=".$g_response."&remoteip=".$_SERVER['REMOTE_ADDR'] ;
             $ch = curl_init();  
             curl_setopt($ch, CURLOPT_URL, $url);
             curl_setopt($ch, CURLOPT_POST, true);
@@ -364,16 +341,5 @@ class WP_Swift_Form_Builder_Validate {
             $helper->add_form_error_message("This form is expecting a recaptcha code to validate but none was found!");               
             return false;
         }    
-    } 
-
-    // public function recaptcha_site() {
-    //     if (isset( $this->recaptcha["site_key"] )) {
-    //         return $this->recaptcha["site_key"];
-    //     } 
-    // } 
-    // public function recaptcha_secret() {
-    //     if (isset( $this->recaptcha["secret_key"] )) {
-    //         return $this->recaptcha["secret_key"];
-    //     } 
-    // }                  
+    }                  
 }

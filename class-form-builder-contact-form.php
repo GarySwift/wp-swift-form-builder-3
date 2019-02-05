@@ -201,7 +201,7 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
         }
         else {
             $debug_info .= "<pre>Debugging mode is on so no emails are being sent.</pre>";
-            $debug_info .= "<br><p>Emails will beair sent to here: </p>";
+            $debug_info .= "<br><p>Emails will be sent to here: </p>";
             if (count($attachments)) {
                 echo '<pre>$attachments: '; var_dump($attachments); echo '</pre>';
             }
@@ -304,7 +304,7 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
     }     
 
     private function do_signup_api( $post ) {
-        $gdpr_settings = parent::gdpr_settings();
+        $gdpr_settings = parent::get_gdpr_settings();
         $html = '';
         $list_ids = array();
         $list_id_array = array();

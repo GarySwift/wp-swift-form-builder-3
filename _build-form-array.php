@@ -276,6 +276,8 @@ function build_acf_form_array($row_layout, $inputs, $settings, $section=0, $edit
 
     if( $data_type === 'file' ) {
         $css_class .= 'file-upload';
+        $save_location = get_sub_field('save_location');
+        echo '<pre>$save_location: '; var_dump($save_location); echo '</pre>';
     }
     if( $data_type === 'date_range' ) {
          
@@ -529,7 +531,9 @@ function build_acf_form_array($row_layout, $inputs, $settings, $section=0, $edit
             // echo '<pre>$enctype: '; var_dump($enctype); echo '</pre>';
             $settings["enctype"] = ' enctype="multipart/form-data"';
             $form_class = 'js-check-form-file';
-            $inputs[$prefix.$id] = array("passed"=>false, "clean"=>$value, "value"=>$value, "section"=>$section, "required"=>$required, "type"=>$type, "data_type"=>$data_type,  "placeholder"=>$placeholder, "label"=>$label, "accept"=>"pdf", "help"=>$help, "instructions" => $instructions, "grouping" => $grouping, "css_class" => $css_class, 'disabled' => $disabled);
+            $save_location = get_sub_field('save_location');
+            if (!$save_location) $save_location = 'uploads';
+            $inputs[$prefix.$id] = array("passed"=>false, "clean"=>$value, "value"=>$value, "section"=>$section, "required"=>$required, "type"=>$type, "data_type"=>$data_type,  "placeholder"=>$placeholder, "label"=>$label, "accept"=>"pdf", "help"=>$help, "instructions" => $instructions, "grouping" => $grouping, "css_class" => $css_class, 'disabled' => $disabled, "save_location" => $save_location);
             break;              
         case "date_range":
             $inputs[$prefix.$id.'-start'] = array("passed"=>false, "clean"=>$value, "value"=>$value, "section"=>$section, "required"=>$required, "type"=>$type, "data_type"=>"date", "label"=>"Date From", "help"=>$help, "instructions" => $instructions, "grouping" => 'start', "css_class" => $css_class.' js-date-range', 'css_class_input' => $css_class_input, 'order'=>0, 'parent_label'=>$label, 'disabled' => $disabled);

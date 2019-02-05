@@ -46,7 +46,7 @@ if( function_exists('acf_add_local_field_group') ):
 				'required' => 0,
 				'conditional_logic' => 0,
 				'wrapper' => array (
-					'width' => '',
+					'width' => '50',
 					'class' => '',
 					'id' => '',
 				),
@@ -55,6 +55,24 @@ if( function_exists('acf_add_local_field_group') ):
 				'prepend' => '',
 				'append' => '',
 			),
+			array (
+				'key' => 'field_5695232e13e86b',
+				'label' => 'To Email Callback (Developers Only)',
+				'name' => 'to_email_callback',
+				'type' => 'text',
+				'instructions' => 'Use a custom PHP function to determine the to email',
+				'required' => 0,
+				'conditional_logic' => 0,
+				'wrapper' => array (
+					'width' => '50',
+					'class' => '',
+					'id' => '',
+				),
+				'default_value' => '',
+				'placeholder' => 'my_custom_email_callback',
+				'prepend' => '',
+				'append' => '',
+			),			
 			array (
 				'key' => 'field_5695245e13e87',
 				'label' => 'Response Subject',

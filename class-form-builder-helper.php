@@ -17,6 +17,11 @@ class WP_Swift_Form_Builder_Helper {
     private $form_post_id = '';
     private $post_id = null;
     private $form_name = '';
+
+    private $submit_button_id = '';
+    private $submit_button_name = '';
+    private $submit_button_text = '';
+
     private $form_pristine = true;
     private $error_count = 0;
     private $list_form_errors_in_warning_panel = true;
@@ -36,7 +41,7 @@ class WP_Swift_Form_Builder_Helper {
     private $form_type;
 
     private $gdpr_settings = null;
-    private $uploads_dir = '';
+    // private $uploads_dir = '';
     private $attachments = array();
     /*
         function guide
@@ -44,7 +49,7 @@ class WP_Swift_Form_Builder_Helper {
 
 
     */
-
+    private $recaptcha = null;    
     /*
      * Initializes the plugin.
      */
@@ -66,7 +71,7 @@ class WP_Swift_Form_Builder_Helper {
         if (count($hidden)) {
             $this->hidden = $hidden;
         }
-        $this->uploads_dir = ABSPATH.'uploads';
+        // $this->uploads_dir = ABSPATH.'uploads';
 
         if (function_exists("get_field")) {
             if( get_field('spam_prevention_type', $this->form_post_id ) ) {
@@ -93,12 +98,59 @@ class WP_Swift_Form_Builder_Helper {
             }              
         }
 
-        // echo '<pre>$this->recaptcha: '; var_dump($this->recaptcha); echo '</pre>';                  
+        if(isset($this->settings["user_confirmation_email"])) {
+            $this->user_confirmation_email = $this->settings["user_confirmation_email"];
+        }
+
+        if(isset($args["submit_button_name"])) {
+            $this->submit_button_name = $args["submit_button_name"];
+        }
+        else {
+            $this->submit_button_name = "submit-".$this->form_name;
+        }
+        // echo '<pre>$this->submit_button_name: '; var_dump($this->submit_button_name); echo '</pre>';
+
+        if(isset($args["submit_button_id"])) {
+            $this->submit_button_id = $args["submit_button_id"];
+        }
+        else {
+            $this->submit_button_id = $this->submit_button_name;
+        }
+
+        if(isset($args["submit_button_text"])) {
+            $this->submit_button_text = $args["submit_button_text"];
+        }
+        elseif(isset($settings["submit_button_text"])) {
+            $this->submit_button_text = $this->settings["submit_button_text"];
+        }  
+        else {
+            $this->submit_button_text = "Submit Form";
+        }             
     }
 
 
 
-   
+    /**
+     * Get the submit button name 
+     * This can be used to check if this POST object was set
+     */
+    public function get_submit_button_name() {
+        return $this->submit_button_name;
+    } 
+    /**
+     * Get the submit button id
+     */
+    public function get_submit_button_id() {
+        return $this->submit_button_id;
+    }    
+
+    /**
+     * Get the submit button text
+     */
+    public function get_submit_button_text() {
+        return $this->submit_button_text;
+    }   
+
     public function get_form_response($validate, $button_name) {
         $html_response = '';
         if( isset( $_POST[$button_name] ) ) { //check if form was submitted
@@ -178,9 +230,9 @@ class WP_Swift_Form_Builder_Helper {
      * Get the submit button name 
      * This can be used to check if this POST object was set
      */
-    public function get_submit_button_name() {
-        return $this->submit_button_name;
-    }  
+    // public function get_submit_button_name() {
+    //     return $this->submit_button_name;
+    // }  
 
     /**
      * Get the form wrapper class
@@ -393,7 +445,7 @@ class WP_Swift_Form_Builder_Helper {
         }
     }
 
-    public function gdpr_settings() {
+    public function get_gdpr_settings() {
         if ( $this->gdpr_settings ) {
             return $this->gdpr_settings;
         }
@@ -410,9 +462,11 @@ class WP_Swift_Form_Builder_Helper {
     public function get_clear_after_submission() {
         return $this->clear_after_submission;
     } 
-
-    public function get_uploads_path() {       
-        return $this->uploads_dir; // Root folder + uploads 
-    }
+    public function get_form_type() {
+        return $this->form_type;
+    } 
+    // public function get_uploads_path() {       
+    //     return $this->uploads_dir; // Root folder + uploads 
+    // }
 
 }
