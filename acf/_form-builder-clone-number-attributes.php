@@ -1,1 +1,91 @@
 <?php
+if( function_exists('acf_add_local_field_group') ):
+
+acf_add_local_field_group(array(
+	'key' => 'group_5bfbf616f078b',
+	'title' => 'Form Builder Clone: Number Attributes',
+	'fields' => array(
+		array(
+			'key' => 'field_5bfbf63b7569e',
+			'label' => 'Min',
+			'name' => 'Max',
+			'type' => 'number',
+			'instructions' => '',
+			'required' => 0,
+			'conditional_logic' => 0,
+			'wrapper' => array(
+				'width' => '33.33',
+				'class' => 'group-start',
+				'id' => '',
+			),
+			'default_value' => '',
+			'placeholder' => '',
+			'prepend' => '',
+			'append' => '',
+			'min' => '',
+			'max' => '',
+			'step' => '',
+		),
+		array(
+			'key' => 'field_5bfbf6647569f',
+			'label' => 'Max',
+			'name' => 'max',
+			'type' => 'number',
+			'instructions' => '',
+			'required' => 0,
+			'conditional_logic' => 0,
+			'wrapper' => array(
+				'width' => '33.33',
+				'class' => 'group-middle',
+				'id' => '',
+			),
+			'default_value' => '',
+			'placeholder' => '',
+			'prepend' => '',
+			'append' => '',
+			'min' => '',
+			'max' => '',
+			'step' => '',
+		),
+		array(
+			'key' => 'field_5bfbf673756a0',
+			'label' => 'Step',
+			'name' => 'step',
+			'type' => 'number',
+			'instructions' => '',
+			'required' => 0,
+			'conditional_logic' => 0,
+			'wrapper' => array(
+				'width' => '33.33',
+				'class' => 'group-end',
+				'id' => '',
+			),
+			'default_value' => '',
+			'placeholder' => '',
+			'prepend' => '',
+			'append' => '',
+			'min' => '',
+			'max' => '',
+			'step' => '',
+		),
+	),
+	'location' => array(
+		array(
+			array(
+				'param' => 'post_type',
+				'operator' => '==',
+				'value' => 'post',
+			),
+		),
+	),
+	'menu_order' => 0,
+	'position' => 'normal',
+	'style' => 'default',
+	'label_placement' => 'top',
+	'instruction_placement' => 'label',
+	'hide_on_screen' => '',
+	'active' => 0,
+	'description' => '',
+));
+
+endif;

@@ -81,9 +81,9 @@ define('FORM_BUILDER_DATE_FORMAT', 'mm/dd/yyyy');
  */
 require_once plugin_dir_path( __FILE__ ) . 'class-form-builder.php';
 // validate
-require_once plugin_dir_path( __FILE__ ) . 'class-form-validate.php';
-require_once plugin_dir_path( __FILE__ ) . 'class-form-html.php';
-require_once plugin_dir_path( __FILE__ ) . 'class-form-builder-helper.php';
+require_once plugin_dir_path( __FILE__ ) . 'classes/validate.php';
+require_once plugin_dir_path( __FILE__ ) . 'classes/html.php';
+require_once plugin_dir_path( __FILE__ ) . 'classes/helper.php';
 /**
  * A FormBuilder child class that handles contact forms
  */
@@ -107,7 +107,8 @@ require_once plugin_dir_path( __FILE__ ) . 'cpt/wp_swift_form_submit.php';
  */ 
 // require_once plugin_dir_path( __FILE__ ) . 'acf-field-groups/form-builder-inputs.php';
 // require_once plugin_dir_path( __FILE__ ) . 'acf-field-groups/form-builder-input-sections.php';
-require_once plugin_dir_path( __FILE__ ) . 'acf-field-groups/_acf-field-group-contact-form.php';
+require_once plugin_dir_path( __FILE__ ) . 'acf/all.php';
+// require_once plugin_dir_path( __FILE__ ) . 'acf-field-groups/_acf-field-group-contact-form.php';
 
 /**
  * The classes that handles the admin interface
@@ -171,25 +172,7 @@ require_once plugin_dir_path( __FILE__ ) . '_custom-query-vars.php';
  */
 require_once plugin_dir_path( __FILE__ ) . '_reveal-modal.php';
 
-
 require_once plugin_dir_path( __FILE__ ) . 'debug/write-log.php';
-
-
-
-/**
- * Register the stylesheets for the public-facing side of the site.
- *
- * @since    1.0.0
- */
-function enqueue_styles() {
-
-	// $options = get_option( 'wp_swift_form_builder_settings' );
- //    if ( !isset($options['wp_swift_form_builder_checkbox_css']) ) {
-
-    // }
-
-}
-
 
 
 /**
@@ -209,26 +192,13 @@ function run_wp_swift_form_builder() {
 }
 run_wp_swift_form_builder();
 
-
 /*************************************************************/
-/*   Friendly Block Titles                                  */
+/*   ACF Friendly Block Titles                                  */
 /***********************************************************/
 
 function form_builder_acf_layout_title($title, $field, $layout, $i) {
-	// global $post;
-	// $post_type = get_post_type();
-	// if ($post_type !== 'wp_swift_form') return $title;
-
-	if($value = get_sub_field('name')) {
+	if($value = get_sub_field('form_input_name')) {
 		return $value . ' <sup>(' . $title . ')</sup>';
-	} else {
-		foreach($layout['sub_fields'] as $sub) {
-			if($sub['name'] == 'name') {
-				$key = $sub['key'];
-				if(array_key_exists($i, $field['value']) && $value = $field['value'][$i][$key])
-					return $value . ' ('.$key.')';
-			}
-		}
 	}
 	return $title;
 }

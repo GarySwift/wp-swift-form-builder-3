@@ -116,7 +116,7 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
             }
             elseif (get_field('to_email', $form_post_id )) {
                 // If a to_email is set in ACF, send the email there instead of the admin email
-                $this->to = array(get_field('to_email', $form_post_id )); 
+                $this->to = get_field('to_email', $form_post_id ); 
             }
             // Set reponse subject for email
             if (get_field('response_subject', $form_post_id )) {
@@ -148,8 +148,16 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
                 );
             }
             $forward_email = get_field('forwarding_emails', $form_post_id);
-            if (!empty($forward_email)) {
+            if ( !empty($forward_email)) {
                 $this->forward_email = $forward_email;
+            }
+
+            $to_email_callback = get_field('to_email_callback', $form_post_id);
+            if ( !empty($to_email_callback) && function_exists( $to_email_callback )) {
+                $to_email = $to_email_callback();
+                if ( is_email( $to_email ) ) {
+                    $this->to = $to_email;
+                }
             }
         }                          
     }
@@ -178,20 +186,20 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
         $attachments = parent::get_attachments();
         $debug_info = '';
         // echo '<pre>3 $attachments = parent::get_attachments(): '; var_dump($attachments); echo '</pre>';
-
+        // echo wp_swift_wrap_email($email_string);
         /*
          * Send the email to the admin/office
          */
         if ($this->send_email) {
-            foreach ($this->to as $key => $to_email) {
+            // foreach ($this->to as $key => $to_email) {
                 if (empty($attachments)) {
-                    $status = wp_mail($to_email, $this->response_subject.$this->date, wp_swift_wrap_email($email_string), $this->headers);
+                    $status = wp_mail($this->to, $this->response_subject.$this->date, wp_swift_wrap_email($email_string), $this->headers);
                 }
                 else {
-                    $status = wp_mail($to_email, $this->response_subject.$this->date, wp_swift_wrap_email($email_string), $this->headers, $attachments);
+                    $status = wp_mail($this->to, $this->response_subject.$this->date, wp_swift_wrap_email($email_string), $this->headers, $attachments);
                 }
                 
-            }
+            // }
 
             if (isset($this->forward_email)) {
                 foreach ($this->forward_email as $key => $forward_email) {
@@ -203,7 +211,6 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
             $debug_info .= "<pre>Debugging mode is on so no emails are being sent.</pre>";
             $debug_info .= "<br><p>Emails will be sent to here: </p>";
             if (count($attachments)) {
-                echo '<pre>$attachments: '; var_dump($attachments); echo '</pre>';
             }
             // $attachments = 
             // echo '<pre>3 $helper->get_attachments(): '; var_dump($parent->helper->get_attachments()); echo '</pre>';
@@ -212,9 +219,9 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
                 write_log('$this->forward_email: ' . $this->forward_email);
                 error_log( "Debugging mode is on so no emails are being sent." );
             }
-            foreach ($this->to as $key => $to_email) {
-                $debug_info .= $to_email.'<br>';
-            }
+            // foreach ($this->to as $key => $to_email) {
+                $debug_info .= $this->to.'<br>';
+            // }
 
             if (isset($this->forward_email)) {
                 foreach ($this->forward_email as $key => $forward_email) {

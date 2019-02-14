@@ -267,8 +267,6 @@ class WP_Swift_Form_Builder_Validate {
         return $input;   
     }//@end validate_input 
 
-
-
     private function process_file($files, $input, $key, $helper) {
         $attachments = array();
         $uploads_path = ABSPATH.$input["save_location"];

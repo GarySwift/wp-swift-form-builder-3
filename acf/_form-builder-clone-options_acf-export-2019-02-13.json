@@ -1,0 +1,205 @@
+[
+    {
+        "key": "group_5bfc1a3251d65",
+        "title": "Form Builder Clone: Options",
+        "fields": [
+            {
+                "key": "field_5bfc20097aedd",
+                "label": "Default Group",
+                "name": "default_group",
+                "type": "clone",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "clone": [
+                    "group_5bfbe43dbc9a8"
+                ],
+                "display": "seamless",
+                "layout": "block",
+                "prefix_label": 0,
+                "prefix_name": 0
+            },
+            {
+                "key": "field_5bfc1ab5b48fb",
+                "label": "Select Type",
+                "name": "select_type",
+                "type": "radio",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "full-width-settings",
+                    "id": ""
+                },
+                "choices": {
+                    "user": "Manually Input",
+                    "select": "Predefined Options"
+                },
+                "allow_null": 0,
+                "other_choice": 0,
+                "save_other_choice": 0,
+                "default_value": "user",
+                "layout": "horizontal",
+                "return_format": "value"
+            },
+            {
+                "key": "field_5bfc1a4bb48f8",
+                "label": "Options",
+                "name": "options",
+                "type": "repeater",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": [
+                    [
+                        {
+                            "field": "field_5bfc1ab5b48fb",
+                            "operator": "==",
+                            "value": "user"
+                        }
+                    ]
+                ],
+                "wrapper": {
+                    "width": "",
+                    "class": "full-width-settings",
+                    "id": ""
+                },
+                "collapsed": "field_5bfc1a79b48f9",
+                "min": 0,
+                "max": 0,
+                "layout": "table",
+                "button_label": "Add Option",
+                "sub_fields": [
+                    {
+                        "key": "field_5bfc1a79b48f9",
+                        "label": "Option",
+                        "name": "option",
+                        "type": "text",
+                        "instructions": "",
+                        "required": 1,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "default_value": "",
+                        "placeholder": "",
+                        "prepend": "",
+                        "append": "",
+                        "maxlength": ""
+                    },
+                    {
+                        "key": "field_5bfc1a83b48fa",
+                        "label": "Option Value",
+                        "name": "option_value",
+                        "type": "text",
+                        "instructions": "",
+                        "required": 0,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "default_value": "",
+                        "placeholder": "",
+                        "prepend": "",
+                        "append": "",
+                        "maxlength": ""
+                    }
+                ]
+            },
+            {
+                "key": "field_5bfc1cc1d6516",
+                "label": "Other Field",
+                "name": "other",
+                "type": "true_false",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": [
+                    [
+                        {
+                            "field": "field_5bfc1ab5b48fb",
+                            "operator": "==",
+                            "value": "user"
+                        }
+                    ]
+                ],
+                "wrapper": {
+                    "width": "",
+                    "class": "full-width-settings",
+                    "id": ""
+                },
+                "message": "Automatically append 'Other' field to <b>Select Options<\/b> which toggles a text input field that allow users type an option.",
+                "default_value": 0,
+                "ui": 0,
+                "ui_on_text": "",
+                "ui_off_text": ""
+            },
+            {
+                "key": "field_5bfc1efaf75a4",
+                "label": "Predefined Options",
+                "name": "predefined_options",
+                "type": "select",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": [
+                    [
+                        {
+                            "field": "field_5bfc1ab5b48fb",
+                            "operator": "==",
+                            "value": "select"
+                        }
+                    ]
+                ],
+                "wrapper": {
+                    "width": "",
+                    "class": "full-width-settings",
+                    "id": ""
+                },
+                "choices": {
+                    "counties": "Counties",
+                    "countries": "Countries",
+                    "us_states": "US States",
+                    "industries": "Industries",
+                    "products": "Products",
+                    "services": "Services",
+                    "standard_freq": "Standard Freqencies",
+                    "frequencies": "Freqencies",
+                    "umts_frequencies": "UMTS-FDD 3G Bands",
+                    "e_utra_frequencies": "E-UTRA Bands 4G\/LTE"
+                },
+                "default_value": [],
+                "allow_null": 0,
+                "multiple": 0,
+                "ui": 0,
+                "ajax": 0,
+                "return_format": "value",
+                "placeholder": ""
+            }
+        ],
+        "location": [
+            [
+                {
+                    "param": "post_type",
+                    "operator": "==",
+                    "value": "post"
+                }
+            ]
+        ],
+        "menu_order": 0,
+        "position": "normal",
+        "style": "default",
+        "label_placement": "top",
+        "instruction_placement": "label",
+        "hide_on_screen": "",
+        "active": 0,
+        "description": ""
+    }
+]

@@ -1,1 +1,116 @@
 <?php
+if( function_exists('acf_add_local_field_group') ):
+
+acf_add_local_field_group(array(
+	'key' => 'group_5bfbfa5f2b3c5',
+	'title' => 'Form Builder Clone: Input Validation',
+	'fields' => array(
+		array(
+			'key' => 'field_5bfc00274de95',
+			'label' => 'Validation Grouping',
+			'name' => 'validation_grouping',
+			'type' => 'group',
+			'instructions' => '',
+			'required' => 0,
+			'conditional_logic' => 0,
+			'wrapper' => array(
+				'width' => '',
+				'class' => 'grouping-table',
+				'id' => '',
+			),
+			'layout' => 'table',
+			'sub_fields' => array(
+				array(
+					'key' => 'field_5bfbfa7d8da71',
+					'label' => 'Validation',
+					'name' => 'validation',
+					'type' => 'select',
+					'instructions' => '',
+					'required' => 0,
+					'conditional_logic' => 0,
+					'wrapper' => array(
+						'width' => '',
+						'class' => '',
+						'id' => '',
+					),
+					'choices' => array(
+						'alphabetic' => 'Alphabetic',
+						'alphanumeric' => 'Alphanumeric',
+						'numeric' => 'Numeric',
+						'uppercase_alphabetic' => 'Uppercase Alphabetic',
+						'uppercase_alphanumeric' => 'Uppercase Alphanumeric',
+					),
+					'default_value' => array(
+					),
+					'allow_null' => 1,
+					'multiple' => 0,
+					'ui' => 0,
+					'return_format' => 'value',
+					'ajax' => 0,
+					'placeholder' => '',
+				),
+				array(
+					'key' => 'field_5bfbfa5f2d945',
+					'label' => 'Min',
+					'name' => 'Max',
+					'type' => 'number',
+					'instructions' => '',
+					'required' => 0,
+					'conditional_logic' => 0,
+					'wrapper' => array(
+						'width' => '',
+						'class' => '',
+						'id' => '',
+					),
+					'default_value' => '',
+					'placeholder' => '',
+					'prepend' => '',
+					'append' => '',
+					'min' => '',
+					'max' => '',
+					'step' => '',
+				),
+				array(
+					'key' => 'field_5bfbfa5f2d962',
+					'label' => 'Max',
+					'name' => 'max',
+					'type' => 'number',
+					'instructions' => '',
+					'required' => 0,
+					'conditional_logic' => 0,
+					'wrapper' => array(
+						'width' => '',
+						'class' => '',
+						'id' => '',
+					),
+					'default_value' => '',
+					'placeholder' => '',
+					'prepend' => '',
+					'append' => '',
+					'min' => '',
+					'max' => '',
+					'step' => '',
+				),
+			),
+		),
+	),
+	'location' => array(
+		array(
+			array(
+				'param' => 'post_type',
+				'operator' => '==',
+				'value' => 'post',
+			),
+		),
+	),
+	'menu_order' => 0,
+	'position' => 'normal',
+	'style' => 'default',
+	'label_placement' => 'top',
+	'instruction_placement' => 'label',
+	'hide_on_screen' => '',
+	'active' => 0,
+	'description' => '',
+));
+
+endif;

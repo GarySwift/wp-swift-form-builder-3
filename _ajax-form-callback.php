@@ -13,11 +13,17 @@ if (!function_exists("wp_swift_submit_request_form_callback")) {
         // die();
 
     // write_log($_POST);
+        // if (isset($_POST['files'])) {
+        //     $files = $_POST['files'];
+        //     write_log('$files');
+        //     write_log($files);
+
+        // }
         if (isset($_POST['form'])) {
             $post = wp_swift_convert_json_to_post_array( $_POST['form'] );
         }
         if (isset($_POST['type']) && $_POST['type'] == "signup") {
-            write_log("WP_Swift_Form_Builder_Signup_Form");
+            // write_log("WP_Swift_Form_Builder_Signup_Form");
             $form_builder = new WP_Swift_Form_Builder_Signup_Form( $form_id, $post_id );
         }
         // elseif (isset($_POST['type']) && $_POST['type'] == "warranty") {
@@ -37,6 +43,11 @@ if (!function_exists("wp_swift_submit_request_form_callback")) {
         //     "form_set" => $form_set,
         //     "error_count" => $form_builder->get_error_count(),
         //     "html" => $html,
+        // );
+        // $response = array(
+        //     "form_set" => 1,
+        //     "error_count" => 0,
+        //     "html" => "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eligendi dolorem ratione id provident, cumque, magni aliquam molestiae reiciendis, ad minus at rerum cupiditate neque, officiis! Explicabo tempora consequatur, quia repellat.",
         // );
         echo json_encode( $form_builder->get_response($post) );
         die();

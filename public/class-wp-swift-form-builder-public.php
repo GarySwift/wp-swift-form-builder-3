@@ -65,6 +65,17 @@ class Wp_Swift_Form_Builder_Public {
      * @return string  The shortcode output
      */
     public function render_form( $atts = array(), $content = null ) {
+    	// $this->enqueue_styles_and_script_without_check();
+    	
+    	/**
+    	 * Update - Enqueue the style as normal in the body before the form
+    	 */
+    	$this->enqueue_styles_no_check();	
+    	/**
+    	 * Enqueue the JavasScript as normal
+    	 */
+    	$this->enqueue_scripts_no_check();	
+    	
         $a = shortcode_atts( array(
             'id' => false,
 	        'to-email' => null,
@@ -99,26 +110,53 @@ class Wp_Swift_Form_Builder_Public {
 	 */
 	public function enqueue_styles() {
 
-		$options = get_option( 'wp_swift_form_builder_settings' );
-        if ( !isset($options['wp_swift_form_builder_checkbox_css']) ) {
-			$file = 'css/wp-swift-form-builder-public.css';
-			$version = filemtime(plugin_dir_path( __FILE__ ) . $file);
-			wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . $file, array(), $version, 'all' );
-
-			$datepicker_css_file = 'node_modules/foundation-datepicker/css/foundation-datepicker.min.css';
-			if (file_exists(plugin_dir_path( __DIR__ ) . $datepicker_css_file)) {
-				$datepicker_css_version = filemtime(plugin_dir_path( __DIR__ ) . $datepicker_css_file);
-				wp_enqueue_style( $this->plugin_name.'-datepicker-css', plugin_dir_url( __DIR__ ) . $datepicker_css_file, array(), $datepicker_css_version, 'all' );			
-			}
-
-			$select2_css_file = 'node_modules/select2/dist/css/select2.min.css';
-			if (file_exists(plugin_dir_path( __DIR__ ) . $select2_css_file)) {
-				$select2_css_version = filemtime(plugin_dir_path( __DIR__ ) . $select2_css_file);
-				wp_enqueue_style( $this->plugin_name.'-select2-css', plugin_dir_url( __DIR__ ) . $select2_css_file, array(), $select2_css_version, 'all' );			
-			}
-        }
+		// $options = get_option( 'wp_swift_form_builder_settings' );
+		// if ( !isset($options['wp_swift_form_builder_checkbox_css']) ) {
+  //       	$this->enqueue_styles_no_check();
+  //       }
 
 	}
+
+	public function enqueue_styles_and_script_without_check() {
+    	/**
+    	 * Hack for placing stylesheet in footer
+    	 *
+    	 * All styles should be placed in header. So WordPress doesn't have 
+    	 * a parameter for doing this in the wp_enqueue_style function, because 
+    	 * traditionally all styles were added in the head. 
+    	 *
+    	 * Here we use the 'get_footer' hook to add it in the footer
+    	 */
+    	// add_action( 'get_footer', array( $this, 'enqueue_styles_no_check' ) );	
+    	/**
+    	 * Update - Enqueue the style as normal in the body before the form
+    	 */
+    	$this->enqueue_styles_no_check();	
+    	/**
+    	 * Enqueue the JavasScript as normal
+    	 */
+    	$this->enqueue_scripts_no_check();	
+	}
+
+	public function enqueue_styles_no_check() {
+    
+		$file = 'css/wp-swift-form-builder-public.css';
+		$version = filemtime(plugin_dir_path( __FILE__ ) . $file);
+		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . $file, array(), $version, 'all' );
+
+		$datepicker_css_file = 'node_modules/foundation-datepicker/css/foundation-datepicker.min.css';
+		if (file_exists(plugin_dir_path( __DIR__ ) . $datepicker_css_file)) {
+			$datepicker_css_version = filemtime(plugin_dir_path( __DIR__ ) . $datepicker_css_file);
+			wp_enqueue_style( $this->plugin_name.'-datepicker-css', plugin_dir_url( __DIR__ ) . $datepicker_css_file, array(), $datepicker_css_version, 'all' );			
+		}
+
+		$select2_css_file = 'node_modules/select2/dist/css/select2.min.css';
+		if (file_exists(plugin_dir_path( __DIR__ ) . $select2_css_file)) {
+			$select2_css_version = filemtime(plugin_dir_path( __DIR__ ) . $select2_css_file);
+			wp_enqueue_style( $this->plugin_name.'-select2-css', plugin_dir_url( __DIR__ ) . $select2_css_file, array(), $select2_css_version, 'all' );			
+		}
+
+	}	
 
 	/**
 	 * Register the JavaScript for the public-facing side of the site.
@@ -127,29 +165,38 @@ class Wp_Swift_Form_Builder_Public {
 	 */
 	public function enqueue_scripts() {
 
-		$options = get_option( 'wp_swift_form_builder_settings' );
-        if ( !isset($options['wp_swift_form_builder_checkbox_javascript']) ) {
-			$file = 'js/wp-swift-form-builder-public.js';
-			$version = filemtime(plugin_dir_path( __FILE__ ) . $file);
-			wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . $file, array( 'jquery' ), $version, true );
-
-			$datepicker_js_file = 'node_modules/foundation-datepicker/js/foundation-datepicker.min.js';
-			if (file_exists(plugin_dir_path( __DIR__ ) . $datepicker_js_file)) {
-				$datepicker_js_version = filemtime(plugin_dir_path( __DIR__ ) . $datepicker_js_file);
-				wp_enqueue_script( $this->plugin_name.'-datepicker-js', plugin_dir_url( __DIR__ ) . $datepicker_js_file, array( 'jquery' ), $datepicker_js_version, true );			
-	
-			}
-
-			$select2_js_file = 'node_modules/select2/dist/js/select2.min.js';
-			if (file_exists(plugin_dir_path( __DIR__ ) . $select2_js_file)) {
-				$select2_js_version = filemtime(plugin_dir_path( __DIR__ ) . $select2_js_file);
-				wp_enqueue_script( $this->plugin_name.'-select2-js', plugin_dir_url( __DIR__ ) . $select2_js_file, array( 'jquery' ), $select2_js_version, true );			
-	
-			}			
-		}
-		wp_enqueue_script( 'g-recaptcha', 'https://www.google.com/recaptcha/api.js', '', '' );
+		// $options = get_option( 'wp_swift_form_builder_settings' );
+  //       if ( !isset($options['wp_swift_form_builder_checkbox_javascript']) ) {
+		// 	$this->enqueue_scripts_no_check();			
+		// }
 	}
 
+	/**
+	 * Register the JavaScript for the public-facing side of the site.
+	 *
+	 * @since    1.0.0
+	 */
+	public function enqueue_scripts_no_check() {
+
+		$file = 'js/wp-swift-form-builder-public.js';
+		$version = filemtime(plugin_dir_path( __FILE__ ) . $file);
+		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . $file, array( 'jquery' ), $version, true );
+
+		$datepicker_js_file = 'node_modules/foundation-datepicker/js/foundation-datepicker.min.js';
+		if (file_exists(plugin_dir_path( __DIR__ ) . $datepicker_js_file)) {
+			$datepicker_js_version = filemtime(plugin_dir_path( __DIR__ ) . $datepicker_js_file);
+			wp_enqueue_script( $this->plugin_name.'-datepicker-js', plugin_dir_url( __DIR__ ) . $datepicker_js_file, array( 'jquery' ), $datepicker_js_version, true );			
+
+		}
+
+		$select2_js_file = 'node_modules/select2/dist/js/select2.min.js';
+		if (file_exists(plugin_dir_path( __DIR__ ) . $select2_js_file)) {
+			$select2_js_version = filemtime(plugin_dir_path( __DIR__ ) . $select2_js_file);
+			wp_enqueue_script( $this->plugin_name.'-select2-js', plugin_dir_url( __DIR__ ) . $select2_js_file, array( 'jquery' ), $select2_js_version, true );			
+
+		}			
+		wp_enqueue_script( 'g-recaptcha', 'https://www.google.com/recaptcha/api.js', '', '' );
+	}
 	/**
 	 * Register the JavaScript for the public-facing side of the site.
 	 *

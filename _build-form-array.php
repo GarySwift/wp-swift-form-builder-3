@@ -37,6 +37,7 @@ function wp_swift_form_data_loop($id, $_post = null) {
     $switch_to_blog = get_query_var('switch');
 
     if (function_exists('get_field')) :
+
         if( get_field('hide_labels', $id) ) {
             $settings['hide_labels'] = true;
             $settings['form_css_class'] = ' hide-labels';
@@ -136,7 +137,7 @@ function build_acf_form_array($row_layout, $inputs, $settings, $section=0, $edit
     $validation = null;
     $disabled = false;
 
-    $name =  get_sub_field('name');
+    $name =  get_sub_field('form_input_name');
     $label =  get_sub_field('label');
 
     if( $name ) {
@@ -277,7 +278,6 @@ function build_acf_form_array($row_layout, $inputs, $settings, $section=0, $edit
     if( $data_type === 'file' ) {
         $css_class .= 'file-upload';
         $save_location = get_sub_field('save_location');
-        echo '<pre>$save_location: '; var_dump($save_location); echo '</pre>';
     }
     if( $data_type === 'date_range' ) {
          
@@ -533,7 +533,8 @@ function build_acf_form_array($row_layout, $inputs, $settings, $section=0, $edit
             $form_class = 'js-check-form-file';
             $save_location = get_sub_field('save_location');
             if (!$save_location) $save_location = 'uploads';
-            $inputs[$prefix.$id] = array("passed"=>false, "clean"=>$value, "value"=>$value, "section"=>$section, "required"=>$required, "type"=>$type, "data_type"=>$data_type,  "placeholder"=>$placeholder, "label"=>$label, "accept"=>"pdf", "help"=>$help, "instructions" => $instructions, "grouping" => $grouping, "css_class" => $css_class, 'disabled' => $disabled, "save_location" => $save_location);
+            $css_class_input .= 'js-file-upload';
+            $inputs[$prefix.$id] = array("passed"=>false, "clean"=>$value, "value"=>$value, "section"=>$section, "required"=>$required, "type"=>$type, "data_type"=>$data_type,  "placeholder"=>$placeholder, "label"=>$label, "accept"=>"pdf", "help"=>$help, "instructions" => $instructions, "grouping" => $grouping, "css_class" => $css_class, "css_class_input" => $css_class_input, 'disabled' => $disabled, "save_location" => $save_location);
             break;              
         case "date_range":
             $inputs[$prefix.$id.'-start'] = array("passed"=>false, "clean"=>$value, "value"=>$value, "section"=>$section, "required"=>$required, "type"=>$type, "data_type"=>"date", "label"=>"Date From", "help"=>$help, "instructions" => $instructions, "grouping" => 'start', "css_class" => $css_class.' js-date-range', 'css_class_input' => $css_class_input, 'order'=>0, 'parent_label'=>$label, 'disabled' => $disabled);

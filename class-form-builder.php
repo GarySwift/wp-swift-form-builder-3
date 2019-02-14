@@ -18,13 +18,13 @@ class WP_Swift_Form_Builder_Parent {
     /**
      * Initializes the plugin.
      */
-    public function __construct($form_id, $post_id, $hidden = array(), $type = 'request', $args = array(), $_post = null ) {// , $sections, $settings = false  //"option") {
+    public function __construct( $form_id, $post_id, $hidden = array(), $type = 'request', $args = array(), $_post = null ) {// , $sections, $settings = false  //"option") {
         /**
          * Initializes the helper, validate abd html_builder
          */        
-        $this->helper = new WP_Swift_Form_Builder_Helper($form_id, $post_id);
+        $this->helper = new WP_Swift_Form_Builder_Helper( $form_id, $post_id, $hidden = array(), $type = 'request', $args = array(), $_post = null );
         $this->validate = new WP_Swift_Form_Builder_Validate();           
-        $this->html_builder = new WP_Swift_Form_Builder_Html($this->helper);              
+        $this->html_builder = new WP_Swift_Form_Builder_Html();              
     }
 
     /**
@@ -90,19 +90,6 @@ class WP_Swift_Form_Builder_Parent {
         return $form_response;        
     }
     public function process_form($post, $ajax=false) {
-
-        // if ( $this->get_form_data() && $this->validate->recaptcha_check($this, $post) ) {
-            // $this->helper = $this->validate->validate_form($this->helper, $post, $ajax);
-            // if ( $this->helper->get_error_count() === 0 ) {
-            //     return $this->submit_form_success($post, $ajax);
-            // }
-            // else {
-            //     return $this->html_builder->submit_form_failure($this->helper, $ajax);
-            // }
-        // }
-        // else {
-        //     return $this->form_failure($ajax);
-        // } 
         $this->helper = $this->validate->validate_form($this->helper, $post, $ajax);
         if ( $this->helper->get_error_count() === 0 ) {
             return $this->submit_form_success($post, $ajax);
@@ -152,5 +139,13 @@ class WP_Swift_Form_Builder_Parent {
      */
     public function get_attachments() {
         return $this->helper->get_attachments();
-    }             
+    }  
+    // public function set_attachments($attachments) {
+    //     // $this->attachments = $attachments;
+    //     $this->helper->set_attachments($attachments);
+    // } 
+    // public function add_attachment($attachment) {
+    //     // $this->attachments[] = $attachment;
+    //     $this->helper->add_attachment($attachment);
+    // }            
 }

@@ -672,6 +672,103 @@ Marketing information refers to information on appointed reminders, news, produc
 				),
 			),
 		),
+		array(
+			'key' => 'field_5c65c8483cc28',
+			'label' => 'Form Types',
+			'name' => '',
+			'type' => 'tab',
+			'instructions' => '',
+			'required' => 0,
+			'conditional_logic' => 0,
+			'wrapper' => array(
+				'width' => '',
+				'class' => '',
+				'id' => '',
+			),
+			'placement' => 'top',
+			'endpoint' => 1,
+		),
+		array(
+			'key' => 'field_5c65c88831571',
+			'label' => 'Form Types',
+			'name' => 'form_types',
+			'type' => 'select',
+			'instructions' => '',
+			'required' => 0,
+			'conditional_logic' => 0,
+			'wrapper' => array(
+				'width' => '',
+				'class' => '',
+				'id' => '',
+			),
+			'choices' => array(
+				'contact_form' => 'Contact Form',
+				'sign_up' => 'Sign Up',
+			),
+			'default_value' => array(
+				0 => 'contact_form',
+			),
+			'allow_null' => 0,
+			'multiple' => 0,
+			'ui' => 0,
+			'return_format' => 'value',
+			'ajax' => 0,
+			'placeholder' => '',
+		),
+		array(
+			'key' => 'field_5c65c8e331572',
+			'label' => 'Contact Form',
+			'name' => 'contact_form',
+			'type' => 'clone',
+			'instructions' => '',
+			'required' => 0,
+			'conditional_logic' => array(
+				array(
+					array(
+						'field' => 'field_5c65c88831571',
+						'operator' => '==',
+						'value' => 'contact_form',
+					),
+				),
+			),
+			'wrapper' => array(
+				'width' => '',
+				'class' => '',
+				'id' => '',
+			),
+			'clone' => array(
+				0 => 'group_5c65c38fe91aa',
+			),
+			'display' => 'group',
+			'layout' => 'block',
+			'prefix_label' => 0,
+			'prefix_name' => 0,
+		),
+		array(
+			'key' => 'field_5c65ca5a4d71d',
+			'label' => 'Sign Up Coming Soon',
+			'name' => '',
+			'type' => 'message',
+			'instructions' => '',
+			'required' => 0,
+			'conditional_logic' => array(
+				array(
+					array(
+						'field' => 'field_5c65c88831571',
+						'operator' => '==',
+						'value' => 'sign_up',
+					),
+				),
+			),
+			'wrapper' => array(
+				'width' => '',
+				'class' => '',
+				'id' => '',
+			),
+			'message' => 'This feature is still under development',
+			'new_lines' => '',
+			'esc_html' => 0,
+		),
 	),
 	'location' => array(
 		array(
