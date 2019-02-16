@@ -82,7 +82,7 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
         // The auto-response subject
         $this->auto_response_subject='Auto-response (no-reply)';   
 
-        $this->to = array(get_option('admin_email'));
+        $this->to = get_option('admin_email');//array()
 
         $options = get_option( 'wp_swift_form_builder_settings' );
         if (isset($options['wp_swift_form_builder_checkbox_debug_mode']) && $options['wp_swift_form_builder_checkbox_debug_mode'] === '1') {
@@ -138,7 +138,7 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
             if( get_field('auto_response_subject', $form_post_id) ) {
                 $this->auto_response_subject = get_field('auto_response_subject', $form_post_id);
             }
-            if( get_field('auto_response_subject', $form_post_id) ) {
+            if( get_field('save_submission', $form_post_id) ) {
                 $this->save_submission = array(                        
                     "title" => $title,
                     "attach" => array(

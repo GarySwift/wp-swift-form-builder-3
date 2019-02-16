@@ -375,7 +375,7 @@ function build_acf_form_array($row_layout, $inputs, $settings, $section=0, $edit
                 // echo "<hr>";
                 if (function_exists($func)) {
                     $response = $func();//Call the function to get the predefined options array
-                    // echo '<pre>$response: '; var_dump($response); echo '</pre>';
+                    // echo '<pre>$response: '; var_dump($response); echo '</pre>';echo "<hr>";echo "<hr>";
                     $array = $response["array"];
                     if (isset($response["option_group"])) $option_group = $response["option_group"];
                     // if( $data_type === 'select' || $data_type === 'multi_select' || $data_type === 'checkbox') {

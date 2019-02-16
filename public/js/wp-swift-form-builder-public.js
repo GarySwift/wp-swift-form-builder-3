@@ -10,6 +10,7 @@
 
     var sessionDetailsName = "form-session-details";
     // console.log('sessionDetailsName', sessionDetailsName);
+    console.log(FormBuilderDatePicker);
 
     var dateInPast = function dateInPast(years) {
         var dateNow = new Date();
@@ -58,7 +59,7 @@
         // FormBuilderDatePicker is set on server using wp_localize_script
         // Form Input Object
         var FormBuilderInput = function FormBuilderInput(input) {
-            console.log('input', input);
+            // console.log('input', input);
             this.name = input.name;
             this.value = input.value;
             this.id = '#'+(this.name.replace(/[\[\]']+/g,''));// Remove square brackets
@@ -203,10 +204,10 @@
             if(year % 400 === 0 || (year % 100 !== 0 && year % 4 === 0)){
                 monthLength[1] = 29;
             }
-            // console.log('day', day);
-            // console.log('month', month);
-            // console.log('year', year);
-            // console.log(day > 0 && day <= monthLength[month - 1]);
+            console.log('day', day);
+            console.log('month', month);
+            console.log('year', year);
+            console.log(day > 0 && day <= monthLength[month - 1]);
 
             // Check the range of the day
             return day > 0 && day <= monthLength[month - 1];
@@ -215,7 +216,7 @@
         var addClassAfterBlur = function addClassAfterBlur(input, valid, errorsInForm) {
             if(!valid) {
                 $(input.id+'-form-group').addClass('has-error').removeClass('has-success');
-                console.log('errorsInForm', errorsInForm);
+                // console.log('errorsInForm', errorsInForm);
                 errorsInForm.count++;
 
                 errorsInForm.report += "<li>" + $(input.id+'-report').html() + "</li>";
@@ -441,7 +442,7 @@
                 // console.log('$fileInputs', $fileInputs);
         $('#request-form.ajax').submit(function(e) {
              var formData = new FormData(this);
-            console.log(formData);
+            // console.log(formData);
             // console.log('#request-form');
             e.preventDefault();
             var $form = $(this);
@@ -474,7 +475,7 @@
                     // if (type) {
                     //  FormBuilderAjax.type = type.value;
                     // }
-                    console.log('FormBuilderAjax', FormBuilderAjax);
+                    // console.log('FormBuilderAjax', FormBuilderAjax);
 
 
                     $.post(FormBuilderAjax.ajaxurl, FormBuilderAjax, function(response) {
@@ -713,7 +714,8 @@
         return $html;
     }
 
-    jQuery(document).ready(function($){
+    jQuery(document).ready(function($) {
+        // $('div.form-builder.wrapper.hide').removeClass('hide').slideDown();
         $('body').on('click', '#js-edit-form', function(e) {    
             e.preventDefault();
             editForm();
@@ -723,33 +725,33 @@
             hideForm();
         }); 
 
-    var details = getSessionDetails(sessionDetailsName);
-    // console.log('details', details);
+        var details = getSessionDetails(sessionDetailsName);
+        // console.log('details', details);
 
-    if (details) {
-        
-        if(typeof details.email !== "undefined" ) {
-            // document.getElementById( "form-email" ).value = details.email;
-            $('#form-email').val(details.email);
-        }
-        if(typeof details.email !== "undefined") {
-            // document.getElementById( "form-first-name" ).value = details.first_name;
-            $('#form-first-name').val(details.first_name);
-        }
-        if(typeof details.email !== "undefined") {
-            // document.getElementById( "form-last-name" ).value = details.last_name;
-            $('#form-last-name').val(details.last_name);
-        }
-        if(typeof details.phone !== "undefined") {
-            // document.getElementById( "form-phone" ).value = details.phone;
-            $('#form-phone').val(details.phone);
-        }   
+        if (details) {
+            
+            if(typeof details.email !== "undefined" ) {
+                // document.getElementById( "form-email" ).value = details.email;
+                $('#form-email').val(details.email);
+            }
+            if(typeof details.email !== "undefined") {
+                // document.getElementById( "form-first-name" ).value = details.first_name;
+                $('#form-first-name').val(details.first_name);
+            }
+            if(typeof details.email !== "undefined") {
+                // document.getElementById( "form-last-name" ).value = details.last_name;
+                $('#form-last-name').val(details.last_name);
+            }
+            if(typeof details.phone !== "undefined") {
+                // document.getElementById( "form-phone" ).value = details.phone;
+                $('#form-phone').val(details.phone);
+            }   
 
-        // $('.form-builder.groupings').slideUp();
-        // $('#download-mask').removeClass('masked');
-        // localStorage.clear();
-        hideForm();
-    }         
+            // $('.form-builder.groupings').slideUp();
+            // $('#download-mask').removeClass('masked');
+            // localStorage.clear();
+            hideForm();
+        }         
     });
 
     function showDownloads() {

@@ -253,6 +253,7 @@ class WP_Swift_Form_Builder_Html {
     } 
 
     private function build_form_select($helper, $id, $data) {
+        // echo '<pre>$data: '; var_dump($data); echo '</pre>';
         $readonly = '';
         $multiple = '';
         $css_class = '';

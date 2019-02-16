@@ -72,7 +72,7 @@ define('FORM_BUILDER_DIR', '/form-builder/');
 define('FORM_BUILDER_SAVE_TO_JSON', false);
 define('FORM_BUILDER_DEFAULT_TERM', 'Contact Form');
 define('FORM_BUILDER_DEFAULT_SLUG', 'contact-form');
-define('FORM_BUILDER_DEFAULT_TAXONOMY', 'wp_swift_form_category');
+// define('FORM_BUILDER_DEFAULT_TAXONOMY', 'wp_swift_form_category');
 // define('FORM_BUILDER_DATE_FORMAT', 'dd/mm/yyyy');
 define('FORM_BUILDER_DATE_FORMAT', 'mm/dd/yyyy');
 
@@ -81,9 +81,9 @@ define('FORM_BUILDER_DATE_FORMAT', 'mm/dd/yyyy');
  */
 require_once plugin_dir_path( __FILE__ ) . 'class-form-builder.php';
 // validate
-require_once plugin_dir_path( __FILE__ ) . 'classes/validate.php';
-require_once plugin_dir_path( __FILE__ ) . 'classes/html.php';
-require_once plugin_dir_path( __FILE__ ) . 'classes/helper.php';
+require_once plugin_dir_path( __FILE__ ) . 'utility-classes/validate.php';
+require_once plugin_dir_path( __FILE__ ) . 'utility-classes/html.php';
+require_once plugin_dir_path( __FILE__ ) . 'utility-classes/helper.php';
 /**
  * A FormBuilder child class that handles contact forms
  */
@@ -93,14 +93,14 @@ require_once plugin_dir_path( __FILE__ ) . 'class-form-builder-signup-form.php';
 /**
  * A FormBuilder child class that handles contact forms
  */
-require_once plugin_dir_path( __FILE__ ) . 'class-form-submission-cpt.php';
+// require_once plugin_dir_path( __FILE__ ) . 'class-form-submission-cpt.php';
 
 /*
  * Form Custom Post Type and Taxonomies
  */
 require_once plugin_dir_path( __FILE__ ) . 'cpt/wp_swift_form.php';
-require_once plugin_dir_path( __FILE__ ) . 'cpt/wp_swift_form_category.php';
-require_once plugin_dir_path( __FILE__ ) . 'cpt/wp_swift_form_submit.php';
+// require_once plugin_dir_path( __FILE__ ) . 'cpt/wp_swift_form_category.php';
+// require_once plugin_dir_path( __FILE__ ) . 'cpt/wp_swift_form_submit.php';
 
 /**
  * The ACF field groups
@@ -130,7 +130,7 @@ require_once plugin_dir_path( __FILE__ ) . '_localize-script.php';
 /**
  * Check if the default taxonomy exists and create it if not
  */
-require_once plugin_dir_path( __FILE__ ) . '_taxonomy-check.php';
+// require_once plugin_dir_path( __FILE__ ) . '_taxonomy-check.php';
 
 /**
  * Handle the ajax form submit
@@ -150,7 +150,7 @@ require_once plugin_dir_path( __FILE__ ) . '_admin-notices.php';
 /**
  * 
  */
-require_once plugin_dir_path( __FILE__ ) . '_arrays.php';
+// require_once plugin_dir_path( __FILE__ ) . '_arrays.php';
 
 /**
  * Process ACF data into FormBuilder data

@@ -8,7 +8,7 @@ function wp_swift_form_builder_save_post($post_id) {
 
     $form_data = wp_swift_form_data_loop($post_id); 
     // Check if default taxonomy exists
-    wp_swift_form_builder_taxonomy_check();
+    // wp_swift_form_builder_taxonomy_check();
     // Add default taxonomy
     wp_set_post_terms( $post_id, FORM_BUILDER_DEFAULT_TERM, FORM_BUILDER_DEFAULT_TAXONOMY );
 

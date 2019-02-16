@@ -246,23 +246,28 @@ class WP_Swift_Form_Builder_Validate {
                 $input['passed'] = true;
                 break; 
             case "date":
-                // $d = DateTime::createFromFormat($format, $input['value']);  
                 $date  = explode('/', $input['value']);
-                $d = $date[0];
-                $m = $date[1];
-                $y = $date[2];
+                switch (FORM_BUILDER_DATE_FORMAT) {
+                    case 'dd/mm/yyyy':
+                        $d = $date[0];
+                        $m = $date[1];
+                        $y = $date[2];
+                        break;
+                    case 'mm/dd/yyyy':
+                        $d = $date[1];
+                        $m = $date[0];
+                        $y = $date[2];
+                        break;
+                }
                 # bool checkdate ( int $month , int $day , int $year )
                 if (!checkdate($m, $d, $y)) {
                     return $input;
                 }
                 else {
-                    $input['clean'] = $y.$m.$d;//date('Ymd', strtotime( $y.$m.$d ));
-                    //$date[1] . ' ' . $date[0] . ' ' . $date[2] //$input['value']
+                    $input['clean'] = $y.'-'.$m.'-'.$d;//date('Ymd', strtotime( $y.$m.$d ));
                 }
                 $input['passed'] = true;
                 break;
-
-  
         }
         return $input;   
     }//@end validate_input 

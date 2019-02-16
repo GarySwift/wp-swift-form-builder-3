@@ -115,7 +115,7 @@ class WP_Swift_Form_Builder_Helper {
             $this->enctype = $this->settings["enctype"];
         }
         else {
-            // $this->form_class .= ' ajax';
+            $this->form_class .= ' ajax';
         }
         if(isset($this->settings["show_edit_link"])) {
             $this->show_edit_link = true;
