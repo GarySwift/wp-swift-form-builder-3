@@ -17,7 +17,7 @@
         // debugging info
         'updated' => date ("H:i:s - F d Y", $js_version),
     );   
-    $form_builder_date_picker = array( 'format' => FORM_BUILDER_DATE_FORMAT);
+    $form_builder_date_picker = array( 'format' => get_form_builder_date_format());
     if ( function_exists( 'foundationpress_scripts' ) ) {
     	wp_localize_script( 'foundation', 'FormBuilderAjax', $form_builder_ajax);
         wp_localize_script( 'foundation', 'FormBuilderDatePicker', $form_builder_date_picker);

@@ -212,7 +212,7 @@ function build_acf_form_array($row_layout, $inputs, $settings, $section=0, $edit
                     $help .= ' and must be valid';
                 }
                 elseif ( $data_type === 'date' ||  $data_type === 'date_range') {
-                    $help .= ' and must be formatted to '.FORM_BUILDER_DATE_FORMAT;
+                    $help .= ' and must be formatted to '.get_form_builder_date_format();
                 }
             }
             else {

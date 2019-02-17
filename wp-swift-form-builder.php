@@ -73,8 +73,7 @@ define('FORM_BUILDER_SAVE_TO_JSON', false);
 define('FORM_BUILDER_DEFAULT_TERM', 'Contact Form');
 define('FORM_BUILDER_DEFAULT_SLUG', 'contact-form');
 // define('FORM_BUILDER_DEFAULT_TAXONOMY', 'wp_swift_form_category');
-// define('FORM_BUILDER_DATE_FORMAT', 'dd/mm/yyyy');
-define('FORM_BUILDER_DATE_FORMAT', 'mm/dd/yyyy');
+define('FORM_BUILDER_DATE_FORMAT', 'dd/mm/yyyy');// or 'mm/dd/yyyy' (Can be set in settings)
 
 /**
  * The FormBuilder class that handles all form logic
@@ -203,3 +202,16 @@ function form_builder_acf_layout_title($title, $field, $layout, $i) {
 	return $title;
 }
 add_filter('acf/fields/flexible_content/layout_title', 'form_builder_acf_layout_title', 10, 4);
+
+/**
+ * Get the date format
+ */
+function get_form_builder_date_format() {
+	$options = get_option( 'wp_swift_form_builder_settings' );
+	if (!empty($options['wp_swift_form_builder_date_format'])) {
+		return $options['wp_swift_form_builder_date_format'];
+	}
+	else {
+		return FORM_BUILDER_DATE_FORMAT;
+	}
+}

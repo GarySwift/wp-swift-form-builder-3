@@ -124,6 +124,14 @@ class WP_Swift_Form_Builder_Admin_Interface_Settings {
 			'form-builder', 
 			'wp_swift_form_builder_plugin_page_section' 
 	    );*/
+
+		add_settings_field( 
+			'wp_swift_form_builder_date_format', 
+			__( 'Date Format', 'wp-swift-form-builder' ),
+			array($this, 'wp_swift_form_builder_date_format_render'), 
+			'form-builder', 
+			'wp_swift_form_builder_plugin_page_section' 
+		);		    
 	}
 
 	/*
@@ -300,6 +308,18 @@ class WP_Swift_Form_Builder_Admin_Interface_Settings {
 	    ?>>
 	    <small><b>Do not use on live sites!</b></small><br>
 	    <small>You can set this to debug mode if you are a developer. This will skip default behaviour such as sending emails.</small><?php
+
+	}
+
+
+	function wp_swift_form_builder_date_format_render(  ) { 
+		$date_format = get_form_builder_date_format();
+		?>
+		<select name='wp_swift_form_builder_settings[wp_swift_form_builder_date_format]'>
+			<option value='dd/mm/yyyy'<?php selected( $date_format, 'dd/mm/yyyy' ); ?>>dd/mm/yyyy</option>
+			<option value='mm/dd/yyyy'<?php selected( $date_format, 'mm/dd/yyyy' ); ?>>mm/dd/yyyy</option>
+		</select><label for="">This will determine the format of the JavaScript datepicker.</label>
+	<?php
 
 	}
 
