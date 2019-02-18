@@ -408,30 +408,39 @@
             }       
         }   
 
-        $('.js-other-value').removeClass('css-hide').hide();
+        $('.js-other-value').removeClass('hide').hide();
 
         $('.js-other-value-event select').change(function() {
+            console.log('.js-other-value-event select');
             var input = new FormBuilderInput( $(this).serializeArray()[0] );
+            console.log('input', input);
             if (input.value === 'other') {
+                $(input.id + '-other').attr('disabled', false);
                 $(input.id + '-other-form-group').slideDown();
+                console.log(input.id);
             }
             else {
                 $(input.id + '-other-form-group').slideUp();
                 $(input.id + '-other').val('');
+                $(input.id + '-other').attr('disabled', true);
             }
         });
 
 
         $('.js-other-value-event input[type=checkbox]').change(function() {
+            console.log('.js-other-value-event input[type=checkbox]');
             var input = new FormBuilderInput( this );
+            console.log('input', input);
             if (input.value === 'other') {
                 
                 if (this.checked) {
+                    $(input.id + '-other').attr('disabled', false);
                     $(input.id + '-other-form-group').slideDown();
                 }
                 else {
                     $(input.id + '-other-form-group').slideUp();
                     $(input.id + '-other').val('');
+                    $(input.id + '-other').attr('disabled', true);
                 }
             }       
         }); 

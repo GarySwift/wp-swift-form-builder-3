@@ -35,8 +35,8 @@ acf_add_local_field_group(array(
 			'required' => 0,
 			'conditional_logic' => 0,
 			'wrapper' => array(
-				'width' => '',
-				'class' => 'full-width-settings',
+				'width' => '50',
+				'class' => 'group-start',
 				'id' => '',
 			),
 			'choices' => array(
@@ -45,10 +45,10 @@ acf_add_local_field_group(array(
 			),
 			'allow_null' => 0,
 			'other_choice' => 0,
-			'save_other_choice' => 0,
 			'default_value' => 'user',
 			'layout' => 'horizontal',
 			'return_format' => 'value',
+			'save_other_choice' => 0,
 		),
 		array(
 			'key' => 'field_5bfc1a4bb48f8',

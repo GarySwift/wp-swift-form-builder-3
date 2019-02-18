@@ -238,6 +238,46 @@ div.form-builder.wrap {
         max-width: 50%;
     }
 }
+.form-group {
+    &.fb-options-block {
+        .form-input {
+            label {
+                display: block;
+            }
+        }
+    } 
+    &.fb-options-grid-2 {
+        .form-input {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: auto;
+            grid-template-areas: ". .";            
+        }
+    }     
+    &.fb-options-grid-3 {
+        .form-input {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            grid-template-rows: auto;
+            grid-template-areas: ". . .";            
+        }
+    }  
+    &.fb-options-grid-4 {
+        .form-input {
+            display: grid;
+            grid-template-rows: auto;
+            grid-template-columns: 1fr 1fr;
+            grid-template-areas: ". .";                 
+        }               
+        @media only screen and (min-width: 700px) {
+            .form-input {               
+                grid-template-columns: 1fr 1fr 1fr 1fr;
+                grid-template-areas: ". . . .";          
+            }
+        }        
+    }            
+}
+
 /* 
  * @start form-cell (groupings)
  */

@@ -3,6 +3,7 @@
  * save_post hook that adds default taxonomy and saves the processed ACF form data into FormBuilder data
  */
 function wp_swift_form_builder_save_post($post_id) {
+    return;
     // Return if this isn't a 'wp_swift_form' post
     if ( "wp_swift_form" != get_post_type($post_id) ) return; 
 
@@ -10,7 +11,7 @@ function wp_swift_form_builder_save_post($post_id) {
     // Check if default taxonomy exists
     // wp_swift_form_builder_taxonomy_check();
     // Add default taxonomy
-    wp_set_post_terms( $post_id, FORM_BUILDER_DEFAULT_TERM, FORM_BUILDER_DEFAULT_TAXONOMY );
+    // wp_set_post_terms( $post_id, FORM_BUILDER_DEFAULT_TERM, FORM_BUILDER_DEFAULT_TAXONOMY );
 
     if (FORM_BUILDER_SAVE_TO_JSON) {
     	/*

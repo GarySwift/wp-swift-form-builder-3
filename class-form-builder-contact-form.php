@@ -442,12 +442,21 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
                                 if ($section_input['clean'] !== ''): ?>
                         <tr>
                             <th style="width:30%; text-align:left"><?php $this->table_cell_header($input_key, $section_input) ?></th>
-                            <td><?php 
-                                    if ($section_input['type']=='select') {
-                                        echo ucwords(str_replace('-', ' ',$section_input['clean']));
-                                    } else {
-                                        echo $section_input['clean'];
-                                    }
+                            <td><?php if ( $section_input['data_type'] == 'checkbox' ): ?>
+                                <table>
+                                    <?php foreach ($section_input['options'] as $option): ?>
+                                        <?php if ($option["checked"]): ?>
+                                            <tr>
+                                                <td><?php echo $option["option"]; ?></td>
+                                            </tr>
+                                        <?php endif ?>
+                                    <?php endforeach ?>
+                                </table>
+                            <?php elseif ($section_input['type']=='select'): ?>
+                                <?php echo $section_input['clean'] ?>
+                            <?php else: ?>
+                                 <?php echo $section_input['clean'] ?>
+                            <?php endif;
                             ?></td>
                         </tr>    
                         <?php   endif;//@end if ($section_input['clean'] !== '')                               

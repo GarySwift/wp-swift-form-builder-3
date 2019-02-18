@@ -7,6 +7,7 @@ require_once plugin_dir_path( __FILE__ ) . '_form-builder-clone-id-group.php';
 require_once plugin_dir_path( __FILE__ ) . '_form-builder-clone-input-validation.php';
 require_once plugin_dir_path( __FILE__ ) . '_form-builder-clone-number-attributes.php';
 require_once plugin_dir_path( __FILE__ ) . '_form-builder-clone-options.php';
+require_once plugin_dir_path( __FILE__ ) . '_form-builder-clone-options-layout.php';
 require_once plugin_dir_path( __FILE__ ) . '_form-builder-clone-reporting-group.php';
 require_once plugin_dir_path( __FILE__ ) . '_form-builder-clone-select-options.php';
 require_once plugin_dir_path( __FILE__ ) . '_form-builder-clone-settings-group.php';

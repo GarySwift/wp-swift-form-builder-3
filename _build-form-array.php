@@ -136,7 +136,7 @@ function build_acf_form_array($row_layout, $inputs, $settings, $section=0, $edit
     $value = '';
     $validation = null;
     $disabled = false;
-
+    $options_layout = '';
     $name =  get_sub_field('form_input_name');
     $label =  get_sub_field('label');
 
@@ -327,6 +327,11 @@ function build_acf_form_array($row_layout, $inputs, $settings, $section=0, $edit
                 $select_options[] = array('option' => 'Other', 'option_value' => 'other');
             }
         }
+
+    }
+    if ($data_type === 'checkbox' || $data_type === 'select' || $data_type === 'radio') {
+        $options_layout = get_sub_field('options_layout');
+        $css_class .= ' ' . $options_layout;
 
     }
 
