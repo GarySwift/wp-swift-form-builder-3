@@ -10,7 +10,7 @@
 
     var sessionDetailsName = "form-session-details";
     // console.log('sessionDetailsName', sessionDetailsName);
-    console.log(FormBuilderDatePicker);
+    // console.log(FormBuilderDatePicker);
 
     var dateInPast = function dateInPast(years) {
         var dateNow = new Date();
@@ -28,11 +28,16 @@
         var dateInPast = dd + '-' + mm + '-' + (yyyy-years);
         return  dateInPast; 
     };
+
+    var resetErrorsInForm = function() {
+        return {
+            count: 0,
+            report: ''
+        };
+    };
+
     jQuery(document).ready(function($){
-            var errorsInForm = {
-                count: 0,
-                report: ''
-            };  
+        var errorsInForm = resetErrorsInForm(); 
         if(typeof FormBuilderAjax !== "undefined") {
             // console.log(FormBuilderAjax.updated);
         }
@@ -138,7 +143,7 @@
             }
         };
 
-        var validateForm = function(form) {
+        var validateForm = function(form, errorsInForm) {
 
             for (var i = 0; i < form.length; i++) {
                 var input = new FormBuilderInput(form[i]);
@@ -204,9 +209,6 @@
             if(year % 400 === 0 || (year % 100 !== 0 && year % 4 === 0)){
                 monthLength[1] = 29;
             }
-            console.log('day', day);
-            console.log('month', month);
-            console.log('year', year);
             console.log(day > 0 && day <= monthLength[month - 1]);
 
             // Check the range of the day
@@ -450,13 +452,15 @@
                 // });
                 // console.log('$fileInputs', $fileInputs);
         $('#request-form.ajax').submit(function(e) {
-             var formData = new FormData(this);
+            var formData = new FormData(this);
             // console.log(formData);
             // console.log('#request-form');
             e.preventDefault();
             var $form = $(this);
             var submit = $form.find(":submit");
-            var errorsInForm = validateForm( $form.serializeArray() );
+            // errorsInForm = resetErrorsInForm();
+            errorsInForm = validateForm( $form.serializeArray(), resetErrorsInForm() );
+            console.log('errorsInForm', errorsInForm);
             // todo - handle file uploads with ajax
             var $fileInputs = $('input.js-file-upload');
             var files = {};

@@ -37,7 +37,7 @@ if ( ! defined( 'WPINC' ) ) {
 function activate_wp_swift_form_builder() {
 	require_once plugin_dir_path( __FILE__ ) . 'includes/class-wp-swift-form-builder-activator.php';
 	Wp_Swift_Form_Builder_Activator::activate();
-    wp_swift_form_builder_taxonomy_check();
+    // wp_swift_form_builder_taxonomy_check();
 }
 
 /**

@@ -97,6 +97,9 @@ function wp_swift_convert_json_to_post_array($form) {
             }
         }
     }//@end foreach	
+    // write_log('$post');
+    // write_log($post);
+    // write_log('');
     return $post;
 }
 

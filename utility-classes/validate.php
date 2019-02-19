@@ -37,6 +37,7 @@ class WP_Swift_Form_Builder_Validate {
             }
             foreach ( $form_data as &$section ) {
                 foreach ( $section["inputs"] as $input_key => &$input ) {
+                    // write_log('$input_key: ' . $input_key);
 
                     $set = isset($post[$input_key]);
 
@@ -95,7 +96,7 @@ class WP_Swift_Form_Builder_Validate {
      * @return $input
      */
     public function validate_input($input, $key, $helper=null) {
-
+        // write_log($input);
         if ($input["data_type"] !== 'file') {
             if($input['required'] && $input['value']=='') {
                 return $input;
@@ -160,6 +161,7 @@ class WP_Swift_Form_Builder_Validate {
         /**
          * Default validation based on input type
          */
+        // write_log($input['data_type']);
         switch ($input['data_type']) {
             case "text":
             case "textarea":
@@ -171,34 +173,29 @@ class WP_Swift_Form_Builder_Validate {
                 if ($username_strlen<4 || $username_strlen>30) {
                     return $input;
                 }
-                $input['clean'] = sanitize_user( $input['value'], $strict=true ); 
+                $input['clean'] = sanitize_user( $input['value'], $strict = true );
                 $input['passed'] = true;
                 break;
             case "email":
                 if ( !is_email( $input['value'] ) ) { 
                     return $input; 
                 }
-                else {
-                    $input['clean'] = sanitize_email( $input['value'] );  
-                }
+                $input['clean'] = sanitize_email( $input['value'] );
                 $input['passed'] = true;
                 break;
             case "number":
                 if ( !is_numeric( $input['value'] ) ) { 
                     return $input; 
                 }
-                else {
-                    $input['clean'] = $input['value'];  
-                }
+                $input['clean'] = $input['value']; 
                 $input['passed'] = true;
                 break;        
             case "url":
                 if (filter_var($input['value'], FILTER_VALIDATE_URL) === false) {
                     return $input;
                 }
-                else {
-                    $input['clean'] = $input['value'];
-                }
+                $input['clean'] = $input['value'];
+                $input['passed'] = true;
                 break;
             case "select2":
             case "select":
@@ -239,7 +236,21 @@ class WP_Swift_Form_Builder_Validate {
                 $input["options"] = $options;
                 $input['clean'] = $clean;
                 $input['passed'] = true;
-                break;                        
+                break; 
+            case "radio":
+                $options = $input["options"];
+                foreach ($options as $option_key => $option) {
+                    $value = $input['value'];
+                    if (in_array($value, $option)) {
+                        $options[$option_key]["checked"] = true;
+                        $clean = $option["option"];
+                        $input['clean'] = $clean;
+                        $input['passed'] = true;
+                        break;
+                    }
+                }
+                return $input;
+                break;                                        
             case "checkbox_single":
                 $input["option"]["checked"] = 1;
                 $input['clean'] = "Yes";//"Yes <small>(".$input["option"]["key"].")</small>";

@@ -390,7 +390,8 @@ class WP_Swift_Form_Builder_Html {
             ?>
                     
                     <label for="<?php echo $id.'-'.$count ?>" class="lbl-radio">
-                        <input id="<?php echo $id.'-'.$count ?>" name="<?php echo $id ?>-radio" type="radio" data-type="radio" tabindex="<?php echo $this->tab_index++; ?>" value="<?php echo $option['option_value'] ?>"<?php echo $data_id; echo $css_class; echo $checked; ?>><?php echo $option['option'] ?>
+                        <?php /* name="<?php echo $id ?>-radio" */ ?>
+                        <input id="<?php echo $id.'-'.$count ?>" name="<?php echo $id ?>" type="radio" data-type="radio" tabindex="<?php echo $this->tab_index++; ?>" value="<?php echo $option['option_value'] ?>"<?php echo $data_id; echo $css_class; echo $checked; ?>><?php echo $option['option'] ?>
 
                     </label>
             <?php 
