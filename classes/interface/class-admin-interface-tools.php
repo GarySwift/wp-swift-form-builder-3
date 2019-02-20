@@ -107,9 +107,7 @@ class WP_Swift_Form_Builder_Admin_Interface_Tools {
 						<div id="" class="postbox">
 							<h2 class="hndle postbox-header"><span>Import</span></h2>
 							<div class="inside">
-								
-								
-
+							
 								<?php 
 								if ( isset($_POST["import-form"]) ):
 									$sections = $_POST["import-form"];
@@ -152,7 +150,7 @@ class WP_Swift_Form_Builder_Admin_Interface_Tools {
 
 								 
 								 	?>
-								 	<p><?php echo __( 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nostrum, aperiam hic. Quia, dolorem autem laboriosam sequi dolores porro dignissimos vel quae unde, nobis omnis. Adipisci soluta, debitis delectus voluptatem asperiores.', 'wp-swift-form-builder' ); ?></p>
+								 	<p><?php echo __( 'Paste the expoted json into here and cclick the <b>Import Form</b> button.' ); ?></p>
 
 									<form action="<?php echo admin_url( 'edit.php?post_type=wp_swift_form&page=form_builder_tools' ); ?>" method="post">
 

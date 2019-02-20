@@ -20,7 +20,7 @@ function form_shortcode_html( $post) {
     <input id="shortcode-input" class="js-click-to-copy-input" type="text" value='[form id="<?php echo $post->ID ?>"]' readonly>
 
     <a href="#" data-copy-id="shortcode-input" class="js-click-to-copy-link tooltips">
-        <img src="<?php echo plugin_dir_url( __FILE__ ) . 'admin/images/icon-copy.svg' ?>" alt="icon-copy" class="icon-copy">
+        <img src="<?php echo FORM_BUILDER_PLUGIN_URL . 'admin/images/icon-copy.svg' ?>" alt="icon-copy" class="icon-copy">
         <span>Copy to Clipboard</span>
     </a>
 

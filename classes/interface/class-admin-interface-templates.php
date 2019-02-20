@@ -25,9 +25,6 @@ class WP_Swift_Form_Builder_Admin_Interface_Templates {
 	    add_submenu_page( 'edit.php?post_type=wp_swift_form', 'Form Builder Templates', 'Templates', 'manage_options', 'form_builder_templates', array($this, 'wp_swift_form_builder_templates')  );
 	}
 
-	// public function wp_swift_form_builder_templates(  ) { 
-
-	// }
 	/*
 	 *
 	 */
@@ -82,16 +79,16 @@ class WP_Swift_Form_Builder_Admin_Interface_Templates {
 	        ?>
 
 			<div class="wp-swift-form-builder-template">
-				<div class="image"><img src="<?php echo plugin_dir_url( __FILE__ ) .'/admin/images/' ?>contact-form.svg" alt="Template Image" id="contact-form-svg-1" class="contact-form-svg"></div>
-				<form action="<?php echo plugin_dir_url( __FILE__ ) . '_new-form-from-template.php'; ?>" method="post">
+				<div class="image"><img src="<?php echo FORM_BUILDER_PLUGIN_URL .'admin/images/' ?>contact-form.svg" alt="Template Image" id="contact-form-svg-1" class="contact-form-svg"></div>
+				<form action="<?php echo FORM_BUILDER_PLUGIN_URL . 'functions-filters-actions/_new-form-from-template.php'; ?>" method="post">
 					<input type="text" name="wp_swift_form_builder_preset" value="1" hidden>
 					<input type="submit" value="New Form from Template" class="new-form-from-template">
 				</form>
 			</div>
 
 			<div class="wp-swift-form-builder-template">
-				<div class="image"><img src="<?php echo plugin_dir_url( __FILE__ ) .'/admin/images/' ?>contact-form-2.svg" alt="Template Image" id="contact-form-svg-2" class="contact-form-svg"></div>
-				<form action="<?php echo plugin_dir_url( __FILE__ ) . '_new-form-from-template.php'; ?>" method="post">
+				<div class="image"><img src="<?php echo FORM_BUILDER_PLUGIN_URL .'admin/images/' ?>contact-form-2.svg" alt="Template Image" id="contact-form-svg-2" class="contact-form-svg"></div>
+				<form action="<?php echo FORM_BUILDER_PLUGIN_URL . 'functions-filters-actions/_new-form-from-template.php'; ?>" method="post">
 					<input type="text" name="wp_swift_form_builder_preset" value="2" hidden>
 					<input type="submit" value="New Form from Template" class="new-form-from-template">
 				</form>

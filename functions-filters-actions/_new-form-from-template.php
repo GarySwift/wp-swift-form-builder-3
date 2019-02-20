@@ -1,12 +1,12 @@
 <?php
 // Include the wp-load'er
-include('../../../wp-load.php');
+include('../../../../wp-load.php');
 require_once plugin_dir_path( __FILE__ ) . '_save-post-action.php';
 
 if (isset($_POST['wp_swift_form_builder_preset'])) {
 
     $id = $_POST['wp_swift_form_builder_preset'];
-    $file_path = plugin_dir_path( __FILE__ ). 'template-json/';
+    $file_path = plugin_dir_path( __DIR__ ). 'template-json/';
     $file_name = 'template-'.$id.'.json';
     $file = $file_path.$file_name;
 

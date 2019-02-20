@@ -1,5 +1,4 @@
 <?php
-
 /**
  * The plugin bootstrap file
  *
@@ -74,104 +73,102 @@ define('FORM_BUILDER_DEFAULT_TERM', 'Contact Form');
 define('FORM_BUILDER_DEFAULT_SLUG', 'contact-form');
 // define('FORM_BUILDER_DEFAULT_TAXONOMY', 'wp_swift_form_category');
 define('FORM_BUILDER_DATE_FORMAT', 'dd/mm/yyyy');// or 'mm/dd/yyyy' (Can be set in settings)
-
+define('FORM_BUILDER_PLUGIN_PATH', plugin_dir_path( __FILE__ ));
+define('FORM_BUILDER_PLUGIN_URL', plugin_dir_url( __FILE__ ));
 /**
  * The FormBuilder class that handles all form logic
  */
-require_once plugin_dir_path( __FILE__ ) . 'class-form-builder.php';
+require_once FORM_BUILDER_PLUGIN_PATH . 'classes/forms/class-form-builder.php';
 // validate
-require_once plugin_dir_path( __FILE__ ) . 'utility-classes/validate.php';
-require_once plugin_dir_path( __FILE__ ) . 'utility-classes/html.php';
-require_once plugin_dir_path( __FILE__ ) . 'utility-classes/helper.php';
+require_once FORM_BUILDER_PLUGIN_PATH . 'classes/utility/validate.php';
+require_once FORM_BUILDER_PLUGIN_PATH . 'classes/utility/html.php';
+require_once FORM_BUILDER_PLUGIN_PATH . 'classes/utility/helper.php';
 /**
  * A FormBuilder child class that handles contact forms
  */
-require_once plugin_dir_path( __FILE__ ) . 'class-form-builder-contact-form.php';
-require_once plugin_dir_path( __FILE__ ) . 'class-form-builder-signup-form.php';
+require_once FORM_BUILDER_PLUGIN_PATH . 'classes/forms/class-form-builder-contact-form.php';
+require_once FORM_BUILDER_PLUGIN_PATH . 'classes/forms/class-form-builder-signup-form.php';
 
 /**
  * A FormBuilder child class that handles contact forms
  */
-// require_once plugin_dir_path( __FILE__ ) . 'class-form-submission-cpt.php';
+// require_once FORM_BUILDER_PLUGIN_PATH . 'classes/utility/class-form-submission-cpt.php';
 
 /*
  * Form Custom Post Type and Taxonomies
  */
-require_once plugin_dir_path( __FILE__ ) . 'cpt/wp_swift_form.php';
-// require_once plugin_dir_path( __FILE__ ) . 'cpt/wp_swift_form_category.php';
-// require_once plugin_dir_path( __FILE__ ) . 'cpt/wp_swift_form_submit.php';
+require_once FORM_BUILDER_PLUGIN_PATH . 'cpt/wp_swift_form.php';
+// require_once FORM_BUILDER_PLUGIN_PATH . 'cpt/wp_swift_form_category.php';
+// require_once FORM_BUILDER_PLUGIN_PATH . 'cpt/wp_swift_form_submit.php';
 
 /**
  * The ACF field groups
- */ 
-// require_once plugin_dir_path( __FILE__ ) . 'acf-field-groups/form-builder-inputs.php';
-// require_once plugin_dir_path( __FILE__ ) . 'acf-field-groups/form-builder-input-sections.php';
-require_once plugin_dir_path( __FILE__ ) . 'acf/all.php';
-// require_once plugin_dir_path( __FILE__ ) . 'acf-field-groups/_acf-field-group-contact-form.php';
+ */
+require_once FORM_BUILDER_PLUGIN_PATH . 'acf/all.php';
+// require_once FORM_BUILDER_PLUGIN_PATH . 'acf-field-groups/_acf-field-group-contact-form.php';
 
 /**
  * The classes that handles the admin interface
  */
-require_once plugin_dir_path( __FILE__ ) . 'class-admin-interface-templates.php';
-require_once plugin_dir_path( __FILE__ ) . 'class-admin-interface-tools.php';
-require_once plugin_dir_path( __FILE__ ) . 'class-admin-interface-settings.php';
+require_once FORM_BUILDER_PLUGIN_PATH . 'classes/interface/class-admin-interface-templates.php';
+require_once FORM_BUILDER_PLUGIN_PATH . 'classes/interface/class-admin-interface-tools.php';
+require_once FORM_BUILDER_PLUGIN_PATH . 'classes/interface/class-admin-interface-settings.php';
 
 /**
  * Function that wraps email message in a html template
  */
-require_once plugin_dir_path( __FILE__ ) . 'email-templates/wp-swift-email-templates.php';
+require_once FORM_BUILDER_PLUGIN_PATH . 'email-templates/wp-swift-email-templates.php';
 
 /**
  * Create the ajax nonce and url
  */
-require_once plugin_dir_path( __FILE__ ) . '_localize-script.php';
+require_once FORM_BUILDER_PLUGIN_PATH . 'functions-filters-actions/_localize-script.php';
 
 /**
  * Check if the default taxonomy exists and create it if not
  */
-// require_once plugin_dir_path( __FILE__ ) . '_taxonomy-check.php';
+// require_once FORM_BUILDER_PLUGIN_PATH . 'functions-filters-actions/_taxonomy-check.php';
 
 /**
  * Handle the ajax form submit
  */
-require_once plugin_dir_path( __FILE__ ) . '_ajax-form-callback.php';
+require_once FORM_BUILDER_PLUGIN_PATH . 'functions-filters-actions/_ajax-form-callback.php';
 
 /**
  * save_post hook that adds default taxonomy and saves the processed ACF form data into FormBuilder data
  */
-require_once plugin_dir_path( __FILE__ ) . '_save-post-action.php';
+require_once FORM_BUILDER_PLUGIN_PATH . 'functions-filters-actions/_save-post-action.php';
 
 /**
  * All admin notices including a GET request for 'wp_swift_form_builder_new_contact_form_error'
  */
-require_once plugin_dir_path( __FILE__ ) . '_admin-notices.php';
-
-/**
- * 
- */
-// require_once plugin_dir_path( __FILE__ ) . '_arrays.php';
+require_once FORM_BUILDER_PLUGIN_PATH . 'functions-filters-actions/_admin-notices.php';
 
 /**
  * Process ACF data into FormBuilder data
  */
-require_once plugin_dir_path( __FILE__ ) . '_build-form-array.php';
+require_once FORM_BUILDER_PLUGIN_PATH . 'functions-filters-actions/_build-form-array.php';
 
 /**
  * A metabox showing form usage which includes shortcode and php function
  */
-require_once plugin_dir_path( __FILE__ ) . '_shortcode-metabox.php';
+require_once FORM_BUILDER_PLUGIN_PATH . 'functions-filters-actions/_shortcode-metabox.php';
 
 /**
  * Add custom query vars
  */
-require_once plugin_dir_path( __FILE__ ) . '_custom-query-vars.php';
+// require_once FORM_BUILDER_PLUGIN_PATH . 'functions-filters-actions/_custom-query-vars.php';
+
+require_once FORM_BUILDER_PLUGIN_PATH . 'functions-filters-actions/_acf-filters.php';
+
+require_once FORM_BUILDER_PLUGIN_PATH . 'functions-filters-actions/_get-date-format.php';
 
 /**
  * Add the FoundationPress reveal modal which shows submission response
  */
-require_once plugin_dir_path( __FILE__ ) . '_reveal-modal.php';
+require_once FORM_BUILDER_PLUGIN_PATH . 'functions-filters-actions/_reveal-modal.php';
 
-require_once plugin_dir_path( __FILE__ ) . 'debug/write-log.php';
+require_once FORM_BUILDER_PLUGIN_PATH . 'functions-filters-actions/_write-log.php';
 
 
 /**
@@ -190,28 +187,3 @@ function run_wp_swift_form_builder() {
 
 }
 run_wp_swift_form_builder();
-
-/*************************************************************/
-/*   ACF Friendly Block Titles                                  */
-/***********************************************************/
-
-function form_builder_acf_layout_title($title, $field, $layout, $i) {
-	if($value = get_sub_field('form_input_name')) {
-		return $value . ' <sup>(' . $title . ')</sup>';
-	}
-	return $title;
-}
-add_filter('acf/fields/flexible_content/layout_title', 'form_builder_acf_layout_title', 10, 4);
-
-/**
- * Get the date format
- */
-function get_form_builder_date_format() {
-	$options = get_option( 'wp_swift_form_builder_settings' );
-	if (!empty($options['wp_swift_form_builder_date_format'])) {
-		return $options['wp_swift_form_builder_date_format'];
-	}
-	else {
-		return FORM_BUILDER_DATE_FORMAT;
-	}
-}
