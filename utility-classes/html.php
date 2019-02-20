@@ -253,11 +253,11 @@ class WP_Swift_Form_Builder_Html {
     } 
 
     private function build_form_select($helper, $id, $data) {
-        // echo '<pre>$data: '; var_dump($data); echo '</pre>';
         $readonly = '';
         $multiple = '';
         $css_class = '';
         $disabled = '';
+        $name_append_array = '';
         if ($data["disabled"]) {
             $disabled = ' disabled';
         }        
@@ -274,12 +274,13 @@ class WP_Swift_Form_Builder_Html {
         if ( $data['data_type'] == 'multi_select') {
             $multiple = ' multiple';
             $css_class = ' js-select2-multiple';
+            $name_append_array = '[]';
         }
 
         ob_start();
         ?>
 
-        <select class="<?php echo $this->get_form_input_class($data, $css_class); ?>" id="<?php echo $id; ?>" name="<?php echo $id; ?>" data-type="select" tabindex="<?php echo $this->tab_index++; ?>" <?php echo $data['required']; echo $multiple; echo $readonly; echo $disabled ?>>
+        <select class="<?php echo $this->get_form_input_class($data, $css_class); ?>" id="<?php echo $id; ?>" name="<?php echo $id; echo $name_append_array; ?>" data-type="select" tabindex="<?php echo $this->tab_index++; ?>" <?php echo $data['required']; echo $multiple; echo $readonly; echo $disabled ?>>
 
             <?php if($allow_null && !$multiple ): ?>
                 <option value="" class="placeholder">Please select an option...</option>

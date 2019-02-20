@@ -17,7 +17,7 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
     private $forward_email = null;
     private $save_submission = null;
     private $date;
-    private $send_email = false;//Debug variable. If false, emails will not be sent
+    private $send_email = true;//Debug variable. If false, emails will not be sent
     private $send_marketing = true;
     private $title;
     private $response_subject;
@@ -26,8 +26,6 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
     private $auto_response_message;
     private $auto_response_subject;
     private $to = array();
-    
-
 
     /*
      * Initializes the plugin.
@@ -53,7 +51,7 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
         return $response;      
     }
 
-    private function before_send_email() {
+    private function before_send_email($form_data) {
         $form_post_id = parent::get_form_post_id();
         $post_id = parent::get_post_id();        
         $this->date = ' - ' . date("Y-m-d H:i:s") . ' GMT';
@@ -154,7 +152,7 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
 
             $to_email_callback = get_field('to_email_callback', $form_post_id);
             if ( !empty($to_email_callback) && function_exists( $to_email_callback )) {
-                $to_email = $to_email_callback();
+                $to_email = $to_email_callback($form_data);
                 if ( is_email( $to_email ) ) {
                     $this->to = $to_email;
                 }
@@ -174,7 +172,10 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
      * @return string               The html success message
      */
     public function submit_form_success($post, $ajax) {
-        $this->before_send_email();
+
+        $form_data = parent::get_form_data();
+
+        $this->before_send_email($form_data);
 
         // Start making the string that will be sent in the email
         $email_string = $this->response_message;
@@ -255,7 +256,7 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
 
         $user_confirmation_email = parent::get_user_confirmation_email();
 
-        $form_data = parent::get_form_data();
+        
 
         $form_data = $form_data[0];
 
@@ -452,6 +453,14 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
                                         <?php endif ?>
                                     <?php endforeach ?>
                                 </table>
+                            <?php elseif ( $section_input['data_type'] == 'multi_select' ): ?>
+                                <table>
+                                    <?php foreach ($section_input['clean'] as $option): ?>
+                                            <tr>
+                                                <td><?php echo $option; ?></td>
+                                            </tr>
+                                    <?php endforeach ?>
+                                </table>                                
                             <?php elseif ($section_input['type']=='select'): ?>
                                 <?php echo $section_input['clean'] ?>
                             <?php else: ?>

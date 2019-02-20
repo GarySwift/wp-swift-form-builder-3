@@ -96,7 +96,7 @@ class WP_Swift_Form_Builder_Validate {
      * @return $input
      */
     public function validate_input($input, $key, $helper=null) {
-        // write_log($input);
+       
         if ($input["data_type"] !== 'file') {
             if($input['required'] && $input['value']=='') {
                 return $input;
@@ -110,6 +110,7 @@ class WP_Swift_Form_Builder_Validate {
         if(!is_array($input['value'])) {
             $input['value'] = trim($input['value']);
         }
+         // write_log($input);write_log('');
 
         /**
          * Special validation
@@ -162,6 +163,7 @@ class WP_Swift_Form_Builder_Validate {
          * Default validation based on input type
          */
         // write_log($input['data_type']);
+
         switch ($input['data_type']) {
             case "text":
             case "textarea":
@@ -199,6 +201,12 @@ class WP_Swift_Form_Builder_Validate {
                 break;
             case "select2":
             case "select":
+                $input['selected_option'] = $input['value'];
+                $input['clean'] = $input['value'];
+                $input['passed'] = true;
+                break;
+            case "multi_select":
+                // todo
                 $input['selected_option'] = $input['value'];
                 $input['clean'] = $input['value'];
                 $input['passed'] = true;

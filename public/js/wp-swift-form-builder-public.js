@@ -446,6 +446,7 @@
                 }
             }       
         }); 
+        console.log('Form Builder');
         
                 // $fileInputs.each(function(){
                 //     console.log(this.id);
@@ -494,7 +495,7 @@
                     $.post(FormBuilderAjax.ajaxurl, FormBuilderAjax, function(response) {
                         // console.log('response', response);
                         var serverResponse = JSON.parse(response);
-                        console.log(serverResponse);
+                        console.log('serverResponse', serverResponse);
 
                         if (serverResponse.location) {
                             window.location = serverResponse.location;
