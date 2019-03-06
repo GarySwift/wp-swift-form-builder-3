@@ -43,7 +43,7 @@ class WP_Swift_Form_Builder_Helper {
 
 
 
-    private $recaptcha = null;
+    private $recaptcha = array();
     private $gdpr_settings = null;
     private $attachments = array();
 
@@ -82,6 +82,7 @@ class WP_Swift_Form_Builder_Helper {
         else {
             $this->form_css_id = $this->form_name;
         }
+        // $this->form_css_id = $this->form_css_id.'-'.$form_id;
 
 
 
@@ -302,7 +303,7 @@ class WP_Swift_Form_Builder_Helper {
      * Get the form wrapper class
      */
     public function get_form_class() {
-        return $this->form_class;
+        return $this->form_class . $this->recaptcha_form_class();
     }        
 
     public function get_clear_after_submission() {
@@ -368,6 +369,29 @@ class WP_Swift_Form_Builder_Helper {
         } 
     }
 
+    public function recaptcha_form_class() {
+        if (isset( $this->recaptcha["hide_on_load"] ) && $this->recaptcha["hide_on_load"] ) {
+            return ' js-has-hidden-recaptcha';
+        } 
+    }
+
+    public function recaptcha_group_class() {
+        if (isset( $this->recaptcha["hide_on_load"] ) && $this->recaptcha["hide_on_load"] ) {
+            echo ' hide init-hidden';
+        } 
+    }
+
+     public function recaptcha_theme() {
+        if (isset( $this->recaptcha["theme"] )) {
+            echo ' data-theme="'.$this->recaptcha["theme"].'"';
+        } 
+    }
+
+    public function recaptcha_size() {
+        if (isset( $this->recaptcha["size"] )) {
+            echo ' data-size="'.$this->recaptcha["size"].'"';
+        } 
+    }   
     public function gdpr() {
         if ( $this->gdpr_settings ) {
             return true;

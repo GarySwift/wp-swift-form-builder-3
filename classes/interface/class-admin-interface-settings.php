@@ -131,7 +131,16 @@ class WP_Swift_Form_Builder_Admin_Interface_Settings {
 			array($this, 'wp_swift_form_builder_date_format_render'), 
 			'form-builder', 
 			'wp_swift_form_builder_plugin_page_section' 
-		);		    
+		);	
+
+	    add_settings_field( 
+			'wp_swift_form_builder_debug_mode', 
+			__( 'Debug Mode', 'wp-swift-form-builder' ), 
+			array($this, 'wp_swift_form_builder_debug_mode_render'),  
+			'form-builder', 
+			'wp_swift_form_builder_plugin_page_section' 
+	    );
+
 	}
 
 	/*
@@ -312,7 +321,7 @@ class WP_Swift_Form_Builder_Admin_Interface_Settings {
 	}
 
 
-	function wp_swift_form_builder_date_format_render(  ) { 
+	public function wp_swift_form_builder_date_format_render(  ) { 
 		$date_format = get_form_builder_date_format();
 		?>
 		<select name='wp_swift_form_builder_settings[wp_swift_form_builder_date_format]'>
@@ -323,6 +332,25 @@ class WP_Swift_Form_Builder_Admin_Interface_Settings {
 
 	}
 
+
+	/*
+	 *
+	 */
+	public function wp_swift_form_builder_debug_mode_render(  ) { 
+
+		
+	    $options = get_option( 'wp_swift_form_builder_settings' );
+
+	    ?>
+	    <input type='checkbox' name='wp_swift_form_builder_settings[wp_swift_form_builder_debug_mode]' <?php 
+	     if (isset($options['wp_swift_form_builder_debug_mode'])) {
+	         checked( $options['wp_swift_form_builder_debug_mode'], 1 );
+	     } 
+	    ?> value='1'>
+	    <small>This will prevent emails form being sent and output status information. (Do not use on live sites.)</small>
+	    <?php
+
+	}
 	/*
 	 *
 	 */

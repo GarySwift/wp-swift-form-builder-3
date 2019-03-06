@@ -33,18 +33,29 @@ class WP_Swift_Form_Builder_Html {
                         <input type="hidden" data-type="hidden" id="<?php echo $key ?>" name="<?php echo $key ?>" value="<?php echo $hidden ?>">
                     <?php endforeach;
                 endif;
-                
+
+                $this->open_form_groups_html();
                 $this->front_end_form_input_loop($helper);
 
                 do_action( 'wp_swift_formbuilder_before_submit_button_hook' );
                 $this->gdpr_html($helper); ?>
+<?php 
+/* 
                 <div id="form-submission-wrapper"><?php 
                     $this->recaptcha_html($helper); ?>
                     <div id="form-submission"><?php 
                         $this->mail_receipt_html($helper);
                         $this->button_html($helper);
                     ?></div>
-                </div><?php
+                </div><?php 
+*/  
+              
+$this->mail_receipt_html($helper);            
+$this->button_html($helper);
+$this->close_form_groups_html();
+
+$this->recaptcha_html($helper);  
+
                 $this->gdpr_disclaimer($helper);
                 ?>
             </form><!-- @end form -->
@@ -112,7 +123,7 @@ class WP_Swift_Form_Builder_Html {
                      
             }
 
-            $this->close_section_html( $key );
+            $this->close_section_html( $section, $key );
 
         }
         return $this->tab_index;
@@ -666,23 +677,26 @@ class WP_Swift_Form_Builder_Html {
         } 
     }
 
-    public function recaptcha_group_class($helper) {
-        if (isset( $helper->recaptcha["hide_on_load"] ) && $helper->recaptcha["hide_on_load"] ) {
-            echo ' hide init-hidden';
-        } 
-    }         
-
+    // public function recaptcha_group_class($helper) {
+    //     if (isset( $helper->recaptcha["hide_on_load"] ) && $helper->recaptcha["hide_on_load"] ) {
+    //         echo ' hide init-hidden';
+    //     } 
+    // }         
+    // public function recaptcha_group_class($helper) {
+    //     echo $helper->recaptcha_group_class();
+    // }  
     public function recaptcha_html($helper) {
+
         $html = '';
         if ( $helper->recaptcha_site() ):
             ob_start();
             ?>
 
-                <div class="form-group <?php $this->recaptcha_group_class($helper); ?>" id="captcha-wrapper">
+                <div class="form-group captcha-wrapper<?php $helper->recaptcha_group_class(); ?>" id="captcha-wrapper-<?php echo $helper->get_form_post_id(); ?>">
 
                     <!-- @start input -->
                     <div class="form-input">
-                        <div class="g-recaptcha" data-sitekey="<?php echo $helper->recaptcha_site() ?>" <?php $this->recaptcha_theme($helper); $this->recaptcha_size($helper); ?> data-tabindex="<?php echo $this->get_tab_index(); ?>" data-size="normal"></div>
+                        <div class="g-recaptcha" data-sitekey="<?php echo $helper->recaptcha_site() ?>" <?php $helper->recaptcha_theme(); $helper->recaptcha_size(); ?> data-tabindex="<?php echo $this->get_tab_index(); ?>" data-size="normal"></div>
 
                     </div>
                     <!-- @end input -->
@@ -782,12 +796,10 @@ class WP_Swift_Form_Builder_Html {
         <?php           
     }  
     public function open_section_html( $content, $key = 0 ) {
-        ?>
+        if (isset($content["section_header"]) || isset($content["section_content"])): ?>
 
         <!-- @start section #form-section-<?php echo $key ?> -->
-        <div id="form-section-<?php echo $key ?>">
-        <?php
-        if (isset($content["section_header"]) || isset($content["section_content"])): ?>
+        <div class="form-section" id="form-section-<?php echo $key ?>">
 
             <!-- @start .section-content -->
             <div class="form-group section-content">
@@ -814,12 +826,25 @@ class WP_Swift_Form_Builder_Html {
         <?php endif;         
     }  
 
-    public function close_section_html( $key ) {
+    public function close_section_html( $content, $key ) {     
+        if (isset($content["section_header"]) || isset($content["section_content"])): ?>
+
+            </div>
+            <!-- @end section #form-section-<?php echo $key ?> -->
+
+        <?php endif;  
+    } 
+
+    public function open_form_groups_html() {
         ?>
-
+        <!-- @start .form-groups -->
+        <div class="form-groups">
+        <?php       
+    }  
+    public function close_form_groups_html() {
+        ?>
         </div>
-        <!-- @end section #form-section-<?php echo $key ?> -->
-
-        <?php   
-    }                   
+        <!-- @end .form-groups -->
+        <?php
+    }                           
 }

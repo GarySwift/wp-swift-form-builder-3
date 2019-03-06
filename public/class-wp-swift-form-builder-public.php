@@ -51,6 +51,19 @@ class Wp_Swift_Form_Builder_Public {
 
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
+    	/**
+    	 * Add reveal modal which shows submission response
+    	 */
+    	add_action( 'wp_footer', 'wp_swift_form_builder_modal_reveal', 1);
+    	
+    	/**
+    	 * Update - Enqueue the style as normal in the body before the form
+    	 */
+    	// $this->enqueue_styles_no_check();	
+    	/**
+    	 * Enqueue the JavasScript as normal
+    	 */
+    	// $this->enqueue_scripts_no_check();			
 		// $this->wp_swift_form_builder_enqueue_styles_and_scripts();
 		// add_action( 'wp_register_scripts', array($this, 'wp_swift_form_builder_register_styles_and_scripts') );
         add_shortcode( 'form', array( $this, 'render_form' ) ); 
@@ -66,19 +79,7 @@ class Wp_Swift_Form_Builder_Public {
      */
     public function render_form( $atts = array(), $content = null ) {
     	// $this->enqueue_styles_and_script_without_check();
-    	/**
-    	 * Add reveal modal which shows submission response
-    	 */
-    	add_action( 'wp_footer', 'wp_swift_form_builder_modal_reveal', 1);
-    	
-    	/**
-    	 * Update - Enqueue the style as normal in the body before the form
-    	 */
-    	$this->enqueue_styles_no_check();	
-    	/**
-    	 * Enqueue the JavasScript as normal
-    	 */
-    	$this->enqueue_scripts_no_check();	
+
     	
         $a = shortcode_atts( array(
             'id' => false,
@@ -114,10 +115,21 @@ class Wp_Swift_Form_Builder_Public {
 	 */
 	public function enqueue_styles() {
 
-		// $options = get_option( 'wp_swift_form_builder_settings' );
-		// if ( !isset($options['wp_swift_form_builder_checkbox_css']) ) {
-  //       	$this->enqueue_styles_no_check();
-  //       }
+		$options = get_option( 'wp_swift_form_builder_settings' );
+		if ( !isset($options['wp_swift_form_builder_checkbox_css']) ) {
+        	$this->enqueue_styles_no_check();
+        }
+		$datepicker_css_file = 'node_modules/foundation-datepicker/css/foundation-datepicker.min.css';
+		if (file_exists(plugin_dir_path( __DIR__ ) . $datepicker_css_file)) {
+			$datepicker_css_version = filemtime(plugin_dir_path( __DIR__ ) . $datepicker_css_file);
+			wp_enqueue_style( $this->plugin_name.'-datepicker-css', plugin_dir_url( __DIR__ ) . $datepicker_css_file, array(), $datepicker_css_version, 'all' );			
+		}
+
+		$select2_css_file = 'node_modules/select2/dist/css/select2.min.css';
+		if (file_exists(plugin_dir_path( __DIR__ ) . $select2_css_file)) {
+			$select2_css_version = filemtime(plugin_dir_path( __DIR__ ) . $select2_css_file);
+			wp_enqueue_style( $this->plugin_name.'-select2-css', plugin_dir_url( __DIR__ ) . $select2_css_file, array(), $select2_css_version, 'all' );			
+		}
 
 	}
 
@@ -148,17 +160,6 @@ class Wp_Swift_Form_Builder_Public {
 		$version = filemtime(plugin_dir_path( __FILE__ ) . $file);
 		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . $file, array(), $version, 'all' );
 
-		$datepicker_css_file = 'node_modules/foundation-datepicker/css/foundation-datepicker.min.css';
-		if (file_exists(plugin_dir_path( __DIR__ ) . $datepicker_css_file)) {
-			$datepicker_css_version = filemtime(plugin_dir_path( __DIR__ ) . $datepicker_css_file);
-			wp_enqueue_style( $this->plugin_name.'-datepicker-css', plugin_dir_url( __DIR__ ) . $datepicker_css_file, array(), $datepicker_css_version, 'all' );			
-		}
-
-		$select2_css_file = 'node_modules/select2/dist/css/select2.min.css';
-		if (file_exists(plugin_dir_path( __DIR__ ) . $select2_css_file)) {
-			$select2_css_version = filemtime(plugin_dir_path( __DIR__ ) . $select2_css_file);
-			wp_enqueue_style( $this->plugin_name.'-select2-css', plugin_dir_url( __DIR__ ) . $select2_css_file, array(), $select2_css_version, 'all' );			
-		}
 
 	}	
 
@@ -169,22 +170,11 @@ class Wp_Swift_Form_Builder_Public {
 	 */
 	public function enqueue_scripts() {
 
-		// $options = get_option( 'wp_swift_form_builder_settings' );
-  //       if ( !isset($options['wp_swift_form_builder_checkbox_javascript']) ) {
-		// 	$this->enqueue_scripts_no_check();			
-		// }
-	}
+		$options = get_option( 'wp_swift_form_builder_settings' );
+        if ( !isset($options['wp_swift_form_builder_checkbox_javascript']) ) {
+			$this->enqueue_scripts_no_check();			
+		}
 
-	/**
-	 * Register the JavaScript for the public-facing side of the site.
-	 *
-	 * @since    1.0.0
-	 */
-	public function enqueue_scripts_no_check() {
-
-		$file = 'js/wp-swift-form-builder-public.js';
-		$version = filemtime(plugin_dir_path( __FILE__ ) . $file);
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . $file, array( 'jquery' ), $version, true );
 
 		$datepicker_js_file = 'node_modules/foundation-datepicker/js/foundation-datepicker.min.js';
 		if (file_exists(plugin_dir_path( __DIR__ ) . $datepicker_js_file)) {
@@ -199,7 +189,20 @@ class Wp_Swift_Form_Builder_Public {
 			wp_enqueue_script( $this->plugin_name.'-select2-js', plugin_dir_url( __DIR__ ) . $select2_js_file, array( 'jquery' ), $select2_js_version, true );			
 
 		}			
-		wp_enqueue_script( 'g-recaptcha', 'https://www.google.com/recaptcha/api.js', '', '' );
+		wp_enqueue_script( 'g-recaptcha', 'https://www.google.com/recaptcha/api.js', '', '' );		
+	}
+
+	/**
+	 * Register the JavaScript for the public-facing side of the site.
+	 *
+	 * @since    1.0.0
+	 */
+	public function enqueue_scripts_no_check() {
+
+		$file = 'js/wp-swift-form-builder-public.js';
+		$version = filemtime(plugin_dir_path( __FILE__ ) . $file);
+		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . $file, array( 'jquery' ), $version, true );
+
 	}
 	/**
 	 * Register the JavaScript for the public-facing side of the site.
@@ -259,8 +262,8 @@ class Wp_Swift_Form_Builder_Public {
  * @end Wp_Swift_Form_Builder_Public
  */
 
-function wp_swift_get_contact_form($form_id) {
-    return new WP_Swift_Form_Builder_Contact_Form( $form_id ); 
+function wp_swift_get_contact_form($form_id, $post_id = null, $args = array()) {
+    return new WP_Swift_Form_Builder_Contact_Form( $form_id, $post_id, $args ); 
 }
 function wp_swift_get_signup_form($form_id, $post_id = null, $args = array()) {
     $form_builder = new WP_Swift_Form_Builder_Signup_Form( $form_id, $post_id, $args );
