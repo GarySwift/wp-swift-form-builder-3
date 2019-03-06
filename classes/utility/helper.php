@@ -46,6 +46,7 @@ class WP_Swift_Form_Builder_Helper {
     private $recaptcha = array();
     private $gdpr_settings = null;
     private $attachments = array();
+    private $tab_index;
 
     /*
      * Initializes the plugin.
@@ -174,6 +175,12 @@ class WP_Swift_Form_Builder_Helper {
 
         if (count($hidden)) {
             $this->hidden = $hidden;
+        }
+        if(isset($this->settings["tab_index"])) {
+            $this->tab_index = $this->settings["tab_index"];
+        }
+        else {
+            $this->tab_index = 100;
         }
     }
 
@@ -417,5 +424,8 @@ class WP_Swift_Form_Builder_Helper {
     } 
     public function add_attachment($attachment) {
         $this->attachments[] = $attachment;
-    }    
+    }  
+    public function get_tab_index() {
+        return $this->tab_index;   
+    }      
 }

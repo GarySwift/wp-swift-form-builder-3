@@ -23,8 +23,8 @@ class WP_Swift_Form_Builder_Parent {
          * Initializes the helper, validate abd html_builder
          */        
         $this->helper = new WP_Swift_Form_Builder_Helper( $form_id, $post_id, $hidden = array(), $type = 'request', $args = array(), $_post = null );
-        $this->validate = new WP_Swift_Form_Builder_Validate();           
-        $this->html_builder = new WP_Swift_Form_Builder_Html();              
+        $this->validate = new WP_Swift_Form_Builder_Validate();  
+        $this->html_builder = new WP_Swift_Form_Builder_Html( $this->helper->get_tab_index() );              
     }
 
     /**

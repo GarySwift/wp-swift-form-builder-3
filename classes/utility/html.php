@@ -11,8 +11,16 @@
  * functionality.
  */
 class WP_Swift_Form_Builder_Html {
-    private $tab_index = 100;
+    private $tab_index;
 
+    /*
+     * Initializes the class.
+     */
+    public function __construct( $tab_index ) {
+        $this->tab_index = $tab_index;
+
+    }
+    
     public function front_end_form($helper, $html_response = null, $msg = null ) {
         ?>
         <div class="<?php echo $helper->get_form_class(); ?>"><!-- @start form-wrapper -->

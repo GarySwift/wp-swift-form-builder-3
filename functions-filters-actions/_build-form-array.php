@@ -66,6 +66,11 @@ function wp_swift_form_data_loop($id, $_post = null) {
             $settings['show_edit_link'] = get_field('show_edit_link', $id);
         }
         
+        $tab_index = get_field('tab_index', $id);
+        if( $tab_index ) {
+            $settings['tab_index'] = $tab_index;
+        }        
+
         if ( have_rows('sections', $id) ) :
 
             $section_count = 0;
