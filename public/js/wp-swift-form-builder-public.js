@@ -1,6 +1,6 @@
 //@start closure
 (function() {
-/**
+    /**
      * Get a date in the past by reducing years from now date.
      * Very basic. Does not include leap years.
      * 
@@ -11,7 +11,10 @@
     var sessionDetailsName = "form-session-details";
     // console.log('sessionDetailsName', sessionDetailsName);
     // console.log(FormBuilderDatePicker);
-
+    var select2Options = {};
+    select2Options = {
+        maximumSelectionLength: 2
+    };
     var dateInPast = function dateInPast(years) {
         var dateNow = new Date();
         var dd = dateNow.getDate();
@@ -147,7 +150,6 @@
 
             for (var i = 0; i < form.length; i++) {
                 var input = new FormBuilderInput(form[i]);
-                // console.log('input', input);
                 errorsInForm = addClassAfterBlur(input, input.isValid(), errorsInForm);
             }
 
@@ -165,6 +167,53 @@
             return errorsInForm;        
         };
 
+    var $section;
+    var $prev = $('a.js-form-builder-show-prev');
+    var prev;   
+    var $next = $('a.js-form-builder-show-next');
+    var next;
+    var current;
+    $next.click(function(e){
+        e.preventDefault();
+        var input;
+        current = $(this).data("current");
+        next = $(this).data("next");
+        $section = $('#form-section-'+current);
+        errorsInForm = resetErrorsInForm();
+        $('#form-section-' + current + ' .js-form-builder-control').each(function () {
+            input = new FormBuilderInput(this);
+            errorsInForm = addClassAfterBlur(input, input.isValid(), errorsInForm);
+        });
+        if (errorsInForm.count === 0) {
+            $('#form-section-' + current ).removeClass('active-section').addClass('hidden-section');
+            $('#form-section-' + next ).removeClass('hidden-section').addClass('active-section');
+            $('#form-section-' + next + ' select.js-select2-multiple').select2("destroy").select2(select2Options);
+            $([document.documentElement, document.body]).animate({
+                scrollTop: $('#form-section-' + next).offset().top
+            }, 700);    
+        }
+        else {
+            showModalWithErrors( wrapErrorMessageSection(errorsInForm) );
+        }
+         
+    });
+    $prev.click(function(e){
+        e.preventDefault();
+        current = $(this).data("current");
+        prev = $(this).data("prev");
+        $('#form-section-'+current).removeClass('active-section').addClass('hidden-section');
+        $('#form-section-'+prev).removeClass('hidden-section').addClass('active-section');
+    });
+    $('a.js-show-form-group-extra').click(function(e){
+        e.preventDefault();
+        $('div.form-group-extra').css("display","block");
+    });
+    $('#form-builder-show-all-sections').click(function(e){
+
+        $("div.form-section-buttons").hide();
+
+        $('div.form-section.show-hide-section').removeClass('hidden-section').addClass('active-section');  
+    });
         var resetForm = function(form) {
             for (var i = 0; i < form.length; i++) {
                 var input = new FormBuilderInput(form[i]);
@@ -209,7 +258,6 @@
             if(year % 400 === 0 || (year % 100 !== 0 && year % 4 === 0)){
                 monthLength[1] = 29;
             }
-            console.log(day > 0 && day <= monthLength[month - 1]);
 
             // Check the range of the day
             return day > 0 && day <= monthLength[month - 1];
@@ -218,7 +266,6 @@
         var addClassAfterBlur = function addClassAfterBlur(input, valid, errorsInForm) {
             if(!valid) {
                 $(input.id+'-form-group').addClass('has-error').removeClass('has-success');
-                // console.log('errorsInForm', errorsInForm);
                 errorsInForm.count++;
 
                 errorsInForm.report += "<li>" + $(input.id+'-report').html() + "</li>";
@@ -233,16 +280,7 @@
         };
         
         // When a user leaves a form input
-        $('body').on('blur', '.js-form-builder-control', function(e) {  
-            // console.log('$(this)', $(this));
-            // var name = $(this).attr("name");
-            // console.log('name', name);
-            // console.log('$(this).serializeArray()[0]', $(this).serializeArray()[0]); 
-            // console.log('2 $(this).serializeArray()', $(this).serializeArray());
-            // var id = '#'+name;
-            // console.log('id', id);
-            // var selectedFile = document.getElementById('#'+name);//.files[0];
-            // console.log('selectedFile', selectedFile);
+        $('body').on('blur', '.js-form-builder-control', function(e) {
             if(typeof $(this).serializeArray()[0] !== "undefined") {
                 var input = new FormBuilderInput($(this).serializeArray()[0]);
                 // console.log(input);          
@@ -413,13 +451,10 @@
         $('.js-other-value').removeClass('hide').hide();
 
         $('.js-other-value-event select').change(function() {
-            console.log('.js-other-value-event select');
             var input = new FormBuilderInput( $(this).serializeArray()[0] );
-            console.log('input', input);
             if (input.value === 'other') {
                 $(input.id + '-other').attr('disabled', false);
                 $(input.id + '-other-form-group').slideDown();
-                console.log(input.id);
             }
             else {
                 $(input.id + '-other-form-group').slideUp();
@@ -430,9 +465,7 @@
 
 
         $('.js-other-value-event input[type=checkbox]').change(function() {
-            console.log('.js-other-value-event input[type=checkbox]');
             var input = new FormBuilderInput( this );
-            console.log('input', input);
             if (input.value === 'other') {
                 
                 if (this.checked) {
@@ -446,7 +479,6 @@
                 }
             }       
         }); 
-        console.log('Form Builder');
         
                 // $fileInputs.each(function(){
                 //     console.log(this.id);
@@ -461,7 +493,6 @@
             var submit = $form.find(":submit");
             // errorsInForm = resetErrorsInForm();
             errorsInForm = validateForm( $form.serializeArray(), resetErrorsInForm() );
-            console.log('errorsInForm', errorsInForm);
             // todo - handle file uploads with ajax
             var $fileInputs = $('input.js-file-upload');
             var files = {};
@@ -495,7 +526,6 @@
                     $.post(FormBuilderAjax.ajaxurl, FormBuilderAjax, function(response) {
                         // console.log('response', response);
                         var serverResponse = JSON.parse(response);
-                        console.log('serverResponse', serverResponse);
 
                         if (serverResponse.location) {
                             window.location = serverResponse.location;
@@ -526,19 +556,28 @@
                 }
             }
             else {
-                
-                submit.prop('disabled', false); 
-                $('#form-builder-reveal-content').html( wrapErrorMessage(errorsInForm) );
-                var $modal = $('#form-builder-reveal');
-                if(typeof $modal !== "undefined") {
-                    $modal.foundation('open');  
-                }
-                else {
-                    alert("Please fill in the required fields!");
-                }               
+                $('a.form-builder-show-prev-next').hide();
+                $('.show-hide-section').each(function(){
+                    $(this).removeClass('hidden-section').addClass('active-section');
+                });
+
+                submit.prop('disabled', false);
+                showModalWithErrors( wrapErrorMessage(errorsInForm) );
             }
             return false;
         }); 
+
+        var showModalWithErrors = function($msg) {
+            
+            $('#form-builder-reveal-content').html( $msg );
+            var $modal = $('#form-builder-reveal');
+            if(typeof $modal !== "undefined") {
+                $modal.foundation('open');  
+            }
+            else {
+                alert("Please fill in the required fields!");
+            } 
+        };
 
         $('a.js-add-row').click(function(e) {
 
@@ -706,7 +745,7 @@
         if (typeof(Storage) !== "undefined") {
             localStorage.setItem(name, value);
         }   
-    }
+    };
 
     var getSessionDetails = function(name) {
         // window.sessionStorage
@@ -714,10 +753,9 @@
             var storedSessionDetails = JSON.parse(localStorage.getItem(name));
             return storedSessionDetails;
         }   
-    }
+    };
 
-    var wrapErrorMessage = function(errorsInForm) {
-        // console.log('errorsInForm', errorsInForm);
+    var wrapErrorMessage = function(errorsInForm) { 
         var $html = '<div id="form-error-message" class="form-message error ajax">';
             $html += '<h3 class="heading">Errors Found</h3>';
             $html += '<div class="error-content">';
@@ -726,7 +764,20 @@
             $html += '</div>';
         $html += '</div>';  
         return $html;
-    }
+    };
+
+    var wrapErrorMessageSection = function(errorsInForm) {
+        var $html = '<div id="form-error-message" class="form-message error ajax">';
+            $html += '<h3 class="heading">Errors Found</h3>';
+            $html += '<div class="error-content">';
+                $html += '<p>We\'re sorry, there has been an error in this section. Please rectify the ' + errorsInForm.count + ' errors below before you can continue.</p>';   
+                $html += '<ul>' + errorsInForm.report + '</ul>';
+            $html += '</div>';
+        $html += '</div>';  
+        return $html;
+    };
+
+ 
 
     jQuery(document).ready(function($) {
         // $('div.form-builder.wrapper.hide').removeClass('hide').slideDown();
@@ -765,7 +816,16 @@
             // $('#download-mask').removeClass('masked');
             // localStorage.clear();
             hideForm();
-        }         
+        }
+
+
+
+            // $('#form-taoglas-products').select2();
+        $('select.js-select2-multiple').select2(select2Options);
+        // {
+        //    theme: "classic"
+        //  }
+        //                 
     });
 
     function showDownloads() {
@@ -787,4 +847,5 @@
         $('#js-hide-form').hide();
         showDownloads();
     }
+    
 })();//@end closure

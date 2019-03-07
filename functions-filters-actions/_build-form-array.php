@@ -71,6 +71,16 @@ function wp_swift_form_data_loop($id, $_post = null) {
             $settings['tab_index'] = $tab_index;
         }        
 
+        $next_button_in_sections = get_field('next_button_in_sections', $id);
+        if( $next_button_in_sections ) {
+            $settings['next_button_in_sections'] = $next_button_in_sections;
+        }
+
+        $transparent_inputs = get_field('transparent_inputs', $id);
+        if( $transparent_inputs ) {
+            $settings['transparent_inputs'] = $transparent_inputs;
+        }        
+
         if ( have_rows('sections', $id) ) :
 
             $section_count = 0;

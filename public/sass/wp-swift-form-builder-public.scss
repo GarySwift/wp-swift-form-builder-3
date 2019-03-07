@@ -21,12 +21,12 @@ $has-success: #4C4C4C;
 $has-success-bg-color: #FBF5E4;//#F8F8F8;
 $form-group-padding: 0.3rem;
 $form-group-padding-bottom: 0.6rem;
-$form-color: #0a0a0a;
+$form-color: $navy;// #0a0a0a;
 $show-required-star: true;
 $show-feedback-icons: true;
-$button-case: uppercase;
-$button-class: ".primary";// seperate classes with a comma
-$button-size: ".large";// .default, .large
+$button-case: none;//uppercase;
+$button-class: ".secondary";// seperate classes with a comma
+$button-size: ".default";// .default, .large
 
 @mixin form-builder-transition($property) {
     -webkit-transition: $property;
@@ -34,6 +34,17 @@ $button-size: ".large";// .default, .large
     -ms-transition: $property; /* IE10 is actually unprefixed */
     -o-transition: $property;
     transition: $property;    
+}
+
+@mixin transparent-contact-form() {
+    select, textarea, input[type=text], input[type=email], input[type=url], input[type=number], input[type=file], div.dummy-input {
+        box-shadow: none;
+        background-color: transparent;
+        border-top-style: none;
+        border-left-style: none;
+        border-right-style: none;
+        border-radius: 0 !important;
+    }
 }
 
 $form-transition-speed: 1;//0.3s;
@@ -153,7 +164,7 @@ div.form-builder.wrap {
         @extend #{$button-class} !optional;
         @extend #{$button-size} !optional;
     }
-    select, textarea, input[type=text], input[type=email], input[type=url], input[type=number], div.dummy-input {
+    select, textarea, input[type=text], input[type=email], input[type=url], input[type=number], input[type=file], div.dummy-input {
         margin-bottom: 0;
     }
     @if $show-required-star == true {
@@ -168,7 +179,7 @@ div.form-builder.wrap {
         position: relative;
     }
     small.error {
-        $transition: opacity 0.3s ease-in, bottom 0.3s ease-in;
+        $transition: opacity 0.3s ease-in, bottom 0.3s ease-in, transform 0.3s;
         @include form-builder-transition($transition);  
         font-family: $form-font-family;
         color: $form-white;
@@ -176,7 +187,8 @@ div.form-builder.wrap {
         background-color: $has-error;
         position: absolute;
         right: 0;
-        bottom: -30px;
+        // bottom: -30px; 
+        transform: translateY(-1.5rem);
         padding: 2px 10px;
         visibility: hidden;
         opacity: 0;              
@@ -186,8 +198,7 @@ div.form-builder.wrap {
         content: '';
         position: absolute;
         top: 0;
-        // left: 50%;
-        left: 30px;
+        right: 30px;
         width: 0;
         height: 0;
         border: $size solid transparent;
@@ -202,11 +213,12 @@ div.form-builder.wrap {
         color: $has-error;
     }  
     small.error {
-        bottom: -15px;
+        // bottom: -15px;
+        transform: translateY(-4px);
         visibility: visible;
         opacity: 1;     
     }    
-    select, textarea, input[type=text], input[type=email], input[type=url], input[type=number], div.dummy-input {
+    select, textarea, input[type=text], input[type=email], input[type=url], input[type=number], input[type=file], div.dummy-input {
         border-color: $has-error;
         box-shadow: inset 0 1px 2px rgba($has-error,0.1);
         color: rgba($has-error,0.75);
@@ -215,7 +227,7 @@ div.form-builder.wrap {
     div.dummy-input {.error {}}
 }
 .form-group.has-success {
-    select, textarea, input[type=text], input[type=email], input[type=url], input[type=number], div.dummy-input {
+    select, textarea, input[type=text], input[type=email], input[type=url], input[type=number], input[type=file], div.dummy-input {
         border-color: lighten($has-success, 30%);
         box-shadow: inset 0 1px 2px rgba($has-success,0.3);
         color: $has-success;
@@ -238,46 +250,6 @@ div.form-builder.wrap {
         max-width: 50%;
     }
 }
-.form-group {
-    &.fb-options-block {
-        .form-input {
-            label {
-                display: block;
-            }
-        }
-    } 
-    &.fb-options-grid-2 {
-        .form-input {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            grid-template-rows: auto;
-            grid-template-areas: ". .";            
-        }
-    }     
-    &.fb-options-grid-3 {
-        .form-input {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            grid-template-rows: auto;
-            grid-template-areas: ". . .";            
-        }
-    }  
-    &.fb-options-grid-4 {
-        .form-input {
-            display: grid;
-            grid-template-rows: auto;
-            grid-template-columns: 1fr 1fr;
-            grid-template-areas: ". .";                 
-        }               
-        @media only screen and (min-width: 700px) {
-            .form-input {               
-                grid-template-columns: 1fr 1fr 1fr 1fr;
-                grid-template-areas: ". . . .";          
-            }
-        }        
-    }            
-}
-
 /* 
  * @start form-cell (groupings)
  */
@@ -422,4 +394,56 @@ div.form-builder.groupings {
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
+}
+/**
+ * File Upload
+ *
+ */
+.form-group.file-upload {
+    div.form-input {
+    display: block;
+    box-sizing: border-box;
+    width: 100%;
+    height: 2.4375rem;
+    margin: 0 0 1rem;
+    padding: 0.5rem;
+    border: 1px solid #cacaca;
+    border-radius: 0;
+    background-color: #fefefe;
+    box-shadow: inset 0 1px 2px rgba(10, 10, 10, 0.1);
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: normal;
+    line-height: 1.5;
+    color: #0a0a0a;
+    transition: box-shadow 0.5s, border-color 0.25s ease-in-out;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;        
+    }
+}
+/**
+ * Section Panels
+ */
+form.form-builder.show-section-panels {
+    div.form-section.active-section {
+        opacity: 1;
+        display: block;
+        visibility: visible;
+    }
+    div.form-section.hidden-section {
+        opacity: 0.5;
+        display: none;
+        visibility: hidden;
+        
+    }
+    div.form-group-extra {
+        display: none;
+    }
+}
+/**
+ * Transparent inputs
+ */
+form.form-builder.transparent-inputs {
+  @include transparent-contact-form();
 }

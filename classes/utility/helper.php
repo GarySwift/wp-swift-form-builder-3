@@ -47,6 +47,8 @@ class WP_Swift_Form_Builder_Helper {
     private $gdpr_settings = null;
     private $attachments = array();
     private $tab_index;
+    private $next_button_in_sections = false;
+    private $transparent_inputs = false;
 
     /*
      * Initializes the plugin.
@@ -182,6 +184,12 @@ class WP_Swift_Form_Builder_Helper {
         else {
             $this->tab_index = 100;
         }
+        if(isset($this->settings["next_button_in_sections"])) {
+            $this->next_button_in_sections = true;
+        }
+        if(isset($this->settings["transparent_inputs"])) {
+            $this->transparent_inputs = true;
+        }          
     }
 
     /**
@@ -310,6 +318,12 @@ class WP_Swift_Form_Builder_Helper {
      * Get the form wrapper class
      */
     public function get_form_class() {
+        if ($this->show_next_button_in_sections()) {
+            $this->form_class .= " show-section-panels";
+        }
+        if ($this->transparent_inputs) {
+            $this->form_class .= " transparent-inputs";
+        }        
         return $this->form_class . $this->recaptcha_form_class();
     }        
 
@@ -428,4 +442,10 @@ class WP_Swift_Form_Builder_Helper {
     public function get_tab_index() {
         return $this->tab_index;   
     }      
+    public function show_next_button_in_sections() {
+        return $this->next_button_in_sections;
+    }   
+    public function get_total_sections_count() {
+        return count($this->form_data);
+    } 
 }
