@@ -43,7 +43,7 @@ class WP_Swift_Form_Builder_Helper {
 
 
 
-    private $recaptcha = null;
+    private $recaptcha = array();
     private $gdpr_settings = null;
     private $attachments = array();
 
