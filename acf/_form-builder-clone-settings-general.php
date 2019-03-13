@@ -6,11 +6,11 @@ acf_add_local_field_group(array(
 	'title' => 'Clone Settings: General',
 	'fields' => array(
 		array(
-			'key' => 'field_5c80ea6c2fb05',
-			'label' => 'Hide Labels',
-			'name' => 'hide_labels',
-			'type' => 'true_false',
-			'instructions' => '',
+			'key' => 'field_5c896d0ca5b65',
+			'label' => 'Labels',
+			'name' => 'labels',
+			'type' => 'select',
+			'instructions' => 'Placeholders will be automatically added if labels are hidden.',
 			'required' => 0,
 			'conditional_logic' => 0,
 			'wrapper' => array(
@@ -18,11 +18,21 @@ acf_add_local_field_group(array(
 				'class' => '',
 				'id' => '',
 			),
-			'message' => 'Placeholders will be automatically added if labels are hidden.',
-			'default_value' => 0,
-			'ui' => 1,
-			'ui_on_text' => '',
-			'ui_off_text' => '',
+			'choices' => array(
+				'top' => 'Top',
+				'left' => 'Left',
+				'right' => 'Right',
+				'hide_labels' => 'Hide Labels',
+			),
+			'default_value' => array(
+				0 => 'top',
+			),
+			'allow_null' => 0,
+			'multiple' => 0,
+			'ui' => 0,
+			'return_format' => 'value',
+			'ajax' => 0,
+			'placeholder' => '',
 		),
 		array(
 			'key' => 'field_5c80ea6c2fb10',

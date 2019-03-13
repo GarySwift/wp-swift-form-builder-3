@@ -21,7 +21,7 @@ $has-success: #4C4C4C;
 $has-success-bg-color: #FBF5E4;//#F8F8F8;
 $form-group-padding: 0.3rem;
 $form-group-padding-bottom: 0.6rem;
-$form-color: $navy;// #0a0a0a;
+$form-color: #0a0a0a;
 $show-required-star: true;
 $show-feedback-icons: true;
 $button-case: none;//uppercase;
@@ -259,7 +259,65 @@ div.form-builder.groupings {
         padding-left: $form-group-padding;
     }
 }
+/**
+ * This is the summary for a DocBlock.
+ *
+ * This is the description for a DocBlock. This text may contain
+ * multiple lines and even some _markdown_.
+ *
+ * * Markdown style lists function too
+ * * Just try this out once
+ *
+ * The section after the description contains the tags; which provide
+ * structured meta-data concerning the given element.
+ *
+ * @author          Gary Swift <gary@brightlight.ie>
+ *
+ * @since             1.0
+ * 
+ * @link             http://docs.phpdoc.org/references/phpdoc/basic-syntax.html
+ *
+ * @param int        $example  This is an example function/method parameter description.
+ * @param string     $example2 This is a second example.
+ */
+form.form-builder.labels-left {
+    div.form-group {
+        display: -ms-flexbox;
+        display: -webkit-flex;
+        display: flex;
+        -webkit-flex-direction: row;
+        -ms-flex-direction: row;
+        flex-direction: row;
+        -webkit-flex-wrap: nowrap;
+        -ms-flex-wrap: nowrap;
+        flex-wrap: nowrap;
+        -webkit-justify-content: flex-start;
+        -ms-flex-pack: start;
+        justify-content: flex-start;
+        -webkit-align-content: stretch;
+        -ms-flex-line-pack: stretch;
+        align-content: stretch;
+        width: 100%;
+        div.form-label, div.form-input {
+            // border: 1px dashed #000;
+        }
+        div.form-label {
+            width: 25%;
+        }
+        div.form-input {
+            width: 75%;
+        }
+        div.form-builder-feedback {
+            display: none;
+        }
 
+    }
+    div.form-group.button-group {
+        padding-left: 25%;
+        // text-align: right;
+        
+    }   
+}
 /* 
  * @start feedback
  */

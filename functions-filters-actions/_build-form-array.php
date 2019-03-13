@@ -38,9 +38,16 @@ function wp_swift_form_data_loop($id, $_post = null) {
 
     if (function_exists('get_field')) :
 
-        if( get_field('hide_labels', $id) ) {
-            $settings['hide_labels'] = true;
-            $settings['form_css_class'] = ' hide-labels';
+        $labels = get_field('labels', $id);
+        if( $labels ) {
+            if ($labels == 'hide_labels') {
+                $settings['hide_labels'] = true;
+                $settings['form_css_class'] = ' hide-labels';                
+            }
+            else {
+                $settings['form_css_class'] = ' labels-'.$labels;
+            }
+
         }
 
         if( get_field('wrap_form', $id) ) {
