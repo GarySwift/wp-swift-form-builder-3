@@ -211,6 +211,9 @@ class WP_Swift_Form_Builder_Helper {
         }
         
     }
+    public function get_section_count() {
+        return count($this->form_data);        
+    }    
     public function set_form_data( $form_data ) {
         $this->form_data = $form_data;
     } 
@@ -447,5 +450,12 @@ class WP_Swift_Form_Builder_Helper {
     }   
     public function get_total_sections_count() {
         return count($this->form_data);
-    } 
+    }
+
+    public function show_section_guide() {
+        $show_section_guide = false;
+        if ( $show_section_guide && $this->show_next_button_in_sections() ) {
+            return true;
+        }
+    }
 }

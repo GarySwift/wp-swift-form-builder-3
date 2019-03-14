@@ -22,7 +22,28 @@ class WP_Swift_Form_Builder_Html {
     }
     
     public function front_end_form($helper, $html_response = null, $msg = null ) {
-        ?>
+        
+        if ($helper->show_section_guide()): $i = 0; ?>
+            <div class="form-section-guides grid-x grid-padding-x small-up-2 medium-up-4 large-up-c">
+                <?php foreach ( $helper->get_form_data() as $key => $section ): ?>
+                    <?php 
+                        if (isset($section["section_header"])): 
+                            $css_class = '';
+                            if ($i == 0) $css_class = ' active';
+                        ?>
+                        <div class="cell form-section-guide text-center" id="form-section-guide-<?php echo $i ?>">
+                            <a href="#" class="form-section-guide-link js-form-section-guide-link <?php echo $css_class ?>" id="form-section-guide-link-<?php echo $i ?>" data-id="<?php echo $i ?>">
+                                <img src="//placehold.it/100x100" class="" alt="">
+                                <div><?php echo $section["section_header"]; ?></div>
+                            </a>
+
+                                
+                        </div>
+                    <?php $i++; endif; ?>                   
+                <?php endforeach ?>
+            </div>
+        <?php endif ?>
+
         <div class="<?php echo $helper->get_form_class(); ?>"><!-- @start form-wrapper -->
 
             <?php if ($html_response): ?>
@@ -32,7 +53,6 @@ class WP_Swift_Form_Builder_Html {
             <?php if ($msg): ?>
                 <?php echo $msg; ?>
             <?php endif ?>
-            <?php //echo $helper->get_form_class(); ?>
             
             <!-- @start form -->
             <form method="post"<?php echo $helper->get_action(); ?> name="<?php echo $helper->get_form_name(); ?>" id="<?php echo $helper->get_form_css_id(); ?>" data-id="<?php echo $helper->get_form_post_id(); ?>" data-post-id="<?php echo $helper->get_post_id(); ?>" data-type="<?php echo $helper->get_form_type() ?>"<?php $helper->get_form_data_types() ?> class="<?php echo $helper->get_form_class() . ' ' . $helper->get_form_name(); ?>" novalidate<?php echo $helper->get_enctype(); ?>>
@@ -821,7 +841,6 @@ $this->recaptcha_html($helper);
 
                 <button type="submit" name="<?php echo $helper->get_submit_button_name(); ?>" id="<?php echo $helper->get_submit_button_id(); ?>" class="button" tabindex="<?php echo $this->get_tab_index(); ?>"><?php echo $helper->get_submit_button_text(); ?></button>
 
-
             </div>
             <!-- @end input -->            
         </div>
@@ -848,7 +867,7 @@ $this->recaptcha_html($helper);
             <div class="form-group section-content">
 
                 <!-- @start input -->
-                <div class="form-input">
+                <div class="form-input section-head">
                     <?php if (isset($section["section_header"])): ?>
 
                     <h4><?php echo $section["section_header"]; ?></h4>
@@ -866,10 +885,13 @@ $this->recaptcha_html($helper);
             </div>
             <!-- @end .section-content --> 
 
-        <?php endif;         
+        <?php endif; ?>
+        <div class="form-section-lower-wrapper" id="form-section-lower-wrapper-<?php echo $key ?>">
+        <div class="form-section-inputs-wrapper" id="form-section-inputs-wrapper-<?php echo $key ?>">
+        <?php         
     }  
 
-    public function section_buttons_html( $helper, $section, $key, $prev, $next, $show_submit) {     
+    public function section_buttons_html( $helper, $section, $key, $prev, $next, $show_submit) {    
         if (isset($section["section_header"]) || isset($section["section_content"])): ?>
 
             <?php if (is_int($prev) || is_int($next)): ?>
@@ -886,6 +908,8 @@ $this->recaptcha_html($helper);
 
                         <a href="#" id="form-builder-show-next-<?php echo $key ?>" class="button form-builder-show-prev-next form-builder-show-next js-form-builder-show-next <?php echo $key == 0 ? 'active' : 'not-active'; echo $show_submit; ?>" data-current="<?php echo $key ?>" data-next="<?php echo $next ?>">Next</a>
 
+
+
                     <?php endif ?>
 
                 </div>
@@ -898,12 +922,21 @@ $this->recaptcha_html($helper);
         <?php endif;  
     } 
 
-    public function close_section_html( $helper, $section, $key, $prev, $next, $show_submit, $all) {     
+    public function close_section_html( $helper, $section, $key, $prev, $next, $show_submit, $all) {  
+        ?>
+        </div><!-- .form-section-inputs-wrapper -->
+        <?php         
         if (isset($section["section_header"]) || isset($section["section_content"])): ?>
 
             <?php if (is_int($prev) || is_int($next)): ?>
                 
                 <div class="form-group form-section-buttons">
+
+                    <?php 
+                    /* 
+                    <div class="form-section-count"><?php echo "1"."/"."4" ?></div> 
+                    */ 
+                    ?>
                     
                     <?php if (is_int($prev)): ?>
 
@@ -930,7 +963,10 @@ $this->recaptcha_html($helper);
             </div>
             <!-- @end section #form-section-<?php echo $key ?> -->
 
-        <?php endif;  
+        <?php endif;
+        ?>
+        </div><!-- .form-section-lower-wrapper -->
+        <?php    
     } 
 
     public function open_form_groups_html() {
