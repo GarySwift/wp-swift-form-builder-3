@@ -15,6 +15,6 @@ require_once plugin_dir_path( __FILE__ ) . '_form-builder-clone-textarea-attribu
 require_once plugin_dir_path( __FILE__ ) . '_form-builder-inputs.php';
 require_once plugin_dir_path( __FILE__ ) . '_form-builder-type-clone-contact-form-response.php';
 require_once plugin_dir_path( __FILE__ ) . 'tabs/_form-builder-clone-settings-general.php';
-require_once plugin_dir_path( __FILE__ ) . '_form-builder-input-sections.php';
+require_once plugin_dir_path( __FILE__ ) . 'main/_form-builder-input-sections.php';
 require_once plugin_dir_path( __FILE__ ) . '_form-builder-clone-group-default-settings.php';
 

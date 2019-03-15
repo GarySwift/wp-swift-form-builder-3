@@ -23,7 +23,7 @@ class WP_Swift_Form_Builder_Html {
     
     public function front_end_form($helper, $html_response = null, $msg = null ) {
         
-        if ($helper->show_section_guide()): $i = 0; ?>
+        if ($helper->show_section_stage_guide()): $i = 0; ?>
             <div class="form-section-guides grid-x grid-padding-x small-up-2 medium-up-4 large-up-c">
                 <?php foreach ( $helper->get_form_data() as $key => $section ): ?>
                     <?php 

@@ -49,6 +49,7 @@ class WP_Swift_Form_Builder_Helper {
     private $attachments = array();
     private $tab_index;
     private $next_button_in_sections = false;
+    private $show_section_stage_guide = false;
     private $transparent_inputs = false;
     private $colour_theme = '';
     /*
@@ -192,6 +193,9 @@ class WP_Swift_Form_Builder_Helper {
         if(isset($this->settings["next_button_in_sections"])) {
             $this->next_button_in_sections = true;
         }
+        if(isset($this->settings["show_section_stage_guide"])) {
+            $this->show_section_stage_guide = true;
+        }        
         if(isset($this->settings["transparent_inputs"])) {
             $this->transparent_inputs = true;
         }          
@@ -471,15 +475,11 @@ class WP_Swift_Form_Builder_Helper {
     }      
     public function show_next_button_in_sections() {
         return $this->next_button_in_sections;
-    }   
+    }
+    public function show_section_stage_guide() {
+        return $this->show_section_stage_guide;
+    }       
     public function get_total_sections_count() {
         return count($this->form_data);
-    }
-
-    public function show_section_guide() {
-        $show_section_guide = false;
-        if ( $show_section_guide && $this->show_next_button_in_sections() ) {
-            return true;
-        }
     }
 }
