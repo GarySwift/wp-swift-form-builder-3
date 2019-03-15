@@ -25,6 +25,7 @@ class WP_Swift_Form_Builder_Helper {
     private $form_name = '';
     private $form_css_id = '';
     private $form_class = 'form-builder';//  // css class
+    private $form_wrapper_class = 'form-builder-wrapper form-builder';//  // css class
 
     private $clear_after_submission = true;
     private $list_form_errors_in_warning_panel = true;
@@ -49,7 +50,7 @@ class WP_Swift_Form_Builder_Helper {
     private $tab_index;
     private $next_button_in_sections = false;
     private $transparent_inputs = false;
-
+    private $colour_theme = '';
     /*
      * Initializes the plugin.
      */
@@ -184,6 +185,10 @@ class WP_Swift_Form_Builder_Helper {
         else {
             $this->tab_index = 100;
         }
+        if(isset($this->settings["colour_theme"])) {
+            $this->colour_theme = $this->settings["colour_theme"];
+        }
+
         if(isset($this->settings["next_button_in_sections"])) {
             $this->next_button_in_sections = true;
         }
@@ -326,9 +331,28 @@ class WP_Swift_Form_Builder_Helper {
         }
         if ($this->transparent_inputs) {
             $this->form_class .= " transparent-inputs";
-        }        
+        } 
+        if ($this->colour_theme) {
+            $this->form_class .= $this->colour_theme;
+        }                
         return $this->form_class . $this->recaptcha_form_class();
     }        
+
+    /**
+     * Get the form wrapper class
+     */
+    public function get_form_wrapper_class() {
+        if ($this->show_next_button_in_sections()) {
+            $this->form_wrapper_class .= " show-section-panels";
+        }
+        if ($this->transparent_inputs) {
+            $this->form_wrapper_class .= " transparent-inputs";
+        }         
+        if ($this->colour_theme) {
+            $this->form_wrapper_class .= $this->colour_theme;
+        }      
+        return $this->form_wrapper_class;
+    }
 
     public function get_clear_after_submission() {
         return $this->clear_after_submission;

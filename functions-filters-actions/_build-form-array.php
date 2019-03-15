@@ -88,6 +88,12 @@ function wp_swift_form_data_loop($id, $_post = null) {
             $settings['transparent_inputs'] = $transparent_inputs;
         }        
 
+
+        $colour_theme = get_field('colour_theme', $id);
+        if( $colour_theme ) {
+            $settings['colour_theme'] = ' form-builder-theme-'.$colour_theme;
+        }
+
         if ( have_rows('sections', $id) ) :
 
             $section_count = 0;

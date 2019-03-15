@@ -499,6 +499,77 @@ form.form-builder.show-section-panels {
         display: none;
     }
 }
+
+@mixin form-builder-theme-light($form-color, $has-error, $has-success, $has-success-bg-color) {
+    background-color: black;
+    .form-group { 
+        .form-label, .form-input {
+            label {
+                color: $form-color;
+            }
+        } 
+        .control-label.required span {
+          color: $form-color;
+        } 
+        small.error {
+            color: $form-color;
+            background-color: $has-error;              
+        }
+        small.error:after {
+            border-bottom-color: $has-error;
+        }               
+    }  
+    .form-group.has-error {
+        .form-label label{
+            color: $has-error;
+        }  
+        .control-label.required span {
+          color: $has-error;
+        }         
+        select, textarea, input[type=text], input[type=email], input[type=url], input[type=number], input[type=file], div.dummy-input {
+            border-color: $has-error;
+            box-shadow: inset 0 1px 2px rgba($has-error,0.1);
+            color: rgba($has-error,0.75);
+            // background-color: #fef7f6;
+        }
+        div.dummy-input {.error {}}
+    }
+    .form-group.has-success {
+        select, textarea, input[type=text], input[type=email], input[type=url], input[type=number], input[type=file], div.dummy-input {
+            border-color: lighten($has-success, 30%);
+            box-shadow: inset 0 1px 2px rgba($has-success,0.3);
+            color: $has-success;
+            // background-color: $has-success-bg-color;
+        }
+        .form-label label {
+            color: $has-success;
+        } 
+        .control-label.required span {
+          color: $has-success;
+        }            
+    } 
+    .form-group {
+        div.form-builder-feedback {
+            position: relative;     
+            span {
+                color: $has-success;
+            }
+            span.form-builder-check {
+                color: $has-success;
+            }       
+            span.form-builder-x {
+                color: $has-error;
+            }
+        }
+    }
+    select, textarea, input[type=text], input[type=email], input[type=url], input[type=number], input[type=file], div.dummy-input {
+        color: $form-color;
+    }    
+}
+.form-builder-theme-light {
+    @include form-builder-theme-light(white, orange, white, green);
+}
+
 /**
  * Transparent inputs
  */
