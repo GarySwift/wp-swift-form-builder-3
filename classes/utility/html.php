@@ -22,7 +22,13 @@ class WP_Swift_Form_Builder_Html {
     }
     
     public function front_end_form($helper, $html_response = null, $msg = null ) {
-        
+
+        ?>
+
+        <div<?php $helper->get_form_wrapper_css_id() ?> class="<?php echo $helper->get_form_class(); ?>"><!-- @start form-wrapper -->
+
+        <?php
+        $total_section_count = $helper->get_total_sections_count();
         if ($helper->show_section_stage_guide()): $i = 0; ?>
             <div class="form-section-guides grid-x grid-padding-x small-up-2 medium-up-4 large-up-c">
                 <?php foreach ( $helper->get_form_data() as $key => $section ): ?>
@@ -30,13 +36,25 @@ class WP_Swift_Form_Builder_Html {
                         if (isset($section["section_header"])): 
                             $css_class = '';
                             if ($i == 0) $css_class = ' active';
+                            elseif ($i + 1 == $total_section_count) $css_class = ' last-section';
                         ?>
                         <div class="cell form-section-guide text-center" id="form-section-guide-<?php echo $i ?>">
+                            <div class="form-section-stage-count">Stage <?php echo $i + 1 ?></div>
                             <a href="#" class="form-section-guide-link js-form-section-guide-link <?php echo $css_class ?>" id="form-section-guide-link-<?php echo $i ?>" data-id="<?php echo $i ?>">
-                                <img src="//placehold.it/100x100" class="" alt="">
-                                <div><?php echo $section["section_header"]; ?></div>
-                            </a>
+                                
+                                <?php if (isset( $section["section_image"])): ?>
+                                    <img src="<?php echo $section["section_image"]["url"] ?>" alt="<?php echo $section["section_header"]; ?>">
+                                <?php else: ?>
+                                    <img src="//placehold.it/100x100" class="" alt="Placeholder">
+                                    
+                                <?php endif ?>
+                                <div><?php echo $section["section_header"]; ?><?php //echo $i ?></div>
+                                <?php 
+                            
+                                //echo $css_class;
 
+                                ?>
+                            </a>
                                 
                         </div>
                     <?php $i++; endif; ?>                   
@@ -44,7 +62,7 @@ class WP_Swift_Form_Builder_Html {
             </div>
         <?php endif ?>
 
-        <div class="<?php echo $helper->get_form_class(); ?>"><!-- @start form-wrapper -->
+        
 
             <?php if ($html_response): ?>
                 <?php echo $html_response; ?>
@@ -867,7 +885,7 @@ $this->recaptcha_html($helper);
             <div class="form-group section-content">
 
                 <!-- @start input -->
-                <div class="form-input section-head">
+                <div class="_form-input section-head<?php if($key == 0) echo ' active' ?>" id="form-section-head-<?php echo $key ?>">
                     <?php if (isset($section["section_header"])): ?>
 
                     <h4><?php echo $section["section_header"]; ?></h4>

@@ -1,0 +1,340 @@
+[
+    {
+        "key": "group_5c80ea6c2b7d7",
+        "title": "Clone Settings: General",
+        "fields": [
+            {
+                "key": "field_5c896d0ca5b65",
+                "label": "Labels",
+                "name": "labels",
+                "type": "select",
+                "instructions": "Placeholders will be automatically added if labels are hidden.",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "choices": {
+                    "top": "Top",
+                    "left": "Left",
+                    "hide_labels": "Hide Labels"
+                },
+                "default_value": [
+                    "top"
+                ],
+                "allow_null": 0,
+                "multiple": 0,
+                "ui": 0,
+                "return_format": "value",
+                "ajax": 0,
+                "placeholder": ""
+            },
+            {
+                "key": "field_5c80ea6c2fb10",
+                "label": "Wrap Form",
+                "name": "wrap_form",
+                "type": "true_false",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "message": "Adds a border around the form and removes border from error messages.",
+                "default_value": 0,
+                "ui": 1,
+                "ui_on_text": "",
+                "ui_off_text": ""
+            },
+            {
+                "key": "field_5c81398d14242",
+                "label": "Transparent Inputs",
+                "name": "transparent_inputs",
+                "type": "true_false",
+                "instructions": "Remove input background and top, right, left borders.",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "message": "",
+                "default_value": 0,
+                "ui": 1,
+                "ui_on_text": "",
+                "ui_off_text": ""
+            },
+            {
+                "key": "field_5c80ea6c2fb1c",
+                "label": "Submit Button Text",
+                "name": "submit_button_text",
+                "type": "text",
+                "instructions": "Leave blank to use default.",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "default_value": "",
+                "placeholder": "Submit Form",
+                "prepend": "",
+                "append": "",
+                "maxlength": 30
+            },
+            {
+                "key": "field_5c80ea6c2fb28",
+                "label": "User Confirmation Email",
+                "name": "user_confirmation_email",
+                "type": "select",
+                "instructions": "How confirmations email are handled.",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "choices": {
+                    "ask": "Always Ask User",
+                    "send": "Always Send",
+                    "never": "Never Send"
+                },
+                "default_value": [
+                    "ask"
+                ],
+                "allow_null": 1,
+                "multiple": 0,
+                "ui": 0,
+                "ajax": 0,
+                "return_format": "value",
+                "placeholder": ""
+            },
+            {
+                "key": "field_5c80ea6c2fb33",
+                "label": "Show Page in Email",
+                "name": "show_page_in_email",
+                "type": "true_false",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": [
+                    [
+                        {
+                            "field": "field_5c80ea6c2fb28",
+                            "operator": "==",
+                            "value": "ask"
+                        }
+                    ],
+                    [
+                        {
+                            "field": "field_5c80ea6c2fb28",
+                            "operator": "==",
+                            "value": "send"
+                        }
+                    ]
+                ],
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "message": "Show page name and link in email. (Useful if form appears on multiple pages.)",
+                "default_value": 0,
+                "ui": 1,
+                "ui_on_text": "",
+                "ui_off_text": ""
+            },
+            {
+                "key": "field_5c80ea6c2fb3f",
+                "label": "Show Edit Link",
+                "name": "show_edit_link",
+                "type": "true_false",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "message": "Shows an <b>Edit Form<\/b> link to users with form editing capabilities.",
+                "default_value": 0,
+                "ui": 1,
+                "ui_on_text": "",
+                "ui_off_text": ""
+            },
+            {
+                "key": "field_5c80ea6c2fb4a",
+                "label": "Tab Index",
+                "name": "tab_index",
+                "type": "number",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "default_value": "",
+                "placeholder": 100,
+                "prepend": "",
+                "append": "",
+                "min": 0,
+                "max": "",
+                "step": 100
+            },
+            {
+                "key": "field_5c8ab19817df1",
+                "label": "Colour Theme",
+                "name": "colour_theme",
+                "type": "select",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "choices": {
+                    "dark": "Dark (Standard)",
+                    "light": "Light"
+                },
+                "default_value": [
+                    "dark"
+                ],
+                "allow_null": 0,
+                "multiple": 0,
+                "ui": 0,
+                "return_format": "value",
+                "ajax": 0,
+                "placeholder": ""
+            },
+            {
+                "key": "field_5c8ab10c17dee",
+                "label": "CSS",
+                "name": "css",
+                "type": "group",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "layout": "block",
+                "sub_fields": [
+                    {
+                        "key": "field_5c8ab12e17def",
+                        "label": "Wrapper ID",
+                        "name": "wrapper_id",
+                        "type": "text",
+                        "instructions": "",
+                        "required": 0,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "50",
+                            "class": "",
+                            "id": ""
+                        },
+                        "default_value": "",
+                        "placeholder": "",
+                        "prepend": "",
+                        "append": "",
+                        "maxlength": ""
+                    },
+                    {
+                        "key": "field_5c8ab13e17df0",
+                        "label": "Wrapper Class",
+                        "name": "wrapper_class",
+                        "type": "text",
+                        "instructions": "",
+                        "required": 0,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "50",
+                            "class": "",
+                            "id": ""
+                        },
+                        "default_value": "",
+                        "placeholder": "",
+                        "prepend": "",
+                        "append": "",
+                        "maxlength": ""
+                    }
+                ]
+            },
+            {
+                "key": "field_5c80ea9626f3d",
+                "label": "Next Button in Sections",
+                "name": "next_button_in_sections",
+                "type": "true_false",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "50",
+                    "class": "",
+                    "id": ""
+                },
+                "message": "",
+                "default_value": 0,
+                "ui": 1,
+                "ui_on_text": "",
+                "ui_off_text": ""
+            },
+            {
+                "key": "field_5c8b8293904b0",
+                "label": "Show Section Stage Guide",
+                "name": "show_section_stage_guide",
+                "type": "true_false",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": [
+                    [
+                        {
+                            "field": "field_5c80ea9626f3d",
+                            "operator": "==",
+                            "value": "1"
+                        }
+                    ]
+                ],
+                "wrapper": {
+                    "width": "50",
+                    "class": "",
+                    "id": ""
+                },
+                "message": "",
+                "default_value": 0,
+                "ui": 1,
+                "ui_on_text": "",
+                "ui_off_text": ""
+            }
+        ],
+        "location": [
+            [
+                {
+                    "param": "post_type",
+                    "operator": "==",
+                    "value": "wp_swift_form"
+                }
+            ]
+        ],
+        "menu_order": 0,
+        "position": "normal",
+        "style": "default",
+        "label_placement": "top",
+        "instruction_placement": "label",
+        "hide_on_screen": "",
+        "active": 0,
+        "description": ""
+    }
+]

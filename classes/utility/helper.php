@@ -24,6 +24,7 @@ class WP_Swift_Form_Builder_Helper {
     private $post_id = null;
     private $form_name = '';
     private $form_css_id = '';
+    private $css;
     private $form_class = 'form-builder';//  // css class
     private $form_wrapper_class = 'form-builder-wrapper form-builder';//  // css class
 
@@ -107,6 +108,9 @@ class WP_Swift_Form_Builder_Helper {
             $this->clear_after_submission = $args["clear_after_submission"];
             $this->form_class .= ' js-do-not-clear';
         }
+        if (isset($this->settings["css"])) {
+            $this->css = $this->settings["css"];
+        }         
 
         if (isset($args["list_form_errors_in_warning_panel"])) {
             $this->list_form_errors_in_warning_panel = $args["list_form_errors_in_warning_panel"];
@@ -149,8 +153,6 @@ class WP_Swift_Form_Builder_Helper {
         else {
             $this->submit_button_text = "Submit Form";
         }
-
-
 
         if (function_exists("get_field")) {
             if( get_field('spam_prevention_type', $this->form_post_id ) ) {
@@ -341,6 +343,15 @@ class WP_Swift_Form_Builder_Helper {
         }                
         return $this->form_class . $this->recaptcha_form_class();
     }        
+
+    /**
+     * Get the form wrapper class
+     */
+    public function get_form_wrapper_css_id() {
+        if (isset($this->css["wrapper_id"])) {
+            echo ' id="'.$this->css["wrapper_id"].'"';
+        }     
+    }
 
     /**
      * Get the form wrapper class

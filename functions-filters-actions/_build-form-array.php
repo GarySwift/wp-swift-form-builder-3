@@ -73,24 +73,28 @@ function wp_swift_form_data_loop($id, $_post = null) {
             $settings['show_edit_link'] = get_field('show_edit_link', $id);
         }
         
-        $tab_index = get_field('tab_index', $id);
-        if( $tab_index ) {
+
+        if( $css = get_field('css', $id) ) {
+            $settings['css'] = $css;
+        } 
+
+        if( $tab_index = get_field('tab_index', $id) ) {
             $settings['tab_index'] = $tab_index;
         }        
 
-        $next_button_in_sections = get_field('next_button_in_sections', $id);
-        if( $next_button_in_sections ) {
+        if( $next_button_in_sections = get_field('next_button_in_sections', $id) ) {
             $settings['next_button_in_sections'] = $next_button_in_sections;
         }
 
-        $transparent_inputs = get_field('transparent_inputs', $id);
-        if( $transparent_inputs ) {
+        if( $show_section_stage_guide = get_field('show_section_stage_guide', $id) ) {
+            $settings['show_section_stage_guide'] = $show_section_stage_guide;
+        }
+
+        if( $transparent_inputs = get_field('transparent_inputs', $id) ) {
             $settings['transparent_inputs'] = $transparent_inputs;
         }        
 
-
-        $colour_theme = get_field('colour_theme', $id);
-        if( $colour_theme ) {
+        if( $colour_theme = get_field('colour_theme', $id) ) {
             $settings['colour_theme'] = ' form-builder-theme-'.$colour_theme;
         }
 
@@ -108,7 +112,10 @@ function wp_swift_form_data_loop($id, $_post = null) {
                 }
                 if ( get_sub_field('section_content') ) {
                     $section["section_content"] = get_sub_field('section_content');
-                }            
+                } 
+                if ( $section_image = get_sub_field('section_image') ) {
+                    $section["section_image"] = $section_image;
+                }                            
                 if ( have_rows('form_inputs') ) :
                     while( have_rows('form_inputs') ) : the_row();
                         $row_layout = get_row_layout();
