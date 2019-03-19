@@ -47,6 +47,31 @@ $button-size: ".default";// .default, .large
     }
 }
 
+
+@mixin form-builder-typography($font-family, $font-weight, $font-size, $button-case) {
+    .form-label, .form-input {
+        label {
+            font-weight: $font-weight;
+            font-family: $font-family;
+            font-size: $font-size;
+        }
+    }
+    select, textarea, input[type=text], input[type=email], input[type=url], input[type=number], input[type=file], div.dummy-input {
+            font-weight: $font-weight;
+            font-family: $font-family;
+            font-size: $font-size;
+    }      
+    button {
+        font-weight: bold;
+        text-transform: $button-case;
+        font-family: $font-family;
+    }
+    small.error {
+        font-family: $font-family;
+        font-weight: $font-weight;
+    }
+}
+
 $form-transition-speed: 1;//0.3s;
 $form-transition-property: ease-in;//ease-in-out;// ease-in
 
@@ -501,7 +526,6 @@ form.form-builder.show-section-panels {
 }
 
 @mixin form-builder-theme-light($form-color, $has-error, $has-success, $has-success-bg-color) {
-    background-color: black;
     .form-group { 
         .form-label, .form-input {
             label {
@@ -564,7 +588,18 @@ form.form-builder.show-section-panels {
     }
     select, textarea, input[type=text], input[type=email], input[type=url], input[type=number], input[type=file], div.dummy-input {
         color: $form-color;
-    }    
+    }
+    &.transparent-inputs {
+        form {
+             @include transparent-contact-form();
+        }
+    }
+    .form-group.has-success {
+        select, textarea, input[type=text], input[type=email], input[type=url], input[type=number], input[type=file], div.dummy-input {
+            // border-color: lighten($has-success, 30%);
+            box-shadow: none;
+        }    
+    }   
 }
 .form-builder-theme-light {
     @include form-builder-theme-light(white, orange, white, green);
@@ -576,3 +611,8 @@ form.form-builder.show-section-panels {
 form.form-builder.transparent-inputs {
   @include transparent-contact-form();
 }
+// $pal: ("Palatino Linotype", "Book Antiqua", Palatino, serif);
+// $hel: (Helvetica Neue, Helvetica, Arial, sans-serif);
+// div.form-builder {
+//     @include form-builder-typography($pal, bold, 1rem, uppercase);
+// }
