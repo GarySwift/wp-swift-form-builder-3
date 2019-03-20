@@ -115,7 +115,10 @@ function wp_swift_form_data_loop($id, $_post = null) {
                 } 
                 if ( $section_image = get_sub_field('section_image') ) {
                     $section["section_image"] = $section_image;
-                }                            
+                }  
+                if ( $section_css = get_sub_field('section_css') ) {
+                    $section["section_css"] = $section_css;
+                }                                            
                 if ( have_rows('form_inputs') ) :
                     while( have_rows('form_inputs') ) : the_row();
                         $row_layout = get_row_layout();

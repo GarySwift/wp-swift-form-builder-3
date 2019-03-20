@@ -78,14 +78,13 @@ class WP_Swift_Form_Builder_Admin_Interface_Settings {
 	    );
 
 	    add_settings_field( 
-	        'wp_swift_form_builder_email_template_primary_color', 
-	        __( 'Email Template', 'wp-swift-form-builder' ), 
-	        array($this, 'wp_swift_form_builder_email_template_primary_color_render'), 
+	        'wp_swift_form_builder_email_template_image', 
+	        __( 'Image', 'wp-swift-form-builder' ), 
+	        array($this, 'wp_swift_form_builder_email_template_image_render'), 
 	        'form-builder', 
 	        'wp_swift_form_builder_plugin_page_section' 
 	    );	 
 	    
-
 	    add_settings_field( 
 	        'wp_swift_form_builder_google_recaptcha', 
 	        __( 'Google reCAPTCHA', 'wp-swift-form-builder' ), 
@@ -210,6 +209,21 @@ class WP_Swift_Form_Builder_Admin_Interface_Settings {
 	     		echo ''.$options['wp_swift_form_builder_email_template_primary_color'].'';
 	     	}
 	     	?>"> <small>Primary Colour</small>
+	    <?php
+
+	}
+
+	/*
+	 *
+	 */
+	public function wp_swift_form_builder_email_template_image_render(  ) { 
+	    $options = get_option( 'wp_swift_form_builder_settings' );
+	    ?>
+	    <input type="text" name="wp_swift_form_builder_settings[wp_swift_form_builder_email_template_image]" value="<?php
+	    	if (isset($options['wp_swift_form_builder_email_template_image']) && $options['wp_swift_form_builder_email_template_image'] != '') {
+	     		echo ''.$options['wp_swift_form_builder_email_template_image'].'';
+	     	}
+	     	?>"> <small>The system will look in the theme folder using a relative path.</small>
 	    <?php
 
 	}

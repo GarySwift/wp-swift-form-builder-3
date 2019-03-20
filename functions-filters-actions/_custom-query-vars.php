@@ -31,4 +31,4 @@ function wp_swift_form_builder_custom_query_vars_filter($vars) {
   $vars[] .= 'selected';
   return $vars;
 }
-// add_filter( 'query_vars', 'wp_swift_form_builder_custom_query_vars_filter' );
+add_filter( 'query_vars', 'wp_swift_form_builder_custom_query_vars_filter' );

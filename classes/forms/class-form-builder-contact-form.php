@@ -157,7 +157,7 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
                     $this->to = $to_email;
                 }
             }
-        }                          
+        }                    
     }
     /*
      * Default has passed so the child will continue processing
@@ -193,10 +193,11 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
          */
         if ($this->send_email) {
             // foreach ($this->to as $key => $to_email) {
-                if (empty($attachments)) {
+                if (empty($attachments)) {              
                     $status = wp_mail($this->to, $this->response_subject.$this->date, wp_swift_wrap_email($email_string), $this->headers);
                 }
                 else {
+
                     $status = wp_mail($this->to, $this->response_subject.$this->date, wp_swift_wrap_email($email_string), $this->headers, $attachments);
                 }
                 

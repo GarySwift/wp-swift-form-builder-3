@@ -27,42 +27,7 @@ class WP_Swift_Form_Builder_Html {
 
         <div<?php $helper->get_form_wrapper_css_id() ?> class="<?php echo $helper->get_form_class(); ?>"><!-- @start form-wrapper -->
 
-        <?php
-        $total_section_count = $helper->get_total_sections_count();
-        if ($helper->show_section_stage_guide()): $i = 0; ?>
-            <div class="form-section-guides grid-x grid-padding-x small-up-2 medium-up-4 large-up-c">
-                <?php foreach ( $helper->get_form_data() as $key => $section ): ?>
-                    <?php 
-                        if (isset($section["section_header"])): 
-                            $css_class = '';
-                            if ($i == 0) $css_class = ' active';
-                            elseif ($i + 1 == $total_section_count) $css_class = ' last-section';
-                        ?>
-                        <div class="cell form-section-guide text-center" id="form-section-guide-<?php echo $i ?>">
-                            <div class="form-section-stage-count">Stage <?php echo $i + 1 ?></div>
-                            <a href="#" class="form-section-guide-link js-form-section-guide-link <?php echo $css_class ?>" id="form-section-guide-link-<?php echo $i ?>" data-id="<?php echo $i ?>">
-                                
-                                <?php if (isset( $section["section_image"])): ?>
-                                    <img src="<?php echo $section["section_image"]["url"] ?>" alt="<?php echo $section["section_header"]; ?>">
-                                <?php else: ?>
-                                    <img src="//placehold.it/100x100" class="" alt="Placeholder">
-                                    
-                                <?php endif ?>
-                                <div><?php echo $section["section_header"]; ?><?php //echo $i ?></div>
-                                <?php 
-                            
-                                //echo $css_class;
-
-                                ?>
-                            </a>
-                                
-                        </div>
-                    <?php $i++; endif; ?>                   
-                <?php endforeach ?>
-            </div>
-        <?php endif ?>
-
-        
+            <?php $this->section_stage_guide($helper) ?>
 
             <?php if ($html_response): ?>
                 <?php echo $html_response; ?>
@@ -836,7 +801,7 @@ $this->recaptcha_html($helper);
 
             <!-- @start .mail-receipt -->
             <div class="form-group mail-receipt form-group-extra">
-                <div class="form-label"></div>
+                <?php /*<div class="form-label"></div>*/ ?>
                 <div class="form-input">
                     <div class="checkbox">
                       <input type="checkbox" value="" tabindex=<?php echo $this->get_tab_index(); ?> name="mail-receipt" id="mail-receipt" checked><label for="mail-receipt">Acknowledge me with a mail receipt</label>
@@ -866,8 +831,12 @@ $this->recaptcha_html($helper);
         <?php           
     }  
     public function open_section_html( $helper, $section, $key, $use_next ) {
+        $class = '';
+        if (isset($section["section_css"])) {
+            $class = $section["section_css"] . ' ';
+        }
         if (isset($section["section_header"]) || isset($section["section_content"])): 
-            $class = 'form-section';
+            $class .= 'form-section';
             if ($use_next) {
                 if ($key == 0) {
                     $class .= ' active-section show-hide-section';
@@ -998,5 +967,43 @@ $this->recaptcha_html($helper);
         </div>
         <!-- @end .form-groups -->
         <?php
-    }                           
+    } 
+
+    private function section_stage_guide($helper) {
+        
+        if ($helper->show_section_stage_guide()): 
+            $total_section_count = $helper->get_total_sections_count();
+            $i = 0; ?>
+            <div class="form-section-guides grid-x grid-padding-x small-up-2 medium-up-4 large-up-c">
+                <?php foreach ( $helper->get_form_data() as $key => $section ): ?>
+                    <?php 
+                        if (isset($section["section_header"])): 
+                            $css_class = '';
+                            if ($i == 0) $css_class = ' active';
+                            elseif ($i + 1 == $total_section_count) $css_class = ' last-section';
+                        ?>
+                        <div class="cell form-section-guide text-center" id="form-section-guide-<?php echo $i ?>">
+                            <div class="form-section-stage-count">Stage <?php echo $i + 1 ?></div>
+                            <a href="#" class="form-section-guide-link js-form-section-guide-link <?php echo $css_class ?>" id="form-section-guide-link-<?php echo $i ?>" data-id="<?php echo $i ?>">
+                                
+                                <?php if (isset( $section["section_image"])): ?>
+                                    <img src="<?php echo $section["section_image"]["url"] ?>" alt="<?php echo $section["section_header"]; ?>">
+                                <?php else: ?>
+                                    <img src="//placehold.it/100x100" class="" alt="Placeholder">
+                                    
+                                <?php endif ?>
+                                <div><?php echo $section["section_header"]; ?><?php //echo $i ?></div>
+                                <?php 
+                            
+                                //echo $css_class;
+
+                                ?>
+                            </a>
+                                
+                        </div>
+                    <?php $i++; endif; ?>                   
+                <?php endforeach ?>
+            </div>
+        <?php endif;
+    }                          
 }

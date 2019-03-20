@@ -200,9 +200,39 @@ class WP_Swift_Form_Builder_Helper {
         }        
         if(isset($this->settings["transparent_inputs"])) {
             $this->transparent_inputs = true;
-        }          
+        }      
+        if (function_exists("form_builder_set_value_from_get_request")) {
+            $this->form_data = form_builder_set_value_from_get_request( $this->form_data );
+        }
+        // else {
+        //     echo "<pre>"; var_dump("form_builder_set_value_from_get_request"); echo "</pre>";
+        // }
+        // $this->form_data = form_builder_set_value_from_get_request( $this->form_data );
     }
 
+
+    // private function set_value_from_get_request() {
+    //     $selected = get_query_var( 'selected', false );
+    //     $taoglas_products = get_query_var( 'taoglas-products', false );    
+    //     echo '<pre>$selected: '; var_dump($selected); echo '</pre>';
+    //     echo '<pre>1 $taoglas_products: '; var_dump($taoglas_products); echo '</pre>';
+    //     if ($selected) {
+    //         if (isset($_GET["taoglas-products"])) {
+    //             $taoglas_products = $_GET["taoglas-products"];
+    //             echo '<pre>2 $taoglas_products: '; var_dump($taoglas_products); echo '</pre>';
+    //         }
+    //     }
+    //     foreach ($this->form_data as $section) {
+    //         foreach ($section["inputs"] as $key => $input) {
+    //             // $form_data[$key] = $input;
+    //             echo '<pre>$key: '; var_dump($key); echo '</pre>';
+    //             if (expr) {
+                    
+    //             }
+    //         }
+    //     }        
+    //     // echo '<pre>$_GET: '; var_dump($_GET); echo '</pre>';        
+    // }
     /**
      * Get $form_data
      *
