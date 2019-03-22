@@ -554,6 +554,7 @@ function build_acf_form_array($row_layout, $inputs, $settings, $section=0, $edit
         case "email":
         case "number":
         case "date":
+        case "true_false":
             $inputs[$prefix.$id] = array("passed"=>false, "clean"=>$value, "value"=>$value, "section"=>$section, "required"=>$required, "type"=>$type, "data_type"=>$data_type,  "placeholder"=>$placeholder, "label"=>$label, "help"=>$help, "instructions" => $instructions, "grouping" => $grouping, "css_class" => $css_class, 'css_class_input' => $css_class_input, "validation" => $validation, 'disabled' => $disabled);
             break;
         case "textarea":

@@ -151,8 +151,12 @@ $this->recaptcha_html($helper);
                         case "file":
                             $input_html = $this->build_form_file_upload($helper, $id, $input);
                             echo $this->wrap_input($helper, $id, $input, $input_html);
-                            break;                                                                                                                
-                    }  
+                            break;   
+
+                        case "true_false":
+                            $input_html = $this->build_form_true_false($helper, $id, $input);
+                            echo $this->wrap_input($helper, $id, $input, $input_html);
+                            break;                    }  
                 }
                      
             }// @end foreach inputs
@@ -297,6 +301,16 @@ $this->recaptcha_html($helper);
         $input_html = $this->build_form_input($helper, $id, $input);
         $input_html = '<div class="dummy-input">'.$input_html.'</div>';
         return $input_html;       
+    } 
+
+    private function build_form_true_false($helper, $id, $input, $section='') {
+        $html = '<div class="switch">';
+        $html .= '    <input class="switch-input js-'.$id.'" id="'.$id.'" type="checkbox" data-type="true_false" name="'.$id.'" value="Yes">';
+        $html .= '    <label class="switch-paddle" for="'.$id.'">';
+        $html .= '        <span class="show-for-sr">'.$input["label"].'</span>';
+        $html .= '    </label>';
+        $html .= '</div>'; 
+        return $html;  
     } 
 
     private function build_form_select($helper, $id, $data) {
