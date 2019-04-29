@@ -61,12 +61,12 @@ class WP_Swift_Form_Builder_Html {
                     ?></div>
                 </div><?php 
 */  
-              
+$this->recaptcha_html($helper);                
 $this->mail_receipt_html($helper);            
 $this->button_html($helper);
 $this->close_form_groups_html();
 
-$this->recaptcha_html($helper);  
+
 
                 $this->gdpr_disclaimer($helper);
                 ?>
@@ -85,7 +85,6 @@ $this->recaptcha_html($helper);
         $section_count = 0;
         $total_section_count = $helper->get_total_sections_count();
         $show_next_button_in_sections = $helper->show_next_button_in_sections();
-        
         foreach ($helper->get_form_data() as $key => $section) {
 
             $prev = false;
@@ -257,6 +256,8 @@ $this->recaptcha_html($helper);
         $max = '';
         $validation = '';
         $disabled = '';
+        $readonly = '';
+
 
         if ( isset($input["value"]) && $input["value"] !== '') {
             $value = ' value="'.$input['value'].'"';
@@ -293,7 +294,10 @@ $this->recaptcha_html($helper);
         if ($input["disabled"]) {
             $disabled = ' disabled';
         }
-        $input_html = '<input'.$type.$data_type.$class.$id.$name.$tabindex.$value.$placeholder.$section.$required.$min.$max.$validation.$disabled.'>';
+        if (isset($input['readonly']) && $input['readonly']) {
+            $readonly = ' readonly';
+        }        
+        $input_html = '<input'.$type.$data_type.$class.$id.$name.$tabindex.$value.$placeholder.$section.$required.$min.$max.$validation.$disabled.$readonly.'>';
         return $input_html;       
     } 
 

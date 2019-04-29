@@ -10,6 +10,7 @@ Text Domain:	wp-swift-email-templates
  
 function wp_swift_wrap_email($message) {
     $options = get_option( 'wp_swift_form_builder_settings' );
+    $header_img = '';
     if (isset($options['wp_swift_form_builder_email_template_primary_color']) && $options['wp_swift_form_builder_email_template_primary_color'] !== '') {
         $header_bg = $options['wp_swift_form_builder_email_template_primary_color'];
     }
@@ -22,6 +23,7 @@ function wp_swift_wrap_email($message) {
     else {
         $body_bg = '#e3e3e3';
     }
+
     $settings = array(
         'from_name'         => get_bloginfo('name'),
         'from_email'        => get_bloginfo('admin_email'),
@@ -42,6 +44,17 @@ function wp_swift_wrap_email($message) {
         'body_text_size'    => '14',
         'body_text_color'   => '#888',
     );
+/*
+    if (isset($options['wp_swift_form_builder_email_template_image']) && $options['wp_swift_form_builder_email_template_image'] !== '') {
+        $file = $options['wp_swift_form_builder_email_template_image'];
+        // $file_path = get_stylesheet_directory().$file;
+        // $file_uri = get_stylesheet_directory_uri().$file;
+        // if (file_exists ( $file_path )) {
+        //     $settings['header_logo'] = $file_uri;
+        // }
+        $settings['header_logo'] = $file;          
+    }  
+ */  
     ob_start();
     include( 'templates/partials/header.php' );
     echo $message;

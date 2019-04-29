@@ -31,6 +31,7 @@ class WP_Swift_Form_Builder_Helper {
     private $clear_after_submission = true;
     private $list_form_errors_in_warning_panel = true;
     private $user_confirmation_email = "ask";
+    private $show_page_in_email = false;
     private $action = '';
     private $enctype = '';
     private $show_edit_link = false;
@@ -118,6 +119,10 @@ class WP_Swift_Form_Builder_Helper {
         if(isset($this->settings["user_confirmation_email"])) {
             $this->user_confirmation_email = $this->settings["user_confirmation_email"];
         }
+
+        if(isset($this->settings["show_page_in_email"])) {
+            $this->show_page_in_email = $this->settings["show_page_in_email"];
+        }        
         if (isset($args["action"]) && $args["action"]!='') {
             $this->action = ' action="'.$args["action"].'"';// If the form is to sent to a specific page
         }
@@ -153,7 +158,7 @@ class WP_Swift_Form_Builder_Helper {
         else {
             $this->submit_button_text = "Submit Form";
         }
-
+        // todo - move the get_field requests into _build-form-array.php
         if (function_exists("get_field")) {
             if( get_field('spam_prevention_type', $this->form_post_id ) ) {
                 $spam_prevention_type = get_field('spam_prevention_type', $this->form_post_id );
@@ -163,14 +168,17 @@ class WP_Swift_Form_Builder_Helper {
                     $google_settings = $options['wp_swift_form_builder_google_recaptcha'];
                     if ( $google_settings["site_key"] !== '' && $google_settings["secret_key"] !== '' ) {
                         $this->recaptcha = $google_settings;
+                        //echo '<pre>1 $this->recaptcha: '; var_dump($this->recaptcha); echo '</pre>';
                     }
                     if( get_field('recaptcha_settings', $this->form_post_id) ) {
                         $recaptcha_settings = get_field('recaptcha_settings', $this->form_post_id);
                         $this->recaptcha = array_merge( $this->recaptcha, $recaptcha_settings );
+                        //echo '<pre>2 $this->recaptcha: '; var_dump($this->recaptcha); echo '</pre>';
                     }
                     if( get_field('recaptcha_display_settings', $this->form_post_id) ) {
                         $recaptcha_display_settings = get_field('recaptcha_display_settings', $this->form_post_id);
                         $this->recaptcha = array_merge( $this->recaptcha, $recaptcha_display_settings );
+                        //echo '<pre>3 $this->recaptcha: '; var_dump($this->recaptcha); echo '</pre>';
                     }                
                 }
             }
@@ -178,6 +186,7 @@ class WP_Swift_Form_Builder_Helper {
                 $this->gdpr_settings = get_field('gdpr_settings', $this->form_post_id);
             }              
         }
+        //@end todo
 
         if (count($hidden)) {
             $this->hidden = $hidden;
@@ -411,6 +420,10 @@ class WP_Swift_Form_Builder_Helper {
         return $this->user_confirmation_email;
     } 
 
+    public function get_show_page_in_email() {
+        return $this->show_page_in_email;
+    } 
+    
     /**
      * Get the form action
      *
@@ -450,7 +463,9 @@ class WP_Swift_Form_Builder_Helper {
     public function get_submit_button_text() {
         return $this->submit_button_text;
     } 
-
+    public function get_recaptcha_site() {
+        return $this->recaptcha; 
+    }
     public function recaptcha_site() {
         if (isset( $this->recaptcha["site_key"] )) {
             return $this->recaptcha["site_key"];
@@ -470,7 +485,7 @@ class WP_Swift_Form_Builder_Helper {
 
     public function recaptcha_group_class() {
         if (isset( $this->recaptcha["hide_on_load"] ) && $this->recaptcha["hide_on_load"] ) {
-            echo ' hide init-hidden';
+            echo ' hide';
         } 
     }
 

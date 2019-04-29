@@ -186,4 +186,13 @@ function run_wp_swift_form_builder() {
 	$plugin->run();
 
 }
+
+function wp_swift_formbuilder_exist($form_id) {
+	$form = get_post($form_id);
+	if (!empty($form) && $form->post_type = 'wp_swift_form') {
+		return true;
+	}
+	return false;
+}
+
 run_wp_swift_form_builder();

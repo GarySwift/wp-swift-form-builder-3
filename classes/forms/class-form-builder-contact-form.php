@@ -129,8 +129,8 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
                 $this->auto_response_message = get_field('auto_response_message', $form_post_id );
             }
             // Set the response that is set back to the browser
-            if (get_field('browser_output_header', $form_post_id )) {
-                $this->browser_output_header = get_field('browser_output_header', $form_post_id );
+            if (get_field('confirmation_header', $form_post_id )) {
+                $this->browser_output_header = get_field('confirmation_header', $form_post_id );
             } 
             // The auto-response subject
             if( get_field('auto_response_subject', $form_post_id) ) {
@@ -371,8 +371,12 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
 
     private function build_page_details() {
         $html = '';
-        $post_id = parent::get_post_id();
-        if ( $post_id ):
+        if ( parent::get_show_page_in_email() ):
+            $post_id = parent::get_post_id();
+            if (!$post_id) {
+                global $post;
+                $post_id = get_the_ID();
+            }
             $url = get_the_permalink( $post_id );
             ob_start(); ?>
                 

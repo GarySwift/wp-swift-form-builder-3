@@ -21,10 +21,10 @@ class WP_Swift_Form_Builder_Parent {
     public function __construct( $form_id, $post_id, $hidden = array(), $type = 'request', $args = array(), $_post = null ) {// , $sections, $settings = false  //"option") {
         /**
          * Initializes the helper, validate abd html_builder
-         */        
+         */  
         $this->helper = new WP_Swift_Form_Builder_Helper( $form_id, $post_id, $hidden = array(), $type = 'request', $args = array(), $_post = null );
         $this->validate = new WP_Swift_Form_Builder_Validate();  
-        $this->html_builder = new WP_Swift_Form_Builder_Html( $this->helper->get_tab_index() );              
+        $this->html_builder = new WP_Swift_Form_Builder_Html( $this->helper->get_tab_index() );      
     }
 
     /**
@@ -127,7 +127,13 @@ class WP_Swift_Form_Builder_Parent {
      */
     public function get_user_confirmation_email() {
         return $this->helper->get_user_confirmation_email();
-    }  
+    }
+    /*
+     * Get show_page_in_email
+     */
+    public function get_show_page_in_email() {
+        return $this->helper->get_show_page_in_email();
+    }      
     /*
      * Get gdpr_settings
      */

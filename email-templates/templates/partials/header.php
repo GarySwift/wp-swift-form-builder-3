@@ -83,7 +83,10 @@ $header_content_h1_a = "
                                         <tr>
                                             <td>
                                             	<h1 style="<?php echo $header_content_h1; ?>" id="logo">
-		                                            <a style="<?php echo $header_content_h1_a;?>" href="<?php echo apply_filters( 'mailtpl/templates/header_logo_url', home_url());?>" title="<?php echo apply_filters( 'mailtpl/templates/header_logo_url_title', get_bloginfo('name') );?>"><?php
+		                                            <a style="<?php echo $header_content_h1_a;?>" href="<?php echo apply_filters( 'mailtpl/templates/header_logo_url', home_url());?>" title="<?php echo apply_filters( 'mailtpl/templates/header_logo_url_title', get_bloginfo('name') );?>" alt="<?php echo get_bloginfo('name') ?>"><?php
+		                                            // if ($header_img) {
+		                                            // 	echo '<div style="max-width: 150px; margin: 0 auto">' . file_get_contents($header_img) . '</div>';
+		                                            // } else
 		                                            if( !empty($settings['header_logo']) ) {
 			                                            echo '<img src="'.apply_filters( 'mailtpl/templates/header_logo', $settings['header_logo'] ).'" alt="'. apply_filters( 'mailtpl/templates/header_logo_alt', get_bloginfo( 'description' ) ) .'"/>';
 		                                            } elseif ( !empty( $settings['header_logo_text'] ) ) {
