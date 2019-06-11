@@ -767,8 +767,8 @@ $this->close_form_groups_html();
         $opt_ins = null;
         $gdpr_settings = $helper->get_gdpr_settings();
         $marketing = $helper->get_marketing();
-        // echo '<pre>$marketing: '; var_dump($marketing); echo '</pre>';echo "<hr>";
-        // echo '<pre>$gdpr_settings: '; var_dump($gdpr_settings); echo '</pre>';
+        echo '<pre>$marketing: '; var_dump($marketing); echo '</pre>';echo "<hr>";
+        echo '<pre>$gdpr_settings: '; var_dump($gdpr_settings); echo '</pre>';
 
 
         if ( $marketing == 'mailin' && isset($gdpr_settings["opt_in"]) ) {
