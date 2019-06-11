@@ -137,7 +137,7 @@ function wp_swift_do_signup_mailchimp($form_data, $signups, $list_id_array = arr
     // The data to send to the API
     $post_data = array(
         "email_address" => $email, 
-        "status" => "subscribed",//"pending",//
+        "status" => "pending",//"subscribed",//
         "merge_fields" => array(
             "FNAME" => $first_name,
             "LNAME" => $last_name,
