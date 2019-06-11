@@ -102,6 +102,14 @@ function wp_swift_form_data_loop($id, $_post = null) {
             $settings['colour_theme'] = ' form-builder-theme-'.$colour_theme;
         }
 
+        if( $marketing = get_field('marketing', $id) ) {
+            // echo '<pre>$marketing: '; var_dump($marketing); echo '</pre>';echo "<hr>";
+            if ($marketing !== 'none') {
+                $settings['marketing'] = $marketing;
+            }
+        }   
+        // todo: get other marketing/GDPR fields into here
+
         if ( have_rows('sections', $id) ) :
 
             $section_count = 0;

@@ -99,7 +99,24 @@ class WP_Swift_Form_Builder_Admin_Interface_Settings {
 	        array($this, 'wp_swift_form_builder_marketing_api_render'), 
 	        'form-builder', 
 	        'wp_swift_form_builder_plugin_page_section' 
-	    );		        
+	    );	
+
+	    add_settings_field( 
+	        'wp_swift_form_builder_marketing_api_group', 
+	        __( 'Default MailChimp Audience', 'wp-swift-form-builder' ), 
+	        array($this, 'wp_swift_form_builder_marketing_api_group_render'), 
+	        'form-builder', 
+	        'wp_swift_form_builder_plugin_page_section' 
+	    );		
+
+
+	    add_settings_field( 
+	        'wp_swift_form_builder_marketing_api_ids', 
+	        __( 'MailChimp Marketing IDs', 'wp-swift-form-builder' ), 
+	        array($this, 'wp_swift_form_builder_marketing_api_ids_render'), 
+	        'form-builder', 
+	        'wp_swift_form_builder_plugin_page_section' 
+	    );			        	        
 
 	    /*add_settings_field( 
 	        'wp_swift_form_builder_email_template_secondary_color', 
@@ -193,11 +210,53 @@ class WP_Swift_Form_Builder_Admin_Interface_Settings {
 	    	if (isset($options['wp_swift_form_builder_marketing_api']) && $options['wp_swift_form_builder_marketing_api'] != '') {
 	     		echo ''.$options['wp_swift_form_builder_marketing_api'].'';
 	     	}
-	     	?>"> <small>This will be used for GDLP compliant sign up forms.</small>
+	     	?>"> This will be used for GDLP compliant sign up forms.
 	    <?php
 
 	}
 
+
+	/*
+	 *
+	 */
+	public function wp_swift_form_builder_marketing_api_group_render(  ) { 
+	    $options = get_option( 'wp_swift_form_builder_settings' );
+	    ?>
+	    <input type="text" autocomplete="new-password" name="wp_swift_form_builder_settings[wp_swift_form_builder_marketing_api_group]" value="<?php
+	    	if (isset($options['wp_swift_form_builder_marketing_api_group']) && $options['wp_swift_form_builder_marketing_api_group'] != '') {
+	     		echo ''.$options['wp_swift_form_builder_marketing_api_group'].'';
+	     	}
+	     	?>"> Default Marketing Group ID.
+	    <?php
+
+	}	
+
+	/*
+	 *
+	 */
+	public function wp_swift_form_builder_marketing_api_ids_render(  ) { 
+	    $options = get_option( 'wp_swift_form_builder_settings' );
+	    ?>
+	    <input type="text" name="wp_swift_form_builder_settings[wp_swift_form_builder_marketing_api_ids][email]" value="<?php
+	    	if (isset($options['wp_swift_form_builder_marketing_api_ids']['email']) && $options['wp_swift_form_builder_marketing_api_ids']['email'] != '') {
+	     		echo ''.$options['wp_swift_form_builder_marketing_api_ids']['email'].'';
+	     	}
+	     	?>"> <small>Email</small>
+	    <br>
+	    <input type="text" name="wp_swift_form_builder_settings[wp_swift_form_builder_marketing_api_ids][direct_mail]" value="<?php
+	    	if (isset($options['wp_swift_form_builder_marketing_api_ids']['direct_mail']) && $options['wp_swift_form_builder_marketing_api_ids']['direct_mail'] != '') {
+	     		echo ''.$options['wp_swift_form_builder_marketing_api_ids']['direct_mail'].'';
+	     	}
+	     	?>"> <small>Direct Mail</small>
+	    <br>
+	    <input type="text" name="wp_swift_form_builder_settings[wp_swift_form_builder_marketing_api_ids][customized_online_advertising]" value="<?php
+	    	if (isset($options['wp_swift_form_builder_marketing_api_ids']['customized_online_advertising']) && $options['wp_swift_form_builder_marketing_api_ids']['customized_online_advertising'] != '') {
+	     		echo ''.$options['wp_swift_form_builder_marketing_api_ids']['customized_online_advertising'].'';
+	     	}
+	     	?>"> <small>Customized Online Advertising</small>	    
+	    <?php
+
+	}	
 	/*
 	 *
 	 */

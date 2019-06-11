@@ -17,7 +17,7 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
     private $forward_email = null;
     private $save_submission = null;
     private $date;
-    private $send_email = true;//Debug variable. If false, emails will not be sent
+    private $send_email = false;//Debug variable. If false, emails will not be sent
     private $send_marketing = true;
     private $title;
     private $response_subject;
@@ -37,19 +37,19 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
     /*
      * Form Processing
      */
-    public function get_response($post) {
-        $form_set = false;
-        $html = parent::process_form($post, true);
-        if (parent::get_form_data()) {
-           $form_set = true;
-        }
-        $response = array(
-            "form_set" => $form_set,
-            "error_count" => parent::get_error_count(),
-            "html" => $html,
-        ); 
-        return $response;      
-    }
+    // public function get_response($post) {
+    //     $form_set = false;
+    //     $html = parent::process_form($post, true);
+    //     if (parent::get_form_data()) {
+    //        $form_set = true;
+    //     }
+    //     $response = array(
+    //         "form_set" => $form_set,
+    //         "error_count" => parent::get_error_count(),
+    //         "html" => $html,
+    //     ); 
+    //     return $response;      
+    // }
 
     private function before_send_email($form_data) {
         $form_post_id = parent::get_form_post_id();
@@ -182,7 +182,11 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
         $key_value_table = $this->build_key_value_table();
         $email_string .= $key_value_table;
         $email_string .= $this->build_page_details();
-        $signup = $this->do_signup_api( $post );
+        $signup = '';
+        $signup_response = $this->do_signup_api( $post );
+        if (isset($signup_response["html"])) {
+            $signup = $signup_response["html"];
+        }
         $email_string .= $this->do_signup_third_party_wrap($signup);
         $attachments = parent::get_attachments();
         $debug_info = '';
@@ -276,11 +280,15 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
         if ( !$this->send_email ) {
             $user_output_footer .= $debug_info;           
         }
-
+        $html = $this->build_confirmation_output($ajax, $this->browser_output_header, $this->auto_response_message, $key_value_table, $user_output_footer, $signup);
         /*
          * Return the html
-         */              
-        return $this->build_confirmation_output($ajax, $this->browser_output_header, $this->auto_response_message, $key_value_table, $user_output_footer, $signup);
+         */     
+        $response = array("html" => $html);     
+        if (isset($signup_response["session"])) {
+            $response["session"] = $signup_response["session"];
+        }            
+        return $response;
     } 
 
     private function do_signup_third_party_wrap($html) { 
@@ -313,16 +321,31 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
     }     
 
     private function do_signup_api( $post ) {
+        $marketing =  parent::get_marketing();
         $gdpr_settings = parent::get_gdpr_settings();
+        $opt_ins = null;
+
+        if ( $marketing == 'mailin' && isset($gdpr_settings["opt_in"]) ) {
+            $opt_ins = $gdpr_settings["opt_in"];
+        }  
+        elseif ( $marketing == 'mailchimp' && isset($gdpr_settings["mailchimp_opt_in"]) ) {
+            $opt_ins = $gdpr_settings["mailchimp_opt_in"];
+        }         
+
         $html = '';
         $list_ids = array();
         $list_id_array = array();
+        $response_msg = '';
 
-        if ($gdpr_settings) {
+        if ($opt_ins) {
             ob_start();
-            foreach ($gdpr_settings["opt_in"] as $key => $opt_in): 
+            foreach ($opt_ins as $key => $opt_in): 
                 $email = "No";
                 $sms = "No";
+                $direct_mail = "No";
+                $customized_online_advertising = "No";
+
+                write_log($key.' $opt_in: ');write_log($opt_in);
                 if ( isset($post["sign-up-$key"]) ) {   
                         
                     $signups = $post["sign-up-$key"];        
@@ -332,29 +355,52 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
                     }
                     if ( in_array("sms", $signups) ) {
                         $sms = "Yes";
-                    }  
-                    if ($email === "Yes" || $sms === "Yes") {
-                        
-                        if ( $opt_in['list_ids'] ) {
-                            $list_ids = $opt_in['list_ids'];
-                            $list_id_temp_array = explode(',', $list_ids);
-                            foreach ($list_id_temp_array as $id) {
-                                $int_id = (int) trim($id);
-                                if ( is_int( $int_id ) && $int_id > 0 ){
-                                    $list_id_array[] =  $int_id;
+                    } 
+                    if ( in_array("direct_mail", $signups) ) {
+                        $direct_mail = "Yes";
+                    } 
+                    if ( in_array("customized_online_advertising", $signups) ) {
+                        $customized_online_advertising = "Yes";
+                    } 
+                                                             
+                    if ($email === "Yes" || $sms === "Yes" || $direct_mail === "Yes" || $customized_online_advertising === "Yes") {
+                        // if ( $opt_in['list_ids'] ) {
+                            $list_id_array_default = wp_swift_get_default_group();
+                            if (!$list_id_array_default) {
+                                $list_ids = $opt_in['list_ids'];
+                                $list_id_temp_array = explode(',', $list_ids);
+                                foreach ($list_id_temp_array as $id) {
+                                    // $int_id = (int) trim($id);
+                                    // if ( is_int( $int_id ) && $int_id > 0 ){
+                                    //     $list_id_array[] =  $int_id;
+                                    // }
+                                    $list_id_array[] = trim($id);//$int_id;
                                 }
+                                // write_log('$this->send_marketing: ');write_log($this->send_marketing);
+                                // write_log('count($list_id_array): ');write_log(count($list_id_array));
+                                // write_log('$list_id_array: ');write_log($list_id_array);                                
                             }
+                            else {
+                                $list_id_array = $list_id_array_default;
+                            }
+
                             if ( $this->send_marketing && count($list_id_array) ) {
-                                $response = wp_swift_do_signup( parent::get_form_data(), $signups, $list_id_array );  
+                                $signup_response = wp_swift_do_signup( $marketing, parent::get_form_data(), $signups, $list_id_array );  
+                                write_log('$signup_response: ');write_log($signup_response);
                             }                          
-                        }            
+                        // }
+                        // $signup_response = wp_swift_do_signup( parent::get_form_data(), $signups, $list_id_array );            
                     }                  
                 }
                 ?>
 
                 <p><?php echo $opt_in["message"] ?></p>
 
-                <p>Email: <?php echo $email; ?>, SMS: <?php echo $sms; ?></p>
+                <p>Email: <?php echo $email; if($sms == "Yes") echo ', SMS: '.$sms; ?></p>
+
+                <?php if (isset($signup_response["html"])): ?>
+                    <?php echo $signup_response["html"] ?>
+                <?php endif ?>
 
                 <?php if ( !$this->send_marketing ): ?>
                     <pre>Marketing debugging is on so user details were not saved.</pre>
@@ -365,8 +411,11 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
             $html = ob_get_contents();
             ob_end_clean();
         }
-
-        return $html;
+        $reponse = array("html" => $html);//, "session" => $signup_response["session"]);
+        if (isset($signup_response["session"])) {
+            $reponse["session"] = $signup_response["session"];
+        }
+        return $reponse;
     }
 
     private function build_page_details() {

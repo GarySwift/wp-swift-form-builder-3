@@ -14,7 +14,10 @@ require_once plugin_dir_path( __FILE__ ) . '_form-builder-clone-settings-group.p
 require_once plugin_dir_path( __FILE__ ) . '_form-builder-clone-textarea-attributes.php';
 require_once plugin_dir_path( __FILE__ ) . '_form-builder-inputs.php';
 require_once plugin_dir_path( __FILE__ ) . '_form-builder-type-clone-contact-form-response.php';
-require_once plugin_dir_path( __FILE__ ) . 'tabs/_form-builder-clone-settings-general.php';
+require_once plugin_dir_path( __FILE__ ) . 'tabs/_tab-clone-settings-inputs.php';
+require_once plugin_dir_path( __FILE__ ) . 'tabs/_tab-clone-settings-general.php';
+require_once plugin_dir_path( __FILE__ ) . 'tabs/_tab-clone-settings-spam-prevention.php';
+require_once plugin_dir_path( __FILE__ ) . 'tabs/_tab-clone-settings-marketing.php';
+require_once plugin_dir_path( __FILE__ ) . 'tabs/_tab-clone-settings-form-types.php';
 require_once plugin_dir_path( __FILE__ ) . 'main/_form-builder-input-sections.php';
 require_once plugin_dir_path( __FILE__ ) . '_form-builder-clone-group-default-settings.php';
-

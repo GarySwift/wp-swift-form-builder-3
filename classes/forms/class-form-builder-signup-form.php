@@ -36,7 +36,7 @@ class WP_Swift_Form_Builder_Signup_Form extends WP_Swift_Form_Builder_Parent {
             "response" => isset($process_form["response"]) ? $process_form["response"] : null,
 
         );
-        write_log($response); 
+        // write_log($response); 
         return $response;      
     }
 
@@ -70,7 +70,128 @@ class WP_Swift_Form_Builder_Signup_Form extends WP_Swift_Form_Builder_Parent {
     }
 }
 
-function wp_swift_do_signup($form_data, $signups, $list_id_array = array(), $list_id_array_unlink = null) {   
+function wp_swift_do_signup($marketing, $form_data, $signups, $list_id_array = array(), $list_id_array_unlink = null) {   
+    switch ($marketing) {
+        case "mailin":
+            return wp_swift_do_signup_sendinblue($form_data, $signups, $list_id_array, $list_id_array_unlink);
+            break;
+        case "mailchimp":
+            return wp_swift_do_signup_mailchimp($form_data, $signups, $list_id_array, $list_id_array_unlink);;
+            break;        
+    }
+    return;  
+}
+
+function wp_swift_do_signup_mailchimp($form_data, $signups, $list_id_array = array(), $list_id_array_unlink = null) {  
+    // write_log('');
+    // write_log('<< MAILCHIMP >>'); 
+    $response = null;
+    // write_log('$form_data: ');write_log($form_data);
+    // write_log('$signups: ');write_log($signups);
+    // write_log('$list_id_array: ');write_log($list_id_array);
+    // write_log('Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tempora blanditiis et illo ipsum voluptatum laborum tempore hic. Quia temporibus unde aperiam modi omnis magni, esse, eum cupiditate excepturi, nisi molestias.');
+    // $sendinblue_account_type = 1;//
+    $session = array();// This will send back the user data to store in local storage 
+    $data = array();// This will be the user data we send to SendInBlue
+    $save = false;// We will only save if SMS or Email is selected    
+    // $mailin = null;// This will be instantiated into a MailIn object
+    // $mailin_response = null;// This will be the response form the API call 
+    // $mailin_api_url = 'https://api.sendinblue.com/v2.0';// sendinblue url
+    $api_key = wp_swift_get_mailin_api();// The user API key
+    // $default_group = wp_swift_get_default_group();
+    // write_log('$default_group: ');write_log($default_group);
+    // $mailin_timeout = 5000;// Optional parameter: Timeout in MS    
+    // $first_name = get_form_input($form_data, "form-first-name" );
+    // $last_name = get_form_input($form_data, "form-last-name" );
+    $contact_name = get_form_input($form_data, "form-contact-name" );
+
+    $contact_name_array = explode(' ', $contact_name, 2);
+    // write_log('$contact_name: ');write_log($contact_name);
+    $first_name = $contact_name_array[0];
+    $last_name = '';
+    if (isset($contact_name_array[1]))
+        $last_name = $contact_name_array[1];
+    $email = get_form_input($form_data, "form-email" );
+    $email = strtolower($email);
+    $phone = get_form_input($form_data, "form-company-phone" ); 
+    $response = null;
+    // API to mailchimp ########################################################
+
+    $authToken = $api_key;
+
+        if ( $email ) {
+            $session["email"] = $email;
+            // if ( in_array("email", $signups) ) {
+            //     $data["email"] = $email;
+            //     $save = true;
+            // }
+        }
+        // if ( $phone ) {
+        //     // $phone = str_replace(' ', '', $phone);
+        //     $session["phone"] = $phone;
+        //     // if ( in_array("sms", $signups) ) {
+        //     //     $data["attributes"]["SMS"] = $phone;
+        //     //     $save = true;
+        //     // }
+        // }    
+    // The data to send to the API
+    $post_data = array(
+        "email_address" => $email, 
+        "status" => "subscribed",//"pending",//
+        "merge_fields" => array(
+            "FNAME" => $first_name,
+            "LNAME" => $last_name,
+            "PHONE" => $phone,
+        ),
+    );
+    $post_data["marketing_permissions"] = wp_swift_set_mailchimp_marketing_permissions($signups);
+    $data_center = substr($api_key,strpos($authToken,'-')+1);
+    foreach ($list_id_array as $list_id) {
+        # Setup cURL
+        $url = 'https://'.$data_center.'.api.mailchimp.com/3.0/lists/'.$list_id.'/members/';
+        $ch = curl_init($url);
+        curl_setopt_array($ch, array(
+            CURLOPT_POST => TRUE,
+            CURLOPT_RETURNTRANSFER => TRUE,
+            CURLOPT_HTTPHEADER => array(
+                'Authorization: apikey '.$api_key,
+                'Content-Type: application/json'
+            ),
+            CURLOPT_POSTFIELDS => json_encode($post_data)
+        ));   
+        $api_response = curl_exec($ch);# Send the request
+        $api_response = json_decode($api_response, true);# Decode the reponse
+        # End cURL
+        
+        if (isset($api_response["status"])) {
+            $response_msg = null;
+            $session["email"] = $email;
+            $response["session"] = $session;
+            if ($api_response["status"] == "subscribed") {               
+                $response_msg = "You have been added to our Mailing List!";              
+            }            
+            elseif ($api_response["status"] == "pending") {
+                $response_msg = "Please check your email and click the link in order to complete your subscription.";
+            
+            }
+            elseif ($api_response["status"] == "400") {
+                $response_msg = "Our records show that this email is already registered!";
+                // $response_msg .= 'https://' . $data_center . '.api.mailchimp.com/3.0/lists/' . $list_id . '/members/' . md5(strtolower($email));       
+            }
+            else {
+                $response_msg = $api_response["status"];
+            }            
+            if ( $response_msg ) {
+                $response["html"] = '<p><b>'.$response_msg.'</b></p>';
+            }
+            
+        }           
+    }
+    return $response;
+    // #######################################################################     
+}
+
+function wp_swift_do_signup_sendinblue($form_data, $signups, $list_id_array = array(), $list_id_array_unlink = null) {   
     $sendinblue_account_type == 1;//
     $session = array();// This will send back the user data to store in local storage 
     $data = array();// This will be the user data we send to SendInBlue
@@ -147,6 +268,48 @@ function wp_swift_do_signup($form_data, $signups, $list_id_array = array(), $lis
     return $response;
 }
 
+function wp_swift_set_mailchimp_marketing_permissions($signups) {   
+    $marketing_permissions = array();
+    $options = get_option( 'wp_swift_form_builder_settings' );
+
+    if (isset($options['wp_swift_form_builder_marketing_api_ids']['email']) && $options['wp_swift_form_builder_marketing_api_ids']['email'] != '') {
+        $set = false;
+        if (in_array('email', $signups)) {
+            $set = true;
+        }
+        $email = array( 
+            "marketing_permission_id" => $options['wp_swift_form_builder_marketing_api_ids']['email'],
+            "enabled" => $set
+        ); 
+        $marketing_permissions[] = $email;         
+    }  
+
+    if (isset($options['wp_swift_form_builder_marketing_api_ids']['direct_mail']) && $options['wp_swift_form_builder_marketing_api_ids']['direct_mail'] != '') {
+        $set = false;
+        if (in_array('direct_mail', $signups)) {
+            $set = true;
+        }
+        $direct_mail = array( 
+            "marketing_permission_id" => $options['wp_swift_form_builder_marketing_api_ids']['direct_mail'],
+            "enabled" => $set
+        ); 
+        $marketing_permissions[] = $direct_mail;         
+    } 
+
+    if (isset($options['wp_swift_form_builder_marketing_api_ids']['customized_online_advertising']) && $options['wp_swift_form_builder_marketing_api_ids']['customized_online_advertising'] != '') {
+        $set = false;
+        if (in_array('customized_online_advertising', $signups)) {
+            $set = true;
+        }
+        $customized_online_advertising = array( 
+            "marketing_permission_id" => $options['wp_swift_form_builder_marketing_api_ids']['customized_online_advertising'],
+            "enabled" => $set
+        ); 
+        $marketing_permissions[] = $customized_online_advertising;         
+    } 
+    return $marketing_permissions;           
+}
+
 function wp_swift_signup_html() {
     ob_start();
     ?>
@@ -183,6 +346,13 @@ function wp_swift_get_mailin_api() {
     $options = get_option( 'wp_swift_form_builder_settings' );
     if (isset($options['wp_swift_form_builder_marketing_api']) && $options['wp_swift_form_builder_marketing_api'] != '') {
         return $options['wp_swift_form_builder_marketing_api'];
+    } 
+}
+
+function wp_swift_get_default_group() {
+    $options = get_option( 'wp_swift_form_builder_settings' );
+    if (isset($options['wp_swift_form_builder_marketing_api_group']) && $options['wp_swift_form_builder_marketing_api_group'] != '') {
+        return array($options['wp_swift_form_builder_marketing_api_group']);
     } 
 }
 

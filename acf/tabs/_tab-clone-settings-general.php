@@ -3,7 +3,7 @@ if( function_exists('acf_add_local_field_group') ):
 
 acf_add_local_field_group(array(
 	'key' => 'group_5c80ea6c2b7d7',
-	'title' => 'Clone Settings: General',
+	'title' => 'Tab Clone Settings: General',
 	'fields' => array(
 		array(
 			'key' => 'field_5c896d0ca5b65',

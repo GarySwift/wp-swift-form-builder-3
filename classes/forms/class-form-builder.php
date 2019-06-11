@@ -54,24 +54,26 @@ class WP_Swift_Form_Builder_Parent {
      * This handles the ajax request 
      */
     public function get_response($post) {
-        $form_set = false;
-        $html = $this::process_form($post, true);
-        if ($this->helper->get_form_data()) {
-           $form_set = true;
-        }
-        if ($this->clear_after_submission) {
-            
-        }
-        $form_set = false;
+        $form_set = true;
+        $form_response = $this::process_form($post, true);
+        $html = $form_response["html"];
+
+        // if ($this->helper->get_form_data()) {
+        //    $form_set = true;
+        // }
+        // $form_set = true;
         // $form_set = $this->clear_after_submission;
         $response = array(
             "form_set" => $form_set,
             "error_count" => $this->helper->get_error_count(),
             "html" => $html,
         ); 
-        if ($this->clear_after_submission) {
-            $response["form_clear"] = 0;
-        }        
+        if (isset($form_response["session"])) {
+            $response["session"] = $form_response["session"];
+        }
+        // if ($this->helper->get_clear_after_submission()) {
+        //     $response["form_clear"] = 0;
+        // }        
         return $response;      
     }
 
@@ -80,18 +82,23 @@ class WP_Swift_Form_Builder_Parent {
         // Check if form was submitted
         if( isset( $post[$this->helper->get_submit_button_name()] ) ) {
             $process_form = $this->process_form($post);// This will do validation and return a user message
-            if (isset($process_form["html"])) {
-                $form_response = $process_form["html"];
-            }
-            else {
-                $form_response = $process_form;
-            }     
+            // if (isset($process_form["html"])) {
+            //     $form_response = $process_form["html"];
+            // }
+            // else {
+            //     $form_response = $process_form;
+            // }
+            $form_response = $process_form;
+            // if (isset($process_form["html"])) {
+                     
+            // }     
         }
         return $form_response;        
     }
     public function process_form($post, $ajax=false) {
         $this->helper = $this->validate->validate_form($this->helper, $post, $ajax);
         if ( $this->helper->get_error_count() === 0 ) {
+            // $response = $this->submit_form_success($post, $ajax);
             return $this->submit_form_success($post, $ajax);
         }
         else {
@@ -139,6 +146,13 @@ class WP_Swift_Form_Builder_Parent {
      */
     public function get_gdpr_settings() {
         return $this->helper->get_gdpr_settings();
+    } 
+
+    /*
+     * Get marketing
+     */
+    public function get_marketing() {
+        return $this->helper->get_marketing();
     } 
     /*
      * Get attachments

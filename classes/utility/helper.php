@@ -48,6 +48,7 @@ class WP_Swift_Form_Builder_Helper {
 
     private $recaptcha = array();
     private $gdpr_settings = null;
+    private $marketing = false;
     private $attachments = array();
     private $tab_index;
     private $next_button_in_sections = false;
@@ -187,6 +188,9 @@ class WP_Swift_Form_Builder_Helper {
             }              
         }
         //@end todo
+        if(isset($this->settings["marketing"])) {
+            $this->marketing = $this->settings["marketing"];
+        }
 
         if (count($hidden)) {
             $this->hidden = $hidden;
@@ -505,6 +509,9 @@ class WP_Swift_Form_Builder_Helper {
             return true;
         }
     }
+    public function get_marketing() {
+        return $this->marketing;
+    }    
 
     public function get_gdpr_settings() {
         if ( $this->gdpr_settings ) {
