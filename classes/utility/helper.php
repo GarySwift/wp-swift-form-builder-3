@@ -183,8 +183,11 @@ class WP_Swift_Form_Builder_Helper {
                     }                
                 }
             }
-            if( get_field('gdpr', $this->form_post_id ) ) {
+            $gdpr = get_field('gdpr', $this->form_post_id );
+            echo '<pre>$gdpr: '; var_dump($gdpr); echo '</pre>';
+            if( $marketing = get_field('marketing', $this->form_post_id ) !== 'none' ) {
                 $this->gdpr_settings = get_field('gdpr_settings', $this->form_post_id);
+                echo '<pre>$this->gdpr_settings: '; var_dump($this->gdpr_settings); echo '</pre>';
             }              
         }
         //@end todo
