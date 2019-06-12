@@ -67,6 +67,7 @@ class WP_Swift_Form_Builder_Parent {
             "form_set" => $form_set,
             "error_count" => $this->helper->get_error_count(),
             "html" => $html,
+            "process_form_response" => $form_response,
         ); 
         if (isset($form_response["session"])) {
             $response["session"] = $form_response["session"];
