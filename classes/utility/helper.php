@@ -47,7 +47,7 @@ class WP_Swift_Form_Builder_Helper {
 
 
     private $recaptcha = array();
-    private $gdpr_settings = null;
+    // private $gdpr_settings = null;
     private $marketing = false;
     private $attachments = array();
     private $tab_index;
@@ -159,9 +159,12 @@ class WP_Swift_Form_Builder_Helper {
         else {
             $this->submit_button_text = "Submit Form";
         }
+        if (isset($settings['recaptcha'])) {
+            $this->recaptcha = $this->settings["recaptcha"];
+        }
         // todo - move the get_field requests into _build-form-array.php
-        if (function_exists("get_field")) {
-            if( get_field('spam_prevention_type', $this->form_post_id ) ) {
+        // if (function_exists("get_field")) {
+  /*          if( get_field('spam_prevention_type', $this->form_post_id ) ) {
                 $spam_prevention_type = get_field('spam_prevention_type', $this->form_post_id );
                 if ($spam_prevention_type === 'google') {
 
@@ -182,19 +185,23 @@ class WP_Swift_Form_Builder_Helper {
                         //echo '<pre>3 $this->recaptcha: '; var_dump($this->recaptcha); echo '</pre>';
                     }                
                 }
-            }
-            $gdpr = get_field('gdpr', $this->form_post_id );
+            }*/
+            // $gdpr = get_field('gdpr', $this->form_post_id );
             // echo '<pre>$gdpr: '; var_dump($gdpr); echo '</pre>';
-            if( $marketing = get_field('marketing', $this->form_post_id ) !== 'none' ) {
-                $this->gdpr_settings = get_field('gdpr_settings', $this->form_post_id);
-                // echo '<pre>$this->gdpr_settings: '; var_dump($this->gdpr_settings); echo '</pre>';
-            }              
-        }
+            // if( $marketing = get_field('marketing', $this->form_post_id ) !== 'none' ) {
+            //     $this->gdpr_settings = get_field('gdpr_settings', $this->form_post_id);
+            //     // echo '<pre>$this->gdpr_settings: '; var_dump($this->gdpr_settings); echo '</pre>';
+            // }              
+        // }
         //@end todo
         if(isset($this->settings["marketing"])) {
             $this->marketing = $this->settings["marketing"];
+            // echo '<pre>$this->marketing: '; var_dump($this->marketing); echo '</pre>';echo "<hr>";
         }
-
+        if(isset($this->settings["gdpr_settings"])) {
+            $this->gdpr_settings = $this->settings["gdpr_settings"];
+            // echo '<pre>$this->gdpr_settings: '; var_dump($this->gdpr_settings); echo '</pre>';echo "<hr>";
+        }
         if (count($hidden)) {
             $this->hidden = $hidden;
         }

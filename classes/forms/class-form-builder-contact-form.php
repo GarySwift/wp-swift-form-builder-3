@@ -345,7 +345,7 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
                 $direct_mail = "No";
                 $customized_online_advertising = "No";
 
-                write_log($key.' $opt_in: ');write_log($opt_in);
+                // write_log($key.' $opt_in: ');write_log($opt_in);
                 if ( isset($post["sign-up-$key"]) ) {   
                         
                     $signups = $post["sign-up-$key"];        
@@ -386,7 +386,7 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
 
                             if ( $this->send_marketing && count($list_id_array) ) {
                                 $signup_response = wp_swift_do_signup( $marketing, parent::get_form_data(), $signups, $list_id_array );  
-                                write_log('$signup_response: ');write_log($signup_response);
+                                // write_log('$signup_response: ');write_log($signup_response);
                             }                          
                         // }
                         // $signup_response = wp_swift_do_signup( parent::get_form_data(), $signups, $list_id_array );            
@@ -396,7 +396,13 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
 
                 <p><?php echo $opt_in["message"] ?></p>
 
-                <p>Email: <?php echo $email; if($sms == "Yes") echo ', SMS: '.$sms; ?></p>
+                <?php if( in_array("email", $opt_in["options"]) ) echo '<p>Email: '.$email.'</p>'; ?>
+
+                <?php if( in_array("sms", $opt_in["options"]) ) echo '<p>SMS: '.$sms.'</p>'; ?>
+
+                <?php if( in_array("direct_mail", $opt_in["options"]) ) echo '<p>Direct Mail: '.$direct_mail.'</p>'; ?>
+
+                <?php if( in_array("customized_online_advertising", $opt_in["options"]) ) echo '<p>Customized Online Advertising: '.$customized_online_advertising.'</p>'; ?>
 
                 <?php if (isset($signup_response["html"])): ?>
                     <?php echo $signup_response["html"] ?>

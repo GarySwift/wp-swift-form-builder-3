@@ -83,30 +83,22 @@ function wp_swift_do_signup($marketing, $form_data, $signups, $list_id_array = a
 }
 
 function wp_swift_do_signup_mailchimp($form_data, $signups, $list_id_array = array(), $list_id_array_unlink = null) {  
-    // write_log('');
-    // write_log('<< MAILCHIMP >>'); 
+    /**
+     * $signup_status
+     *
+     * "pending" means users recieve an email
+     * "subscribed" means they are directly added
+     */    
+    $signup_status = "subscribed";    
     $response = null;
-    // write_log('$form_data: ');write_log($form_data);
-    // write_log('$signups: ');write_log($signups);
-    // write_log('$list_id_array: ');write_log($list_id_array);
-    // write_log('Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tempora blanditiis et illo ipsum voluptatum laborum tempore hic. Quia temporibus unde aperiam modi omnis magni, esse, eum cupiditate excepturi, nisi molestias.');
-    // $sendinblue_account_type = 1;//
     $session = array();// This will send back the user data to store in local storage 
     $data = array();// This will be the user data we send to SendInBlue
     $save = false;// We will only save if SMS or Email is selected    
-    // $mailin = null;// This will be instantiated into a MailIn object
-    // $mailin_response = null;// This will be the response form the API call 
-    // $mailin_api_url = 'https://api.sendinblue.com/v2.0';// sendinblue url
-    $api_key = wp_swift_get_mailin_api();// The user API key
-    // $default_group = wp_swift_get_default_group();
-    // write_log('$default_group: ');write_log($default_group);
-    // $mailin_timeout = 5000;// Optional parameter: Timeout in MS    
+    $api_key = wp_swift_get_marketing_api();// The user API key
     // $first_name = get_form_input($form_data, "form-first-name" );
     // $last_name = get_form_input($form_data, "form-last-name" );
-    $contact_name = get_form_input($form_data, "form-contact-name" );
-
-    $contact_name_array = explode(' ', $contact_name, 2);
-    // write_log('$contact_name: ');write_log($contact_name);
+    $contact_name = get_form_input($form_data, "form-contact-name" );// potential issue here if name field is not the the same
+    $contact_name_array = explode(' ', $contact_name, 2);// Split contact name in two
     $first_name = $contact_name_array[0];
     $last_name = '';
     if (isset($contact_name_array[1]))
@@ -114,30 +106,11 @@ function wp_swift_do_signup_mailchimp($form_data, $signups, $list_id_array = arr
     $email = get_form_input($form_data, "form-email" );
     $email = strtolower($email);
     $phone = get_form_input($form_data, "form-company-phone" ); 
-    $response = null;
-    // API to mailchimp ########################################################
 
-    $authToken = $api_key;
-
-        if ( $email ) {
-            $session["email"] = $email;
-            // if ( in_array("email", $signups) ) {
-            //     $data["email"] = $email;
-            //     $save = true;
-            // }
-        }
-        // if ( $phone ) {
-        //     // $phone = str_replace(' ', '', $phone);
-        //     $session["phone"] = $phone;
-        //     // if ( in_array("sms", $signups) ) {
-        //     //     $data["attributes"]["SMS"] = $phone;
-        //     //     $save = true;
-        //     // }
-        // }    
     // The data to send to the API
     $post_data = array(
         "email_address" => $email, 
-        "status" => "pending",//"subscribed",//
+        "status" => $signup_status,
         "merge_fields" => array(
             "FNAME" => $first_name,
             "LNAME" => $last_name,
@@ -145,7 +118,9 @@ function wp_swift_do_signup_mailchimp($form_data, $signups, $list_id_array = arr
         ),
     );
     $post_data["marketing_permissions"] = wp_swift_set_mailchimp_marketing_permissions($signups);
-    $data_center = substr($api_key,strpos($authToken,'-')+1);
+    $data_center = substr($api_key,strpos($api_key,'-')+1);
+    # This loop will run once ($list_id_array has a single array element at the moment)
+    // $list_id_array = array();
     foreach ($list_id_array as $list_id) {
         # Setup cURL
         $url = 'https://'.$data_center.'.api.mailchimp.com/3.0/lists/'.$list_id.'/members/';
@@ -184,11 +159,9 @@ function wp_swift_do_signup_mailchimp($form_data, $signups, $list_id_array = arr
             if ( $response_msg ) {
                 $response["html"] = '<p><b>'.$response_msg.'</b></p>';
             }
-            
         }           
     }
     return $response;
-    // #######################################################################     
 }
 
 function wp_swift_do_signup_sendinblue($form_data, $signups, $list_id_array = array(), $list_id_array_unlink = null) {   
@@ -199,7 +172,7 @@ function wp_swift_do_signup_sendinblue($form_data, $signups, $list_id_array = ar
     $mailin = null;// This will be instantiated into a MailIn object
     $mailin_response = null;// This will be the response form the API call 
     $mailin_api_url = 'https://api.sendinblue.com/v2.0';// sendinblue url
-    $mailin_api_key = wp_swift_get_mailin_api();// The user API key
+    $mailin_api_key = wp_swift_get_marketing_api();// The user API key
     $mailin_timeout = 5000;// Optional parameter: Timeout in MS    
     $first_name = get_form_input($form_data, "form-first-name" );
     $last_name = get_form_input($form_data, "form-last-name" );
@@ -342,7 +315,7 @@ function wp_swift_signup_error_html() {
     return $html;
 }
 
-function wp_swift_get_mailin_api() {
+function wp_swift_get_marketing_api() {
     $options = get_option( 'wp_swift_form_builder_settings' );
     if (isset($options['wp_swift_form_builder_marketing_api']) && $options['wp_swift_form_builder_marketing_api'] != '') {
         return $options['wp_swift_form_builder_marketing_api'];

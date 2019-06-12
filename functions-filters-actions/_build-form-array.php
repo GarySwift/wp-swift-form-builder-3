@@ -102,10 +102,49 @@ function wp_swift_form_data_loop($id, $_post = null) {
             $settings['colour_theme'] = ' form-builder-theme-'.$colour_theme;
         }
 
+
+
+        // todo - move the get_field requests into _build-form-array.php
+        // if (function_exists("get_field")) {
+        if( $spam_prevention_type = get_field('spam_prevention_type', $id ) ) {
+            // $spam_prevention_type = get_field('spam_prevention_type', $id );
+            if ($spam_prevention_type === 'google') {
+
+                $options = get_option( 'wp_swift_form_builder_settings' );
+                $google_settings = $options['wp_swift_form_builder_google_recaptcha'];
+                if ( $google_settings["site_key"] !== '' && $google_settings["secret_key"] !== '' ) {
+                    // $this->recaptcha = $google_settings;
+                    $settings['recaptcha'] = $google_settings;
+                    //echo '<pre>1 $this->recaptcha: '; var_dump($this->recaptcha); echo '</pre>';
+                }
+                if( $recaptcha_settings = get_field('recaptcha_settings', $id) ) {
+                    // $recaptcha_settings = get_field('recaptcha_settings', $id);
+                    // $this->recaptcha = array_merge( $this->recaptcha, $recaptcha_settings );
+                    $settings['recaptcha'] = array_merge( $this->recaptcha, $recaptcha_settings );
+                    //echo '<pre>2 $this->recaptcha: '; var_dump($this->recaptcha); echo '</pre>';
+                }
+                if( $recaptcha_display_settings = get_field('recaptcha_display_settings', $id) ) {
+                    // $recaptcha_display_settings = get_field('recaptcha_display_settings', $id);
+                    // $this->recaptcha = array_merge( $this->recaptcha, $recaptcha_display_settings );
+                    $settings['recaptcha'] = array_merge( $this->recaptcha, $recaptcha_display_settings );
+                    //echo '<pre>3 $this->recaptcha: '; var_dump($this->recaptcha); echo '</pre>';
+                }                
+            }
+        }
+        // $gdpr = get_field('gdpr', $id );
+        // // echo '<pre>$gdpr: '; var_dump($gdpr); echo '</pre>';
+        // if( $marketing = get_field('marketing', $id ) !== 'none' ) {
+        //     $this->gdpr_settings = get_field('gdpr_settings', $id);
+        //     // echo '<pre>$this->gdpr_settings: '; var_dump($this->gdpr_settings); echo '</pre>';
+        // }              
+        // }
+        //@end todo
+        //
         if( $marketing = get_field('marketing', $id) ) {
             // echo '<pre>$marketing: '; var_dump($marketing); echo '</pre>';echo "<hr>";
-            if ($marketing !== 'none') {
+            if ($marketing !== 'none' ) {
                 $settings['marketing'] = $marketing;
+                $settings['gdpr_settings'] = get_field('gdpr_settings', $id);
             }
         }   
         // todo: get other marketing/GDPR fields into here
