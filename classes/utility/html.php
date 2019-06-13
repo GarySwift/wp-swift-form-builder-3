@@ -21,7 +21,7 @@ class WP_Swift_Form_Builder_Html {
 
     }
     
-    public function front_end_form($helper, $html_response = null, $msg = null ) {
+    public function front_end_form($helper, $response = null, $msg = null ) {
 
         ?>
 
@@ -29,8 +29,8 @@ class WP_Swift_Form_Builder_Html {
 
             <?php $this->section_stage_guide($helper) ?>
 
-            <?php if ($html_response): ?>
-                <?php echo $html_response; ?>
+            <?php if ($response): ?>
+                <?php echo $response["html"]; ?>
             <?php endif ?>
 
             <?php if ($msg): ?>

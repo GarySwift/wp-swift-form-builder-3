@@ -95,14 +95,19 @@ function wp_swift_do_signup_mailchimp($form_data, $signups, $list_id_array = arr
     $data = array();// This will be the user data we send to SendInBlue
     $save = false;// We will only save if SMS or Email is selected    
     $api_key = wp_swift_get_marketing_api();// The user API key
-    // $first_name = get_form_input($form_data, "form-first-name" );
-    // $last_name = get_form_input($form_data, "form-last-name" );
-    $contact_name = get_form_input($form_data, "form-contact-name" );// potential issue here if name field is not the the same
-    $contact_name_array = explode(' ', $contact_name, 2);// Split contact name in two
-    $first_name = $contact_name_array[0];
-    $last_name = '';
-    if (isset($contact_name_array[1]))
-        $last_name = $contact_name_array[1];
+    $first_name = get_form_input($form_data, "form-first-name" );
+    $last_name = get_form_input($form_data, "form-last-name" );
+    write_log('$first_name: ');write_log($first_name);
+    write_log('$last_name: ');write_log($last_name);
+    if (!$first_name) {
+        $contact_name = get_form_input($form_data, "form-contact-name" );// potential issue here if name field is not the the same
+        $contact_name_array = explode(' ', $contact_name, 2);// Split contact name in two
+        $first_name = $contact_name_array[0];
+        $last_name = '';
+        if (isset($contact_name_array[1]))
+            $last_name = $contact_name_array[1];        
+    }
+
     $email = get_form_input($form_data, "form-email" );
     $email = strtolower($email);
     $phone = get_form_input($form_data, "form-company-phone" ); 
@@ -118,6 +123,23 @@ function wp_swift_do_signup_mailchimp($form_data, $signups, $list_id_array = arr
         ),
     );
     $post_data["marketing_permissions"] = wp_swift_set_mailchimp_marketing_permissions($signups);
+
+    $company = get_form_input($form_data, "form-company-name" );
+    if ($company) {
+        $post_data["merge_fields"]["COMPANY"] = $company;
+        write_log('$company: ');write_log($company);
+    }
+    $job_title = get_form_input($form_data, "form-company-position" );
+    if ($job_title) {
+        $post_data["merge_fields"]["JOBTITLE"] = $job_title;
+        write_log('$job_title: ');write_log($job_title);
+    }
+    $country = get_form_input($form_data, "form-country" );
+    if ($country) {
+        $post_data["merge_fields"]["COUNTRY"] = $country;
+        write_log('$country: ');write_log($country);
+    }    
+    write_log('$post_data: ');write_log($post_data);write_log('');
     $data_center = substr($api_key,strpos($api_key,'-')+1);
     # This loop will run once ($list_id_array has a single array element at the moment)
     // $list_id_array = array();
@@ -136,6 +158,7 @@ function wp_swift_do_signup_mailchimp($form_data, $signups, $list_id_array = arr
         ));   
         $api_response = curl_exec($ch);# Send the request
         $api_response = json_decode($api_response, true);# Decode the reponse
+        write_log('$api_response: ');write_log($api_response);
         # End cURL
         
         if (isset($api_response["status"])) {
@@ -333,4 +356,5 @@ function get_form_input($form_data, $key) {
     if (isset( $form_data[0]["inputs"][$key]["clean"] )) {
         return $form_data[0]["inputs"][$key]["clean"];
     }
+    return '';
 }

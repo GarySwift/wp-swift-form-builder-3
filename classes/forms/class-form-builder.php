@@ -103,7 +103,7 @@ class WP_Swift_Form_Builder_Parent {
             return $this->submit_form_success($post, $ajax);
         }
         else {
-            return $this->html_builder->submit_form_failure($this->helper, $ajax);
+            return array("html" => $this->html_builder->submit_form_failure($this->helper, $ajax));
         }       
     }
     public function submit_form_success($post, $ajax) {}  

@@ -120,13 +120,13 @@ function wp_swift_form_data_loop($id, $_post = null) {
                 if( $recaptcha_settings = get_field('recaptcha_settings', $id) ) {
                     // $recaptcha_settings = get_field('recaptcha_settings', $id);
                     // $this->recaptcha = array_merge( $this->recaptcha, $recaptcha_settings );
-                    $settings['recaptcha'] = array_merge( $this->recaptcha, $recaptcha_settings );
+                    $settings['recaptcha'] = array_merge( $settings['recaptcha'], $recaptcha_settings );
                     //echo '<pre>2 $this->recaptcha: '; var_dump($this->recaptcha); echo '</pre>';
                 }
                 if( $recaptcha_display_settings = get_field('recaptcha_display_settings', $id) ) {
                     // $recaptcha_display_settings = get_field('recaptcha_display_settings', $id);
                     // $this->recaptcha = array_merge( $this->recaptcha, $recaptcha_display_settings );
-                    $settings['recaptcha'] = array_merge( $this->recaptcha, $recaptcha_display_settings );
+                    $settings['recaptcha'] = array_merge( $settings['recaptcha'], $recaptcha_display_settings );
                     //echo '<pre>3 $this->recaptcha: '; var_dump($this->recaptcha); echo '</pre>';
                 }                
             }
