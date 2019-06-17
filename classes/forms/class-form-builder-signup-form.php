@@ -13,30 +13,42 @@ class WP_Swift_Form_Builder_Signup_Form extends WP_Swift_Form_Builder_Parent {
      */
     public function __construct( $form_id, $post_id = null, $hidden = array(), $type = 'signup' ) {//
         parent::__construct( $form_id, $post_id, $hidden, $type );
+        // echo "<h1>".parent::helper()->lorem()."</h1>";
+        // echo parent::helper->lorem();
+        // parent::helper()->lorem();
+        // echo "<p>".parent::helper()->lorem()."</p>";
     }    
 
     public function get_response($post) {
         $form_set = false;
         $process_form = parent::process_form($post, true);
+        $ref = $_POST['ref'];
+        // write_log('$ref: ');write_log($ref);
 
         if (parent::get_form_data()) {
            $form_set = true;
         }
-        if (isset($process_form["html"])) {
-            $html = $process_form["html"];
-        }
-        else {
-            $html = $process_form;
-        }
+        // if (isset($process_form["html"])) {
+        //     $html = $process_form["html"];
+        // }
+        // else {
+        //     $html = $process_form;
+        // }
         $response = array(
             "form_set" => $form_set,
             "error_count" => parent::get_error_count(),
-            "html" => $html,
-            "session" => isset($process_form["session"]) ? $process_form["session"] : null,
-            "response" => isset($process_form["response"]) ? $process_form["response"] : null,
+            // "html" => $html,
+            // "session" => isset($process_form["session"]) ? $process_form["session"] : null,
+            // "response" => isset($process_form["response"]) ? $process_form["response"] : null,
 
         );
+        $response = array_merge($response, $process_form);
+        if ($ref) {
+           $response["location"] = $ref; 
+        }
+        // $response["location"] = home_url( '', null );
         // write_log($response); 
+        // write_log('get_response() $response: ');write_log($response);
         return $response;      
     }
 
@@ -57,17 +69,29 @@ class WP_Swift_Form_Builder_Signup_Form extends WP_Swift_Form_Builder_Parent {
      * @return string               The html success message
      */
     public function submit_form_success($post, $ajax) {
+        $response = array("html" => "Unknown error");
         $signups = isset($post["sign-up"]) ? $post["sign-up"] : array();
-        $listid = array(5);
+        $listid = null;
+        // $listid = array(5);
         $listid_unlink = null;
-        if (isset($post["form-signup-options"]) && isset($post["form-signup-options-hidden"])) {
-            $listid = $post["form-signup-options"];
-            $listid_hidden = $post["form-signup-options-hidden"];
-            $listid_unlink = array_diff_assoc($listid_hidden, $listid);       
-        }
-        $response = wp_swift_do_signup(parent::get_form_data(), $signups, $listid, $listid_unlink);
+        // if (isset($post["form-signup-options"]) && isset($post["form-signup-options-hidden"])) {
+        //     $listid = $post["form-signup-options"];
+        //     $listid_hidden = $post["form-signup-options-hidden"];
+        //     $listid_unlink = array_diff_assoc($listid_hidden, $listid);       
+        // }
+//         $marketing =  parent::get_marketing();
+//         // $response = wp_swift_do_signup($marketing, parent::get_form_data(), $signups, $listid, $listid_unlink);
+//         $response = $this->do_signup_api( $post );
+        // $marketing =  parent::helper()->get_marketing();
+        // $gdpr_settings = parent::helper()->get_gdpr_settings();
+// $response = parent::html()->do_signup_api( $post, $marketing, $gdpr_settings, $send_marketing = false );
+$response = parent::signup_api($post, $send_marketing = true);
+// $response["location"] = home_url( '', null );
+        //         
         return $response;  
     }
+
+
 }
 
 function wp_swift_do_signup($marketing, $form_data, $signups, $list_id_array = array(), $list_id_array_unlink = null) {   
@@ -97,8 +121,9 @@ function wp_swift_do_signup_mailchimp($form_data, $signups, $list_id_array = arr
     $api_key = wp_swift_get_marketing_api();// The user API key
     $first_name = get_form_input($form_data, "form-first-name" );
     $last_name = get_form_input($form_data, "form-last-name" );
-    write_log('$first_name: ');write_log($first_name);
-    write_log('$last_name: ');write_log($last_name);
+    $contact_name = $first_name . ' ' . $last_name;
+    // write_log('$first_name: ');write_log($first_name);
+    // write_log('$last_name: ');write_log($last_name);
     if (!$first_name) {
         $contact_name = get_form_input($form_data, "form-contact-name" );// potential issue here if name field is not the the same
         $contact_name_array = explode(' ', $contact_name, 2);// Split contact name in two
@@ -110,7 +135,9 @@ function wp_swift_do_signup_mailchimp($form_data, $signups, $list_id_array = arr
 
     $email = get_form_input($form_data, "form-email" );
     $email = strtolower($email);
-    $phone = get_form_input($form_data, "form-company-phone" ); 
+    $phone = get_form_input($form_data, "form-phone" ); 
+    if (!$phone) $phone = get_form_input($form_data, "form-company-phone" );
+     
 
     // The data to send to the API
     $post_data = array(
@@ -122,27 +149,39 @@ function wp_swift_do_signup_mailchimp($form_data, $signups, $list_id_array = arr
             "PHONE" => $phone,
         ),
     );
+
     $post_data["marketing_permissions"] = wp_swift_set_mailchimp_marketing_permissions($signups);
 
     $company = get_form_input($form_data, "form-company-name" );
     if ($company) {
         $post_data["merge_fields"]["COMPANY"] = $company;
-        write_log('$company: ');write_log($company);
+        // write_log('$company: ');write_log($company);
     }
     $job_title = get_form_input($form_data, "form-company-position" );
     if ($job_title) {
         $post_data["merge_fields"]["JOBTITLE"] = $job_title;
-        write_log('$job_title: ');write_log($job_title);
+        // write_log('$job_title: ');write_log($job_title);
     }
     $country = get_form_input($form_data, "form-country" );
     if ($country) {
         $post_data["merge_fields"]["COUNTRY"] = $country;
-        write_log('$country: ');write_log($country);
-    }    
-    write_log('$post_data: ');write_log($post_data);write_log('');
+        // write_log('$country: ');write_log($country);
+    }
+
+    $session_data = array(
+        "first-name" => $first_name,
+        "last-name" => $last_name,
+        "email" => $email,
+        "phone" => $phone,
+        "job_title" => $job_title,
+        "company" => $company,
+        "country" => $country,        
+    );        
+    // write_log('$post_data: ');write_log($post_data);write_log('');
     $data_center = substr($api_key,strpos($api_key,'-')+1);
     # This loop will run once ($list_id_array has a single array element at the moment)
     // $list_id_array = array();
+    // write_log('DEBUG: $list_id_array: ');write_log($list_id_array);
     foreach ($list_id_array as $list_id) {
         # Setup cURL
         $url = 'https://'.$data_center.'.api.mailchimp.com/3.0/lists/'.$list_id.'/members/';
@@ -157,16 +196,19 @@ function wp_swift_do_signup_mailchimp($form_data, $signups, $list_id_array = arr
             CURLOPT_POSTFIELDS => json_encode($post_data)
         ));   
         $api_response = curl_exec($ch);# Send the request
-        $api_response = json_decode($api_response, true);# Decode the reponse
-        write_log('$api_response: ');write_log($api_response);
+        $api_response = json_decode($api_response, true);# Decode the response
+        // write_log('$api_response: ');write_log($api_response);
         # End cURL
         
         if (isset($api_response["status"])) {
             $response_msg = null;
             $session["email"] = $email;
-            $response["session"] = $session;
+            // $response["session"] = $session;
             if ($api_response["status"] == "subscribed") {               
-                $response_msg = "You have been added to our Mailing List!";              
+                $response_msg = "You have been added to our Mailing List!";  
+                $session_data["subscribed"] = true;   
+                $response["session"] = $session_data;   
+                // write_log('$response["session"]: ');write_log($response["session"]);      
             }            
             elseif ($api_response["status"] == "pending") {
                 $response_msg = "Please check your email and click the link in order to complete your subscription.";

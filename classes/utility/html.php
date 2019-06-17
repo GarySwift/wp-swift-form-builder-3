@@ -38,7 +38,7 @@ class WP_Swift_Form_Builder_Html {
             <?php endif ?>
             
             <!-- @start form -->
-            <form method="post"<?php echo $helper->get_action(); ?> name="<?php echo $helper->get_form_name(); ?>" id="<?php echo $helper->get_form_css_id(); ?>" data-id="<?php echo $helper->get_form_post_id(); ?>" data-post-id="<?php echo $helper->get_post_id(); ?>" data-type="<?php echo $helper->get_form_type() ?>"<?php $helper->get_form_data_types() ?> class="<?php echo $helper->get_form_class() . ' ' . $helper->get_form_name(); ?>" novalidate<?php echo $helper->get_enctype(); ?>>
+            <form method="post"<?php echo $helper->get_action(); ?> name="<?php echo $helper->get_form_name(); ?>" id="<?php echo $helper->get_form_css_id(); ?>" data-id="<?php echo $helper->get_form_post_id(); ?>" data-post-id="<?php echo $helper->get_post_id(); ?>" data-type="<?php echo $helper->get_form_type() ?>" <?php $helper->get_form_data_types() ?> class="<?php echo $helper->get_form_class() . ' ' . $helper->get_form_name(); ?>" novalidate<?php echo $helper->get_enctype(); ?>>
 
                 <?php if ( isset($this->hidden) && count($this->hidden)):
                     foreach ($this->hidden as $key => $hidden): ?>
@@ -1042,5 +1042,110 @@ $this->close_form_groups_html();
                 <?php endforeach ?>
             </div>
         <?php endif;
-    }                          
+    } 
+
+
+   public function signup_api( $post, $form_data, $marketing, $gdpr_settings, $send_marketing ) {
+        // $marketing =  parent::get_marketing();
+        // $gdpr_settings = parent::get_gdpr_settings();
+        $opt_ins = null;
+
+        if ( $marketing == 'mailin' && isset($gdpr_settings["opt_in"]) ) {
+            $opt_ins = $gdpr_settings["opt_in"];
+        }  
+        elseif ( $marketing == 'mailchimp' && isset($gdpr_settings["mailchimp_opt_in"]) ) {
+            $opt_ins = $gdpr_settings["mailchimp_opt_in"];
+        }         
+
+        $html = '';
+        $list_ids = array();
+        $list_id_array = array();
+        $response_msg = '';
+
+        if ($opt_ins) {
+            ob_start();
+            foreach ($opt_ins as $key => $opt_in): 
+                $email = "No";
+                $sms = "No";
+                $direct_mail = "No";
+                $customized_online_advertising = "No";
+
+                // write_log($key.' $opt_in: ');write_log($opt_in);
+                if ( isset($post["sign-up-$key"]) ) {   
+                        
+                    $signups = $post["sign-up-$key"];        
+
+                    if ( in_array("email", $signups) ) {
+                        $email = "Yes";
+                    }
+                    if ( in_array("sms", $signups) ) {
+                        $sms = "Yes";
+                    } 
+                    if ( in_array("direct_mail", $signups) ) {
+                        $direct_mail = "Yes";
+                    } 
+                    if ( in_array("customized_online_advertising", $signups) ) {
+                        $customized_online_advertising = "Yes";
+                    } 
+                                                             
+                    if ($email === "Yes" || $sms === "Yes" || $direct_mail === "Yes" || $customized_online_advertising === "Yes") {
+                        // if ( $opt_in['list_ids'] ) {
+                            $list_id_array_default = wp_swift_get_default_group();
+                            if (!$list_id_array_default) {
+                                $list_ids = $opt_in['list_ids'];
+                                $list_id_temp_array = explode(',', $list_ids);
+                                foreach ($list_id_temp_array as $id) {
+                                    // $int_id = (int) trim($id);
+                                    // if ( is_int( $int_id ) && $int_id > 0 ){
+                                    //     $list_id_array[] =  $int_id;
+                                    // }
+                                    $list_id_array[] = trim($id);//$int_id;
+                                }
+                                // write_log('$send_marketing: ');write_log($send_marketing);
+                                // write_log('count($list_id_array): ');write_log(count($list_id_array));
+                                // write_log('$list_id_array: ');write_log($list_id_array);                                
+                            }
+                            else {
+                                $list_id_array = $list_id_array_default;
+                            }
+
+                            if ( $send_marketing && count($list_id_array) ) {
+                                $signup_response = wp_swift_do_signup( $marketing, $form_data, $signups, $list_id_array );  
+                                // write_log('HTML >> $signup_response: ');write_log($signup_response);
+                            }                          
+                        // }
+                        // $signup_response = wp_swift_do_signup( parent::get_form_data(), $signups, $list_id_array );            
+                    }                  
+                }
+                ?>
+
+                <p><?php echo $opt_in["message"] ?></p>
+
+                <?php if( in_array("email", $opt_in["options"]) ) echo '<p>Email: '.$email.'</p>'; ?>
+
+                <?php if( in_array("sms", $opt_in["options"]) ) echo '<p>SMS: '.$sms.'</p>'; ?>
+
+                <?php if( in_array("direct_mail", $opt_in["options"]) ) echo '<p>Direct Mail: '.$direct_mail.'</p>'; ?>
+
+                <?php if( in_array("customized_online_advertising", $opt_in["options"]) ) echo '<p>Customized Online Advertising: '.$customized_online_advertising.'</p>'; ?>
+
+                <?php if (isset($signup_response["html"])): ?>
+                    <?php echo $signup_response["html"] ?>
+                <?php endif ?>
+
+                <?php if ( !$send_marketing ): ?>
+                    <pre>Marketing debugging is on so user details were not saved.</pre>
+                <?php endif ?>
+
+            <?php endforeach;
+
+            $html = ob_get_contents();
+            ob_end_clean();
+        }
+        $response = array("html" => $html);//, "session" => $signup_response["session"]);
+        if (isset($signup_response["session"])) {
+            $response["session"] = $signup_response["session"];
+        }
+        return $response;
+    }                            
 }

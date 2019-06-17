@@ -47,7 +47,7 @@ class WP_Swift_Form_Builder_Helper {
 
 
     private $recaptcha = array();
-    // private $gdpr_settings = null;
+    private $gdpr_settings = null;
     private $marketing = false;
     private $attachments = array();
     private $tab_index;

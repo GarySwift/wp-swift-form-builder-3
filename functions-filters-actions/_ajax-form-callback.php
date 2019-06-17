@@ -25,11 +25,7 @@ if (!function_exists("wp_swift_submit_request_form_callback")) {
         if (isset($_POST['type']) && $_POST['type'] == "signup") {
             // write_log("WP_Swift_Form_Builder_Signup_Form");
             $form_builder = new WP_Swift_Form_Builder_Signup_Form( $form_id, $post_id );
-        }
-        // elseif (isset($_POST['type']) && $_POST['type'] == "warranty") {
-        //     // write_log("WP_Swift_Form_Builder_Warranty_Form");
-        //     $form_builder = new WP_Swift_Form_Builder_Warranty_Form( $form_id, $post_id );
-        // }    
+        } 
         else {
             $form_builder = new WP_Swift_Form_Builder_Contact_Form( $form_id, $post_id );
         }
@@ -51,10 +47,31 @@ if (!function_exists("wp_swift_submit_request_form_callback")) {
         // );
         echo json_encode( $form_builder->get_response($post) );
         die();
-    }    
+    }        
 }
 add_action( 'wp_ajax_wp_swift_submit_request_form', 'wp_swift_submit_request_form_callback' );
 add_action( 'wp_ajax_nopriv_wp_swift_submit_request_form', 'wp_swift_submit_request_form_callback' );
+
+// if (!function_exists("wp_swift_submit_signup_form_callback")) {
+//     function wp_swift_submit_signup_form_callback() {
+//         check_ajax_referer( 'form-builder-nonce', 'security' );
+//         $post = array();
+//         $form_set = false;
+//         $form_id = intval( $_POST['id'] );
+//         $post_id = intval( $_POST['post'] );
+//         // write_log("wp_swift_submit_signup_form_callback -> WP_Swift_Form_Builder_Signup_Form");
+//         write_log($_POST);
+//         if (isset($_POST['form'])) {
+//             $post = wp_swift_convert_json_to_post_array( $_POST['form'] );
+//         }        
+//         $form_builder = new WP_Swift_Form_Builder_Signup_Form( $form_id, $post_id );
+
+//         echo json_encode( $form_builder->get_response($post) );
+//         die();
+//     }        
+// }
+// add_action( 'wp_ajax_wp_swift_submit_signup_form', 'wp_swift_submit_signup_form_callback' );
+// add_action( 'wp_ajax_nopriv_wp_swift_submit_signup_form', 'wp_swift_submit_signup_form_callback' );
 
 /*
  * Form data is inside a Json object in $_POST['form'].

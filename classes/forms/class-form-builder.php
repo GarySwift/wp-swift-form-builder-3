@@ -22,7 +22,7 @@ class WP_Swift_Form_Builder_Parent {
         /**
          * Initializes the helper, validate abd html_builder
          */  
-        $this->helper = new WP_Swift_Form_Builder_Helper( $form_id, $post_id, $hidden = array(), $type = 'request', $args = array(), $_post = null );
+        $this->helper = new WP_Swift_Form_Builder_Helper( $form_id, $post_id, $hidden = array(), $type, $args = array(), $_post = null );
         $this->validate = new WP_Swift_Form_Builder_Validate();  
         $this->html_builder = new WP_Swift_Form_Builder_Html( $this->helper->get_tab_index() );      
     }
@@ -160,7 +160,19 @@ class WP_Swift_Form_Builder_Parent {
      */
     public function get_attachments() {
         return $this->helper->get_attachments();
-    }  
+    }
+
+    public function helper() {
+        return $this->helper;
+    } 
+
+    public function html() {
+        return $this->html_builder;
+    }   
+
+    public function signup_api($post, $send_marketing = true) {     
+        return $this->html()->signup_api($post, $this->get_form_data(), $this->helper()->get_marketing(), $this->helper()->get_gdpr_settings(), $send_marketing);
+    }              
     // public function set_attachments($attachments) {
     //     // $this->attachments = $attachments;
     //     $this->helper->set_attachments($attachments);

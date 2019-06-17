@@ -1,5 +1,5 @@
-//@start closure
 (function() {
+//@start closure
     /**
      * Get a date in the past by reducing years from now date.
      * Very basic. Does not include leap years.
@@ -44,9 +44,14 @@
         if(typeof FormBuilderAjax !== "undefined") {
             // console.log(FormBuilderAjax.updated);
         }
-        //$('#captcha-wrapper').removeClass('hide').hide();
-
-
+        // if the recaptcha is hidden on load
+        // $('.captcha-wrapper.hide').removeClass('hide').hide();
+        $('form.form-builder.js-has-hidden-recaptcha div.captcha-wrapper').removeClass('hide').hide();
+        $('body').on('focus', 'form.form-builder.js-has-hidden-recaptcha', function(e) { 
+            $(this).removeClass('js-has-hidden-recaptcha');
+            $('#captcha-wrapper-' + $(this).data('id')).show();
+        });
+        //@end recpatchaå
 
     // $('input.sign-up').click(function() {
     //  var checked = 0;
@@ -99,6 +104,9 @@
                 if(this.required && this.value==='') {
                     return false;
                 }
+                if(!this.required && this.value==='') {
+                    return true;
+                }               
                 if(this.dataType !== "repeat-section" && this.hasOwnProperty('min')) {
                     if (this.value.length < this.min) {
                         return false;
@@ -126,7 +134,7 @@
                 switch (this.dataType) {
                     case 'number':
                         return !isNaN(this.value);
-                    case 'url':
+                    case 'url': 
                         re = /^(http(?:s)?\:\/\/[a-zA-Z0-9]+(?:(?:\.|\-)[a-zA-Z0-9]+)+(?:\:\d+)?(?:\/[\w\-]+)*(?:\/?|\/\w+\.[a-zA-Z]{2,4}(?:\?[\w]+\=[\w\-]+)?)?(?:\&[\w]+\=[\w\-]+)*)$/i;
                         return re.test(this.value);
                     case 'email':
@@ -167,6 +175,27 @@
             return errorsInForm;        
         };
 
+    var $sectionGuideLink = $('a.js-form-section-guide-link');
+    $sectionGuideLink.click(function(e) {
+        e.preventDefault();
+        if ($(this).hasClass("complete")) {
+            $sectionGuideLink.removeClass('active');
+            $(this).addClass('active');
+            var id = $(this).data("id");
+            console.log('#form-section-' + $(this).data("id"));
+            $('div.form-section.show-hide-section').removeClass('active-section').addClass('hidden-section'); 
+            $('#form-section-' + id ).removeClass('hidden-section').addClass('active-section');
+            $('#form-section-' + id + ' select.js-select2-multiple').select2("destroy").select2(select2Options);
+
+            $('div.section-head').removeClass('active');
+            $('#form-section-head-'+id).addClass('active');
+
+        }
+        else {
+            alert("Please complete the current section before you continue.");
+        }
+    });
+
     var $section;
     var $prev = $('a.js-form-builder-show-prev');
     var prev;   
@@ -178,6 +207,9 @@
         var input;
         current = $(this).data("current");
         next = $(this).data("next");
+        console.log('current', current);
+        console.log('next', next);
+
         $section = $('#form-section-'+current);
         errorsInForm = resetErrorsInForm();
         $('#form-section-' + current + ' .js-form-builder-control').each(function () {
@@ -185,18 +217,30 @@
             errorsInForm = addClassAfterBlur(input, input.isValid(), errorsInForm);
         });
         if (errorsInForm.count === 0) {
+            $sectionGuideLink.removeClass('active');
+            $('#form-section-guide-link-' + current ).addClass('complete');
+            $('#form-section-guide-link-' + next ).addClass('active');
+
+            $('div.section-head').removeClass('active');
+            $('#form-section-head-'+next).addClass('active');
+
+            if ($('#form-section-guide-link-' + next ).hasClass('last-section')) {
+                // Auto approve the last step
+                $('#form-section-guide-link-' + next ).addClass('complete');
+            }
             $('#form-section-' + current ).removeClass('active-section').addClass('hidden-section');
             $('#form-section-' + next ).removeClass('hidden-section').addClass('active-section');
             $('#form-section-' + next + ' select.js-select2-multiple').select2("destroy").select2(select2Options);
+
             $([document.documentElement, document.body]).animate({
-                scrollTop: $('#form-section-' + next).offset().top
-            }, 700);    
+                scrollTop: $('#form-section-' + next).offset().top - 100
+            }, 800);
         }
         else {
             showModalWithErrors( wrapErrorMessageSection(errorsInForm) );
         }
-         
     });
+
     $prev.click(function(e){
         e.preventDefault();
         current = $(this).data("current");
@@ -209,10 +253,10 @@
         $('div.form-group-extra').css("display","block");
     });
     $('#form-builder-show-all-sections').click(function(e){
-
+        $sectionGuideLink.removeClass('active');
         $("div.form-section-buttons").hide();
-
         $('div.form-section.show-hide-section').removeClass('hidden-section').addClass('active-section');  
+        $('div.section-head').removeClass('active');
     });
         var resetForm = function(form) {
             for (var i = 0; i < form.length; i++) {
@@ -220,7 +264,8 @@
                 $(input.id+'-form-group').removeClass('has-error').removeClass('has-success');
                 $(input.id).val('');
                 // this.reset();
-            }   
+            } 
+            $('#mail-receipt').prop('checked', false);  
         };
         
         // Validates that the input string is a valid date formatted as "dd-mm-yyyy"
@@ -316,7 +361,7 @@
         // When a user enters a form input
         $('body').on('focus', '.js-form-builder-control', function(e) { 
             $('#'+this.id+'-form-group').removeClass('has-error').removeClass('has-success');
-            $('#captcha-wrapper').show();
+            $('.captcha-wrapper').show();
         });
 
         $("input.js-single-checkbox").change(function() {
@@ -484,7 +529,12 @@
                 //     console.log(this.id);
                 // });
                 // console.log('$fileInputs', $fileInputs);
-        $('#request-form.ajax').submit(function(e) {
+        // $('body').on('submit', '#request-form.ajax', function(e) {    
+        //     e.preventDefault();
+        //     editForm();
+        // });
+        $('body').on('submit', '#request-form.ajax', function(e) {
+        // $('#request-form.ajax').submit(function(e) {
             var formData = new FormData(this);
             // console.log(formData);
             // console.log('#request-form');
@@ -514,7 +564,10 @@
                     FormBuilderAjax.id = $form.data('id');
                     FormBuilderAjax.post = $form.data('post-id');
                     // FormBuilderAjax.files = files;
-                    FormBuilderAjax.action = "wp_swift_submit_" + $form.data('type') + "_form";//"wp_swift_submit_request_form";
+                    // FormBuilderAjax.action = "wp_swift_submit_" + $form.data('type') + "_form";//"wp_swift_submit_request_form";
+
+                    FormBuilderAjax.type = $form.data('type');//"wp_swift_submit_request_form";
+                    FormBuilderAjax.action = "wp_swift_submit_request_form";
                     // FormBuilderAjax.type = $form.data('type');
                     // var type = document.getElementById( "form-type" );
                     // if (type) {
@@ -526,7 +579,7 @@
                     $.post(FormBuilderAjax.ajaxurl, FormBuilderAjax, function(response) {
                         // console.log('response', response);
                         var serverResponse = JSON.parse(response);
-
+                        console.log('serverResponse', serverResponse);
                         if (serverResponse.location) {
                             window.location = serverResponse.location;
                         }
@@ -550,7 +603,12 @@
                                     // $('#download-mask').removeClass('masked');   
                                     hideForm();                     
                                 }   
-                            }   
+                            } 
+                            // else if (serverResponse.session !== "undefined") {
+                            //     console.log(serverResponse.session);
+                            //     saveSessionDetails(sessionDetailsName, JSON.stringify(serverResponse.session) );
+                            //     // removeMarketingSignUp(); 
+                            // }
                         }                   
                     }); 
                 }
@@ -790,33 +848,33 @@
             hideForm();
         }); 
 
-        var details = getSessionDetails(sessionDetailsName);
-        // console.log('details', details);
+        // var details = getSessionDetails(sessionDetailsName);
+        // // console.log('details', details);
 
-        if (details) {
+        // if (details) {
             
-            if(typeof details.email !== "undefined" ) {
-                // document.getElementById( "form-email" ).value = details.email;
-                $('#form-email').val(details.email);
-            }
-            if(typeof details.email !== "undefined") {
-                // document.getElementById( "form-first-name" ).value = details.first_name;
-                $('#form-first-name').val(details.first_name);
-            }
-            if(typeof details.email !== "undefined") {
-                // document.getElementById( "form-last-name" ).value = details.last_name;
-                $('#form-last-name').val(details.last_name);
-            }
-            if(typeof details.phone !== "undefined") {
-                // document.getElementById( "form-phone" ).value = details.phone;
-                $('#form-phone').val(details.phone);
-            }   
+        //     if(typeof details.email !== "undefined" ) {
+        //         // document.getElementById( "form-email" ).value = details.email;
+        //         $('#form-email').val(details.email);
+        //     }
+        //     if(typeof details.email !== "undefined") {
+        //         // document.getElementById( "form-first-name" ).value = details.first_name;
+        //         $('#form-first-name').val(details.first_name);
+        //     }
+        //     if(typeof details.email !== "undefined") {
+        //         // document.getElementById( "form-last-name" ).value = details.last_name;
+        //         $('#form-last-name').val(details.last_name);
+        //     }
+        //     if(typeof details.phone !== "undefined") {
+        //         // document.getElementById( "form-phone" ).value = details.phone;
+        //         $('#form-phone').val(details.phone);
+        //     }   
 
-            // $('.form-builder.groupings').slideUp();
-            // $('#download-mask').removeClass('masked');
-            // localStorage.clear();
-            hideForm();
-        }
+        //     // $('.form-builder.groupings').slideUp();
+        //     // $('#download-mask').removeClass('masked');
+        //     // localStorage.clear();
+        //     // hideForm();
+        // }
 
 
 
@@ -847,5 +905,11 @@
         $('#js-hide-form').hide();
         showDownloads();
     }
-    
-})();//@end closure
+    function removeMarketingSignUp() {
+        var $signUpHtml = $('div.form-group.sign-up');
+        $signUpHtml.each(function(){
+            $(this).remove();
+        });
+    }    
+//@end closure
+})();
