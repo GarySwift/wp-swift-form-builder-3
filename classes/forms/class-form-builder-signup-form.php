@@ -17,13 +17,14 @@ class WP_Swift_Form_Builder_Signup_Form extends WP_Swift_Form_Builder_Parent {
         // echo parent::helper->lorem();
         // parent::helper()->lorem();
         // echo "<p>".parent::helper()->lorem()."</p>";
+        write_log('WP_Swift_Form_Builder_Signup_Form');
     }    
 
     public function get_response($post) {
         $form_set = false;
         $process_form = parent::process_form($post, true);
         $ref = $_POST['ref'];
-        // write_log('$ref: ');write_log($ref);
+        write_log('$ref: ');write_log($ref);
 
         if (parent::get_form_data()) {
            $form_set = true;
@@ -43,8 +44,8 @@ class WP_Swift_Form_Builder_Signup_Form extends WP_Swift_Form_Builder_Parent {
 
         );
         $response = array_merge($response, $process_form);
-        if ($ref) {
-           $response["location"] = $ref; 
+        if ($ref && $process_form["session"]) {
+           $response["location"] = $ref;
         }
         // $response["location"] = home_url( '', null );
         // write_log($response); 
@@ -119,6 +120,7 @@ function wp_swift_do_signup_mailchimp($form_data, $signups, $list_id_array = arr
     $data = array();// This will be the user data we send to SendInBlue
     $save = false;// We will only save if SMS or Email is selected    
     $api_key = wp_swift_get_marketing_api();// The user API key
+    $get_user_data_if_registered = true;
     $first_name = get_form_input($form_data, "form-first-name" );
     $last_name = get_form_input($form_data, "form-last-name" );
     $contact_name = $first_name . ' ' . $last_name;
@@ -197,7 +199,7 @@ function wp_swift_do_signup_mailchimp($form_data, $signups, $list_id_array = arr
         ));   
         $api_response = curl_exec($ch);# Send the request
         $api_response = json_decode($api_response, true);# Decode the response
-        // write_log('$api_response: ');write_log($api_response);
+        write_log('');write_log('$api_response: ');write_log($api_response);write_log('');
         # End cURL
         
         if (isset($api_response["status"])) {
@@ -214,10 +216,33 @@ function wp_swift_do_signup_mailchimp($form_data, $signups, $list_id_array = arr
                 $response_msg = "Please check your email and click the link in order to complete your subscription.";
             
             }
-            elseif ($api_response["status"] == "400") {
+            elseif ($api_response["status"] == "400" && $api_response["title"] == "Member Exists") {
                 $response_msg = "Our records show that this email is already registered!";
-                // $response_msg .= 'https://' . $data_center . '.api.mailchimp.com/3.0/lists/' . $list_id . '/members/' . md5(strtolower($email));       
+                $session_data["subscribed"] = true;   
+                $response["session"] = $session_data;
+                if ($get_user_data_if_registered) {
+                    # WARNING!!! 
+                    # 
+                    # Be carefull doing this - it is sensitive data and we do not want to
+                    # expose user data to somebody impersonating someone by using their email.
+                    # 
+                    # So don't use this.. EVER!!
+                    $api_user_response = wp_swift_get_mailchimp_user_data($data_center, $list_id, $api_key, $email);
+                    # However, this is how we get an already existing user via their email. 
+                    # This returns all of the Mailchimp saved user data.
+                }        
             }
+            elseif ($api_response["status"] == "400" && $api_response["title"] == "Forgotten Email Not Subscribed") {
+                // This situation should only occur when users have been deleted.
+                // Mailchimp does not allow deleted users to subscribe so we allow the user 
+                // download the files anyway.
+                $response_msg = "Our records show that this email was registered but the user has unsubscribed.";
+                $session_data["subscribed"] = true;   
+                $response["session"] = $session_data;        
+            }            
+            elseif ($api_response["status"] == "400") {
+                $response_msg = "Status 400";     
+            }            
             else {
                 $response_msg = $api_response["status"];
             }            
@@ -229,6 +254,23 @@ function wp_swift_do_signup_mailchimp($form_data, $signups, $list_id_array = arr
     return $response;
 }
 
+
+function wp_swift_get_mailchimp_user_data($data_center, $list_id, $api_key, $email) {
+    # Setup cURL
+    $url = 'https://' . $data_center . '.api.mailchimp.com/3.0/lists/' . $list_id . '/members/' . md5($email);  
+    $ch = curl_init($url);
+    curl_setopt_array($ch, array(
+        CURLOPT_RETURNTRANSFER => TRUE,
+        CURLOPT_HTTPHEADER => array(
+            'Authorization: apikey '.$api_key,
+            'Content-Type: application/json'
+        ),
+    ));   
+    $api_response = curl_exec($ch);# Send the request
+    $api_response = json_decode($api_response, true);# Decode the response              
+    # End cURL
+    return $api_response;
+}
 function wp_swift_do_signup_sendinblue($form_data, $signups, $list_id_array = array(), $list_id_array_unlink = null) {   
     $sendinblue_account_type == 1;//
     $session = array();// This will send back the user data to store in local storage 

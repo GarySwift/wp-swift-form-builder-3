@@ -266,6 +266,9 @@ function wp_swift_get_contact_form($form_id, $post_id = null, $args = array()) {
     return new WP_Swift_Form_Builder_Contact_Form( $form_id, $post_id, $args ); 
 }
 function wp_swift_get_signup_form($form_id, $post_id = null, $args = array(), $type = 'signup') {
+	// if( $form_type = get_field('form_types', $form_id) ) {
+	// 	echo '<pre>form_type: '; var_export($form_type); echo '</pre>';
+	// }
 	// write_log('wp_swift_get_signup_form() -> WP_Swift_Form_Builder_Signup_Form');
     $form_builder = new WP_Swift_Form_Builder_Signup_Form( $form_id, $post_id, $args, $type );
     echo $form_builder->run();    
