@@ -1045,7 +1045,7 @@ $this->close_form_groups_html();
     } 
 
 
-   public function signup_api( $post, $form_data, $marketing, $gdpr_settings, $send_marketing ) {
+   public function signup_api( $post, $form_data, $marketing, $gdpr_settings, $send_marketing, $at_least_one_option_required = false ) {
         // $marketing =  parent::get_marketing();
         // $gdpr_settings = parent::get_gdpr_settings();
         $opt_ins = null;
@@ -1142,9 +1142,13 @@ $this->close_form_groups_html();
             $html = ob_get_contents();
             ob_end_clean();
         }
-        $response = array("html" => $html);//, "session" => $signup_response["session"]);
-        if (isset($signup_response["session"])) {
-            $response["session"] = $signup_response["session"];
+        $response = array("html" => $html);
+        if (isset($signup_response)) {
+            $response = array_merge($response, $signup_response);
+        }
+        elseif($at_least_one_option_required) {
+            $response["error"] = true;
+            $response["msg"] = "Please select at least one marketing option!"; 
         }
         return $response;
     }                            

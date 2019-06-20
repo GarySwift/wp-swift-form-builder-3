@@ -166,12 +166,16 @@ class WP_Swift_Form_Builder_Parent {
         return $this->helper;
     } 
 
+    // public function validate() {
+    //     return $this->validate;
+    // }
+
     public function html() {
         return $this->html_builder;
-    }   
+    }       
 
-    public function signup_api($post, $send_marketing = true) {     
-        return $this->html()->signup_api($post, $this->get_form_data(), $this->helper()->get_marketing(), $this->helper()->get_gdpr_settings(), $send_marketing);
+    public function signup_api($post, $send_marketing = true, $at_least_one_option_required = false) {     
+        return $this->html()->signup_api($post, $this->get_form_data(), $this->helper()->get_marketing(), $this->helper()->get_gdpr_settings(), $send_marketing, $at_least_one_option_required);
     }              
     // public function set_attachments($attachments) {
     //     // $this->attachments = $attachments;

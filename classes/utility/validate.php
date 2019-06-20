@@ -37,8 +37,6 @@ class WP_Swift_Form_Builder_Validate {
             }
             foreach ( $form_data as &$section ) {
                 foreach ( $section["inputs"] as $input_key => &$input ) {
-                    // write_log('$input_key: ' . $input_key);
-
                     $set = isset($post[$input_key]);
 
                     if (isset($post[$input_key]) && $input['data_type'] !== "repeat_section") {
@@ -72,6 +70,7 @@ class WP_Swift_Form_Builder_Validate {
                     }
 
                     if (isset($input['passed']) && !$input['passed']) {
+                        //@todo: Pass $input_key so errors can be passed to client
                         $helper->increase_error_count();
                         if ($input['help'] !== '') {
                             $helper->add_form_error_message( $input['help'] );
@@ -182,6 +181,14 @@ class WP_Swift_Form_Builder_Validate {
                 if ( !is_email( $input['value'] ) ) { 
                     return $input; 
                 }
+                // $fake_email_domains = array('@mailinator.net');
+                // foreach ( $fake_email_domains as $fake_email_domain) {
+                //     if (strpos(strtolower($input['value']), $fake_email_domain) !== false) {
+                //         $input["help"] = $input['value'] . ' looks fake or invalid, please enter a real email address.';
+                //         write_log($input);
+                //         return $input; 
+                //     }                    
+                // }
                 $input['clean'] = sanitize_email( $input['value'] );
                 $input['passed'] = true;
                 break;
