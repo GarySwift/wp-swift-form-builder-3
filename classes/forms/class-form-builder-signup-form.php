@@ -13,12 +13,16 @@ class WP_Swift_Form_Builder_Signup_Form extends WP_Swift_Form_Builder_Parent {
      */
     public function __construct( $form_id, $post_id = null, $hidden = array(), $type = 'signup' ) {//
         parent::__construct( $form_id, $post_id, $hidden, $type );
+        // write_log('__construct WP_Swift_Form_Builder_Signup_Form: ');
+        // echo "<pre>"; var_dump('WP_Swift_Form_Builder_Signup_Form'); echo "</pre>";
     }    
 
     public function get_response($post) {
         $form_set = false;
         $process_form = parent::process_form($post, true);
-        $ref = $_POST['ref'];
+        $ref = false;
+        if (isset($_POST['ref'])) $ref = $_POST['ref'];
+        
         if (isset($process_form["error"])) {
             parent::helper()->increase_error_count();
             parent::helper()->add_form_error_message( $process_form["msg"] );           
@@ -32,7 +36,8 @@ class WP_Swift_Form_Builder_Signup_Form extends WP_Swift_Form_Builder_Parent {
         }
         $response = array(
             "form_set" => $form_set,
-            "error_count" => parent::get_error_count()
+            "error_count" => parent::get_error_count(),
+            "displaying_results" => parent::helper()->get_displaying_results(),
         );
         $response = array_merge($response, $process_form);
         if ($ref && isset($process_form["session"])) {
@@ -144,7 +149,7 @@ function wp_swift_do_signup_mailchimp($form_data, $signups, $list_id_array = arr
     if ($country) {
         $post_data["merge_fields"]["COUNTRY"] = $country;
     }
-    write_log('$post_data: ');write_log($post_data);
+    // write_log('$post_data: ');write_log($post_data);
 
     $session_data = array(
         "first-name" => $first_name,
@@ -155,15 +160,15 @@ function wp_swift_do_signup_mailchimp($form_data, $signups, $list_id_array = arr
         "company" => $company,
         "country" => $country,        
     );    
-    write_log('$api_key: ');write_log($api_key);    
+    // write_log('$api_key: ');write_log($api_key);    
     $data_center = substr($api_key,strpos($api_key,'-')+1);
-    write_log('$data_center: ');write_log($data_center);
+    // write_log('$data_center: ');write_log($data_center);
     # This loop will run once ($list_id_array has a single array element at the moment)
     // write_log('DEBUG: $list_id_array: ');write_log($list_id_array);
     foreach ($list_id_array as $list_id) {
         # Setup cURL
         $url = 'https://'.$data_center.'.api.mailchimp.com/3.0/lists/'.$list_id.'/members/';
-        write_log('$url: ');write_log($url);
+        // write_log('$url: ');write_log($url);
         $ch = curl_init($url);
         curl_setopt_array($ch, array(
             CURLOPT_POST => TRUE,
@@ -176,14 +181,14 @@ function wp_swift_do_signup_mailchimp($form_data, $signups, $list_id_array = arr
         ));   
         $api_response = curl_exec($ch);# Send the request
         $api_response = json_decode($api_response, true);# Decode the response
-        write_log('');write_log('$api_response: ');write_log($api_response);write_log('');
+        // write_log('');write_log('$api_response: ');write_log($api_response);write_log('');
         # End cURL
         
         if (isset($api_response["status"])) {
             $response_msg = null;
             $session["email"] = $email;
             if ($api_response["status"] == "subscribed") {               
-                $response_msg = "You have been added to our Mailing List!";  
+                $response_header = "You have been added to our Mailing List!";  
                 $session_data["subscribed"] = true;   
                 $response["session"] = $session_data;   
             }            
@@ -259,6 +264,9 @@ function wp_swift_do_signup_mailchimp($form_data, $signups, $list_id_array = arr
             if ( $response_msg ) {
                 $response["html"] = '<p><b>'.$response_msg.'</b></p>';
             }
+            if ( $response_header ) {
+                $response["header"] = $response_header;
+            }            
         }           
     }
     return $response;

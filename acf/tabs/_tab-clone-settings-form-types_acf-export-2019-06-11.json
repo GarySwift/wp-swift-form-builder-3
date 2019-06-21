@@ -18,7 +18,7 @@
                 },
                 "choices": {
                     "contact_form": "Contact Form",
-                    "sign_up": "Sign Up"
+                    "signup": "Sign Up"
                 },
                 "default_value": [
                     "contact_form"

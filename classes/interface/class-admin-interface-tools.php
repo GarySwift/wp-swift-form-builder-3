@@ -43,6 +43,7 @@ class WP_Swift_Form_Builder_Admin_Interface_Tools {
 	 *
 	 */
 	public function wp_swift_form_builder_tools(  ) { 
+		$section_acf_key = 'field_5cff77477c15c';
 	    ?>
 	        <div id="form-builder-wrap" class="wrap">
 		        <h2>FormBuilder Tools</h2>
@@ -136,7 +137,7 @@ class WP_Swift_Form_Builder_Admin_Interface_Tools {
 									            // Update the post title with post id
 									            wp_update_post( $update_post );            
 									            // Prepopulate the ACF field with input details (this is not processed form data)
-									            update_field( 'field_59cf72b083b6d', $form_data_preset, $post_id );
+									            update_field( $section_acf_key, $form_data_preset, $post_id );
 									            // Process the form data into a Wordpress option
 									            wp_swift_form_builder_save_post($post_id);
 									        }

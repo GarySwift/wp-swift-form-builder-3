@@ -149,6 +149,10 @@ function wp_swift_form_data_loop($id, $_post = null) {
         }   
         // todo: get other marketing/GDPR fields into here
 
+        if( $displaying_results = get_field('displaying_results', $id) ) {
+            $settings['displaying_results'] = $displaying_results;
+        }
+
         if ( have_rows('sections', $id) ) :
 
             $section_count = 0;

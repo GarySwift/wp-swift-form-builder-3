@@ -781,7 +781,7 @@ $this->close_form_groups_html();
         if ( $opt_ins ): ?>
 
             <!-- @start .sign-up -->
-            <div class="form-group sign-up">
+            <div class="form-group sign-up" id="marketing-sign-up-group">
                 <div class="form-label"></div>
                 <div class="form-input">
                     <div class="checkbox">
@@ -794,21 +794,23 @@ $this->close_form_groups_html();
                                     <label for=""><?php echo $opt_in["message"] ?></label>
 
                                     <?php if ( in_array("email", $opt_in["options"]) ): ?>
-                                        <input type="checkbox" value="email" tabindex=<?php echo $this->get_tab_index(); ?> name="sign-up-<?php echo $key; ?>[]" id="sign-up-email" class="sign-up"><label for="sign-up-email">Email</label>
+                                        <input type="checkbox" value="email" tabindex="<?php echo $this->get_tab_index(); ?>" name="sign-up-<?php echo $key; ?>[]" id="sign-up-email" class="sign-up"><label for="sign-up-email">Email</label>
                                     <?php endif ?>                            
                                     <?php if ( in_array("sms", $opt_in["options"]) ): ?>
-                                        <input type="checkbox" value="sms" tabindex=<?php echo $this->get_tab_index(); ?> name="sign-up-<?php echo $key; ?>[]" id="sign-up-sms" class="sign-up"><label for="sign-up-sms">SMS</label> 
+                                        <input type="checkbox" value="sms" tabindex="<?php echo $this->get_tab_index(); ?>" name="sign-up-<?php echo $key; ?>[]" id="sign-up-sms" class="sign-up"><label for="sign-up-sms">SMS</label> 
                                     <?php endif ?>  
                                     <?php if ( in_array("direct_mail", $opt_in["options"]) ): ?>
-                                      <input type="checkbox" value="direct_mail" tabindex=<?php echo $this->get_tab_index(); ?> name="sign-up-<?php echo $key; ?>[]" id="sign-up-direct-mail" class="sign-up"><label for="sign-up-direct-mail">Direct Mail</label> 
+                                      <input type="checkbox" value="direct_mail" tabindex="<?php echo $this->get_tab_index(); ?>" name="sign-up-<?php echo $key; ?>[]" id="sign-up-direct-mail" class="sign-up"><label for="sign-up-direct-mail">Direct Mail</label> 
                                     <?php endif ?>  
                                     <?php if ( in_array("customized_online_advertising", $opt_in["options"]) ): ?>
-                                      <input type="checkbox" value="customized_online_advertising" tabindex=<?php echo $this->get_tab_index(); ?> name="sign-up-<?php echo $key; ?>[]" id="sign-up-customized-online-advertising" class="sign-up"><label for="sign-up-customized-online-advertising">Customized Online Advertising</label> 
+                                      <input type="checkbox" value="customized_online_advertising" tabindex="<?php echo $this->get_tab_index(); ?>" name="sign-up-<?php echo $key; ?>[]" id="sign-up-customized-online-advertising" class="sign-up"><label for="sign-up-customized-online-advertising">Customized Online Advertising</label> 
                                     <?php endif ?>   
 
                                 <?php endif ?>
                                 
                             <?php endforeach ?>
+
+                            <input type="hidden" value="true" name="marketing-sign-up">
                          
                     </div>
                 </div>                  
@@ -1046,6 +1048,8 @@ $this->close_form_groups_html();
 
 
    public function signup_api( $post, $form_data, $marketing, $gdpr_settings, $send_marketing, $at_least_one_option_required = false ) {
+        if (!isset($post["marketing-sign-up"])) 
+            return null;    
         // $marketing =  parent::get_marketing();
         // $gdpr_settings = parent::get_gdpr_settings();
         $opt_ins = null;
@@ -1143,6 +1147,12 @@ $this->close_form_groups_html();
             ob_end_clean();
         }
         $response = array("html" => $html);
+        write_log('parent signup_api() $html: ');write_log($html);
+        write_log('$response: ');write_log($response);
+        write_log('$signup_response: ');write_log($signup_response);
+        if (isset($signup_response["response_header"])) {
+            $html .= '<h2>'.$response_header.'</h2>';
+        }
         if (isset($signup_response)) {
             $response = array_merge($response, $signup_response);
         }

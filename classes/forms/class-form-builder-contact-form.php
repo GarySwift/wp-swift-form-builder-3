@@ -183,7 +183,8 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
         $email_string .= $key_value_table;
         $email_string .= $this->build_page_details();
         $signup = '';
-        $signup_response = $this->do_signup_api( $post );
+        // $signup_response = $this->do_signup_api( $post );
+        $signup_response = parent::signup_api($post, $this->send_marketing);
         if (isset($signup_response["html"])) {
             $signup = $signup_response["html"];
         }
@@ -321,6 +322,9 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
     }     
 
     private function do_signup_api( $post ) {
+        if (!isset($post["marketing-sign-up"])) 
+            return null;
+        write_log('@@ do_signup_api() $post: ');write_log($post);
         $marketing =  parent::get_marketing();
         $gdpr_settings = parent::get_gdpr_settings();
         $opt_ins = null;

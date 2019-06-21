@@ -49,6 +49,7 @@ class WP_Swift_Form_Builder_Helper {
     private $recaptcha = array();
     private $gdpr_settings = null;
     private $marketing = false;
+    private $displaying_results = null;
     private $attachments = array();
     private $tab_index;
     private $next_button_in_sections = false;
@@ -196,8 +197,12 @@ class WP_Swift_Form_Builder_Helper {
         //@end todo
         if(isset($this->settings["marketing"])) {
             $this->marketing = $this->settings["marketing"];
-            // echo '<pre>$this->marketing: '; var_dump($this->marketing); echo '</pre>';echo "<hr>";
         }
+
+        if(isset($this->settings["displaying_results"])) {
+            $this->displaying_results = $this->settings["displaying_results"];
+        }
+
         if(isset($this->settings["gdpr_settings"])) {
             $this->gdpr_settings = $this->settings["gdpr_settings"];
             // echo '<pre>$this->gdpr_settings: '; var_dump($this->gdpr_settings); echo '</pre>';echo "<hr>";
@@ -521,8 +526,10 @@ class WP_Swift_Form_Builder_Helper {
     }
     public function get_marketing() {
         return $this->marketing;
-    }    
-
+    } 
+    public function get_displaying_results() {
+        return $this->displaying_results;
+    } 
     public function get_gdpr_settings() {
         if ( $this->gdpr_settings ) {
             return $this->gdpr_settings;

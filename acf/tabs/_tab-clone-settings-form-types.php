@@ -7,7 +7,7 @@ acf_add_local_field_group(array(
 	'fields' => array(
 		array(
 			'key' => 'field_5cff741fba730',
-			'label' => 'Form Types',
+			'label' => 'Form Type',
 			'name' => 'form_types',
 			'type' => 'select',
 			'instructions' => '',
@@ -20,7 +20,7 @@ acf_add_local_field_group(array(
 			),
 			'choices' => array(
 				'contact_form' => 'Contact Form',
-				'sign_up' => 'Sign Up',
+				'signup' => 'Sign Up',
 			),
 			'default_value' => array(
 				0 => 'contact_form',
@@ -73,7 +73,7 @@ acf_add_local_field_group(array(
 					array(
 						'field' => 'field_5cff741fba730',
 						'operator' => '==',
-						'value' => 'sign_up',
+						'value' => 'signup',
 					),
 				),
 			),
