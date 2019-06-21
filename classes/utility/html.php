@@ -818,6 +818,14 @@ $this->close_form_groups_html();
             <!-- @end .sign-up -->       
 
         <?php endif;//@nd if ($opt_ins)
+
+        if ($marketing == 'mailchimp'): ?>
+            <hr>
+            <div class="gdpr-footer">
+                <a href="https://www.mailchimp.com/gdpr" target="_blank"><img src="https://cdn-images.mailchimp.com/icons/mailchimp-gdpr.svg" alt="GDPR"></a>
+                <p>We use Mailchimp as our marketing platform. By clicking below to subscribe, you acknowledge that your information will be transferred to Mailchimp for processing. <a href="https://mailchimp.com/legal/" target="_blank">Learn more about Mailchimp's privacy practices here.</a></p>
+            </div>            
+        <?php endif;        
     }
 
 
