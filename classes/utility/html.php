@@ -819,7 +819,7 @@ $this->close_form_groups_html();
 
         <?php endif;//@nd if ($opt_ins)
 
-        if ($marketing == 'mailchimp'): ?>
+        if ($marketing == '_mailchimp'): ?>
             <hr>
             <div class="gdpr-footer">
                 <a href="https://www.mailchimp.com/gdpr" target="_blank"><img src="https://cdn-images.mailchimp.com/icons/mailchimp-gdpr.svg" alt="GDPR"></a>
