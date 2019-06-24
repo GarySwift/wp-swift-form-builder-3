@@ -8,7 +8,7 @@ acf_add_local_field_group(array(
 		array(
 			'key' => 'field_5cff741fba730',
 			'label' => 'Form Type',
-			'name' => 'form_types',
+			'name' => 'form_type',
 			'type' => 'select',
 			'instructions' => '',
 			'required' => 0,

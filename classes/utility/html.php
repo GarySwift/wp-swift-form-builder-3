@@ -28,7 +28,8 @@ class WP_Swift_Form_Builder_Html {
         <div<?php $helper->get_form_wrapper_css_id() ?> class="<?php echo $helper->get_form_class(); ?>"><!-- @start form-wrapper -->
 
             <?php $this->section_stage_guide($helper) ?>
-
+            <?php echo '<pre>$_POST: '; var_dump($_POST); echo '</pre>'; ?>
+            <?php echo '<pre>$response: '; var_dump($response); echo '</pre>'; echo "<hr>"; ?>
             <?php if ($response): ?>
                 <?php echo $response["html"]; ?>
             <?php endif ?>
@@ -36,9 +37,11 @@ class WP_Swift_Form_Builder_Html {
             <?php if ($msg): ?>
                 <?php echo $msg; ?>
             <?php endif ?>
+
+            <?php echo '<pre>$helper->get_ajax(): '; var_dump($helper->get_ajax()); echo '</pre>'; ?>
             
             <!-- @start form -->
-            <form method="post"<?php echo $helper->get_action(); ?> name="<?php echo $helper->get_form_name(); ?>" id="<?php echo $helper->get_form_css_id(); ?>" data-id="<?php echo $helper->get_form_post_id(); ?>" data-post-id="<?php echo $helper->get_post_id(); ?>" data-type="<?php echo $helper->get_form_type() ?>" <?php $helper->get_form_data_types() ?> class="<?php echo $helper->get_form_class() . ' ' . $helper->get_form_name(); ?>" novalidate<?php echo $helper->get_enctype(); ?>>
+            <form method="post"<?php echo $helper->get_action(); ?> name="<?php echo $helper->get_form_name(); ?>" id="<?php echo $helper->get_form_css_id(); ?>" data-id="<?php echo $helper->get_form_post_id(); ?>" data-post-id="<?php echo $helper->get_post_id(); ?>" data-type="<?php echo $helper->get_form_type() ?>" data-ajax="<?php echo $helper->get_ajax() ?>" <?php $helper->get_form_data_types() ?> class="<?php echo $helper->get_form_class() . ' ' . $helper->get_form_name(); ?>" novalidate<?php echo $helper->get_enctype(); ?>>
 
                 <?php if ( isset($this->hidden) && count($this->hidden)):
                     foreach ($this->hidden as $key => $hidden): ?>
@@ -869,7 +872,7 @@ $this->close_form_groups_html();
             <!-- @start input -->
             <div class="form-input">
 
-                <button type="submit" name="<?php echo $helper->get_submit_button_name(); ?>" id="<?php echo $helper->get_submit_button_id(); ?>" class="button" tabindex="<?php echo $this->get_tab_index(); ?>"><?php echo $helper->get_submit_button_text(); ?></button>
+                <button type="submit" value="<?php echo $helper->get_submit_button_name(); ?>" name="<?php echo $helper->get_submit_button_name(); ?>" id="<?php echo $helper->get_submit_button_id(); ?>" class="button" tabindex="<?php echo $this->get_tab_index(); ?>"><?php echo $helper->get_submit_button_text(); ?></button>
 
             </div>
             <!-- @end input -->            
