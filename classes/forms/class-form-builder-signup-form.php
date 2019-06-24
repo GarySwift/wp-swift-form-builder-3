@@ -188,9 +188,12 @@ function wp_swift_do_signup_mailchimp($form_data, $signups, $list_id_array = arr
             $response_msg = null;
             $session["email"] = $email;
             if ($api_response["status"] == "subscribed") {               
-                $response_header = "You have been added to our Mailing List!";  
+                $response_header = "<h2>Thanks You. You have been added to our Mailing List!</h2>";
+                $response_header .= "<p class='lead'>Please check your email for confirmation link.</p>";
+                // $response_header = "<p class='lead'>Please check your email for confirmation link.</p>";
                 $session_data["subscribed"] = true;   
-                $response["session"] = $session_data;   
+                $response["session"] = $session_data;  
+                $response["response_header"] = $response_header;
             }            
             elseif ($api_response["status"] == "pending") {
                 $response_msg = "Please check your email and click the link in order to complete your subscription.";
@@ -264,9 +267,9 @@ function wp_swift_do_signup_mailchimp($form_data, $signups, $list_id_array = arr
             if ( $response_msg ) {
                 $response["html"] = '<p><b>'.$response_msg.'</b></p>';
             }
-            if ( $response_header ) {
-                $response["header"] = $response_header;
-            }            
+            // if ( $response_header ) {
+            //     $response["response_header"] = $response_header;
+            // }            
         }           
     }
     return $response;

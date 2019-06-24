@@ -1154,13 +1154,14 @@ $this->close_form_groups_html();
             $html = ob_get_contents();
             ob_end_clean();
         }
-        $response = array("html" => $html);
-        write_log('parent signup_api() $html: ');write_log($html);
-        write_log('$response: ');write_log($response);
-        write_log('$signup_response: ');write_log($signup_response);
+        
+        // write_log('parent signup_api() $html: ');write_log($html);
+        // write_log('$response: ');write_log($response);
+        // write_log('$signup_response: ');write_log($signup_response);
         if (isset($signup_response["response_header"])) {
-            $html .= '<h2>'.$response_header.'</h2>';
+            $html = $signup_response["response_header"] . $html;//'<h2>'.$response_header.'</h2>';
         }
+        $response = array("html" => $html);
         if (isset($signup_response)) {
             $response = array_merge($response, $signup_response);
         }
