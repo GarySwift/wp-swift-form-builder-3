@@ -101,6 +101,14 @@ function wp_swift_form_data_loop($id, $_post = null) {
         if( $colour_theme = get_field('colour_theme', $id) ) {
             $settings['colour_theme'] = ' form-builder-theme-'.$colour_theme;
         }
+        // echo "<pre> get_field('ajax', $id): "; var_dump( get_field('ajax', $id) ); echo "</pre>";
+        $ajax = get_field('ajax', $id);
+        if ($ajax) $settings['ajax'] = 1; else $settings['ajax'] = 0;
+        // $settings['ajax'] = get_field('ajax', $id);
+        // if( $ajax = get_field('ajax', $id) ) {
+        //     $settings['ajax'] = $ajax;
+        //     echo '<pre>0 $ajax: '; var_dump($ajax); echo '</pre>';
+        // }
 
 
 

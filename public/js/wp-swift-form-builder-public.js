@@ -8,13 +8,20 @@
      * @return string   date
      */
 
+    if(typeof FormBuilderAjax !== "undefined" && FormBuilderAjax.debug) 
+        console.log('DEBUG FormBuilderAjax:', FormBuilderAjax);
+
+    // if(typeof sessionDetailsName === "undefined") {
+    //   var sessionDetailsName = "form-session-details";
+    // }
     var sessionDetailsName = "form-session-details";
-    // console.log('sessionDetailsName', sessionDetailsName);
+    // console.log('2 sessionDetailsName', sessionDetailsName);
     // console.log(FormBuilderDatePicker);
     var select2Options = {};
     select2Options = {
         maximumSelectionLength: 2
     };
+
     var dateInPast = function dateInPast(years) {
         var dateNow = new Date();
         var dd = dateNow.getDate();
@@ -138,6 +145,14 @@
                         re = /^(http(?:s)?\:\/\/[a-zA-Z0-9]+(?:(?:\.|\-)[a-zA-Z0-9]+)+(?:\:\d+)?(?:\/[\w\-]+)*(?:\/?|\/\w+\.[a-zA-Z]{2,4}(?:\?[\w]+\=[\w\-]+)?)?(?:\&[\w]+\=[\w\-]+)*)$/i;
                         return re.test(this.value);
                     case 'email':
+                        // var fakeEmailDomains = ['@mailinator.net'];
+                        // for (var i = 0; i < fakeEmailDomains.length; i++) {                           
+                        //     if ( this.value.includes(fakeEmailDomains[i])) {
+                        //         //@todo show custom error messages
+                        //         this.help = this.value + ' looks fake or invalid, please enter a real email address.';
+                        //         return false;
+                        //     }
+                        // }                    
                         re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
                         return re.test(this.value); 
                     case 'select':  
@@ -534,12 +549,39 @@
         //     editForm();
         // });
         $('body').on('submit', '#request-form.ajax', function(e) {
+            e.preventDefault();
+            // var result = submitForm(this);
+            // console.log('result', result);
+            // if (result) {
+                
+            // }
+            // return result;
+            return submitFormAjax(this);
+        });
+        $('body').on('submit', '#request-form.no-ajax', function(event) {
+            console.log('#request-form.no-ajax');
+            return submitForm(event, this);
+        });         
+        var submitForm = function(event, form) {
+            var formData = new FormData(form);
+            var $form = $(form);
+            errorsInForm = validateForm( $form.serializeArray(), resetErrorsInForm() ); 
+            if (errorsInForm.count === 0) {
+                return true;
+            }
+            event.preventDefault();
+            return false;
+        };
+        var submitFormAjax = function(form) {
+            // event.preventDefault();
         // $('#request-form.ajax').submit(function(e) {
-            var formData = new FormData(this);
+            var formData = new FormData(form);
             // console.log(formData);
             // console.log('#request-form');
-            e.preventDefault();
-            var $form = $(this);
+            
+            var $form = $(form);
+            var ajax = $form.data('ajax');
+            console.log('ajax', ajax);
             var submit = $form.find(":submit");
             // errorsInForm = resetErrorsInForm();
             errorsInForm = validateForm( $form.serializeArray(), resetErrorsInForm() );
@@ -554,12 +596,11 @@
             // @end todo - handle file uploads with ajax
 
             submit.prop('disabled', true);
-
-
             // errorsInForm.count = 0;
             if (errorsInForm.count === 0) {
                 // FormBuilderAjax is set on server using wp_localize_script
                 if(typeof FormBuilderAjax !== "undefined") {
+                    // event.preventDefault();
                     FormBuilderAjax.form = $form.serializeArray();
                     FormBuilderAjax.id = $form.data('id');
                     FormBuilderAjax.post = $form.data('post-id');
@@ -568,6 +609,10 @@
 
                     FormBuilderAjax.type = $form.data('type');//"wp_swift_submit_request_form";
                     FormBuilderAjax.action = "wp_swift_submit_request_form";
+                    var ref = getRef();
+                    if(typeof ref !== "undefined") {
+                       FormBuilderAjax.ref = ref;
+                    }
                     // FormBuilderAjax.type = $form.data('type');
                     // var type = document.getElementById( "form-type" );
                     // if (type) {
@@ -577,24 +622,73 @@
 
 
                     $.post(FormBuilderAjax.ajaxurl, FormBuilderAjax, function(response) {
-                        // console.log('response', response);
                         var serverResponse = JSON.parse(response);
-                        console.log('serverResponse', serverResponse);
+                        if (FormBuilderAjax.debug)
+                            console.log('serverResponse:', serverResponse);                       
+                        
+                        if (serverResponse.session) {
+                            saveSessionDetails(sessionDetailsName, JSON.stringify(serverResponse.session) );
+                            if (FormBuilderAjax.debug) 
+                                console.log('DEBUG [SAVED] serverResponse.session:', serverResponse.session);                          
+                        }
                         if (serverResponse.location) {
-                            window.location = serverResponse.location;
+                            // if (serverResponse.session) {//!== "undefined"
+                                // console.log('serverResponse.session');
+                                // console.log(serverResponse.session);
+                                // console.log(JSON.stringify(serverResponse.session));
+                                
+
+                                // $('.form-builder.groupings').slideUp();
+                                // $('#download-mask').removeClass('masked');   
+                                // hideForm();                     
+                            // }                              
+                            // window.location = serverResponse.location;
+                            window.location.replace(serverResponse.location);
                         }
                         else {
-                            $('#form-builder-reveal-content').html(serverResponse.html);
-                            var $modal = $('#form-builder-reveal');
+                            
+                            
+
+                            // if(typeof serverResponse.modal !== "undefined") {
+                            //   $modal.toggleClass('large');
+                            // }
                             submit.prop('disabled', false);
 
                             if (serverResponse.error_count === 0 && serverResponse.form_set === true && FormBuilderAjax.type !== "signup") {
                                 resetForm( $form.serializeArray() );        
                             }
 
-                            if(typeof $modal !== "undefined") {
-                                $modal.foundation('open');  
+                            if (typeof serverResponse.error_fields !== "undefined") {
+                                // console.log('serverResponse.error_fields', serverResponse.error_fields);
+                                for (var i = 0; i < serverResponse.error_fields.length; i++) {                                    
+                                    $('#'+serverResponse.error_fields[i]+'-form-group').addClass('has-error').removeClass('has-success');
+                                    // console.log(serverResponse.error_fields[i]+'-form-group');
+                                }
                             }
+
+                            var responseDisplayModal = true;
+                            var lastname = "Hi";
+                            if(typeof serverResponse.displaying_results !== "undefined") {
+                              responseDisplayModal = serverResponse.displaying_results.results_modal;
+                              console.log('responseDisplayModal', responseDisplayModal);
+                            }
+                            // var displaying_results
+                            if ( responseDisplayModal ) {
+                                var $modal = $('#form-builder-reveal');
+                                $('#form-builder-reveal-content').html(serverResponse.html);
+                                if(typeof $modal !== "undefined") {
+                                    $modal.foundation('open');  
+                                }
+                            }
+                            else {
+                                if (serverResponse.displaying_results.dom_element_to_remove !== '') {
+                                    $(serverResponse.displaying_results.dom_element_to_remove).empty();
+                                }                                
+                                if (serverResponse.displaying_results.dom_element_to_inject !== '') {
+                                    $(serverResponse.displaying_results.dom_element_to_inject).html(serverResponse.html);
+                                }
+                            }
+
                             if (FormBuilderAjax.type === "signup") {
                                 if (serverResponse.session) {//!== "undefined"
                                     saveSessionDetails(sessionDetailsName, JSON.stringify(serverResponse.session) );
@@ -612,18 +706,25 @@
                         }                   
                     }); 
                 }
+                // else {
+                //     // $form.off('submit', submitForm);
+                //     console.log('ajax skipped');
+                //     // form.submit();
+                //     console.log('form.submit();');
+                //     return true;
+                // }
             }
             else {
                 $('a.form-builder-show-prev-next').hide();
                 $('.show-hide-section').each(function(){
-                    $(this).removeClass('hidden-section').addClass('active-section');
+                    $(form).removeClass('hidden-section').addClass('active-section');
                 });
 
                 submit.prop('disabled', false);
                 showModalWithErrors( wrapErrorMessage(errorsInForm) );
             }
             return false;
-        }); 
+        };
 
         var showModalWithErrors = function($msg) {
             
@@ -813,6 +914,13 @@
         }   
     };
 
+    var resetSessionDetails = function(name) {
+        if (typeof(Storage) !== "undefined") {
+            localStorage.removeItem(name);
+            console.log('Session date cleared');
+        }   
+    };    
+
     var wrapErrorMessage = function(errorsInForm) { 
         var $html = '<div id="form-error-message" class="form-message error ajax">';
             $html += '<h3 class="heading">Errors Found</h3>';
@@ -879,7 +987,10 @@
 
 
             // $('#form-taoglas-products').select2();
-        $('select.js-select2-multiple').select2(select2Options);
+        if( jQuery().fdatepicker ) {
+            $('select.js-select2-multiple').select2(select2Options);
+        }
+        
         // {
         //    theme: "classic"
         //  }
@@ -910,6 +1021,29 @@
         $signUpHtml.each(function(){
             $(this).remove();
         });
-    }    
+    } 
+    var getUrlParameter = function (sParam) {
+        var sPageURL = window.location.search.substring(1),
+            sURLVariables = sPageURL.split('&'),
+            sParameterName,
+            i;
+
+        for (i = 0; i < sURLVariables.length; i++) {
+            sParameterName = sURLVariables[i].split('=');
+
+            if (sParameterName[0] === sParam) {
+                return sParameterName[1] === undefined ? true : decodeURIComponent(sParameterName[1]);
+            }
+        }
+    };
+    // And this is how you can use this function assuming the URL is,
+    // http://dummy.com/?technology=jquery&blog=jquerybyexample.
+    // var ref = getUrlParameter('ref');
+    // var blog = getUrlParameter('blog');
+    // console.log('ref', ref);
+    // console.log('blog', blog);    
+    var getRef = function() {
+        return getUrlParameter('ref');
+    };   
 //@end closure
 })();

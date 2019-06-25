@@ -5,8 +5,8 @@
         "fields": [
             {
                 "key": "field_5cff741fba730",
-                "label": "Form Types",
-                "name": "form_types",
+                "label": "Form Type",
+                "name": "form_type",
                 "type": "select",
                 "instructions": "",
                 "required": 0,

@@ -14,6 +14,7 @@ class WP_Swift_Form_Builder_Helper {
     public $form_data = [];
     public $settings = null;
     private $form_pristine = true;
+    private $ajax = true;
     private $error_count = 0;
     private $form_error_messages = array();
     private $extra_msgs = array();
@@ -131,8 +132,12 @@ class WP_Swift_Form_Builder_Helper {
         if (isset($this->settings["enctype"])) {
             $this->enctype = $this->settings["enctype"];
         }
-        else {
-            $this->form_class .= ' ajax';
+        // else {
+        //     $this->form_class .= ' ajax';
+        // }
+
+        if(isset($this->settings["ajax"])) {
+            $this->ajax = $this->settings["ajax"];
         }
         if(isset($this->settings["show_edit_link"])) {
             $this->show_edit_link = true;
@@ -390,6 +395,12 @@ class WP_Swift_Form_Builder_Helper {
      * Get the form wrapper class
      */
     public function get_form_class() {
+        if ($this->ajax) {
+            $this->form_class .= " ajax";
+        } 
+        else {
+            $this->form_class .= " no-ajax";
+        }       
         if ($this->show_next_button_in_sections()) {
             $this->form_class .= " show-section-panels";
         }
@@ -456,6 +467,10 @@ class WP_Swift_Form_Builder_Helper {
 
     public function get_enctype() {
         return $this->enctype;
+    }   
+
+    public function get_ajax() {
+        return $this->ajax;
     }   
 
     public function get_show_edit_link() {
