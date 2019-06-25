@@ -101,15 +101,16 @@ function wp_swift_form_data_loop($id, $_post = null) {
         if( $colour_theme = get_field('colour_theme', $id) ) {
             $settings['colour_theme'] = ' form-builder-theme-'.$colour_theme;
         }
-        // echo "<pre> get_field('ajax', $id): "; var_dump( get_field('ajax', $id) ); echo "</pre>";
-        $ajax = get_field('ajax', $id);
-        if ($ajax) $settings['ajax'] = 1; else $settings['ajax'] = 0;
-        // $settings['ajax'] = get_field('ajax', $id);
-        // if( $ajax = get_field('ajax', $id) ) {
-        //     $settings['ajax'] = $ajax;
-        //     echo '<pre>0 $ajax: '; var_dump($ajax); echo '</pre>';
-        // }
 
+        if (get_field('ajax', $id)) {
+            $ajax = get_field('ajax', $id);
+        }
+        else {
+            // Support legacy forms where this field is not set.
+            $ajax = true;
+        }
+        if ($ajax) $settings['ajax'] = 1; else $settings['ajax'] = 0;
+ 
 
 
         // todo - move the get_field requests into _build-form-array.php
@@ -156,7 +157,8 @@ function wp_swift_form_data_loop($id, $_post = null) {
             }
         }   
         // todo: get other marketing/GDPR fields into here
-
+        
+        $settings['displaying_results'] = array ( 'results_modal' => true, 'dom_element_to_inject' => '', 'dom_element_to_remove' => '', );
         if( $displaying_results = get_field('displaying_results', $id) ) {
             $settings['displaying_results'] = $displaying_results;
         }
