@@ -1,4 +1,4 @@
-(function() {
+export default function() {
 //@start closure
     /**
      * Get a date in the past by reducing years from now date.
@@ -1046,4 +1046,4 @@
         return getUrlParameter('ref');
     };   
 //@end closure
-})();
+}
