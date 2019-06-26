@@ -628,9 +628,11 @@ $this->close_form_groups_html();
             <!-- @start form element -->
             <div class="<?php echo $this->get_css_form_group($helper, $input) ?>" id="<?php echo $id; ?>-form-group">
 
+                <?php /*
                 <!-- @start input anchor -->
                 <a href="<?php echo $id; ?>-anchor"></a>
                 <!-- @end input anchor -->
+                */ ?>
 
                 <!-- @start input label -->
                 <div class="form-label">
