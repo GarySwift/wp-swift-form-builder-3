@@ -188,7 +188,7 @@ function wp_swift_do_signup_mailchimp($form_data, $signups, $list_id_array = arr
             $response_msg = null;
             $session["email"] = $email;
             if ($api_response["status"] == "subscribed") {               
-                $response_header = "<h2>Thanks You. You have been added to our Mailing List!</h2>";
+                $response_header = "<h4>Thanks You. You have been added to our Mailing List!</h4>";
                 $response_header .= "<p class='lead'>Please check your email for confirmation link.</p>";
                 // $response_header = "<p class='lead'>Please check your email for confirmation link.</p>";
                 $session_data["subscribed"] = true;   
