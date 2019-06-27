@@ -790,36 +790,36 @@ $this->close_form_groups_html();
                 <div class="form-label"></div>
                 <div class="form-input">
                     <div class="checkbox">
-                        <label id="sign-up-details"><?php echo $gdpr_settings["main_message"] ?></label>
+                        <div id="sign-up-details" class="sign-up-msg extra-msg"><?php echo $gdpr_settings["main_message"] ?></div>
 
-                            <?php foreach ($opt_ins as $key => $opt_in): ?>
+                        <?php foreach ($opt_ins as $key => $opt_in): ?>
 
-                                <?php if ( is_array($opt_in["options"]) && ( in_array("email", $opt_in["options"]) || in_array("sms", $opt_in["options"]) ) ): ?>
+                            <?php if ( is_array($opt_in["options"]) && ( in_array("email", $opt_in["options"]) || in_array("sms", $opt_in["options"]) ) ): ?>
 
-                                    <div><?php echo $opt_in["message"] ?></div>
-                                    
-                                    <div id="sign-up-checkbox-inputs">
-                                        
-                                        <?php if ( in_array("email", $opt_in["options"]) ): ?>
-                                            <input type="checkbox" value="email" tabindex="<?php echo $this->get_tab_index(); ?>" name="sign-up-<?php echo $key; ?>[]" id="sign-up-email" class="sign-up"><label for="sign-up-email">Email</label>
-                                        <?php endif ?>                            
-                                        <?php if ( in_array("sms", $opt_in["options"]) ): ?>
-                                            <input type="checkbox" value="sms" tabindex="<?php echo $this->get_tab_index(); ?>" name="sign-up-<?php echo $key; ?>[]" id="sign-up-sms" class="sign-up"><label for="sign-up-sms">SMS</label> 
-                                        <?php endif ?>  
-                                        <?php if ( in_array("direct_mail", $opt_in["options"]) ): ?>
-                                          <input type="checkbox" value="direct_mail" tabindex="<?php echo $this->get_tab_index(); ?>" name="sign-up-<?php echo $key; ?>[]" id="sign-up-direct-mail" class="sign-up"><label for="sign-up-direct-mail">Direct Mail</label> 
-                                        <?php endif ?>  
-                                        <?php if ( in_array("customized_online_advertising", $opt_in["options"]) ): ?>
-                                          <input type="checkbox" value="customized_online_advertising" tabindex="<?php echo $this->get_tab_index(); ?>" name="sign-up-<?php echo $key; ?>[]" id="sign-up-customized-online-advertising" class="sign-up"><label for="sign-up-customized-online-advertising">Customized Online Advertising</label> 
-                                        <?php endif ?> 
-
-                                    </div><!-- #sign-up-checkbox-inputs -->  
-
-                                <?php endif ?>
+                                <div class="sign-up-msg extra-msg"><?php echo $opt_in["message"] ?></div>
                                 
-                            <?php endforeach ?>
+                                <div id="sign-up-checkbox-inputs">
+                                    
+                                    <?php if ( in_array("email", $opt_in["options"]) ): ?>
+                                        <input type="checkbox" value="email" tabindex="<?php echo $this->get_tab_index(); ?>" name="sign-up-<?php echo $key; ?>[]" id="sign-up-email" class="sign-up"><label for="sign-up-email">Email</label>
+                                    <?php endif ?>                            
+                                    <?php if ( in_array("sms", $opt_in["options"]) ): ?>
+                                        <input type="checkbox" value="sms" tabindex="<?php echo $this->get_tab_index(); ?>" name="sign-up-<?php echo $key; ?>[]" id="sign-up-sms" class="sign-up"><label for="sign-up-sms">SMS</label> 
+                                    <?php endif ?>  
+                                    <?php if ( in_array("direct_mail", $opt_in["options"]) ): ?>
+                                      <input type="checkbox" value="direct_mail" tabindex="<?php echo $this->get_tab_index(); ?>" name="sign-up-<?php echo $key; ?>[]" id="sign-up-direct-mail" class="sign-up"><label for="sign-up-direct-mail">Direct Mail</label> 
+                                    <?php endif ?>  
+                                    <?php if ( in_array("customized_online_advertising", $opt_in["options"]) ): ?>
+                                      <input type="checkbox" value="customized_online_advertising" tabindex="<?php echo $this->get_tab_index(); ?>" name="sign-up-<?php echo $key; ?>[]" id="sign-up-customized-online-advertising" class="sign-up"><label for="sign-up-customized-online-advertising">Customized Online Advertising</label> 
+                                    <?php endif ?> 
 
-                            <input type="hidden" value="true" name="marketing-sign-up">
+                                </div><!-- #sign-up-checkbox-inputs -->  
+
+                            <?php endif ?>
+                            
+                        <?php endforeach ?>
+
+                        <input type="hidden" value="true" name="marketing-sign-up">
                          
                     </div>
                 </div>                  
