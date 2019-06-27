@@ -796,20 +796,24 @@ $this->close_form_groups_html();
 
                                 <?php if ( is_array($opt_in["options"]) && ( in_array("email", $opt_in["options"]) || in_array("sms", $opt_in["options"]) ) ): ?>
 
-                                    <label for=""><?php echo $opt_in["message"] ?></label>
+                                    <div><?php echo $opt_in["message"] ?></div>
+                                    
+                                    <div id="sign-up-checkbox-inputs">
+                                        
+                                        <?php if ( in_array("email", $opt_in["options"]) ): ?>
+                                            <input type="checkbox" value="email" tabindex="<?php echo $this->get_tab_index(); ?>" name="sign-up-<?php echo $key; ?>[]" id="sign-up-email" class="sign-up"><label for="sign-up-email">Email</label>
+                                        <?php endif ?>                            
+                                        <?php if ( in_array("sms", $opt_in["options"]) ): ?>
+                                            <input type="checkbox" value="sms" tabindex="<?php echo $this->get_tab_index(); ?>" name="sign-up-<?php echo $key; ?>[]" id="sign-up-sms" class="sign-up"><label for="sign-up-sms">SMS</label> 
+                                        <?php endif ?>  
+                                        <?php if ( in_array("direct_mail", $opt_in["options"]) ): ?>
+                                          <input type="checkbox" value="direct_mail" tabindex="<?php echo $this->get_tab_index(); ?>" name="sign-up-<?php echo $key; ?>[]" id="sign-up-direct-mail" class="sign-up"><label for="sign-up-direct-mail">Direct Mail</label> 
+                                        <?php endif ?>  
+                                        <?php if ( in_array("customized_online_advertising", $opt_in["options"]) ): ?>
+                                          <input type="checkbox" value="customized_online_advertising" tabindex="<?php echo $this->get_tab_index(); ?>" name="sign-up-<?php echo $key; ?>[]" id="sign-up-customized-online-advertising" class="sign-up"><label for="sign-up-customized-online-advertising">Customized Online Advertising</label> 
+                                        <?php endif ?> 
 
-                                    <?php if ( in_array("email", $opt_in["options"]) ): ?>
-                                        <input type="checkbox" value="email" tabindex="<?php echo $this->get_tab_index(); ?>" name="sign-up-<?php echo $key; ?>[]" id="sign-up-email" class="sign-up"><label for="sign-up-email">Email</label>
-                                    <?php endif ?>                            
-                                    <?php if ( in_array("sms", $opt_in["options"]) ): ?>
-                                        <input type="checkbox" value="sms" tabindex="<?php echo $this->get_tab_index(); ?>" name="sign-up-<?php echo $key; ?>[]" id="sign-up-sms" class="sign-up"><label for="sign-up-sms">SMS</label> 
-                                    <?php endif ?>  
-                                    <?php if ( in_array("direct_mail", $opt_in["options"]) ): ?>
-                                      <input type="checkbox" value="direct_mail" tabindex="<?php echo $this->get_tab_index(); ?>" name="sign-up-<?php echo $key; ?>[]" id="sign-up-direct-mail" class="sign-up"><label for="sign-up-direct-mail">Direct Mail</label> 
-                                    <?php endif ?>  
-                                    <?php if ( in_array("customized_online_advertising", $opt_in["options"]) ): ?>
-                                      <input type="checkbox" value="customized_online_advertising" tabindex="<?php echo $this->get_tab_index(); ?>" name="sign-up-<?php echo $key; ?>[]" id="sign-up-customized-online-advertising" class="sign-up"><label for="sign-up-customized-online-advertising">Customized Online Advertising</label> 
-                                    <?php endif ?>   
+                                    </div><!-- #sign-up-checkbox-inputs -->  
 
                                 <?php endif ?>
                                 
