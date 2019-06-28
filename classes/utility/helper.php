@@ -579,4 +579,10 @@ class WP_Swift_Form_Builder_Helper {
         }
         return 0;
     }
+    public function get_modal() {
+        $modal = '';
+        if (!empty($this->displaying_results))
+            $modal = ' data-modal="'.$this->displaying_results["dom_element_to_inject"].'"';
+        return $modal;
+    }
 }

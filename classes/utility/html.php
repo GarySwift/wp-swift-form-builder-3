@@ -41,7 +41,7 @@ class WP_Swift_Form_Builder_Html {
             <?php //echo '<pre>$helper->get_ajax(): '; var_dump($helper->get_ajax()); echo '</pre>'; ?>
             
             <!-- @start form -->
-            <form method="post"<?php echo $helper->get_action(); ?> name="<?php echo $helper->get_form_name(); ?>" id="<?php echo $helper->get_form_css_id(); ?>" data-id="<?php echo $helper->get_form_post_id(); ?>" data-post-id="<?php echo $helper->get_post_id(); ?>" data-type="<?php echo $helper->get_form_type() ?>" data-ajax="<?php echo $helper->get_ajax() ?>" <?php $helper->get_form_data_types() ?> class="<?php echo $helper->get_form_class() . ' ' . $helper->get_form_name(); ?>" novalidate<?php echo $helper->get_enctype(); ?>>
+            <form method="post"<?php echo $helper->get_action(); ?> name="<?php echo $helper->get_form_name(); ?>" id="<?php echo $helper->get_form_css_id(); ?>" data-id="<?php echo $helper->get_form_post_id(); ?>" data-post-id="<?php echo $helper->get_post_id(); ?>" data-type="<?php echo $helper->get_form_type() ?>" data-ajax="<?php echo $helper->get_ajax() ?>" <?php $helper->get_form_data_types() ?> class="<?php echo $helper->get_form_class() . ' ' . $helper->get_form_name(); ?>" novalidate<?php echo $helper->get_enctype(); echo $helper->get_modal(); ?>>
 
                 <?php if ( isset($this->hidden) && count($this->hidden)):
                     foreach ($this->hidden as $key => $hidden): ?>
