@@ -88,7 +88,7 @@ class Wp_Swift_Form_Builder_Public {
         ), $atts );
 
         $args = array();
-		$id = $a['id'];
+		$form_id = $a['id'];
 		$to_email = $a['to-email'];
 		$forward_email = $a['forward-email'];
 		
@@ -99,7 +99,17 @@ class Wp_Swift_Form_Builder_Public {
 			$args["forward_email"] = $forward_email;
 		}
 		$post_id = get_the_id();
-        $form_builder = new WP_Swift_Form_Builder_Contact_Form( $id, $post_id, $args );
+        // $form_builder = new WP_Swift_Form_Builder_Contact_Form( $form_id, $post_id, $args );
+
+
+
+		$type = get_field('form_types', $form_id);
+		if( $type == 'signup' ) {
+	    	$form_builder = new WP_Swift_Form_Builder_Signup_Form( $form_id, $post_id, $args );
+		}
+		else {
+			$form_builder = new WP_Swift_Form_Builder_Contact_Form( $form_id, $post_id, $args );
+		}        
 
         $this->wp_swift_form_builder_enqueue_styles_and_scripts();
 

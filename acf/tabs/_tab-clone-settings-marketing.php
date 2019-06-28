@@ -1,6 +1,7 @@
 <?php
 if( function_exists('acf_add_local_field_group') ):
-
+$site_name = get_bloginfo( 'name' );
+$site_email = get_option('admin_email');
 acf_add_local_field_group(array(
 	'key' => 'group_5cff6a76b2519',
 	'title' => 'Tab Clone Settings: Marketing',
@@ -209,7 +210,7 @@ acf_add_local_field_group(array(
 								'class' => '',
 								'id' => '',
 							),
-							'default_value' => 'I am happy to receive marketing information from [YOUR_SITE] by: (please tick all that apply)',
+							'default_value' => 'I am happy to receive marketing information from '.$site_name.' by: (please tick all that apply)',
 							'placeholder' => '',
 							'maxlength' => '',
 							'rows' => 2,
@@ -256,7 +257,7 @@ acf_add_local_field_group(array(
 						'class' => '',
 						'id' => '',
 					),
-					'default_value' => 'You can opt out of receiving messages at any time by using the unsubscribe button on any of the messages you receive. You can withdraw your information at any time by emailing [YOUR_EMAIL].
+					'default_value' => 'You can opt out of receiving messages at any time by using the unsubscribe button on any of the messages you receive. You can withdraw your information at any time by emailing '.$site_email.'.
 
 Marketing information refers to information on appointed reminders, news, products and services including competitions, promotions, offers, advertisements and prize draws.',
 					'tabs' => 'visual',

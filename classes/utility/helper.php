@@ -66,7 +66,6 @@ class WP_Swift_Form_Builder_Helper {
          * Get the array that will store all input settings and values
          */
         $form_data = wp_swift_get_form_data($form_id, $_post);
-
         if (isset($form_data["sections"])) {
             $this->form_data = $form_data["sections"];
         }
@@ -575,6 +574,9 @@ class WP_Swift_Form_Builder_Helper {
         return $this->show_section_stage_guide;
     }       
     public function get_total_sections_count() {
-        return count($this->form_data);
+        if (!empty($this->form_data)) {
+            return count($this->form_data);
+        }
+        return 0;
     }
 }

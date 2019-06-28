@@ -48,6 +48,16 @@ class WP_Swift_Form_Builder_Parent {
         return $html; 
     }
 
+    private function exists(){
+        global $wpdb;
+        $querystr = "SELECT wp_posts.ID, wp_posts.post_type
+        FROM wp_posts WHERE wp_posts.ID = $form_id 
+        AND wp_posts.post_type = 'wp_swift_form'
+        AND ((wp_posts.post_status = 'publish'))";
+        $products_wpdb =  $wpdb->get_results( $querystr );
+        return isset($products_wpdb[0]->ID);
+    }
+
     /**
      * Form Processing
      *

@@ -88,87 +88,89 @@ $this->close_form_groups_html();
         $section_count = 0;
         $total_section_count = $helper->get_total_sections_count();
         $show_next_button_in_sections = $helper->show_next_button_in_sections();
-        foreach ($helper->get_form_data() as $key => $section) {
+        if (!empty($helper->get_form_data())) {
+            foreach ($helper->get_form_data() as $key => $section) {
 
-            $prev = false;
-            $next = false;
-            $show_submit = '';
-            $all = false;
-            if ($show_next_button_in_sections) {
-                if ( ($section_count + 1) < $total_section_count ) {
-                    $next = $section_count + 1;
+                $prev = false;
+                $next = false;
+                $show_submit = '';
+                $all = false;
+                if ($show_next_button_in_sections) {
+                    if ( ($section_count + 1) < $total_section_count ) {
+                        $next = $section_count + 1;
+                    }
+                    if ( $section_count > 0  ) {
+                        $prev = $section_count - 1;
+                    }
+                    if ( $section_count == $total_section_count - 2) {
+                        $show_submit = ' js-show-form-group-extra';// Show submit, recaptcha etc on second last next
+                    } 
+                    if ( $section_count == $total_section_count - 1) {
+                        $all = true;// Show all button
+                    }          
                 }
-                if ( $section_count > 0  ) {
-                    $prev = $section_count - 1;
-                }
-                if ( $section_count == $total_section_count - 2) {
-                    $show_submit = ' js-show-form-group-extra';// Show submit, recaptcha etc on second last next
-                } 
-                if ( $section_count == $total_section_count - 1) {
-                    $all = true;// Show all button
-                }          
-            }
 
-            $this->open_section_html( $helper, $section, $key, $show_next_button_in_sections );            
+                $this->open_section_html( $helper, $section, $key, $show_next_button_in_sections );            
 
-            foreach ($section["inputs"] as $id => $input) {
+                foreach ($section["inputs"] as $id => $input) {
 
-                if (isset($input['data_type'])) {
-                    switch ($input['data_type']) {            
-                        case "text":
-                        case "url":
-                        case "email":
-                        case "number":
-                        case "username":
-                        case "password":
-                        case "date":
-                        case "date_range":
-                            $input_html = $this->build_form_input($helper, $id, $input);
-                            echo $this->wrap_input($helper, $id, $input, $input_html);
-                            break;
-                        case "textarea":
-                            $input_html = $this->build_form_textarea($helper, $id, $input);
-                            echo $this->wrap_input($helper, $id, $input, $input_html);
-                            break; 
-                        case "radio":
-                            $input_html = $this->build_form_radio($helper, $id, $input);
-                            echo $this->wrap_input($helper, $id, $input, $input_html);
-                            break; 
-                        case "checkbox":
-                            $input_html = $this->build_form_checkbox($helper, $id, $input);
-                            echo $this->wrap_input($helper, $id, $input, $input_html);
-                            break; 
-                        case "checkbox_single":
-                            $input_html = $this->build_form_checkbox_single($helper, $id, $input);
-                            echo $this->wrap_input($helper, $id, $input, $input_html);
-                            break;               
-                        case "multi_select":
-                        case "select":
-                            $input_html = $this->build_form_select($helper, $id, $input);
-                            echo $this->wrap_input($helper, $id, $input, $input_html);
-                            break; 
-                        case "repeat_section":
-                            echo $this->build_form_repeat_section($helper, $id, $input);
-                            break;
-                        case "file":
-                            $input_html = $this->build_form_file_upload($helper, $id, $input);
-                            echo $this->wrap_input($helper, $id, $input, $input_html);
-                            break;   
+                    if (isset($input['data_type'])) {
+                        switch ($input['data_type']) {            
+                            case "text":
+                            case "url":
+                            case "email":
+                            case "number":
+                            case "username":
+                            case "password":
+                            case "date":
+                            case "date_range":
+                                $input_html = $this->build_form_input($helper, $id, $input);
+                                echo $this->wrap_input($helper, $id, $input, $input_html);
+                                break;
+                            case "textarea":
+                                $input_html = $this->build_form_textarea($helper, $id, $input);
+                                echo $this->wrap_input($helper, $id, $input, $input_html);
+                                break; 
+                            case "radio":
+                                $input_html = $this->build_form_radio($helper, $id, $input);
+                                echo $this->wrap_input($helper, $id, $input, $input_html);
+                                break; 
+                            case "checkbox":
+                                $input_html = $this->build_form_checkbox($helper, $id, $input);
+                                echo $this->wrap_input($helper, $id, $input, $input_html);
+                                break; 
+                            case "checkbox_single":
+                                $input_html = $this->build_form_checkbox_single($helper, $id, $input);
+                                echo $this->wrap_input($helper, $id, $input, $input_html);
+                                break;               
+                            case "multi_select":
+                            case "select":
+                                $input_html = $this->build_form_select($helper, $id, $input);
+                                echo $this->wrap_input($helper, $id, $input, $input_html);
+                                break; 
+                            case "repeat_section":
+                                echo $this->build_form_repeat_section($helper, $id, $input);
+                                break;
+                            case "file":
+                                $input_html = $this->build_form_file_upload($helper, $id, $input);
+                                echo $this->wrap_input($helper, $id, $input, $input_html);
+                                break;   
 
-                        case "true_false":
-                            $input_html = $this->build_form_true_false($helper, $id, $input);
-                            echo $this->wrap_input($helper, $id, $input, $input_html);
-                            break;                    }  
-                }
-                     
-            }// @end foreach inputs
+                            case "true_false":
+                                $input_html = $this->build_form_true_false($helper, $id, $input);
+                                echo $this->wrap_input($helper, $id, $input, $input_html);
+                                break;                    }  
+                    }
+                         
+                }// @end foreach inputs
 
-            $this->close_section_html( $helper, $section, $key, $prev, $next, $show_submit, $all );
+                $this->close_section_html( $helper, $section, $key, $prev, $next, $show_submit, $all );
 
-            $section_count++;
+                $section_count++;
 
-        }// @end foreach form_data()
-        return $this->tab_index;
+            }// @end foreach form_data()
+            return $this->tab_index;            
+        }
     }
 
     /*
