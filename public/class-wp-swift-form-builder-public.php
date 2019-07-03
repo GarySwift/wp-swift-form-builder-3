@@ -284,7 +284,7 @@ function wp_swift_get_signup_form($form_id, $post_id = null, $args = array(), $t
     echo $form_builder->run();    
 }
 function wp_swift_formbuilder_run($form_id, $post_id = null, $args = array()) {
-	$type = get_field('form_types', $form_id);
+	$type = get_field('form_type', $form_id);
 	echo '<pre>$form_id: '; var_dump($form_id); echo '</pre>';
 	echo '<pre>$type: '; var_dump($type); echo '</pre>';
 	write_log('$form_id: ');write_log($form_id);
