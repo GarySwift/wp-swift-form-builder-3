@@ -149,13 +149,25 @@ function wp_swift_form_data_loop($id, $_post = null) {
         // }
         //@end todo
         //
-        if( $marketing = get_field('marketing', $id) ) {
-            // echo '<pre>$marketing: '; var_dump($marketing); echo '</pre>';echo "<hr>";
-            if ($marketing !== 'none' ) {
-                $settings['marketing'] = $marketing;
-                $settings['gdpr_settings'] = get_field('gdpr_settings', $id);
+        // if( $marketing = get_field('marketing', $id) ) {
+        //     if ($marketing !== 'none' ) {
+        //         $settings['marketing'] = $marketing;
+        //         $settings['gdpr_settings'] = get_field('gdpr_settings', $id);
+        //     }
+        // } 
+        $marketing = get_field('marketing', $id);
+        if($marketing === true ) {              
+            $marketing_type = get_field('marketing', 'option');
+            if ($marketing_type !== 'none' ) {
+                $consent = get_field('consent', $id);
+                $settings['marketing'] = $marketing_type;
+                $settings['consent'] = $consent;
+                if( $gdpr_settings = get_field('gdpr_settings', 'option') ) {
+                    $settings['gdpr_settings'] = $gdpr_settings;
+                }
             }
-        }   
+        }
+        
         // todo: get other marketing/GDPR fields into here
         
         $settings['displaying_results'] = array ( 'results_modal' => true, 'dom_element_to_inject' => '', 'dom_element_to_remove' => '', );

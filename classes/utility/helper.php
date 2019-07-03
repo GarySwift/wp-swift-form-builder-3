@@ -50,6 +50,7 @@ class WP_Swift_Form_Builder_Helper {
     private $recaptcha = array();
     private $gdpr_settings = null;
     private $marketing = false;
+    private $consent = false;//Marketing consent
     private $displaying_results = null;
     private $attachments = array();
     private $tab_index;
@@ -202,6 +203,9 @@ class WP_Swift_Form_Builder_Helper {
         if(isset($this->settings["marketing"])) {
             $this->marketing = $this->settings["marketing"];
         }
+        if(isset($this->settings["consent"])) {
+            $this->consent = $this->settings["consent"];
+        }        
 
         if(isset($this->settings["displaying_results"])) {
             $this->displaying_results = $this->settings["displaying_results"];
@@ -541,6 +545,21 @@ class WP_Swift_Form_Builder_Helper {
     public function get_marketing() {
         return $this->marketing;
     } 
+    public function get_consent() {
+        return $this->consent;
+    }
+    public function get_auto_consent() {
+        switch ($this->consent) {
+            case "tick_license":
+            case "license":
+                return true;
+                break; 
+            case "standard":           
+            default:
+                return false;
+                break;
+        }
+    }         
     public function get_displaying_results() {
         return $this->displaying_results;
     } 

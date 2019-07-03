@@ -321,7 +321,10 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
         }
     }     
 
-    private function do_signup_api( $post ) {
+    /**
+     * This is now handled in 'classes/utility/marketing.php'
+     */
+    private function __do_signup_api( $post ) {
         if (!isset($post["marketing-sign-up"])) 
             return null;
         write_log('@@ do_signup_api() $post: ');write_log($post);
@@ -389,7 +392,7 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
                             }
 
                             if ( $this->send_marketing && count($list_id_array) ) {
-                                $signup_response = wp_swift_do_signup( $marketing, parent::get_form_data(), $signups, $list_id_array );  
+                                $signup_response = wp_swift_do_signup( $marketing, parent::get_form_data(), $signups, parent::helper()->get_auto_consent(), $list_id_array );  
                                 // write_log('$signup_response: ');write_log($signup_response);
                             }                          
                         // }

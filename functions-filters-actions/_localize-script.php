@@ -6,7 +6,7 @@
     $file = get_stylesheet_directory().'/dist/assets/js/app.js';
     $js_version = 1.0;
     if (file_exists($file)) {
-         $js_version = filemtime( $file );
+        $js_version = filemtime( $file );
     }
    
 	$form_builder_ajax = array(
@@ -15,7 +15,7 @@
         // generate a nonce with a unique ID so that you can check it later when an AJAX request is sent
         'security' => wp_create_nonce( 'form-builder-nonce' ),
         // debugging info
-        'updated' => date ("H:i:s - F d Y", $js_version),
+        // 'updated' => date ("H:i:s - F d Y", $js_version),
         'debug' => true,
     );   
     $form_builder_date_picker = array( 'format' => get_form_builder_date_format());

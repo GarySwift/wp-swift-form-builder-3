@@ -14,6 +14,7 @@ class WP_Swift_Form_Builder_Parent {
     private $helper;
     private $validate;
     private $html_builder;
+    private $marketing;
 
     /**
      * Initializes the plugin.
@@ -24,7 +25,8 @@ class WP_Swift_Form_Builder_Parent {
          */  
         $this->helper = new WP_Swift_Form_Builder_Helper( $form_id, $post_id, $hidden = array(), $type, $args = array(), $_post = null );
         $this->validate = new WP_Swift_Form_Builder_Validate();  
-        $this->html_builder = new WP_Swift_Form_Builder_Html( $this->helper->get_tab_index() );      
+        $this->html_builder = new WP_Swift_Form_Builder_Html( $this->helper->get_tab_index() );   
+        $this->marketing = new WP_Swift_Form_Builder_Marketing();   
     }
 
     /**
@@ -183,10 +185,14 @@ class WP_Swift_Form_Builder_Parent {
 
     public function html() {
         return $this->html_builder;
-    }       
+    }  
+
+    public function marketing() {
+        return $this->marketing;
+    }           
 
     public function signup_api($post, $send_marketing = true, $at_least_one_option_required = false) {     
-        return $this->html()->signup_api($post, $this->get_form_data(), $this->helper()->get_marketing(), $this->helper()->get_gdpr_settings(), $send_marketing, $at_least_one_option_required);
+        return $this->marketing->signup_api($post, $this->get_form_data(), $this->helper()->get_marketing(), $this->helper()->get_auto_consent(), $this->helper()->get_gdpr_settings(), $send_marketing, $at_least_one_option_required);
     }              
     // public function set_attachments($attachments) {
     //     // $this->attachments = $attachments;

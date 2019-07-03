@@ -10,7 +10,7 @@
  */
 function wp_swift_form_builder_modal_reveal() {
 ?>
-<div class="reveal large" id="form-builder-reveal" data-reveal>
+<div class="reveal small" id="form-builder-reveal" data-reveal>
   <div id="form-builder-reveal-content"></div>
   <button class="close-button" data-close aria-label="Close modal" type="button">
     <span aria-hidden="true">&times;</span>

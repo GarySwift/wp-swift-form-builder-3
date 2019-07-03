@@ -83,6 +83,7 @@ require_once FORM_BUILDER_PLUGIN_PATH . 'classes/forms/class-form-builder.php';
 require_once FORM_BUILDER_PLUGIN_PATH . 'classes/utility/validate.php';
 require_once FORM_BUILDER_PLUGIN_PATH . 'classes/utility/html.php';
 require_once FORM_BUILDER_PLUGIN_PATH . 'classes/utility/helper.php';
+require_once FORM_BUILDER_PLUGIN_PATH . 'classes/utility/marketing.php';
 /**
  * A FormBuilder child class that handles contact forms
  */
@@ -196,3 +197,64 @@ function wp_swift_formbuilder_exist($form_id) {
 }
 
 run_wp_swift_form_builder();
+
+
+if( function_exists('acf_add_options_page') ) {
+ 
+	// add sub page
+	acf_add_options_sub_page(array(
+		'page_title' 	=> 'Marketing Settings',
+		'menu_title' 	=> 'Marketing',
+		'parent_slug' 	=> 'edit.php?post_type=wp_swift_form',
+	));
+ 
+}
+
+// if( function_exists('acf_add_local_field_group') ):
+
+// acf_add_local_field_group(array(
+// 	'key' => 'group_5d1b0b9f1755d',
+// 	'title' => 'Form Builder Options: Marketing',
+// 	'fields' => array(
+// 		array(
+// 			'key' => 'field_5d1b0b9f2c4ad',
+// 			'label' => 'Tab Clone Settings: Marketing',
+// 			'name' => 'tab_clone_settings_marketing',
+// 			'type' => 'clone',
+// 			'instructions' => '',
+// 			'required' => 0,
+// 			'conditional_logic' => 0,
+// 			'wrapper' => array(
+// 				'width' => '',
+// 				'class' => '',
+// 				'id' => '',
+// 			),
+// 			'clone' => array(
+// 				0 => 'group_5cff6a76b2519',
+// 			),
+// 			'display' => 'seamless',
+// 			'layout' => 'block',
+// 			'prefix_label' => 0,
+// 			'prefix_name' => 0,
+// 		),
+// 	),
+// 	'location' => array(
+// 		array(
+// 			array(
+// 				'param' => 'options_page',
+// 				'operator' => '==',
+// 				'value' => 'acf-options-marketing',
+// 			),
+// 		),
+// 	),
+// 	'menu_order' => 0,
+// 	'position' => 'normal',
+// 	'style' => 'default',
+// 	'label_placement' => 'top',
+// 	'instruction_placement' => 'label',
+// 	'hide_on_screen' => '',
+// 	'active' => 1,
+// 	'description' => '',
+// ));
+
+// endif;

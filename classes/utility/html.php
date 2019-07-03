@@ -768,9 +768,23 @@ $this->close_form_groups_html();
             ob_end_clean();
         endif;//@nd if ($helper->recaptcha_site())
         echo  $html;
-    }  
+    } 
 
     public function gdpr_html($helper) {
+        switch ($helper->get_consent()) {
+            case "standard":
+                $this->gdpr_html_standard($helper);
+                break;
+            case "tick_license":
+                $this->gdpr_html_tick_license($helper);
+                break;
+            case "license":
+                $this->gdpr_html_license($helper);
+                break;                            
+        }
+    }
+
+    public function gdpr_html_standard($helper) {
         $opt_ins = null;
         $gdpr_settings = $helper->get_gdpr_settings();
         $marketing = $helper->get_marketing();
@@ -839,6 +853,39 @@ $this->close_form_groups_html();
         <?php endif;        
     }
 
+
+    public function gdpr_html_tick_license($helper) {
+        $this->gdpr_html_license($helper, true);
+    }
+
+    public function gdpr_html_license($helper, $tick = false) {
+        $gdpr_settings = $helper->get_gdpr_settings();
+        if ( isset($gdpr_settings["license_message"]) ): ?>
+
+            <br>
+            <div class="form-group sign-up">
+                <div class="policies">
+                    <?php if ($tick): ?>
+                        <input type="checkbox" name="gdpr-aggree" id="gdpr-aggree">
+                    <?php endif ?>
+                    <?php echo $gdpr_settings["license_message"] ?>
+                </div>
+            </div>
+
+            <input type="hidden" value="true" name="marketing-sign-up">
+            <?php /* Hidden input fields */ ?>
+            <input type="hidden" value="email" name="sign-up-0[]" id="sign-up-email">
+            <input type="hidden" value="sms" name="sign-up-0[]" id="sign-up-sms">
+            <input type="hidden" value="direct_mail" name="sign-up-0[]" id="sign-up-direct-mail">
+            <input type="hidden" value="customized_online_advertising" name="sign-up-0[]" id="sign-up-direct-mail">
+            <?php 
+            /* 
+
+            */ 
+            ?>
+
+        <?php endif;//@nd if ($this->gdpr_settings)        
+    }
 
     public function gdpr_disclaimer($helper) {
         $gdpr_settings = $helper->get_gdpr_settings();
@@ -1063,123 +1110,5 @@ $this->close_form_groups_html();
                 <?php endforeach ?>
             </div>
         <?php endif;
-    } 
-
-
-   public function signup_api( $post, $form_data, $marketing, $gdpr_settings, $send_marketing, $at_least_one_option_required = false ) {
-        if (!isset($post["marketing-sign-up"])) 
-            return null;    
-        // $marketing =  parent::get_marketing();
-        // $gdpr_settings = parent::get_gdpr_settings();
-        $opt_ins = null;
-
-        if ( $marketing == 'mailin' && isset($gdpr_settings["opt_in"]) ) {
-            $opt_ins = $gdpr_settings["opt_in"];
-        }  
-        elseif ( $marketing == 'mailchimp' && isset($gdpr_settings["mailchimp_opt_in"]) ) {
-            $opt_ins = $gdpr_settings["mailchimp_opt_in"];
-        }         
-
-        $html = '';
-        $list_ids = array();
-        $list_id_array = array();
-        $response_msg = '';
-
-        if ($opt_ins) {
-            ob_start();
-            foreach ($opt_ins as $key => $opt_in): 
-                $email = "No";
-                $sms = "No";
-                $direct_mail = "No";
-                $customized_online_advertising = "No";
-
-                // write_log($key.' $opt_in: ');write_log($opt_in);
-                if ( isset($post["sign-up-$key"]) ) {   
-                        
-                    $signups = $post["sign-up-$key"];        
-
-                    if ( in_array("email", $signups) ) {
-                        $email = "Yes";
-                    }
-                    if ( in_array("sms", $signups) ) {
-                        $sms = "Yes";
-                    } 
-                    if ( in_array("direct_mail", $signups) ) {
-                        $direct_mail = "Yes";
-                    } 
-                    if ( in_array("customized_online_advertising", $signups) ) {
-                        $customized_online_advertising = "Yes";
-                    } 
-                                                             
-                    if ($email === "Yes" || $sms === "Yes" || $direct_mail === "Yes" || $customized_online_advertising === "Yes") {
-                        // if ( $opt_in['list_ids'] ) {
-                            $list_id_array_default = wp_swift_get_default_group();
-                            if (!$list_id_array_default) {
-                                $list_ids = $opt_in['list_ids'];
-                                $list_id_temp_array = explode(',', $list_ids);
-                                foreach ($list_id_temp_array as $id) {
-                                    // $int_id = (int) trim($id);
-                                    // if ( is_int( $int_id ) && $int_id > 0 ){
-                                    //     $list_id_array[] =  $int_id;
-                                    // }
-                                    $list_id_array[] = trim($id);//$int_id;
-                                }
-                                // write_log('$send_marketing: ');write_log($send_marketing);
-                                // write_log('count($list_id_array): ');write_log(count($list_id_array));
-                                // write_log('$list_id_array: ');write_log($list_id_array);                                
-                            }
-                            else {
-                                $list_id_array = $list_id_array_default;
-                            }
-
-                            if ( $send_marketing && count($list_id_array) ) {
-                                $signup_response = wp_swift_do_signup( $marketing, $form_data, $signups, $list_id_array );  
-                                // write_log('HTML >> $signup_response: ');write_log($signup_response);
-                            }                          
-                        // }
-                        // $signup_response = wp_swift_do_signup( parent::get_form_data(), $signups, $list_id_array );            
-                    }                  
-                }
-                ?>
-
-                <p><?php echo $opt_in["message"] ?></p>
-
-                <?php if( in_array("email", $opt_in["options"]) ) echo '<p>Email: '.$email.'</p>'; ?>
-
-                <?php if( in_array("sms", $opt_in["options"]) ) echo '<p>SMS: '.$sms.'</p>'; ?>
-
-                <?php if( in_array("direct_mail", $opt_in["options"]) ) echo '<p>Direct Mail: '.$direct_mail.'</p>'; ?>
-
-                <?php if( in_array("customized_online_advertising", $opt_in["options"]) ) echo '<p>Customized Online Advertising: '.$customized_online_advertising.'</p>'; ?>
-
-                <?php if (isset($signup_response["html"])): ?>
-                    <?php echo $signup_response["html"] ?>
-                <?php endif ?>
-
-                <?php if ( !$send_marketing ): ?>
-                    <pre>Marketing debugging is on so user details were not saved.</pre>
-                <?php endif ?>
-
-            <?php endforeach;
-
-            $html = ob_get_contents();
-            ob_end_clean();
-        }
-        
-        // write_log('parent signup_api() $html: ');write_log($html);
-        // write_log('$response: ');write_log($response);
-        // write_log('$signup_response: ');write_log($signup_response);
-        if (isset($signup_response["response_header"])) {
-            $html = $signup_response["response_header"] . $html;//'<h2>'.$response_header.'</h2>';
-        }
-        $response = array("html" => $html);
-        if (isset($signup_response)) {
-            $response = array_merge($response, $signup_response);
-        }
-        elseif($at_least_one_option_required) {
-            $response["error"] = true;
-            $response["msg"] = "Please select at least one marketing option!"; 
-        }
-        return $response;
-    }                            
+    }                         
 }

@@ -281,15 +281,7 @@ acf_add_local_field_group(array(
 			'type' => 'group',
 			'instructions' => 'These features require ajax to be activated.',
 			'required' => 0,
-			'conditional_logic' => array(
-				array(
-					array(
-						'field' => 'field_5d0f672ef6739',
-						'operator' => '==',
-						'value' => '1',
-					),
-				),
-			),
+			'conditional_logic' => 0,
 			'wrapper' => array(
 				'width' => '',
 				'class' => '',
@@ -419,10 +411,10 @@ acf_add_local_field_group(array(
 			'ui_off_text' => '',
 		),
 		array(
-			'key' => 'field_5d0f672ef6739',
-			'label' => 'Ajax',
-			'name' => 'ajax',
-			'type' => 'true_false',
+			'key' => 'field_5d1caeae878b2',
+			'label' => 'Modal Size',
+			'name' => 'modal_size',
+			'type' => 'select',
 			'instructions' => '',
 			'required' => 0,
 			'conditional_logic' => 0,
@@ -431,11 +423,19 @@ acf_add_local_field_group(array(
 				'class' => '',
 				'id' => '',
 			),
-			'message' => '',
-			'default_value' => 1,
-			'ui' => 1,
-			'ui_on_text' => '',
-			'ui_off_text' => '',
+			'choices' => array(
+				'standard' => 'Standard',
+				'large' => 'Large',
+			),
+			'default_value' => array(
+				0 => 'standard',
+			),
+			'allow_null' => 0,
+			'multiple' => 0,
+			'ui' => 0,
+			'return_format' => 'value',
+			'ajax' => 0,
+			'placeholder' => '',
 		),
 	),
 	'location' => array(
@@ -453,7 +453,7 @@ acf_add_local_field_group(array(
 	'label_placement' => 'top',
 	'instruction_placement' => 'label',
 	'hide_on_screen' => '',
-	'active' => false,
+	'active' => 0,
 	'description' => '',
 ));
 
