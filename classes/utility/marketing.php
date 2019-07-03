@@ -160,13 +160,13 @@ class WP_Swift_Form_Builder_Marketing
 	    $save = false;// We will only save if SMS or Email is selected    
 	    $api_key = $this->get_marketing_api();// The user API key
 	    $get_user_data_if_registered = true;
-	    $first_name = get_form_input($form_data, "form-first-name" );
-	    $last_name = get_form_input($form_data, "form-last-name" );
+	    $first_name = $this->get_form_input($form_data, "form-first-name" );
+	    $last_name = $this->get_form_input($form_data, "form-last-name" );
 	    $contact_name = $first_name . ' ' . $last_name;
 	    // write_log('$first_name: ');write_log($first_name);
 	    // write_log('$last_name: ');write_log($last_name);
 	    if (!$first_name) {
-	        $contact_name = get_form_input($form_data, "form-contact-name" );// potential issue here if name field is not the the same
+	        $contact_name = $this->get_form_input($form_data, "form-contact-name" );// potential issue here if name field is not the the same
 	        $contact_name_array = explode(' ', $contact_name, 2);// Split contact name in two
 	        $first_name = $contact_name_array[0];
 	        $last_name = '';
@@ -174,10 +174,10 @@ class WP_Swift_Form_Builder_Marketing
 	            $last_name = $contact_name_array[1];        
 	    }
 
-	    $email = get_form_input($form_data, "form-email" );
+	    $email = $this->get_form_input($form_data, "form-email" );
 	    $email = strtolower($email);
-	    $phone = get_form_input($form_data, "form-phone" ); 
-	    if (!$phone) $phone = get_form_input($form_data, "form-company-phone" );
+	    $phone = $this->get_form_input($form_data, "form-phone" ); 
+	    if (!$phone) $phone = $this->get_form_input($form_data, "form-company-phone" );
 	     
 
 	    // The data to send to the API
@@ -193,15 +193,15 @@ class WP_Swift_Form_Builder_Marketing
 
 	    $post_data["marketing_permissions"] = $this->set_mailchimp_marketing_permissions($signups, $auto_consent);
 
-	    $company = get_form_input($form_data, "form-company-name" );
+	    $company = $this->get_form_input($form_data, "form-company-name" );
 	    if ($company) {
 	        $post_data["merge_fields"]["COMPANY"] = $company;
 	    }
-	    $job_title = get_form_input($form_data, "form-company-position" );
+	    $job_title = $this->get_form_input($form_data, "form-company-position" );
 	    if ($job_title) {
 	        $post_data["merge_fields"]["JOBTITLE"] = $job_title;
 	    }
-	    $country = get_form_input($form_data, "form-country" );
+	    $country = $this->get_form_input($form_data, "form-country" );
 	    $state = '';
 	    if ($country) {
 	        $country_states = array(
@@ -213,7 +213,7 @@ class WP_Swift_Form_Builder_Marketing
 	            'japan' => 'form-japan-state',
 	        );
 	        if (array_key_exists($country, $country_states)) {
-	            $state = get_form_input($form_data, $country_states[$country] );
+	            $state = $this->get_form_input($form_data, $country_states[$country] );
 	        }
 	        if (function_exists("wp_taoglas_country_from_value")) {
 	            $country = wp_taoglas_country_from_value($country);
@@ -227,11 +227,11 @@ class WP_Swift_Form_Builder_Marketing
 	    write_log('$post_data: ');write_log($post_data);
 
 	    $session_data = array(
-	        "first-name" => $first_name,
-	        "last-name" => $last_name,
+	        "firstName" => $first_name,
+	        "lastName" => $last_name,
 	        "email" => $email,
 	        "phone" => $phone,
-	        "job_title" => $job_title,
+	        "jobTitle" => $job_title,
 	        "company" => $company,
 	        "country" => $country, 
 	        "state" => $state,       
@@ -397,10 +397,10 @@ class WP_Swift_Form_Builder_Marketing
 	    $mailin_api_url = 'https://api.sendinblue.com/v2.0';// sendinblue url
 	    $mailin_api_key = $this->get_marketing_api();// The user API key
 	    $mailin_timeout = 5000;// Optional parameter: Timeout in MS    
-	    $first_name = get_form_input($form_data, "form-first-name" );
-	    $last_name = get_form_input($form_data, "form-last-name" );
-	    $email = get_form_input($form_data, "form-email" );
-	    $phone = get_form_input($form_data, "form-phone" );
+	    $first_name = $this->get_form_input($form_data, "form-first-name" );
+	    $last_name = $this->get_form_input($form_data, "form-last-name" );
+	    $email = $this->get_form_input($form_data, "form-email" );
+	    $phone = $this->get_form_input($form_data, "form-phone" );
 
 	    if ( class_exists('Mailin') && $first_name && $last_name ) {
 	        $session = array ( 
