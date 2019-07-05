@@ -16,7 +16,7 @@
         'security' => wp_create_nonce( 'form-builder-nonce' ),
         // debugging info
         // 'updated' => date ("H:i:s - F d Y", $js_version),
-        'debug' => true,
+        'debug' => false,
     );   
     $form_builder_date_picker = array( 'format' => get_form_builder_date_format());
     if ( function_exists( 'foundationpress_scripts' ) ) {
