@@ -90,7 +90,7 @@ $form-builder-gear: "\fb903";
 div.form-builder.wrap {
     border: 1px solid #D2D2D2;
     background-color: #F8F8F8;
-    padding: 5px;
+    padding: 12px;
     margin-bottom: 20px;
 }
 div.form-builder.hide-labels.wrap {
@@ -616,3 +616,69 @@ form.form-builder.transparent-inputs {
 // div.form-builder {
 //     @include form-builder-typography($pal, bold, 1rem, uppercase);
 // }
+/* The Modal (background) */
+.fb-modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.fb-modal-content {
+  position: relative;
+  background-color: #fefefe;
+  margin: auto;
+  padding: 0;
+  border: 1px solid #888;
+  
+  width:100%;
+  max-width: 600px;
+  min-height: 300px;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+  -webkit-animation-name: animatetop;
+  -webkit-animation-duration: 0.4s;
+  animation-name: animatetop;
+  animation-duration: 0.4s;
+  // padding: 1.5rem;
+}
+.fb-modal-content.large {
+  max-width: 800px;  
+}
+.fb-modal-content.x-large {
+  max-width: 1000px;  
+}
+/* Add Animation */
+@-webkit-keyframes animatetop {
+  from {top:-300px; opacity:0} 
+  to {top:0; opacity:1}
+}
+
+@keyframes animatetop {
+  from {top:-300px; opacity:0}
+  to {top:0; opacity:1}
+}
+
+/* The Close Button */
+.fb-modal-close {
+  color: white;
+  float: right;
+  font-size: 28px;
+  margin-right: 1rem;
+  font-weight: bold;
+  color: #000;
+}
+
+.fb-modal-close:hover,
+.fb-modal-close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}

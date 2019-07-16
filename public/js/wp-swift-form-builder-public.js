@@ -1,4 +1,4 @@
-export default function() {
+(function() {
 //@start closure
     /**
      * Get a date in the past by reducing years from now date.
@@ -581,7 +581,7 @@ export default function() {
             
             var $form = $(form);
             var ajax = $form.data('ajax');
-            console.log('ajax', ajax);
+            // console.log('ajax', ajax);
             var submit = $form.find(":submit");
             // errorsInForm = resetErrorsInForm();
             errorsInForm = validateForm( $form.serializeArray(), resetErrorsInForm() );
@@ -676,8 +676,9 @@ export default function() {
                             if ( responseDisplayModal ) {
                                 var $modal = $('#form-builder-reveal');
                                 $('#form-builder-reveal-content').html(serverResponse.html);
-                                if(typeof $modal !== "undefined") {
-                                    $modal.foundation('open');  
+                                if(typeof modal !== null) {
+                                    // $modal.foundation('open');
+                                    modal.style.display = "block";  
                                 }
                             }
                             else {
@@ -729,9 +730,10 @@ export default function() {
         var showModalWithErrors = function($msg) {
             
             $('#form-builder-reveal-content').html( $msg );
-            var $modal = $('#form-builder-reveal');
-            if(typeof $modal !== "undefined") {
-                $modal.foundation('open');  
+            // var $modal = $('#form-builder-reveal');
+            if(typeof modal !== null) {
+                // $modal.foundation('open');
+                modal.style.display = "block";
             }
             else {
                 alert("Please fill in the required fields!");
@@ -1044,6 +1046,51 @@ export default function() {
     // console.log('blog', blog);    
     var getRef = function() {
         return getUrlParameter('ref');
-    };   
+    }; 
+
+    // var resModal = function() {
+    //     // Get the modal
+    //     var modal = document.getElementById("form-builder-reveal");
+    //     // var open = function() {
+    //     //     console.log('open');
+    //     //      modal.style.display = "block";
+    //     // };       
+    // }; 
+
+        // Get the modal
+        var modal = document.getElementById("form-builder-reveal");
+        // modal.open = function() {
+
+        // };
+        // console.log('modal', modal);
+
+        // resModal.prototype = {
+        //     open: function open() {
+        //         console.log('open');
+        //         modal.style.display = "block";
+        //     }
+        // };
+        // // Get the button that opens the modal
+        // var modalBtn = document.getElementById("myBtn");
+
+        // Get the <span> element that closes the modal
+        var modalClose = document.getElementsByClassName("fb-modal-close")[0];
+
+        // When the user clicks on the button, open the modal 
+        // modalBtn.onclick = function() {
+        //   modal.style.display = "block";
+        // };
+
+        // When the user clicks on <span> (x), close the modal
+        modalClose.onclick = function() {
+          modal.style.display = "none";
+        };
+
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function(event) {
+          if (event.target == modal) {
+            modal.style.display = "none";
+          }
+        };    
 //@end closure
-}
+})();
