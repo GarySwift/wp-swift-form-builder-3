@@ -165,7 +165,7 @@ class WP_Swift_Form_Builder_Helper {
         else {
             $this->submit_button_text = "Submit Form";
         }
-        if (isset($settings['recaptcha'])) {
+        if (isset($this->settings['recaptcha'])) {
             $this->recaptcha = $this->settings["recaptcha"];
         }
         // todo - move the get_field requests into _build-form-array.php
