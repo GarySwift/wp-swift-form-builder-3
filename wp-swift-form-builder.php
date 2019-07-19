@@ -170,7 +170,7 @@ require_once FORM_BUILDER_PLUGIN_PATH . 'functions-filters-actions/_get-date-for
 require_once FORM_BUILDER_PLUGIN_PATH . 'functions-filters-actions/_reveal-modal.php';
 
 require_once FORM_BUILDER_PLUGIN_PATH . 'functions-filters-actions/_write-log.php';
-
+require_once FORM_BUILDER_PLUGIN_PATH . 'functions-filters-actions/_get-form-input.php';
 
 /**
  * Begins execution of the plugin.

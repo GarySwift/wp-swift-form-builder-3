@@ -199,7 +199,7 @@ class Wp_Swift_Form_Builder_Public {
 			wp_enqueue_script( $this->plugin_name.'-select2-js', plugin_dir_url( __DIR__ ) . $select2_js_file, array( 'jquery' ), $select2_js_version, true );			
 
 		}			
-		wp_enqueue_script( 'g-recaptcha', 'https://www.google.com/recaptcha/api.js', '', '' );		
+		// wp_enqueue_script( 'g-recaptcha', 'https://www.google.com/recaptcha/api.js', '', '' );		
 	}
 
 	/**
@@ -228,7 +228,7 @@ class Wp_Swift_Form_Builder_Public {
 		$js_version = filemtime(plugin_dir_path( __FILE__ ) . $js_file);
 		wp_register_script( 'wp-swift-form-builder-js', plugin_dir_url( __FILE__ ) . $js_file, array( 'jquery' ), $js_version, true );
 
-		wp_register_script( 'g-recaptcha', 'https://www.google.com/recaptcha/api.js', '', '' );
+		// wp_register_script( 'g-recaptcha', 'https://www.google.com/recaptcha/api.js', '', '' );
 
 		$datepicker_css_file = 'node_modules/foundation-datepicker/css/foundation-datepicker.min.css';
 		$datepicker_css_version = filemtime(plugin_dir_path( __DIR__ ) . $datepicker_css_file);

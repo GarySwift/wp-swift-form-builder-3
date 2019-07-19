@@ -5,7 +5,7 @@
 
 /* 
  * @start settings
- */ 
+ */
 $form-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
 @if global-variable-exists( 'header-font-family' ) {
     $form-font-family: $header-font-family;
@@ -13,6 +13,10 @@ $form-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxy
 $form-white: #fefefe;
 @if global-variable-exists( 'white' ) {
     $form-white: $white;
+}
+$form-global-radius: 0;
+@if global-variable-exists( 'global-radius' ) {
+    $form-global-radius: $global-radius;
 }
 $form-font-size: 100%;
 $form-font-weight: normal;
@@ -33,7 +37,7 @@ $button-size: ".default";// .default, .large
     -moz-transition: $property;
     -ms-transition: $property; /* IE10 is actually unprefixed */
     -o-transition: $property;
-    transition: $property;    
+    transition: $property;
 }
 
 @mixin transparent-contact-form() {
@@ -43,7 +47,13 @@ $button-size: ".default";// .default, .large
         border-top-style: none;
         border-left-style: none;
         border-right-style: none;
-        border-radius: 0 !important;
+        // border-radius: 0 !important;
+        
+    }
+    .form-group.has-error {
+        select, textarea, input[type=text], input[type=email], input[type=url], input[type=number], input[type=file], div.dummy-input {
+            box-shadow: none !important;
+        }
     }
 }
 
@@ -72,6 +82,92 @@ $button-size: ".default";// .default, .large
     }
 }
 
+@mixin form-builder-theme-light($form-color, $has-error, $has-success, $has-success-bg-color) {
+    .form-group {
+        .form-label, .form-input {
+            label,  div.extra-msg {
+                color: $form-color;
+            }
+        }
+        .control-label.required span {
+          color: $form-color;
+        }
+        small.error {
+            color: $form-color;
+            background-color: $has-error;
+        }
+        small.error:after {
+            border-bottom-color: $has-error;
+        }
+    }
+    .form-group.has-error {
+        .form-label label{
+            color: $has-error;
+        }
+        .control-label.required span {
+          color: $has-error;
+        }
+        select, textarea, input[type=text], input[type=email], input[type=url], input[type=number], input[type=file], div.dummy-input {
+            border-color: $has-error;
+            box-shadow: inset 0 1px 2px rgba($has-error,0.1);
+            color: rgba($has-error,0.75);
+            // background-color: #fef7f6;
+        }
+        div.dummy-input {.error {}}
+    }
+    .form-group.has-success {
+        select, textarea, input[type=text], input[type=email], input[type=url], input[type=number], input[type=file], div.dummy-input {
+            border-color: lighten($has-success, 30%);
+            box-shadow: inset 0 1px 2px rgba($has-success,0.3);
+            color: $has-success;
+            // background-color: $has-success-bg-color;
+        }
+        .form-label label {
+            color: $has-success;
+        }
+        .control-label.required span {
+          color: $has-success;
+        }
+    }
+    .form-group {
+        div.form-builder-feedback {
+            position: relative;
+            span {
+                color: $has-success;
+            }
+            span.form-builder-check {
+                color: $has-success;
+            }
+            span.form-builder-x {
+                color: $has-error;
+            }
+        }
+    }
+    select, textarea, input[type=text], input[type=email], input[type=url], input[type=number], input[type=file], div.dummy-input {
+        color: $form-color;
+    }
+    &.transparent-inputs {
+        form {
+             @include transparent-contact-form();
+        }
+    }
+    .form-group.has-success {
+        select, textarea, input[type=text], input[type=email], input[type=url], input[type=number], input[type=file], div.dummy-input {
+            // border-color: lighten($has-success, 30%);
+            box-shadow: none;
+        }
+    }
+}
+.form-builder-theme-light {
+    @include form-builder-theme-light(white, orange, white, green);
+}
+/**
+ * Transparent inputs
+ */
+form.form-builder.transparent-inputs {
+  @include transparent-contact-form();
+}
+
 $form-transition-speed: 1;//0.3s;
 $form-transition-property: ease-in;//ease-in-out;// ease-in
 
@@ -86,7 +182,7 @@ $form-builder-gear: "\fb903";
 
 /* 
  * @start wrap
- */  
+ */
 div.form-builder.wrap {
     border: 1px solid #D2D2D2;
     background-color: #F8F8F8;
@@ -110,7 +206,7 @@ div.form-builder.hide-labels {
 
 /* 
  * @start radio and check buttons
- */  
+ */
 label.lbl-checkbox, label.lbl-radio {
     display: inline-block;
     margin-right: 1rem;
@@ -171,17 +267,15 @@ div.form-builder.wrap {
  */
 .form-group {
     padding-bottom: $form-group-padding-bottom;
-    .form-input {
-      
-    }  
+    .form-input {}
     .form-label, .form-input {
-        label {
+        label,  div.extra-msg {
             color: $form-color;
             font-weight: $form-font-weight;
             font-family: $form-font-family;
             font-size: $form-font-size;
         }
-    }      
+    }
     button {
         font-weight: bold;
         text-transform: $button-case;
@@ -189,8 +283,9 @@ div.form-builder.wrap {
         @extend #{$button-class} !optional;
         @extend #{$button-size} !optional;
     }
-    select, textarea, input[type=text], input[type=email], input[type=url], input[type=number], input[type=file], div.dummy-input {
+    select, textarea, input[type=text], input[type=email], input[type=url], input[type=number], div.dummy-input {
         margin-bottom: 0;
+        border-radius: $form-global-radius !important;
     }
     @if $show-required-star == true {
         .control-label.required span:after {
@@ -205,18 +300,18 @@ div.form-builder.wrap {
     }
     small.error {
         $transition: opacity 0.3s ease-in, bottom 0.3s ease-in, transform 0.3s;
-        @include form-builder-transition($transition);  
+        @include form-builder-transition($transition);
         font-family: $form-font-family;
         color: $form-white;
         display: block;
         background-color: $has-error;
         position: absolute;
         right: 0;
-        // bottom: -30px; 
+        // bottom: -30px;
         transform: translateY(-1.5rem);
         padding: 2px 10px;
         visibility: hidden;
-        opacity: 0;              
+        opacity: 0;
     }
     small.error:after {
         $size: 6px;
@@ -231,23 +326,24 @@ div.form-builder.wrap {
         border-top: 0;
         margin-left: -$size;
         margin-top: -$size;
-    }     
+    }
 }
 .form-group.has-error {
     .form-label label{
         color: $has-error;
-    }  
+    }
     small.error {
         // bottom: -15px;
         transform: translateY(-4px);
         visibility: visible;
-        opacity: 1;     
-    }    
+        opacity: 1;
+    }
     select, textarea, input[type=text], input[type=email], input[type=url], input[type=number], input[type=file], div.dummy-input {
         border-color: $has-error;
         box-shadow: inset 0 1px 2px rgba($has-error,0.1);
         color: rgba($has-error,0.75);
         background-color: #fef7f6;
+        
     }
     div.dummy-input {.error {}}
 }
@@ -260,14 +356,14 @@ div.form-builder.wrap {
     }
     .form-label label {
         color: $has-success;
-    }   
+    }
     small.error {
         display: none;
-    }       
+    }
 }
 .form-grid-grouping {
     display: -ms-flexbox;
-    display: -webkit-flex; 
+    display: -webkit-flex;
     display: flex;
     align-items: stretch;
     .form-group {
@@ -275,7 +371,7 @@ div.form-builder.wrap {
         max-width: 50%;
     }
 }
-/* 
+/*
  * @start form-cell (groupings)
  */
 div.form-builder.groupings {
@@ -305,54 +401,55 @@ div.form-builder.groupings {
  * @param int        $example  This is an example function/method parameter description.
  * @param string     $example2 This is a second example.
  */
-form.form-builder.labels-left {
-    div.form-group {
-        display: -ms-flexbox;
-        display: -webkit-flex;
-        display: flex;
-        -webkit-flex-direction: row;
-        -ms-flex-direction: row;
-        flex-direction: row;
-        -webkit-flex-wrap: nowrap;
-        -ms-flex-wrap: nowrap;
-        flex-wrap: nowrap;
-        -webkit-justify-content: flex-start;
-        -ms-flex-pack: start;
-        justify-content: flex-start;
-        -webkit-align-content: stretch;
-        -ms-flex-line-pack: stretch;
-        align-content: stretch;
-        width: 100%;
-        div.form-label, div.form-input {
-            // border: 1px dashed #000;
-        }
-        div.form-label {
-            width: 25%;
-        }
-        div.form-input {
-            width: 75%;
-        }
-        div.form-builder-feedback {
-            display: none;
-        }
+@media only screen and (min-width: 900px) {
+    form.form-builder.labels-left {
+        div.form-group {
+            display: -ms-flexbox;
+            display: -webkit-flex;
+            display: flex;
+            -webkit-flex-direction: row;
+            -ms-flex-direction: row;
+            flex-direction: row;
+            -webkit-flex-wrap: nowrap;
+            -ms-flex-wrap: nowrap;
+            flex-wrap: nowrap;
+            -webkit-justify-content: flex-start;
+            -ms-flex-pack: start;
+            justify-content: flex-start;
+            -webkit-align-content: stretch;
+            -ms-flex-line-pack: stretch;
+            align-content: stretch;
+            width: 100%;
+            div.form-label, div.form-input {
+                // border: 1px dashed #000;
+            }
+            div.form-label {
+                width: 25%;
+                padding-right: 10px;
+            }
+            div.form-input {
+                width: 75%;
+            }
+            div.form-builder-feedback {
+                display: none;
+            }
 
+        }
+        div.form-group.mail-receipt, div.form-group.button-group, div.form-group.captcha-wrapper, div.form-group.form-section-buttons  {
+            padding-left: 25%;
+        }
     }
-    div.form-group.button-group {
-        padding-left: 25%;
-        // text-align: right;
-        
-    }   
 }
-/* 
+/*
  * @start feedback
  */
 @if $show-feedback-icons == true {
     .form-group {
         div.form-builder-feedback {
-            position: relative;     
+            position: relative;
             span {
                 $transition: opacity 0.3s ease-in;
-                @include form-builder-transition($transition);          
+                @include form-builder-transition($transition);
                 visibility: hidden;
                 opacity: 0;
                 position: absolute;
@@ -363,7 +460,7 @@ form.form-builder.labels-left {
             }
             span.form-builder-check {
                 color: $has-success;
-            }       
+            }
             span.form-builder-x {
                 color: $has-error;
             }
@@ -393,7 +490,7 @@ form.form-builder.labels-left {
         div.form-builder-feedback {
             span.form-builder-circle-o-notch {
                 visibility: visible;
-                opacity: 1; 
+                opacity: 1;
                 animation: spin 1s linear infinite;
             }
         }
@@ -434,22 +531,22 @@ form.form-builder.labels-left {
 
 .form-builder-x {
   &:before {
-    content: $form-builder-x; 
+    content: $form-builder-x;
   }
 }
 .form-builder-check {
   &:before {
-    content: $form-builder-check; 
+    content: $form-builder-check;
   }
 }
 .form-builder-circle-o-notch {
   &:before {
-    content: $form-builder-circle-o-notch; 
+    content: $form-builder-circle-o-notch;
   }
 }
 .form-builder-gear {
   &:before {
-    content: $form-builder-gear; 
+    content: $form-builder-gear;
   }
 }
 /**
@@ -464,8 +561,9 @@ form.form-builder.labels-left {
     height: 2.4375rem;
     margin: 0 0 1rem;
     padding: 0.5rem;
+    padding-top: 0.46rem;
     border: 1px solid #cacaca;
-    border-radius: 0;
+    border-radius: $form-global-radius;
     background-color: #fefefe;
     box-shadow: inset 0 1px 2px rgba(10, 10, 10, 0.1);
     font-family: inherit;
@@ -482,29 +580,29 @@ form.form-builder.labels-left {
  * File Upload
  *
  */
-.form-group.file-upload {
-    div.form-input {
-    display: block;
-    box-sizing: border-box;
-    width: 100%;
-    height: 2.4375rem;
-    margin: 0 0 1rem;
-    padding: 0.5rem;
-    border: 1px solid #cacaca;
-    border-radius: 0;
-    background-color: #fefefe;
-    box-shadow: inset 0 1px 2px rgba(10, 10, 10, 0.1);
-    font-family: inherit;
-    font-size: 1rem;
-    font-weight: normal;
-    line-height: 1.5;
-    color: #0a0a0a;
-    transition: box-shadow 0.5s, border-color 0.25s ease-in-out;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;        
-    }
-}
+// .form-group.file-upload {
+//     div.form-input {
+//         display: block;
+//         box-sizing: border-box;
+//         width: 100%;
+//         height: 2.4375rem;
+//         margin: 0 0 1rem;
+//         padding: 0.5rem;
+//         border: 1px solid #cacaca;
+//         border-radius: 0;
+//         background-color: #fefefe;
+//         box-shadow: inset 0 1px 2px rgba(10, 10, 10, 0.1);
+//         font-family: inherit;
+//         font-size: 1rem;
+//         font-weight: normal;
+//         line-height: 1.5;
+//         color: #0a0a0a;
+//         transition: box-shadow 0.5s, border-color 0.25s ease-in-out;
+//         -webkit-appearance: none;
+//         -moz-appearance: none;
+//         appearance: none;
+//     }
+// }
 /**
  * Section Panels
  */
@@ -518,99 +616,30 @@ form.form-builder.show-section-panels {
         opacity: 0.5;
         display: none;
         visibility: hidden;
-        
+
     }
     div.form-group-extra {
         display: none;
     }
 }
-
-@mixin form-builder-theme-light($form-color, $has-error, $has-success, $has-success-bg-color) {
-    .form-group { 
-        .form-label, .form-input {
-            label {
-                color: $form-color;
-            }
-        } 
-        .control-label.required span {
-          color: $form-color;
-        } 
-        small.error {
-            color: $form-color;
-            background-color: $has-error;              
-        }
-        small.error:after {
-            border-bottom-color: $has-error;
-        }               
-    }  
-    .form-group.has-error {
-        .form-label label{
-            color: $has-error;
-        }  
-        .control-label.required span {
-          color: $has-error;
-        }         
-        select, textarea, input[type=text], input[type=email], input[type=url], input[type=number], input[type=file], div.dummy-input {
-            border-color: $has-error;
-            box-shadow: inset 0 1px 2px rgba($has-error,0.1);
-            color: rgba($has-error,0.75);
-            // background-color: #fef7f6;
-        }
-        div.dummy-input {.error {}}
-    }
-    .form-group.has-success {
-        select, textarea, input[type=text], input[type=email], input[type=url], input[type=number], input[type=file], div.dummy-input {
-            border-color: lighten($has-success, 30%);
-            box-shadow: inset 0 1px 2px rgba($has-success,0.3);
-            color: $has-success;
-            // background-color: $has-success-bg-color;
-        }
-        .form-label label {
-            color: $has-success;
-        } 
-        .control-label.required span {
-          color: $has-success;
-        }            
-    } 
-    .form-group {
-        div.form-builder-feedback {
-            position: relative;     
-            span {
-                color: $has-success;
-            }
-            span.form-builder-check {
-                color: $has-success;
-            }       
-            span.form-builder-x {
-                color: $has-error;
-            }
-        }
-    }
-    select, textarea, input[type=text], input[type=email], input[type=url], input[type=number], input[type=file], div.dummy-input {
-        color: $form-color;
-    }
-    &.transparent-inputs {
-        form {
-             @include transparent-contact-form();
-        }
-    }
-    .form-group.has-success {
-        select, textarea, input[type=text], input[type=email], input[type=url], input[type=number], input[type=file], div.dummy-input {
-            // border-color: lighten($has-success, 30%);
-            box-shadow: none;
-        }    
-    }   
-}
-.form-builder-theme-light {
-    @include form-builder-theme-light(white, orange, white, green);
-}
-
 /**
  * Transparent inputs
  */
 form.form-builder.transparent-inputs {
   @include transparent-contact-form();
 }
+
+div.form-section-count {
+    float: right;
+    display: inline-block;
+    padding: 1rem;
+    font-family: $header-font-family;
+    font-size: 2rem;
+    color: $navy;
+    background-color: #F0F0F0;
+
+}
+
 // $pal: ("Palatino Linotype", "Book Antiqua", Palatino, serif);
 // $hel: (Helvetica Neue, Helvetica, Arial, sans-serif);
 // div.form-builder {

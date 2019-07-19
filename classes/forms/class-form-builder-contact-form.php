@@ -117,9 +117,18 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
                 $this->to = get_field('to_email', $form_post_id ); 
             }
             // Set reponse subject for email
-            if (get_field('response_subject', $form_post_id )) {
-                $this->response_subject = get_field('response_subject', $form_post_id ); 
+            $response_subject = get_field('response_subject', $form_post_id );
+            if ($response_subject) {
+                $this->response_subject = $response_subject; 
             }
+            if ($response_subject_callback = get_field('response_subject_callback', $form_post_id )) {
+                if (function_exists($response_subject_callback)) {       
+                    if ($response_subject_callback_response = $response_subject_callback($response_subject, $form_data)) {
+                        $this->response_subject = $response_subject_callback_response;
+                    }
+                }
+            }
+
             // Start the reponse message for the email
             if ( !$post_id && get_field('response_message', $form_post_id ) ) {
                 $this->response_message = get_field('response_message', $form_post_id );
@@ -223,6 +232,7 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
             // echo '<pre>3 $helper->get_attachments(): '; var_dump($parent->helper->get_attachments()); echo '</pre>';
             if (function_exists('write_log')) {
                 write_log('$this->to:');write_log($this->to);
+                write_log('Subject: ' . $this->response_subject.$this->date);
                 write_log('$this->forward_email: ' . $this->forward_email);
                 error_log( "Debugging mode is on so no emails are being sent." );
             }

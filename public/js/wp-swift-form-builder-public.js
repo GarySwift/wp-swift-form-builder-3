@@ -1,5 +1,6 @@
-(function() {
+export default function() {
 //@start closure
+if (typeof FormBuilderAjax !== "undefined") {
     /**
      * Get a date in the past by reducing years from now date.
      * Very basic. Does not include leap years.
@@ -667,10 +668,8 @@
                             }
 
                             var responseDisplayModal = true;
-                            var lastname = "Hi";
                             if(typeof serverResponse.displaying_results !== "undefined") {
                               responseDisplayModal = serverResponse.displaying_results.results_modal;
-                              console.log('responseDisplayModal', responseDisplayModal);
                             }
                             // var displaying_results
                             if ( responseDisplayModal ) {
@@ -1080,17 +1079,20 @@
         // modalBtn.onclick = function() {
         //   modal.style.display = "block";
         // };
+        
+        if(modal !== null) {
+            // When the user clicks on <span> (x), close the modal
+            modalClose.onclick = function() {
+              modal.style.display = "none";
+            };
 
-        // When the user clicks on <span> (x), close the modal
-        modalClose.onclick = function() {
-          modal.style.display = "none";
-        };
-
-        // When the user clicks anywhere outside of the modal, close it
-        window.onclick = function(event) {
-          if (event.target == modal) {
-            modal.style.display = "none";
-          }
-        };    
+            // When the user clicks anywhere outside of the modal, close it
+            window.onclick = function(event) {
+              if (event.target == modal) {
+                modal.style.display = "none";
+              }
+            }; 
+        }      
+} 
 //@end closure
-})();
+}
