@@ -13,8 +13,8 @@ class WP_Swift_Form_Builder_Marketing
     }
 
     public function signup_api( $post, $form_data, $marketing, $auto_consent, $gdpr_settings, $send_marketing, $at_least_one_option_required = false ) {
-        write_log('signup_api() $auto_consent: ');write_log($auto_consent);
-        write_log('$post: ');write_log($post);
+        // write_log('signup_api() $auto_consent: ');write_log($auto_consent);
+        // write_log('$post: ');write_log($post);
         if (!isset($post["marketing-sign-up"])) 
             return null;    
         // $marketing =  parent::get_marketing();
@@ -81,8 +81,8 @@ class WP_Swift_Form_Builder_Marketing
                                 $list_id_array = $list_id_array_default;
                             }
 
-                            write_log('$send_marketing: ');write_log($send_marketing);
-                            write_log('count($list_id_array): ');write_log(count($list_id_array));
+                            // write_log('$send_marketing: ');write_log($send_marketing);
+                            // write_log('count($list_id_array): ');write_log(count($list_id_array));
                             if ( $send_marketing && count($list_id_array) ) {
                                 $signup_response = $this->do_signup( $marketing, $form_data, $signups, $auto_consent, $list_id_array );  
                                 // write_log('HTML >> $signup_response: ');write_log($signup_response);
@@ -219,12 +219,12 @@ class WP_Swift_Form_Builder_Marketing
 	            $country = wp_taoglas_country_from_value($country);
 	        }
 	        $post_data["merge_fields"]["COUNTRY"] = $country;
-	        write_log('$country: ');write_log($country);
+	        // write_log('$country: ');write_log($country);
 	    }
 	    if ($state) {
 	        $post_data["merge_fields"]["STATE"] = $state;
 	    }
-	    write_log('$post_data: ');write_log($post_data);
+	    // write_log('$post_data: ');write_log($post_data);
 
 	    $session_data = array(
 	        "firstName" => $first_name,
@@ -258,7 +258,7 @@ class WP_Swift_Form_Builder_Marketing
 	        ));   
 	        $api_response = curl_exec($ch);# Send the request
 	        $api_response = json_decode($api_response, true);# Decode the response
-	        write_log('');write_log('$api_response: ');write_log($api_response);write_log('');
+	        // write_log('');write_log('$api_response: ');write_log($api_response);write_log('');
 	        # End cURL
 	        
 	        if (isset($api_response["status"])) {
