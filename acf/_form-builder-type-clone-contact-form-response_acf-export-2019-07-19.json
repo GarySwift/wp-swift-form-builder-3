@@ -1,0 +1,215 @@
+[
+    {
+        "key": "group_5c65c38fe91aa",
+        "title": "Form Builder Type Clone: Contact Form Response",
+        "fields": [
+            {
+                "key": "field_5c65c3baa7360",
+                "label": "To Email",
+                "name": "to_email",
+                "type": "email",
+                "instructions": "Leave blank to send email to the default admin email",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "50",
+                    "class": "",
+                    "id": ""
+                },
+                "default_value": "",
+                "placeholder": "",
+                "prepend": "",
+                "append": ""
+            },
+            {
+                "key": "field_5c65c4d8a7361",
+                "label": "To Email Callback (Developers Only)",
+                "name": "to_email_callback",
+                "type": "text",
+                "instructions": "Use a custom PHP function to determine email recipient",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "50",
+                    "class": "",
+                    "id": ""
+                },
+                "default_value": "",
+                "placeholder": "my_custom_email_callback",
+                "prepend": "",
+                "append": "",
+                "maxlength": ""
+            },
+            {
+                "key": "field_5c65c514a7362",
+                "label": "Response Subject",
+                "name": "response_subject",
+                "type": "text",
+                "instructions": "Email subject for the office",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "50",
+                    "class": "",
+                    "id": ""
+                },
+                "default_value": "New Customer Enquiry",
+                "placeholder": "New Customer Enquiry",
+                "prepend": "",
+                "append": "",
+                "maxlength": ""
+            },
+            {
+                "key": "field_5d317a69bc3ff",
+                "label": "Response Subject Callback (Developers Only)",
+                "name": "response_subject_callback",
+                "type": "text",
+                "instructions": "Use a custom PHP function to construct the response",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "50",
+                    "class": "",
+                    "id": ""
+                },
+                "default_value": "",
+                "placeholder": "my_response_subject_callback",
+                "prepend": "",
+                "append": "",
+                "maxlength": ""
+            },
+            {
+                "key": "field_5c65c535a7363",
+                "label": "Response Message",
+                "name": "response_message",
+                "type": "wysiwyg",
+                "instructions": "Email message for the office (appears above user enquiry)",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "default_value": "",
+                "tabs": "all",
+                "toolbar": "basic",
+                "media_upload": 0,
+                "delay": 1
+            },
+            {
+                "key": "field_5c65c60ccab86",
+                "label": "Confirmation Header",
+                "name": "confirmation_header",
+                "type": "text",
+                "instructions": "The heading in confirmation panel after a the form has been submitted",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "default_value": "Hold Tight, We'll Get Back To You",
+                "placeholder": "Hold Tight, We'll Get Back To You",
+                "prepend": "",
+                "append": "",
+                "maxlength": ""
+            },
+            {
+                "key": "field_5c65c647cab87",
+                "label": "Auto Response Subject",
+                "name": "auto_response_subject",
+                "type": "text",
+                "instructions": "Email subject for the user",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "default_value": "Auto-response (no-reply)",
+                "placeholder": "",
+                "prepend": "",
+                "append": "",
+                "maxlength": ""
+            },
+            {
+                "key": "field_5c65c6e58d4fd",
+                "label": "Auto Response Message",
+                "name": "auto_response_message",
+                "type": "wysiwyg",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "default_value": "Thank you very much for your enquiry. A FormBuilder representative will be contacting you shortly.\r\n\r\nKind regards,\r\nThe FormBuilder team.",
+                "tabs": "all",
+                "toolbar": "basic",
+                "media_upload": 0,
+                "delay": 1
+            },
+            {
+                "key": "field_5c65cd7e6f364",
+                "label": "Forwarding Emails",
+                "name": "forwarding_emails",
+                "type": "repeater",
+                "instructions": "Add forwarding emails to which all form submissions will also be sent",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "collapsed": "field_5c65cde66f365",
+                "min": 0,
+                "max": 3,
+                "layout": "table",
+                "button_label": "Add Email",
+                "sub_fields": [
+                    {
+                        "key": "field_5c65cde66f365",
+                        "label": "Emails",
+                        "name": "email",
+                        "type": "email",
+                        "instructions": "",
+                        "required": 0,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "default_value": "",
+                        "placeholder": "",
+                        "prepend": "",
+                        "append": ""
+                    }
+                ]
+            }
+        ],
+        "location": [
+            [
+                {
+                    "param": "post_type",
+                    "operator": "==",
+                    "value": "post"
+                }
+            ]
+        ],
+        "menu_order": 0,
+        "position": "normal",
+        "style": "default",
+        "label_placement": "top",
+        "instruction_placement": "label",
+        "hide_on_screen": "",
+        "active": 0,
+        "description": ""
+    }
+]
