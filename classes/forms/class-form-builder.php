@@ -33,7 +33,8 @@ class WP_Swift_Form_Builder_Parent {
      * Start form process and output html
      */
     public function run() {
-        return $this->get_form();
+        // return $this->get_form();
+        return $this->html()->update_message();
     }
 
     /**

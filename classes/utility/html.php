@@ -1110,5 +1110,15 @@ $this->close_form_groups_html();
                 <?php endforeach ?>
             </div>
         <?php endif;
-    }                         
+    } 
+
+    public function update_message() {
+        ?>
+        <div class="callout warning text-center">
+            <h3>Our forms are being updated!</h3>
+            <p class="lead">Please check back in a few moments.</p>
+            <p>We are doing some scheduled maintenance but it won't take long and we will be back to normal.</p>
+        </div>
+        <?php
+    }                        
 }
