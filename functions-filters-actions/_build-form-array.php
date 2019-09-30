@@ -413,13 +413,19 @@ function build_acf_form_array($row_layout, $inputs, $settings, $section=0, $edit
     // }
 
     if( $data_type === 'textarea' ) {
-        $textarea_settings_group = get_sub_field('textarea_settings');
-        if ($textarea_settings_group["rows"]) {
-            $rows = $textarea_settings_group["rows"];
-        }
-        if ($textarea_settings_group["maxlength"]) {
-            $maxlength = $textarea_settings_group["maxlength"];
-        }        
+        // $textarea_settings_group = get_sub_field('textarea_settings');
+        // if ($textarea_settings_group["rows"]) {
+        //     $rows = $textarea_settings_group["rows"];
+        // }
+        // if ($textarea_settings_group["maxlength"]) {
+        //     $maxlength = $textarea_settings_group["maxlength"];
+        // } 
+        if( get_sub_field('rows') ) {
+           $rows = get_sub_field('rows');
+        }    
+        if( get_sub_field('maxlength') ) {
+           $maxlength = get_sub_field('maxlength');
+        }           
     }   
     $select_options = get_sub_field('options');
     if( $select_options ) {
