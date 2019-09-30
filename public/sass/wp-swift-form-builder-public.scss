@@ -14,7 +14,7 @@ $form-white: #fefefe;
 @if global-variable-exists( 'white' ) {
     $form-white: $white;
 }
-$form-global-radius: 0;
+$form-global-radius: 5px;
 @if global-variable-exists( 'global-radius' ) {
     $form-global-radius: $global-radius;
 }
@@ -31,6 +31,37 @@ $show-feedback-icons: true;
 $button-case: none;//uppercase;
 $button-class: ".secondary";// seperate classes with a comma
 $button-size: ".default";// .default, .large
+
+@mixin font($form-font-weight, $form-font-family, $form-font-size) {
+    .form-message.error {
+        font-family: $form-font-family;
+    }
+    /* 
+     * @start form-group
+     */
+    .form-group {
+        .form-label, .form-input {
+            label,  div.extra-msg {
+                font-weight: $form-font-weight;
+                font-family: $form-font-family;
+                font-size: $form-font-size;
+            }
+        }
+        button {
+            font-weight: $form-font-weight;
+            text-transform: $button-case;
+            font-family: $form-font-family;
+
+        }
+        small.error {
+            font-family: $form-font-family;
+        }
+    }
+    //
+    div.form-section-count {
+        font-family: $form-font-family;
+    }
+}
 
 @mixin form-builder-transition($property) {
     -webkit-transition: $property;
@@ -188,6 +219,7 @@ div.form-builder.wrap {
     background-color: #F8F8F8;
     padding: 12px;
     margin-bottom: 20px;
+    border-radius: $form-global-radius;
 }
 div.form-builder.hide-labels.wrap {
     padding-top: 10px;
@@ -212,17 +244,43 @@ label.lbl-checkbox, label.lbl-radio {
     margin-right: 1rem;
     cursor: pointer;
 }
+/* 
+ * @start mail-receipt
+ */
+.form-group.mail-receipt{
+   label {
+       margin-left: 1rem;
+   }
+}
 
 /* 
  * @start form-message
  */
 .form-message {
+    padding: 1rem;
     table tbody {
         border: 1px solid #D2D2D2;
     }
     ul {
         list-style-type: square;
     }
+
+    table td, table th {
+      border: 1px solid #ddd;
+      padding: 12px;
+    }
+
+    table tr:nth-child(even){background-color: #f2f2f2;}
+
+    table tr:hover {background-color: #ddd;}
+
+// table th {
+//   padding-top: 12px;
+//   padding-bottom: 12px;
+//   text-align: left;
+//   background-color: #3F3F3F;
+//   color: white;
+// }    
 }
 .form-message.ajax {
     table {
@@ -633,9 +691,9 @@ div.form-section-count {
     float: right;
     display: inline-block;
     padding: 1rem;
-    font-family: $header-font-family;
+    font-family: $form-font-family;
     font-size: 2rem;
-    color: $navy;
+    color: $form-color;
     background-color: #F0F0F0;
 
 }

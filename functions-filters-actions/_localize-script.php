@@ -25,9 +25,9 @@
     }
     else {
 		$js_file = 'public/js/ajax.js';
-		$js_file_path = plugin_dir_path( __FILE__ ).$js_file;
+		$js_file_path = plugin_dir_path( __DIR__ ).$js_file;
 		$js_version = filemtime( $js_file_path ); 
-    	wp_enqueue_script( 'form-builder-ajax', plugin_dir_url( __FILE__ ) . $js_file, array(), $js_version, true );
+    	wp_enqueue_script( 'form-builder-ajax', plugin_dir_url( __DIR__ ) . $js_file, array(), $js_version, true );
     	wp_localize_script( 'form-builder-ajax', 'FormBuilderAjax', $form_builder_ajax);
         wp_localize_script( 'form-builder-ajax', 'FormBuilderDatePicker', $form_builder_date_picker);
     } 

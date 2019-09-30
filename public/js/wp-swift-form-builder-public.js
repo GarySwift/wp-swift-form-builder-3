@@ -1,4 +1,4 @@
-export default function() {
+(function() {
 //@start closure
 if (typeof FormBuilderAjax !== "undefined") {
     /**
@@ -1095,4 +1095,4 @@ if (typeof FormBuilderAjax !== "undefined") {
         }      
 } 
 //@end closure
-}
+})();
