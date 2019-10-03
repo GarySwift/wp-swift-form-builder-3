@@ -393,6 +393,7 @@ function build_acf_form_array($row_layout, $inputs, $settings, $section=0, $edit
     if( $data_type === 'file' ) {
         $css_class .= 'file-upload';
         $save_location = get_sub_field('save_location');
+        $settings['ajax'] = 0;
     }
     if( $data_type === 'date_range' ) {
          
