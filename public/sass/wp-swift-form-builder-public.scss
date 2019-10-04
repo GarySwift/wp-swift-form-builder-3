@@ -32,6 +32,8 @@ $button-case: none;//uppercase;
 $button-class: ".secondary";// seperate classes with a comma
 $button-size: ".default";// .default, .large
 
+@import "override-defaults";
+
 @mixin font($form-font-weight, $form-font-family, $form-font-size) {
     .form-message.error {
         font-family: $form-font-family;
@@ -113,7 +115,7 @@ $button-size: ".default";// .default, .large
     }
 }
 
-@mixin form-builder-theme-light($input-color, $form-color, $has-error, $has-success, $has-success-bg-color) {
+@mixin form-builder-theme-light($form-color, $has-error, $has-success, $has-success-bg-color) {
     .form-group {
         .form-label, .form-input {
             label,  div.extra-msg {
