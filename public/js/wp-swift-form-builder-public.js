@@ -654,6 +654,7 @@ if (typeof FormBuilderAjax !== "undefined") {
                             //   $modal.toggleClass('large');
                             // }
                             submit.prop('disabled', false);
+                            grecaptcha.reset();// Reset global object grecaptcha (Declared via API) 
 
                             if (serverResponse.error_count === 0 && serverResponse.form_set === true && FormBuilderAjax.type !== "signup") {
                                 resetForm( $form.serializeArray() );        

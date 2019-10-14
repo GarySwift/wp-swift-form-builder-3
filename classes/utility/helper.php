@@ -58,6 +58,8 @@ class WP_Swift_Form_Builder_Helper {
     private $show_section_stage_guide = false;
     private $transparent_inputs = false;
     private $colour_theme = '';
+
+    public $spam_killer;
     /*
      * Initializes the plugin.
      */
@@ -248,6 +250,7 @@ class WP_Swift_Form_Builder_Helper {
         //     echo "<pre>"; var_dump("form_builder_set_value_from_get_request"); echo "</pre>";
         // }
         // $this->form_data = form_builder_set_value_from_get_request( $this->form_data );
+        $this->spam_killer = new WP_Swift_Form_Builder_Spam_Killer();
     }
 
 

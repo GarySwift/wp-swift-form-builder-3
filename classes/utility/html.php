@@ -12,13 +12,14 @@
  */
 class WP_Swift_Form_Builder_Html {
     private $tab_index;
+    // private $spam_killer;
 
     /*
      * Initializes the class.
      */
     public function __construct( $tab_index ) {
         $this->tab_index = $tab_index;
-
+        // $this->helper->spam_killer = new WP_Swift_Form_Builder_Spam_Killer();
     }
     
     public function front_end_form($helper, $response = null, $msg = null ) {
@@ -64,7 +65,8 @@ class WP_Swift_Form_Builder_Html {
                     ?></div>
                 </div><?php 
 */  
-$this->recaptcha_html($helper);                
+// $this->recaptcha_html($helper); 
+$helper->spam_killer->spam_html($helper, $this->get_tab_index());      
 $this->mail_receipt_html($helper);            
 $this->button_html($helper);
 $this->close_form_groups_html();

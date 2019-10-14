@@ -3,10 +3,20 @@
  * The main plugin class that will handle form validation and attachment processing.
  */
 class WP_Swift_Form_Builder_Validate {
+    // private $spam_killer;
+
+    /*
+     * Initializes the class.
+     */
+    public function __construct( ) {
+        // $this->spam_killer = new WP_Swift_Form_Builder_Spam_Killer();
+    }
+
     public function validate_form($helper, $post, $ajax) {
         $form_data = $helper->get_form_data();
 
         $this->spam_prevention($helper, $post);
+
         if ( !empty($form_data)  ) {
             
             // The form is submitted by a user and so is no longer pristine
@@ -330,47 +340,7 @@ class WP_Swift_Form_Builder_Validate {
     }
 
     public function spam_prevention($helper, $post) {
-        return $this->recaptcha_check($helper, $post);
-    }
-
-    public function recaptcha_check($helper, $post) {
-        $response = array(
-            'status' => false,
-            'msg' => '',
-        );
-        if ( !$helper->recaptcha_secret() ){
-            // recaptcha is not set so skip the check
-            return true;
-        }
-        elseif ( $helper->recaptcha_secret() && $post["g-recaptcha-response"] ){
-
-            $g_response = $post["g-recaptcha-response"];
-
-            $url = 'https://www.google.com/recaptcha/api/siteverify';
-            $post_data = "secret=".$helper->recaptcha_secret()."&response=".$g_response."&remoteip=".$_SERVER['REMOTE_ADDR'] ;
-            $ch = curl_init();  
-            curl_setopt($ch, CURLOPT_URL, $url);
-            curl_setopt($ch, CURLOPT_POST, true);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-            curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/x-www-form-urlencoded; charset=utf-8', 'Content-Length: ' . strlen($post_data)));
-            curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data); 
-            $googresp = curl_exec($ch);       
-            $decgoogresp = json_decode($googresp);
-            curl_close($ch);
-
-            if ( $decgoogresp->success === false ) {
-                $helper->increase_error_count();
-                $helper->add_form_error_message("You are a bot! Go away!");    
-                return false;         
-            } 
-            elseif ( $decgoogresp->success === true ) {
-                return true;     
-            }
-        }
-        elseif ( $helper->recaptcha_secret() ){
-            $helper->increase_error_count();
-            $helper->add_form_error_message("This form is expecting a recaptcha code to validate but none was found!");               
-            return false;
-        }    
+        // return $this->recaptcha_check($helper, $post);
+        return  $helper->spam_killer->spam_prevention($helper, $post);
     }                  
 }
