@@ -205,19 +205,34 @@ class WP_Swift_Form_Builder_Admin_Interface_Tools {
 									);
 
 
+									// $form_data_preset[] = array(
+									// 	"marketing" => array( 
+									// 		"key" => "field_5cff6ab638c61",
+									// 		"value" =>  get_field('marketing', $form_id, true),
+									// 	),
+									// );
+
+									// $form_data_preset[] = array(
+									// 	"gdpr_settings" => array( 
+									// 		"key" => "field_5cff6a76baf64",
+									// 		"value" =>  get_field('gdpr_settings', $form_id, true),
+									// 	),
+									// );
+
 									$form_data_preset[] = array(
 										"marketing" => array( 
-											"key" => "field_5cff6ab638c61",
+											"key" => "field_5d1b0f1560a64",
 											"value" =>  get_field('marketing', $form_id, true),
 										),
 									);
 
 									$form_data_preset[] = array(
-										"gdpr_settings" => array( 
-											"key" => "field_5cff6a76baf64",
-											"value" =>  get_field('gdpr_settings', $form_id, true),
+										"consent" => array( 
+											"key" => "field_5d1b0f3f60a65",
+											"value" =>  get_field('consent', $form_id, true),
 										),
-									);																		
+									);
+
 									// echo '<pre>$form_data_preset: '; var_dump($form_data_preset); echo '</pre>';
 									$json = json_encode($form_data_preset, JSON_HEX_QUOT | JSON_HEX_APOS);	
 

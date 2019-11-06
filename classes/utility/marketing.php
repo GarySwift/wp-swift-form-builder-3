@@ -26,6 +26,7 @@ class WP_Swift_Form_Builder_Marketing
         }  
         elseif ( $marketing == 'mailchimp' && isset($gdpr_settings["mailchimp_opt_in"]) ) {
             $opt_ins = $gdpr_settings["mailchimp_opt_in"];
+            // write_log('1 $gdpr_settings: ');write_log($gdpr_settings);
         }         
 
         $html = '';
@@ -94,14 +95,14 @@ class WP_Swift_Form_Builder_Marketing
                 ?>
 
                 <p><?php echo $opt_in["message"] ?></p>
+				<?php //write_log('DEBUG $opt_in: ');write_log($opt_in); write_log('$auto_consent: ');write_log($auto_consent); ?>
+                <?php if( $auto_consent || in_array("email", $opt_in["options"]) ) echo '<p>Email: '.$email.'</p>'; ?>
 
-                <?php if( in_array("email", $opt_in["options"]) ) echo '<p>Email: '.$email.'</p>'; ?>
+                <?php if( is_array($opt_in["options"]) && in_array("sms", $opt_in["options"]) ) echo '<p>SMS: '.$sms.'</p>'; ?>
 
-                <?php if( in_array("sms", $opt_in["options"]) ) echo '<p>SMS: '.$sms.'</p>'; ?>
+                <?php if( $auto_consent || in_array("direct_mail", $opt_in["options"]) ) echo '<p>Direct Mail: '.$direct_mail.'</p>'; ?>
 
-                <?php if( in_array("direct_mail", $opt_in["options"]) ) echo '<p>Direct Mail: '.$direct_mail.'</p>'; ?>
-
-                <?php if( in_array("customized_online_advertising", $opt_in["options"]) ) echo '<p>Customized Online Advertising: '.$customized_online_advertising.'</p>'; ?>
+                <?php if( $auto_consent || in_array("customized_online_advertising", $opt_in["options"]) ) echo '<p>Customized Online Advertising: '.$customized_online_advertising.'</p>'; ?>
 
                 <?php if (isset($signup_response["html"])): ?>
                     <?php echo $signup_response["html"] ?>
