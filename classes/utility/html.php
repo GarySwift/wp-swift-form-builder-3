@@ -28,6 +28,10 @@ class WP_Swift_Form_Builder_Html {
 
         <div<?php $helper->get_form_wrapper_css_id() ?> class="<?php echo $helper->get_form_class(); ?>"><!-- @start form-wrapper -->
 
+            <div class="form-builder-popup-message" id="form-builder-popup-message">
+                <div class="inner"></div>
+            </div>
+
             <?php $this->section_stage_guide($helper) ?>
             <?php //echo '<pre>$_POST: '; var_dump($_POST); echo '</pre>'; ?>
             <?php //echo '<pre>$response: '; var_dump($response); echo '</pre>'; echo "<hr>"; ?>

@@ -217,9 +217,12 @@ class WP_Swift_Form_Builder_Marketing
 	            $state = $this->get_form_input($form_data, $country_states[$country] );
 	        }
 	        if (function_exists("wp_taoglas_country_from_value")) {
-	            $country = wp_taoglas_country_from_value($country);
+	            $post_data["merge_fields"]["COUNTRY"] = wp_taoglas_country_from_value($country);
 	        }
-	        $post_data["merge_fields"]["COUNTRY"] = $country;
+	        else {
+	        	$post_data["merge_fields"]["COUNTRY"] = $country;
+	        }
+	        
 	        // write_log('$country: ');write_log($country);
 	    }
 	    if ($state) {
@@ -227,15 +230,27 @@ class WP_Swift_Form_Builder_Marketing
 	    }
 	    // write_log('$post_data: ');write_log($post_data);
 
+	    // $session_data = array(
+	    //     "firstName" => $first_name,
+	    //     "lastName" => $last_name,
+	    //     "email" => $email,
+	    //     "phone" => $phone,
+	    //     "jobTitle" => $job_title,
+	    //     "company" => $company,
+	    //     "country" => $country, 
+	    //     "state" => $state,       
+	    // ); 
 	    $session_data = array(
-	        "firstName" => $first_name,
-	        "lastName" => $last_name,
-	        "email" => $email,
-	        "phone" => $phone,
-	        "jobTitle" => $job_title,
-	        "company" => $company,
-	        "country" => $country, 
-	        "state" => $state,       
+	        "form-first-name" => array('type' => 'input', 'val' => $first_name),
+	        "form-last-name" => array('type' => 'input', 'val' => $last_name),
+	        "form-contact-name" => array('type' => 'input', 'val' => $first_name . ' ' .$last_name),
+	        "form-email" => array('type' => 'input', 'val' => $email),
+	        "form-phone" => array('type' => 'input', 'val' => $phone),
+	        "form-company-phone" => array('type' => 'input', 'val' => $phone),
+	        "form-company-position" => array('type' => 'input', 'val' => $job_title),
+	        "form-company-name" => array('type' => 'input', 'val' => $company),
+	        "form-country" => array('type' => 'select', 'val' => $country), 
+	        "form-state" => array('type' => 'input', 'val' => $state, 'hidden' => true)      
 	    );    
 	    // write_log('$api_key: ');write_log($api_key);    
 	    $data_center = substr($api_key,strpos($api_key,'-')+1);

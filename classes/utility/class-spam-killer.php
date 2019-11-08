@@ -144,7 +144,8 @@ class WP_Swift_Form_Builder_Spam_Killer {
 
             if ( $decgoogresp->success === false ) {
                 $helper->increase_error_count();
-                $helper->add_form_error_message("You are a bot! Go away!");    
+                $helper->add_form_error_message("You are a bot! Go away!"); 
+                write_log('recaptcha_check failed. ref: $decgoogresp->success ');
                 return false;         
             } 
             elseif ( $decgoogresp->success === true ) {
@@ -153,7 +154,8 @@ class WP_Swift_Form_Builder_Spam_Killer {
         }
         elseif ( $helper->recaptcha_secret() ){
             $helper->increase_error_count();
-            $helper->add_form_error_message("This form is expecting a recaptcha code to validate but none was found!");               
+            $helper->add_form_error_message("This form is expecting a recaptcha code to validate but none was found!");   
+            write_log('recaptcha_check failed. ref: This form is expecting a recaptcha code to validate but none was found!');            
             return false;
         }    
     }

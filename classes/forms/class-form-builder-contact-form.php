@@ -17,7 +17,7 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
     private $forward_email = null;
     private $save_submission = null;
     private $date;
-    private $send_email = true;//Debug variable. If false, emails will not be sent
+    private $send_email = false;//Debug variable. If false, emails will not be sent
     private $send_marketing = true;
     private $title;
     private $response_subject;
@@ -274,14 +274,14 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
 
         
 
-        $form_data = $form_data[0];
+        $form_data_section_1 = $form_data[0];
 
         if ( ($user_confirmation_email=== 'ask' && isset($post["mail-receipt"])) || $user_confirmation_email=== 'send' )  {
  
             if ($this->send_email) {
 
-                if (isset($form_data["inputs"]['form-email']['clean'])) {
-                    $status = wp_mail($form_data["inputs"]['form-email']['clean'], $this->auto_response_subject, wp_swift_wrap_email($user_email_string), $this->headers);
+                if (isset($form_data_section_1["inputs"]['form-email']['clean'])) {
+                    $status = wp_mail($form_data_section_1["inputs"]['form-email']['clean'], $this->auto_response_subject, wp_swift_wrap_email($user_email_string), $this->headers);
                 }
             }
         
@@ -297,8 +297,18 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
          */     
         $response = array("html" => $html);     
         if (isset($signup_response["session"])) {
+            write_log('[DANGER!!!] $signup_response: ');write_log($signup_response);
             $response["session"] = $signup_response["session"];
-        }            
+        }
+        /**
+         * This is written ouside plugin
+         */
+        if (function_exists('wp_swift_form_builder_autofill')) {
+            if ($autofill = wp_swift_form_builder_autofill($form_data)) {
+                $response["autofill"] = $autofill;
+                $response["session"] = $autofill;
+            }  
+        }                    
         return $response;
     } 
 
