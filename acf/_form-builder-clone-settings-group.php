@@ -10,11 +10,11 @@ acf_add_local_field_group(array(
 			'label' => 'Required',
 			'name' => 'required',
 			'type' => 'true_false',
-			'instructions' => 'Force input from user',
+			'instructions' => 'Force input',
 			'required' => 0,
 			'conditional_logic' => 0,
 			'wrapper' => array(
-				'width' => '50',
+				'width' => '25',
 				'class' => 'group-start',
 				'id' => '',
 			),
@@ -24,6 +24,25 @@ acf_add_local_field_group(array(
 			'ui_on_text' => '',
 			'ui_off_text' => '',
 		),
+		// array(
+		// 	'key' => 'field_5dc9622078ca3',
+		// 	'label' => 'Autofill',
+		// 	'name' => 'autofill',
+		// 	'type' => 'true_false',
+		// 	'instructions' => 'Save locally',
+		// 	'required' => 0,
+		// 	'conditional_logic' => 0,
+		// 	'wrapper' => array(
+		// 		'width' => '25',
+		// 		'class' => 'group-middle',
+		// 		'id' => '',
+		// 	),
+		// 	'message' => '',
+		// 	'default_value' => 0,
+		// 	'ui' => 1,
+		// 	'ui_on_text' => '',
+		// 	'ui_off_text' => '',
+		// ),
 		array(
 			'key' => 'field_5bfbf249611f7',
 			'label' => 'Grouping',
@@ -68,7 +87,7 @@ acf_add_local_field_group(array(
 	'label_placement' => 'top',
 	'instruction_placement' => 'label',
 	'hide_on_screen' => '',
-	'active' => 0,
+	'active' => false,
 	'description' => '',
 ));
 

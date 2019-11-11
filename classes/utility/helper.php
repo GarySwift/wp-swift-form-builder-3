@@ -32,6 +32,7 @@ class WP_Swift_Form_Builder_Helper {
     private $clear_after_submission = true;
     private $list_form_errors_in_warning_panel = true;
     private $user_confirmation_email = "ask";
+    private $autosave_details = 'never';
     private $show_page_in_email = false;
     private $action = '';
     private $enctype = '';
@@ -123,6 +124,9 @@ class WP_Swift_Form_Builder_Helper {
         }
         if(isset($this->settings["user_confirmation_email"])) {
             $this->user_confirmation_email = $this->settings["user_confirmation_email"];
+        }
+        if(isset($this->settings["autosave_details"])) {
+            $this->autosave_details = $this->settings["autosave_details"];
         }
 
         if(isset($this->settings["show_page_in_email"])) {
@@ -459,6 +463,13 @@ class WP_Swift_Form_Builder_Helper {
     public function get_user_confirmation_email() {
         return $this->user_confirmation_email;
     } 
+
+    public function show_autosave_option() {
+        if ($this->autosave_details === 'ask') {
+            return true;
+        }
+        return false;
+    }     
 
     public function get_show_page_in_email() {
         return $this->show_page_in_email;

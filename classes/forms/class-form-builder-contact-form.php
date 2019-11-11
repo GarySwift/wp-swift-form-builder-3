@@ -26,6 +26,7 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
     private $auto_response_message;
     private $auto_response_subject;
     private $to = array();
+    private $autosave = false;
 
     /*
      * Initializes the plugin.
@@ -183,6 +184,8 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
     public function submit_form_success($post, $ajax) {
 
         $form_data = parent::get_form_data();
+        // write_log('$form_data: ');write_log($form_data);
+        write_log('$post: ');write_log($post);
 
         $this->before_send_email($form_data);
 
@@ -200,6 +203,7 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
         $email_string .= $this->do_signup_third_party_wrap($signup);
         $attachments = parent::get_attachments();
         $debug_info = '';
+        if (isset($post["form-builder-autosave"])) $this->autosave = true;
         // echo '<pre>3 $attachments = parent::get_attachments(): '; var_dump($attachments); echo '</pre>';
         // echo wp_swift_wrap_email($email_string);
         /*
@@ -301,11 +305,10 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
             $response["session"] = $signup_response["session"];
         }
         /**
-         * This is written ouside plugin
+         * This is written outside plugin
          */
-        if (function_exists('wp_swift_form_builder_autofill')) {
+        if ($this->autosave && function_exists('wp_swift_form_builder_autofill')) {
             if ($autofill = wp_swift_form_builder_autofill($form_data)) {
-                $response["autofill"] = $autofill;
                 $response["session"] = $autofill;
             }  
         }                    

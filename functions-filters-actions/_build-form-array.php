@@ -69,6 +69,10 @@ function wp_swift_form_data_loop($id, $_post = null) {
             $settings['user_confirmation_email'] = get_field('user_confirmation_email', $id);
         }
 
+        if( get_field('autosave_details', $id) ) {
+            $settings['autosave_details'] = get_field('autosave_details', $id);
+        }        
+
         if( $show_page_in_email = get_field('show_page_in_email', $id) ) {         
             $settings['show_page_in_email'] = $show_page_in_email;
         }
