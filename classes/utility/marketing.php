@@ -4,12 +4,17 @@
  */
 class WP_Swift_Form_Builder_Marketing
 {
+	// private $marketing_debug_mode = false;
     /**
      * summary
      */
     public function __construct()
     {
-        
+		// $debug_options = get_option( 'wp_swift_form_builder_debug_settings' );
+		// if (isset($debug_options['wp_swift_form_builder_marketing_debug_mode'])) {
+		// 	$this->marketing_debug_mode = true; 
+		// }
+	       
     }
 
     public function signup_api( $post, $form_data, $marketing, $auto_consent, $gdpr_settings, $send_marketing, $at_least_one_option_required = false ) {
@@ -85,7 +90,7 @@ class WP_Swift_Form_Builder_Marketing
                             // write_log('$send_marketing: ');write_log($send_marketing);
                             // write_log('count($list_id_array): ');write_log(count($list_id_array));
                             if ( $send_marketing && count($list_id_array) ) {
-                                $signup_response = $this->do_signup( $marketing, $form_data, $signups, $auto_consent, $list_id_array );  
+                                $signup_response = $this->do_signup( $post, $marketing, $form_data, $signups, $auto_consent, $list_id_array );  
                                 // write_log('HTML >> $signup_response: ');write_log($signup_response);
                             }                          
                         // }
@@ -135,25 +140,31 @@ class WP_Swift_Form_Builder_Marketing
         return $response;
     }
 
-	public function do_signup($marketing, $form_data, $signups, $auto_consent = false, $list_id_array = array(), $list_id_array_unlink = null) {   
+	public function do_signup($post, $marketing, $form_data, $signups, $auto_consent = false, $list_id_array = array(), $list_id_array_unlink = null) {   
 	    switch ($marketing) {
 	        case "mailin":
-	            return $this->do_signup_sendinblue($form_data, $signups, $auto_consent, $list_id_array, $list_id_array_unlink);
+	            return $this->do_signup_sendinblue($post, $form_data, $signups, $auto_consent, $list_id_array, $list_id_array_unlink);
 	            break;
 	        case "mailchimp":
-	            return $this->do_signup_mailchimp($form_data, $signups, $auto_consent, $list_id_array, $list_id_array_unlink);;
+	            return $this->do_signup_mailchimp($post, $form_data, $signups, $auto_consent, $list_id_array, $list_id_array_unlink);;
 	            break;        
 	    }
 	    return;  
 	}
 
-	public function do_signup_mailchimp($form_data, $signups, $auto_consent, $list_id_array = array(), $list_id_array_unlink = null) {  
+	public function do_signup_mailchimp($post, $form_data, $signups, $auto_consent, $list_id_array = array(), $list_id_array_unlink = null) {  
 	    /**
 	     * $signup_status
 	     *
 	     * "pending" means users recieve an email
 	     * "subscribed" means they are directly added
-	     */    
+	     */ 
+	    $marketing_debug_mode = false;
+		$debug_options = get_option( 'wp_swift_form_builder_debug_settings' );
+		if (isset($debug_options['wp_swift_form_builder_marketing_debug_mode'])) {
+			$marketing_debug_mode = true; 
+		}	      
+	    $autosave = isset($post["form-builder-autosave"]);
 	    $signup_status = "subscribed";    
 	    $response = null;
 	    $session = array();// This will send back the user data to store in local storage 
@@ -240,18 +251,27 @@ class WP_Swift_Form_Builder_Marketing
 	    //     "country" => $country, 
 	    //     "state" => $state,       
 	    // ); 
-	    $session_data = array(
-	        "form-first-name" => array('type' => 'input', 'val' => $first_name),
-	        "form-last-name" => array('type' => 'input', 'val' => $last_name),
-	        "form-contact-name" => array('type' => 'input', 'val' => $first_name . ' ' .$last_name),
-	        "form-email" => array('type' => 'input', 'val' => $email),
-	        "form-phone" => array('type' => 'input', 'val' => $phone),
-	        "form-company-phone" => array('type' => 'input', 'val' => $phone),
-	        "form-company-position" => array('type' => 'input', 'val' => $job_title),
-	        "form-company-name" => array('type' => 'input', 'val' => $company),
-	        "form-country" => array('type' => 'select', 'val' => $country), 
-	        "form-state" => array('type' => 'input', 'val' => $state, 'hidden' => true)      
-	    );    
+	    $session_data = array();
+	    if ($autosave) {
+	    	/*
+	    	 	Save these details if the users ticks the box.
+	    	 */
+		    $session_data = array(
+		        "form-first-name" => array('type' => 'input', 'val' => $first_name),
+		        "form-last-name" => array('type' => 'input', 'val' => $last_name),
+		        "form-contact-name" => array('type' => 'input', 'val' => $first_name . ' ' .$last_name),
+		        "form-email" => array('type' => 'input', 'val' => $email),
+		        "form-phone" => array('type' => 'input', 'val' => $phone),
+		        "form-company-phone" => array('type' => 'input', 'val' => $phone),
+		        "form-company-position" => array('type' => 'input', 'val' => $job_title),
+		        "form-company-name" => array('type' => 'input', 'val' => $company),
+		        "form-country" => array('type' => 'select', 'val' => $country), 
+		        "form-state" => array('type' => 'input', 'val' => $state, 'hidden' => true)      
+		    );	    	
+	    } else {
+	    	
+	    }
+    
 	    // write_log('$api_key: ');write_log($api_key);    
 	    $data_center = substr($api_key,strpos($api_key,'-')+1);
 	    // write_log('$data_center: ');write_log($data_center);
@@ -260,20 +280,28 @@ class WP_Swift_Form_Builder_Marketing
 	    // $list_id_array = array();
 	    foreach ($list_id_array as $list_id) {
 	        # Setup cURL
+	        $api_response = '';
 	        $url = 'https://'.$data_center.'.api.mailchimp.com/3.0/lists/'.$list_id.'/members/';
-	        // write_log('$url: ');write_log($url);
-	        $ch = curl_init($url);
-	        curl_setopt_array($ch, array(
-	            CURLOPT_POST => TRUE,
-	            CURLOPT_RETURNTRANSFER => TRUE,
-	            CURLOPT_HTTPHEADER => array(
-	                'Authorization: apikey '.$api_key,
-	                'Content-Type: application/json'
-	            ),
-	            CURLOPT_POSTFIELDS => json_encode($post_data)
-	        ));   
-	        $api_response = curl_exec($ch);# Send the request
-	        $api_response = json_decode($api_response, true);# Decode the response
+	        if (!$marketing_debug_mode) {
+		        $ch = curl_init($url);
+		        curl_setopt_array($ch, array(
+		            CURLOPT_POST => TRUE,
+		            CURLOPT_RETURNTRANSFER => TRUE,
+		            CURLOPT_HTTPHEADER => array(
+		                'Authorization: apikey '.$api_key,
+		                'Content-Type: application/json'
+		            ),
+		            CURLOPT_POSTFIELDS => json_encode($post_data)
+		        ));   
+		        $api_response = curl_exec($ch);# Send the request
+		        $api_response = json_decode($api_response, true);# Decode the response	        	
+	        }
+	        else {
+	        	write_log('Debug mode has prevented the marketing sign-up.');
+	        	write_log('$url: ');write_log($url);
+	        	write_log('$post_data: ');write_log($post_data);
+
+	        }
 	        // write_log('');write_log('$api_response: ');write_log($api_response);write_log('');
 	        # End cURL
 	        
@@ -403,7 +431,7 @@ class WP_Swift_Form_Builder_Marketing
 	    # End cURL
 	    return $api_response;
 	}
-	public function do_signup_sendinblue($form_data, $signups, $auto_consent, $list_id_array = array(), $list_id_array_unlink = null) {   
+	public function do_signup_sendinblue($post, $form_data, $signups, $auto_consent, $list_id_array = array(), $list_id_array_unlink = null) {   
 	    $sendinblue_account_type == 1;//
 	    $session = array();// This will send back the user data to store in local storage 
 	    $data = array();// This will be the user data we send to SendInBlue

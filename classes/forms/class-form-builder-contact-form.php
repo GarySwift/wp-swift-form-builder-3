@@ -17,7 +17,8 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
     private $forward_email = null;
     private $save_submission = null;
     private $date;
-    private $send_email = false;//Debug variable. If false, emails will not be sent
+    private $debug_mode = false;
+    private $send_email = true;//Debug variable. If false, emails will not be sent
     private $send_marketing = true;
     private $title;
     private $response_subject;
@@ -33,6 +34,9 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
      */
     public function __construct( $form_id, $post_id = null, $hidden = array(), $type = 'contact' ) {//$args = array()
         parent::__construct( $form_id, $post_id, $hidden, $type );
+// write_log('FORM_BUILDER_DEBUG: '.FORM_BUILDER_DEBUG);
+// write_log('FORM_BUILDER_DEBUG_EMAIL: '.FORM_BUILDER_DEBUG_EMAIL);
+// write_log('FORM_BUILDER_DEBUG_MARKETING: '.FORM_BUILDER_DEBUG_MARKETING);        
     }    
     
     /*
@@ -83,9 +87,13 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
 
         $this->to = get_option('admin_email');//array()
 
-        $options = get_option( 'wp_swift_form_builder_settings' );
-        if (isset($options['wp_swift_form_builder_debug_mode']) && $options['wp_swift_form_builder_debug_mode'] === '1') {
-            $this->send_email=false;
+        // $options = get_option( 'wp_swift_form_builder_settings' );
+        $debug_options = get_option( 'wp_swift_form_builder_debug_settings' );
+        if (isset($debug_options['wp_swift_form_builder_email_debug_mode']) && $debug_options['wp_swift_form_builder_email_debug_mode'] === '1') {
+            $this->send_email = false;
+        }
+        if (isset($debug_options['wp_swift_form_builder_debug_mode']) && $debug_options['wp_swift_form_builder_debug_mode'] === '1'){
+            $this->debug_mode = true;
         }
 
 
@@ -184,8 +192,10 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
     public function submit_form_success($post, $ajax) {
 
         $form_data = parent::get_form_data();
-        // write_log('$form_data: ');write_log($form_data);
-        write_log('$post: ');write_log($post);
+        if ($this->debug_mode) {
+            // write_log('$form_data: ');write_log($form_data);
+            write_log('$post: ');write_log($post);            
+        }
 
         $this->before_send_email($form_data);
 
@@ -234,12 +244,12 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
             }
             // $attachments = 
             // echo '<pre>3 $helper->get_attachments(): '; var_dump($parent->helper->get_attachments()); echo '</pre>';
-            if (function_exists('write_log')) {
+            // if (function_exists('write_log')) {
                 write_log('$this->to:');write_log($this->to);
                 write_log('Subject: ' . $this->response_subject.$this->date);
                 write_log('$this->forward_email: ' . $this->forward_email);
-                error_log( "Debugging mode is on so no emails are being sent." );
-            }
+                write_log( "Email debugging mode is on so no emails are being sent." );
+            // }
             // foreach ($this->to as $key => $to_email) {
                 $debug_info .= $this->to.'<br>';
             // }
