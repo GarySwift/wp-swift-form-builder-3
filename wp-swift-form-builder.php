@@ -71,7 +71,7 @@ require plugin_dir_path( __FILE__ ) . 'includes/class-wp-swift-form-builder.php'
 $wp_swift_form_builder_debug_mode = false;
 $wp_swift_form_builder_email_debug_mode = false;
 $wp_swift_form_builder_marketing_debug_mode = false;
-$debug_options = get_option( 'wp_swift_form_builder_debug_settings' );
+// $debug_options = get_option( 'wp_swift_form_builder_debug_settings' );
 // if (isset($debug_options['wp_swift_form_builder_debug_mode']))
 // 	$wp_swift_form_builder_debug_mode = true;
 // if (isset($debug_options['wp_swift_form_builder_email_debug_mode']))
@@ -202,6 +202,8 @@ require_once FORM_BUILDER_PLUGIN_PATH . 'functions-filters-actions/_reveal-modal
 require_once FORM_BUILDER_PLUGIN_PATH . 'functions-filters-actions/_write-log.php';
 require_once FORM_BUILDER_PLUGIN_PATH . 'functions-filters-actions/_get-form-input.php';
 
+
+require_once FORM_BUILDER_PLUGIN_PATH . 'marketing/marketing.php';
 /**
  * Begins execution of the plugin.
  *
