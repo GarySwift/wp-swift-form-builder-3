@@ -300,7 +300,10 @@ class WP_Swift_Form_Builder_Marketing
 	        	write_log('Debug mode has prevented the marketing sign-up.');
 	        	write_log('$url: ');write_log($url);
 	        	write_log('$post_data: ');write_log($post_data);
-
+	        	$response_header = "<h4>'Debug mode has prevented the marketing sign-up.'</h4>";
+	        	$session_data["subscribed"] = true; 
+				$response["session"] = $session_data;  
+	            $response["response_header"] = $response_header;
 	        }
 	        // write_log('');write_log('$api_response: ');write_log($api_response);write_log('');
 	        # End cURL

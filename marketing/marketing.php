@@ -18,7 +18,7 @@
 require_once 'acf/_sign-up-form-selector.php';
 
 define("FORM_BUILDER_MARKETING", true);
-define("FORM_BUILDER_MARKETING_DEBUG", true);
+define("FORM_BUILDER_MARKETING_DEBUG", false);
 define("FORM_BUILDER_MARKETING_MODAL", false);
 define("FORM_BUILDER_MARKETING_MARKETING_REDIRECT", true);
 /**

@@ -870,9 +870,8 @@ $this->close_form_groups_html();
     public function gdpr_html_license($helper, $tick = false) {
         $gdpr_settings = $helper->get_gdpr_settings();
         if ( isset($gdpr_settings["license_message"]) ): ?>
-
             <br>
-            <div class="form-group sign-up">
+            <div class="form-group form-group-extra sign-up sign-up-auto-agree">
                 <div class="policies">
                     <?php if ($tick): ?>
                         <input type="checkbox" name="gdpr-aggree" id="gdpr-aggree">
@@ -887,11 +886,6 @@ $this->close_form_groups_html();
             <input type="hidden" value="sms" name="sign-up-0[]" id="sign-up-sms">
             <input type="hidden" value="direct_mail" name="sign-up-0[]" id="sign-up-direct-mail">
             <input type="hidden" value="customized_online_advertising" name="sign-up-0[]" id="sign-up-direct-mail">
-            <?php 
-            /* 
-
-            */ 
-            ?>
 
         <?php endif;//@nd if ($this->gdpr_settings)        
     }
