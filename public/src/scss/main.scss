@@ -1,0 +1,774 @@
+/* ******************************
+ * @start FormBuilder style 
+ * ******************************
+ *
+ * 
+ * @start settings
+ */
+$form-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+@if global-variable-exists( 'header-font-family' ) {
+    $form-font-family: $header-font-family;
+}
+$form-white: #fefefe;
+@if global-variable-exists( 'white' ) {
+    $form-white: $white;
+}
+$form-global-radius: 0;
+@if global-variable-exists( 'global-radius' ) {
+    $form-global-radius: $global-radius;
+}
+$form-font-size: 100%;
+$form-font-weight: normal;
+$has-error: #cc0000;
+$has-success: #4C4C4C;
+$has-success-bg-color: #FBF5E4;//#F8F8F8;
+$form-group-padding: 0.3rem;
+$form-group-padding-bottom: 0.6rem;
+$form-color: #0a0a0a;
+$show-required-star: true;
+$show-feedback-icons: true;
+$button-case: none;//uppercase;
+$button-class: ".secondary";// seperate classes with a comma
+$button-size: ".default";// .default, .large
+$input-color: #1A1A1A;
+
+@import "override-defaults";
+
+@mixin font($form-font-weight, $form-font-family, $form-font-size) {
+    .form-message.error {
+        font-family: $form-font-family;
+    }
+    /* 
+     * @start form-group
+     */
+    .form-group {
+        .form-label, .form-input {
+            label,  div.extra-msg {
+                font-weight: $form-font-weight;
+                font-family: $form-font-family;
+                font-size: $form-font-size;
+            }
+        }
+        button {
+            font-weight: $form-font-weight;
+            text-transform: $button-case;
+            font-family: $form-font-family;
+
+        }
+        small.error {
+            font-family: $form-font-family;
+        }
+    }
+    //
+    div.form-section-count {
+        font-family: $form-font-family;
+    }
+}
+
+@mixin form-builder-transition($property) {
+    -webkit-transition: $property;
+    -moz-transition: $property;
+    -ms-transition: $property; /* IE10 is actually unprefixed */
+    -o-transition: $property;
+    transition: $property;
+}
+
+@mixin transparent-contact-form() {
+    select, textarea, input[type=text], input[type=email], input[type=url], input[type=number], input[type=file], div.dummy-input {
+        box-shadow: none;
+        background-color: transparent;
+        border-top-style: none;
+        border-left-style: none;
+        border-right-style: none;
+        // border-radius: 0 !important;
+        
+    }
+    .form-group.has-error {
+        select, textarea, input[type=text], input[type=email], input[type=url], input[type=number], input[type=file], div.dummy-input {
+            box-shadow: none !important;
+        }
+    }
+}
+
+
+@mixin form-builder-typography($font-family, $font-weight, $font-size, $button-case) {
+    .form-label, .form-input {
+        label {
+            font-weight: $font-weight;
+            font-family: $font-family;
+            font-size: $font-size;
+        }
+    }
+    select, textarea, input[type=text], input[type=email], input[type=url], input[type=number], input[type=file], div.dummy-input {
+            font-weight: $font-weight;
+            font-family: $font-family;
+            font-size: $font-size;
+    }      
+    button {
+        font-weight: bold;
+        text-transform: $button-case;
+        font-family: $font-family;
+    }
+    small.error {
+        font-family: $font-family;
+        font-weight: $font-weight;
+    }
+}
+
+@mixin form-builder-theme-light($form-color, $has-error, $has-success, $has-success-bg-color) {
+    .form-group {
+        .form-label, .form-input {
+            label,  div.extra-msg {
+                color: $form-color;
+            }
+        }
+        .control-label.required span {
+          color: $form-color;
+        }
+        small.error {
+            color: $form-color;
+            background-color: $has-error;
+        }
+        small.error:after {
+            border-bottom-color: $has-error;
+        }
+    }
+    .form-group.has-error {
+        .form-label label{
+            color: $has-error;
+        }
+        .control-label.required span {
+          color: $has-error;
+        }
+        select, textarea, input[type=text], input[type=email], input[type=url], input[type=number], input[type=file], div.dummy-input {
+            border-color: $has-error;
+            box-shadow: inset 0 1px 2px rgba($has-error,0.1);
+            color: rgba($has-error,0.75);
+            // background-color: #fef7f6;
+        }
+        div.dummy-input {.error {}}
+    }
+    .form-group.has-success {
+        select, textarea, input[type=text], input[type=email], input[type=url], input[type=number], input[type=file], div.dummy-input {
+            border-color: lighten($has-success, 30%);
+            box-shadow: inset 0 1px 2px rgba($has-success,0.3);
+            color: $has-success;
+            // background-color: $has-success-bg-color;
+        }
+        .form-label label {
+            color: $has-success;
+        }
+        .control-label.required span {
+          color: $has-success;
+        }
+    }
+    .form-group {
+        div.form-builder-feedback {
+            position: relative;
+            span {
+                color: $has-success;
+            }
+            span.form-builder-check {
+                color: $has-success;
+            }
+            span.form-builder-x {
+                color: $has-error;
+            }
+        }
+    }
+    select, textarea, input[type=text], input[type=email], input[type=url], input[type=number], input[type=file], div.dummy-input {
+        color: $input-color;
+    }
+    &.transparent-inputs {
+        form {
+             @include transparent-contact-form();
+        }
+    }
+    .form-group.has-success {
+        select, textarea, input[type=text], input[type=email], input[type=url], input[type=number], input[type=file], div.dummy-input {
+            // border-color: lighten($has-success, 30%);
+            box-shadow: none;
+        }
+    }
+}
+
+.form-builder-theme-light {
+    @include form-builder-theme-light(white, orange, white, green);
+}
+/**
+ * Transparent inputs
+ */
+form.form-builder.transparent-inputs {
+  @include transparent-contact-form();
+}
+
+$form-transition-speed: 1;//0.3s;
+$form-transition-property: ease-in;//ease-in-out;// ease-in
+
+// Icomoon font vars
+$form-builder-font-family: "form-builder-icon-fonts" !default;
+$form-builder-font-path: "fonts" !default;
+
+$form-builder-x: "\fb900";
+$form-builder-check: "\fb901";
+$form-builder-circle-o-notch: "\fb902";
+$form-builder-gear: "\fb903";
+
+/* 
+ * @start wrap
+ */
+div.form-builder.wrap {
+    border: 1px solid #D2D2D2;
+    background-color: #F8F8F8;
+    padding: 12px;
+    margin-bottom: 20px;
+    border-radius: $form-global-radius;
+}
+div.form-builder.hide-labels.wrap {
+    padding-top: 10px;
+    .button-group {
+        margin-bottom: 0;
+    }
+    .form-group.mail-receipt {
+        padding-bottom: 0;
+    }
+}
+div.form-builder.hide-labels {
+    div.form-label {
+        display: none;
+    }
+}
+
+/* 
+ * @start radio and check buttons
+ */
+label.lbl-checkbox, label.lbl-radio {
+    display: inline-block;
+    margin-right: 1rem;
+    cursor: pointer;
+}
+/* 
+ * @start mail-receipt
+ */
+.form-group.mail-receipt{
+   label {
+       margin-left: 1rem;
+   }
+}
+
+/* 
+ * @start form-message
+ */
+.form-message {
+    padding: 15px;
+    margin-bottom: 20px;
+    table tbody {
+        border: 1px solid #D2D2D2;
+    }
+    ul {
+        list-style-type: square;
+    }
+    table td, table th {
+      border: 1px solid #ddd;
+      padding: 12px;
+    }
+    table tr:nth-child(even){background-color: #f2f2f2;}
+    table tr:hover {background-color: #ddd;}
+    // background-color: #F8F8F8;
+    border-radius: $form-global-radius;
+}
+.form-message.ajax {
+    padding: 15px;
+    margin-right: $form-group-padding;
+    margin-left: $form-group-padding; 
+    margin-bottom: 20px;   
+    table {
+        margin-bottom: 0;
+    }
+}
+.form-message.standard {
+    margin-right: $form-group-padding;
+    margin-left: $form-group-padding;
+    border: 1px solid #D2D2D2;
+    padding: 15px;
+    margin-bottom: 20px;
+}
+.form-message.error {
+    margin-right: $form-group-padding;
+    margin-left: $form-group-padding;
+    padding: 15px;
+    margin-bottom: 20px;
+    border: 1px solid $has-error;
+    color: $has-error;
+    font-family: $form-font-family;
+    .heading, a {
+        color: $has-error;
+    }
+}
+.form-message.error.ajax {
+    border: none;
+}
+div.form-builder.wrap {
+    .form-message {
+        margin-right: 0;
+        margin-left: 0;
+        border: none;
+        background-color: transparent;
+        padding: 5px;
+    }
+}
+
+/* 
+ * @start form-group
+ */
+.form-group {
+    padding-bottom: $form-group-padding-bottom;
+    .form-input {}
+    .form-label, .form-input {
+        label,  div.extra-msg {
+            color: $form-color;
+            font-weight: $form-font-weight;
+            font-family: $form-font-family;
+            font-size: $form-font-size;
+        }
+    }
+    button {
+        font-weight: bold;
+        text-transform: $button-case;
+        font-family: $form-font-family;
+        @extend #{$button-class} !optional;
+        @extend #{$button-size} !optional;
+    }
+    select, textarea, input[type=text], input[type=email], input[type=url], input[type=number], div.dummy-input {
+        margin-bottom: 0;
+        border-radius: $form-global-radius !important;
+        width: 100%;
+        // padding: 8px;
+        display: block;
+        margin: 0.25em 0;       
+    }
+    @if $show-required-star == true {
+        .control-label.required span:after {
+          content: "*";
+        }
+    }
+    .control-label.required span {
+      color: $has-error;
+    }
+    .form-builder-error {
+        position: relative;
+    }
+    small.error {
+        $transition: opacity 0.3s ease-in, bottom 0.3s ease-in, transform 0.3s;
+        @include form-builder-transition($transition);
+        border-radius: $form-global-radius;
+        font-family: $form-font-family;
+        color: $form-white;
+        display: block;
+        background-color: $has-error;
+        position: absolute;
+        right: 0;
+        // bottom: -30px;
+        transform: translateY(-1.5rem);
+        padding: 2px 10px;
+        visibility: hidden;
+        opacity: 0;
+    }
+    small.error:after {
+        $size: 6px;
+        content: '';
+        position: absolute;
+        top: 0;
+        right: 30px;
+        width: 0;
+        height: 0;
+        border: $size solid transparent;
+        border-bottom-color: $has-error;
+        border-top: 0;
+        margin-left: -$size;
+        margin-top: -$size;
+    }
+}
+.form-group.has-error {
+    .form-label label{
+        color: $has-error;
+    }
+    small.error {
+        // bottom: -15px;
+        transform: translateY(-4px);
+        visibility: visible;
+        opacity: 1;
+    }
+    select, textarea, input[type=text], input[type=email], input[type=url], input[type=number], input[type=file], div.dummy-input {
+        border-color: $has-error;
+        box-shadow: inset 0 1px 2px rgba($has-error,0.1);
+        color: rgba($has-error,0.75);
+        background-color: #fef7f6;
+        
+    }
+    div.dummy-input {.error {}}
+}
+.form-group.has-success {
+    select, textarea, input[type=text], input[type=email], input[type=url], input[type=number], input[type=file], div.dummy-input {
+        border-color: lighten($has-success, 30%);
+        box-shadow: inset 0 1px 2px rgba($has-success,0.3);
+        color: $has-success;
+        background-color: $has-success-bg-color;
+    }
+    .form-label label {
+        color: $has-success;
+    }
+    small.error {
+        display: none;
+    }
+}
+.form-grid-grouping {
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    align-items: stretch;
+    .form-group {
+        flex-grow: 1;
+        max-width: 50%;
+    }
+}
+/*
+ * @start form-cell (groupings)
+ */
+div.form-builder.groupings {
+    .form-group {
+        padding-right: $form-group-padding;
+        padding-left: $form-group-padding;
+    }
+}
+/**
+ * This is the summary for a DocBlock.
+ *
+ * This is the description for a DocBlock. This text may contain
+ * multiple lines and even some _markdown_.
+ *
+ * * Markdown style lists function too
+ * * Just try this out once
+ *
+ * The section after the description contains the tags; which provide
+ * structured meta-data concerning the given element.
+ *
+ * @author          Gary Swift <gary@brightlight.ie>
+ *
+ * @since             1.0
+ * 
+ * @link             http://docs.phpdoc.org/references/phpdoc/basic-syntax.html
+ *
+ * @param int        $example  This is an example function/method parameter description.
+ * @param string     $example2 This is a second example.
+ */
+@media only screen and (min-width: 900px) {
+    form.form-builder.labels-left {
+        div.form-group {
+            display: -ms-flexbox;
+            display: -webkit-flex;
+            display: flex;
+            -webkit-flex-direction: row;
+            -ms-flex-direction: row;
+            flex-direction: row;
+            -webkit-flex-wrap: nowrap;
+            -ms-flex-wrap: nowrap;
+            flex-wrap: nowrap;
+            -webkit-justify-content: flex-start;
+            -ms-flex-pack: start;
+            justify-content: flex-start;
+            -webkit-align-content: stretch;
+            -ms-flex-line-pack: stretch;
+            align-content: stretch;
+            width: 100%;
+            div.form-label, div.form-input {
+                // border: 1px dashed #000;
+            }
+            div.form-label {
+                width: 25%;
+                padding-right: 10px;
+            }
+            div.form-input {
+                width: 75%;
+            }
+            div.form-builder-feedback {
+                display: none;
+            }
+
+        }
+        div.form-group.mail-receipt, div.form-group.button-group, div.form-group.captcha-wrapper, div.form-group.form-section-buttons  {
+            padding-left: 25%;
+        }
+    }
+}
+/*
+ * @start feedback
+ */
+@if $show-feedback-icons == true {
+    .form-group {
+        div.form-builder-feedback {
+            position: relative;
+            span {
+                $transition: opacity 0.3s ease-in;
+                @include form-builder-transition($transition);
+                visibility: hidden;
+                opacity: 0;
+                position: absolute;
+                right: 2px;
+                top: 6px;
+                color: $has-success;
+                font-size: 0.9rem;
+            }
+            span.form-builder-check {
+                color: $has-success;
+            }
+            span.form-builder-x {
+                color: $has-error;
+            }
+        }
+    }
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+    .form-group.has-success {
+        div.form-builder-feedback {
+            span.form-builder-check {
+                visibility: visible;
+                opacity: 1;
+            }
+        }
+    }
+    .form-group.has-error {
+        div.form-builder-feedback {
+            span.form-builder-x {
+                visibility: visible;
+                opacity: 1;
+            }
+        }
+    }
+    .form-group.processing {
+        div.form-builder-feedback {
+            span.form-builder-circle-o-notch {
+                visibility: visible;
+                opacity: 1;
+                animation: spin 1s linear infinite;
+            }
+        }
+    }
+} @else {
+    .form-group {
+        div.form-builder-feedback  {
+            display: none;
+        }
+    }
+}
+
+// Icomoon font icons
+@font-face {
+  font-family: '#{$form-builder-font-family}';
+  src:  url('../#{$form-builder-font-path}/#{$form-builder-font-family}.eot?y22y7f');
+  src:  url('../#{$form-builder-font-path}/#{$form-builder-font-family}.eot?y22y7f#iefix') format('embedded-opentype'),
+    url('../#{$form-builder-font-path}/#{$form-builder-font-family}.ttf?y22y7f') format('truetype'),
+    url('../#{$form-builder-font-path}/#{$form-builder-font-family}.woff?y22y7f') format('woff'),
+    url('../#{$form-builder-font-path}/#{$form-builder-font-family}.svg?y22y7f##{$form-builder-font-family}') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+.form-icon {
+  // use !important to prevent issues with browser extensions that change fonts
+  font-family: '#{$form-builder-font-family}' !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  // Better Font Rendering ===========
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.form-builder-x {
+  &:before {
+    content: $form-builder-x;
+  }
+}
+.form-builder-check {
+  &:before {
+    content: $form-builder-check;
+  }
+}
+.form-builder-circle-o-notch {
+  &:before {
+    content: $form-builder-circle-o-notch;
+  }
+}
+.form-builder-gear {
+  &:before {
+    content: $form-builder-gear;
+  }
+}
+/**
+ * Copy the style for inputs for the div around the file input
+ *
+ * [type='text'], [type='password'], [type='date'], etc
+ */
+.dummy-input{
+    display: block;
+    box-sizing: border-box;
+    width: 100%;
+    height: 2.4375rem;
+    margin: 0 0 1rem;
+    padding: 0.5rem;
+    padding-top: 0.46rem;
+    border: 1px solid #cacaca;
+    border-radius: $form-global-radius;
+    background-color: #fefefe;
+    box-shadow: inset 0 1px 2px rgba(10, 10, 10, 0.1);
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: normal;
+    line-height: 1.5;
+    color: #0a0a0a;
+    transition: box-shadow 0.5s, border-color 0.25s ease-in-out;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+/**
+ * File Upload
+ *
+ */
+// .form-group.file-upload {
+//     div.form-input {
+//         display: block;
+//         box-sizing: border-box;
+//         width: 100%;
+//         height: 2.4375rem;
+//         margin: 0 0 1rem;
+//         padding: 0.5rem;
+//         border: 1px solid #cacaca;
+//         border-radius: 0;
+//         background-color: #fefefe;
+//         box-shadow: inset 0 1px 2px rgba(10, 10, 10, 0.1);
+//         font-family: inherit;
+//         font-size: 1rem;
+//         font-weight: normal;
+//         line-height: 1.5;
+//         color: #0a0a0a;
+//         transition: box-shadow 0.5s, border-color 0.25s ease-in-out;
+//         -webkit-appearance: none;
+//         -moz-appearance: none;
+//         appearance: none;
+//     }
+// }
+/**
+ * Section Panels
+ */
+form.form-builder.show-section-panels {
+    div.form-section.active-section {
+        opacity: 1;
+        display: block;
+        visibility: visible;
+    }
+    div.form-section.hidden-section {
+        opacity: 0.5;
+        display: none;
+        visibility: hidden;
+
+    }
+    div.form-group-extra {
+        display: none;
+    }
+}
+/**
+ * Transparent inputs
+ */
+form.form-builder.transparent-inputs {
+  @include transparent-contact-form();
+}
+
+div.form-section-count {
+    float: right;
+    display: inline-block;
+    padding: 1rem;
+    font-family: $form-font-family;
+    font-size: 2rem;
+    color: $form-color;
+    background-color: #F0F0F0;
+
+}
+
+// $pal: ("Palatino Linotype", "Book Antiqua", Palatino, serif);
+// $hel: (Helvetica Neue, Helvetica, Arial, sans-serif);
+// div.form-builder {
+//     @include form-builder-typography($pal, bold, 1rem, uppercase);
+// }
+/* The Modal (background) */
+.fb-modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 101; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.fb-modal-content {
+  position: relative;
+  background-color: #fefefe;
+  margin: auto;
+  padding: 0;
+  border: 1px solid #888;
+  
+  width:100%;
+  max-width: 600px;
+  min-height: 300px;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+  -webkit-animation-name: animatetop;
+  -webkit-animation-duration: 0.4s;
+  animation-name: animatetop;
+  animation-duration: 0.4s;
+  // padding: 1.5rem;
+}
+.fb-modal-content.large {
+  max-width: 800px;  
+}
+.fb-modal-content.x-large {
+  max-width: 1000px;  
+}
+/* Add Animation */
+@-webkit-keyframes animatetop {
+  from {top:-300px; opacity:0} 
+  to {top:0; opacity:1}
+}
+
+@keyframes animatetop {
+  from {top:-300px; opacity:0}
+  to {top:0; opacity:1}
+}
+
+/* The Close Button */
+.fb-modal-close {
+  color: white;
+  float: right;
+  font-size: 28px;
+  margin-right: 1rem;
+  font-weight: bold;
+  color: #A2A2A2;
+}
+
+.fb-modal-close:hover,
+.fb-modal-close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}

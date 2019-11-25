@@ -1,1 +1,543 @@
-﻿.form-builder-theme-light .form-group .form-label label,.form-builder-theme-light .form-group .form-label div.extra-msg,.form-builder-theme-light .form-group .form-input label,.form-builder-theme-light .form-group .form-input div.extra-msg{color:#fff}.form-builder-theme-light .form-group .control-label.required span{color:red;font-size:120%}.form-builder-theme-light .form-group small.error{color:#fff;background-color:#fd6c08}.form-builder-theme-light .form-group small.error:after{border-bottom-color:#fd6c08}.form-builder-theme-light .form-group.has-error .form-label label{color:#fd6c08}.form-builder-theme-light .form-group.has-error .control-label.required span{color:#fd6c08}.form-builder-theme-light .form-group.has-error select,.form-builder-theme-light .form-group.has-error textarea,.form-builder-theme-light .form-group.has-error input[type=text],.form-builder-theme-light .form-group.has-error input[type=email],.form-builder-theme-light .form-group.has-error input[type=url],.form-builder-theme-light .form-group.has-error input[type=number],.form-builder-theme-light .form-group.has-error input[type=file],.form-builder-theme-light .form-group.has-error div.dummy-input{border-color:#fd6c08;box-shadow:inset 0 1px 2px rgba(253,108,8,0.1);color:rgba(253,108,8,0.75);color:#fd6c08 !important}.form-builder-theme-light .form-group.has-success select,.form-builder-theme-light .form-group.has-success textarea,.form-builder-theme-light .form-group.has-success input[type=text],.form-builder-theme-light .form-group.has-success input[type=email],.form-builder-theme-light .form-group.has-success input[type=url],.form-builder-theme-light .form-group.has-success input[type=number],.form-builder-theme-light .form-group.has-success input[type=file],.form-builder-theme-light .form-group.has-success div.dummy-input{border-color:black;box-shadow:inset 0 1px 2px rgba(0,0,0,0.3);color:#84BD00}.form-builder-theme-light .form-group.has-success .form-label label{color:#84BD00}.form-builder-theme-light .form-group.has-success .control-label.required span{color:#84BD00}.form-builder-theme-light .form-group div.form-builder-feedback{position:relative}.form-builder-theme-light .form-group div.form-builder-feedback span{color:#84BD00}.form-builder-theme-light .form-group div.form-builder-feedback span.form-builder-check{color:#84BD00}.form-builder-theme-light .form-group div.form-builder-feedback span.form-builder-x{color:#fd6c08}.form-builder-theme-light select,.form-builder-theme-light textarea,.form-builder-theme-light input[type=text],.form-builder-theme-light input[type=email],.form-builder-theme-light input[type=url],.form-builder-theme-light input[type=number],.form-builder-theme-light input[type=file],.form-builder-theme-light div.dummy-input{color:#000}.form-builder-theme-light.transparent-inputs form select,.form-builder-theme-light.transparent-inputs form textarea,.form-builder-theme-light.transparent-inputs form input[type=text],.form-builder-theme-light.transparent-inputs form input[type=email],.form-builder-theme-light.transparent-inputs form input[type=url],.form-builder-theme-light.transparent-inputs form input[type=number],.form-builder-theme-light.transparent-inputs form input[type=file],.form-builder-theme-light.transparent-inputs form div.dummy-input{box-shadow:none;background-color:transparent;border-top-style:none;border-left-style:none;border-right-style:none}.form-builder-theme-light.transparent-inputs form .form-group.has-error select,.form-builder-theme-light.transparent-inputs form .form-group.has-error textarea,.form-builder-theme-light.transparent-inputs form .form-group.has-error input[type=text],.form-builder-theme-light.transparent-inputs form .form-group.has-error input[type=email],.form-builder-theme-light.transparent-inputs form .form-group.has-error input[type=url],.form-builder-theme-light.transparent-inputs form .form-group.has-error input[type=number],.form-builder-theme-light.transparent-inputs form .form-group.has-error input[type=file],.form-builder-theme-light.transparent-inputs form .form-group.has-error div.dummy-input{box-shadow:none !important}.form-builder-theme-light .form-group.has-success select,.form-builder-theme-light .form-group.has-success textarea,.form-builder-theme-light .form-group.has-success input[type=text],.form-builder-theme-light .form-group.has-success input[type=email],.form-builder-theme-light .form-group.has-success input[type=url],.form-builder-theme-light .form-group.has-success input[type=number],.form-builder-theme-light .form-group.has-success input[type=file],.form-builder-theme-light .form-group.has-success div.dummy-input{box-shadow:none}form.form-builder.transparent-inputs select,form.form-builder.transparent-inputs textarea,form.form-builder.transparent-inputs input[type=text],form.form-builder.transparent-inputs input[type=email],form.form-builder.transparent-inputs input[type=url],form.form-builder.transparent-inputs input[type=number],form.form-builder.transparent-inputs input[type=file],form.form-builder.transparent-inputs div.dummy-input{box-shadow:none;background-color:transparent;border-top-style:none;border-left-style:none;border-right-style:none}form.form-builder.transparent-inputs .form-group.has-error select,form.form-builder.transparent-inputs .form-group.has-error textarea,form.form-builder.transparent-inputs .form-group.has-error input[type=text],form.form-builder.transparent-inputs .form-group.has-error input[type=email],form.form-builder.transparent-inputs .form-group.has-error input[type=url],form.form-builder.transparent-inputs .form-group.has-error input[type=number],form.form-builder.transparent-inputs .form-group.has-error input[type=file],form.form-builder.transparent-inputs .form-group.has-error div.dummy-input{box-shadow:none !important}div.form-builder.wrap{border:1px solid #D2D2D2;background-color:#F8F8F8;padding:12px;margin-bottom:20px;border-radius:5px}div.form-builder.hide-labels.wrap{padding-top:10px}div.form-builder.hide-labels.wrap .button-group{margin-bottom:0}div.form-builder.hide-labels.wrap .form-group.mail-receipt{padding-bottom:0}div.form-builder.hide-labels div.form-label{display:none}label.lbl-checkbox,label.lbl-radio{display:inline-block;margin-right:1rem;cursor:pointer}.form-group.mail-receipt label{margin-left:1rem}.form-message{padding:1rem}.form-message table tbody{border:1px solid #D2D2D2}.form-message ul{list-style-type:square}.form-message table td,.form-message table th{border:1px solid #ddd;padding:12px}.form-message table tr:nth-child(even){background-color:#f2f2f2}.form-message table tr:hover{background-color:#ddd}.form-message.ajax table{margin-bottom:0}.form-message.standard{margin-right:.3rem;margin-left:.3rem;border:1px solid #D2D2D2;background-color:#F8F8F8;padding:15px;margin-bottom:20px}.form-message.error{margin-right:.3rem;margin-left:.3rem;padding:15px;margin-bottom:20px;border:1px solid #c00;color:#c00;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Roboto","Oxygen","Ubuntu","Cantarell","Fira Sans","Droid Sans","Helvetica Neue",sans-serif}.form-message.error .heading,.form-message.error a{color:#c00}.form-message.error.ajax{border:none}div.form-builder.wrap .form-message{margin-right:0;margin-left:0;border:none;background-color:transparent;padding:5px}.form-group{padding-bottom:.6rem}.form-group .form-label label,.form-group .form-label div.extra-msg,.form-group .form-input label,.form-group .form-input div.extra-msg{color:#0a0a0a;font-weight:normal;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Roboto","Oxygen","Ubuntu","Cantarell","Fira Sans","Droid Sans","Helvetica Neue",sans-serif;font-size:100%}.form-group button{font-weight:bold;text-transform:none;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Roboto","Oxygen","Ubuntu","Cantarell","Fira Sans","Droid Sans","Helvetica Neue",sans-serif}.form-group select,.form-group textarea,.form-group input[type=text],.form-group input[type=email],.form-group input[type=url],.form-group input[type=number],.form-group div.dummy-input{margin-bottom:0;border-radius:5px !important;width:100%;display:block;margin:0.25em 0}.form-group .control-label.required span:after{content:"*"}.form-group .control-label.required span{color:#c00}.form-group .form-builder-error{position:relative}.form-group small.error{-webkit-transition:opacity 0.3s ease-in,bottom 0.3s ease-in,transform 0.3s;-moz-transition:opacity 0.3s ease-in,bottom 0.3s ease-in,transform 0.3s;-ms-transition:opacity 0.3s ease-in,bottom 0.3s ease-in,transform 0.3s;-o-transition:opacity 0.3s ease-in,bottom 0.3s ease-in,transform 0.3s;transition:opacity 0.3s ease-in,bottom 0.3s ease-in,transform 0.3s;border-radius:5px;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Roboto","Oxygen","Ubuntu","Cantarell","Fira Sans","Droid Sans","Helvetica Neue",sans-serif;color:#fefefe;display:block;background-color:#c00;position:absolute;right:0;transform:translateY(-1.5rem);padding:2px 10px;visibility:hidden;opacity:0}.form-group small.error:after{content:'';position:absolute;top:0;right:30px;width:0;height:0;border:6px solid transparent;border-bottom-color:#c00;border-top:0;margin-left:-6px;margin-top:-6px}.form-group.has-error .form-label label{color:#c00}.form-group.has-error small.error{transform:translateY(-4px);visibility:visible;opacity:1}.form-group.has-error select,.form-group.has-error textarea,.form-group.has-error input[type=text],.form-group.has-error input[type=email],.form-group.has-error input[type=url],.form-group.has-error input[type=number],.form-group.has-error input[type=file],.form-group.has-error div.dummy-input{border-color:#c00;box-shadow:inset 0 1px 2px rgba(204,0,0,0.1);color:rgba(204,0,0,0.75);background-color:#fef7f6}.form-group.has-success select,.form-group.has-success textarea,.form-group.has-success input[type=text],.form-group.has-success input[type=email],.form-group.has-success input[type=url],.form-group.has-success input[type=number],.form-group.has-success input[type=file],.form-group.has-success div.dummy-input{border-color:#999;box-shadow:inset 0 1px 2px rgba(76,76,76,0.3);color:#4C4C4C;background-color:#FBF5E4}.form-group.has-success .form-label label{color:#4C4C4C}.form-group.has-success small.error{display:none}.form-grid-grouping{display:-ms-flexbox;display:-webkit-flex;display:flex;align-items:stretch}.form-grid-grouping .form-group{flex-grow:1;max-width:50%}div.form-builder.groupings .form-group{padding-right:.3rem;padding-left:.3rem}@media only screen and (min-width: 900px){form.form-builder.labels-left div.form-group{display:-ms-flexbox;display:-webkit-flex;display:flex;-webkit-flex-direction:row;-ms-flex-direction:row;flex-direction:row;-webkit-flex-wrap:nowrap;-ms-flex-wrap:nowrap;flex-wrap:nowrap;-webkit-justify-content:flex-start;-ms-flex-pack:start;justify-content:flex-start;-webkit-align-content:stretch;-ms-flex-line-pack:stretch;align-content:stretch;width:100%}form.form-builder.labels-left div.form-group div.form-label{width:25%;padding-right:10px}form.form-builder.labels-left div.form-group div.form-input{width:75%}form.form-builder.labels-left div.form-group div.form-builder-feedback{display:none}form.form-builder.labels-left div.form-group.mail-receipt,form.form-builder.labels-left div.form-group.button-group,form.form-builder.labels-left div.form-group.captcha-wrapper,form.form-builder.labels-left div.form-group.form-section-buttons{padding-left:25%}}.form-group div.form-builder-feedback{position:relative}.form-group div.form-builder-feedback span{-webkit-transition:opacity 0.3s ease-in;-moz-transition:opacity 0.3s ease-in;-ms-transition:opacity 0.3s ease-in;-o-transition:opacity 0.3s ease-in;transition:opacity 0.3s ease-in;visibility:hidden;opacity:0;position:absolute;right:2px;top:6px;color:#4C4C4C;font-size:0.9rem}.form-group div.form-builder-feedback span.form-builder-check{color:#4C4C4C}.form-group div.form-builder-feedback span.form-builder-x{color:#c00}@keyframes spin{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}.form-group.has-success div.form-builder-feedback span.form-builder-check{visibility:visible;opacity:1}.form-group.has-error div.form-builder-feedback span.form-builder-x{visibility:visible;opacity:1}.form-group.processing div.form-builder-feedback span.form-builder-circle-o-notch{visibility:visible;opacity:1;animation:spin 1s linear infinite}@font-face{font-family:"form-builder-icon-fonts";src:url("../fonts/form-builder-icon-fonts.eot?y22y7f");src:url("../fonts/form-builder-icon-fonts.eot?y22y7f#iefix") format("embedded-opentype"),url("../fonts/form-builder-icon-fonts.ttf?y22y7f") format("truetype"),url("../fonts/form-builder-icon-fonts.woff?y22y7f") format("woff"),url("../fonts/form-builder-icon-fonts.svg?y22y7f#form-builder-icon-fonts") format("svg");font-weight:normal;font-style:normal}.form-icon{font-family:"form-builder-icon-fonts" !important;speak:none;font-style:normal;font-weight:normal;font-variant:normal;text-transform:none;line-height:1;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}.form-builder-x:before{content:"󻤀"}.form-builder-check:before{content:"󻤁"}.form-builder-circle-o-notch:before{content:"󻤂"}.form-builder-gear:before{content:"󻤃"}.dummy-input{display:block;box-sizing:border-box;width:100%;height:2.4375rem;margin:0 0 1rem;padding:0.5rem;padding-top:0.46rem;border:1px solid #cacaca;border-radius:5px;background-color:#fefefe;box-shadow:inset 0 1px 2px rgba(10,10,10,0.1);font-family:inherit;font-size:1rem;font-weight:normal;line-height:1.5;color:#0a0a0a;transition:box-shadow 0.5s, border-color 0.25s ease-in-out;-webkit-appearance:none;-moz-appearance:none;appearance:none}form.form-builder.show-section-panels div.form-section.active-section{opacity:1;display:block;visibility:visible}form.form-builder.show-section-panels div.form-section.hidden-section{opacity:0.5;display:none;visibility:hidden}form.form-builder.show-section-panels div.form-group-extra{display:none}form.form-builder.transparent-inputs select,form.form-builder.transparent-inputs textarea,form.form-builder.transparent-inputs input[type=text],form.form-builder.transparent-inputs input[type=email],form.form-builder.transparent-inputs input[type=url],form.form-builder.transparent-inputs input[type=number],form.form-builder.transparent-inputs input[type=file],form.form-builder.transparent-inputs div.dummy-input{box-shadow:none;background-color:transparent;border-top-style:none;border-left-style:none;border-right-style:none}form.form-builder.transparent-inputs .form-group.has-error select,form.form-builder.transparent-inputs .form-group.has-error textarea,form.form-builder.transparent-inputs .form-group.has-error input[type=text],form.form-builder.transparent-inputs .form-group.has-error input[type=email],form.form-builder.transparent-inputs .form-group.has-error input[type=url],form.form-builder.transparent-inputs .form-group.has-error input[type=number],form.form-builder.transparent-inputs .form-group.has-error input[type=file],form.form-builder.transparent-inputs .form-group.has-error div.dummy-input{box-shadow:none !important}div.form-section-count{float:right;display:inline-block;padding:1rem;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Roboto","Oxygen","Ubuntu","Cantarell","Fira Sans","Droid Sans","Helvetica Neue",sans-serif;font-size:2rem;color:#0a0a0a;background-color:#F0F0F0}.fb-modal{display:none;position:fixed;z-index:1;padding-top:100px;left:0;top:0;width:100%;height:100%;overflow:auto;background-color:#000;background-color:rgba(0,0,0,0.4)}.fb-modal-content{position:relative;background-color:#fefefe;margin:auto;padding:0;border:1px solid #888;width:100%;max-width:600px;min-height:300px;box-shadow:0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);-webkit-animation-name:animatetop;-webkit-animation-duration:0.4s;animation-name:animatetop;animation-duration:0.4s}.fb-modal-content.large{max-width:800px}.fb-modal-content.x-large{max-width:1000px}@-webkit-keyframes animatetop{from{top:-300px;opacity:0}to{top:0;opacity:1}}@keyframes animatetop{from{top:-300px;opacity:0}to{top:0;opacity:1}}.fb-modal-close{color:white;float:right;font-size:28px;margin-right:1rem;font-weight:bold;color:#000}.fb-modal-close:hover,.fb-modal-close:focus{color:#000;text-decoration:none;cursor:pointer}
+@charset "UTF-8";
+/* ******************************
+ * @start FormBuilder style 
+ * ******************************
+ *
+ * 
+ * @start settings
+ */
+/* ******************************
+ * @start FormBuilder style 
+ * ******************************
+ */
+/* 
+ * @start override defaults
+ */
+.form-builder-theme-light .form-group .form-label label, .form-builder-theme-light .form-group .form-label div.extra-msg, .form-builder-theme-light .form-group .form-input label, .form-builder-theme-light .form-group .form-input div.extra-msg {
+  color: white; }
+
+.form-builder-theme-light .form-group .control-label.required span {
+  color: white; }
+
+.form-builder-theme-light .form-group small.error {
+  color: white;
+  background-color: orange; }
+
+.form-builder-theme-light .form-group small.error:after {
+  border-bottom-color: orange; }
+
+.form-builder-theme-light .form-group.has-error .form-label label {
+  color: orange; }
+
+.form-builder-theme-light .form-group.has-error .control-label.required span {
+  color: orange; }
+
+.form-builder-theme-light .form-group.has-error select, .form-builder-theme-light .form-group.has-error textarea, .form-builder-theme-light .form-group.has-error input[type=text], .form-builder-theme-light .form-group.has-error input[type=email], .form-builder-theme-light .form-group.has-error input[type=url], .form-builder-theme-light .form-group.has-error input[type=number], .form-builder-theme-light .form-group.has-error input[type=file], .form-builder-theme-light .form-group.has-error div.dummy-input {
+  border-color: orange;
+  box-shadow: inset 0 1px 2px rgba(255, 165, 0, 0.1);
+  color: rgba(255, 165, 0, 0.75); }
+
+.form-builder-theme-light .form-group.has-success select, .form-builder-theme-light .form-group.has-success textarea, .form-builder-theme-light .form-group.has-success input[type=text], .form-builder-theme-light .form-group.has-success input[type=email], .form-builder-theme-light .form-group.has-success input[type=url], .form-builder-theme-light .form-group.has-success input[type=number], .form-builder-theme-light .form-group.has-success input[type=file], .form-builder-theme-light .form-group.has-success div.dummy-input {
+  border-color: white;
+  box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.3);
+  color: white; }
+
+.form-builder-theme-light .form-group.has-success .form-label label {
+  color: white; }
+
+.form-builder-theme-light .form-group.has-success .control-label.required span {
+  color: white; }
+
+.form-builder-theme-light .form-group div.form-builder-feedback {
+  position: relative; }
+  .form-builder-theme-light .form-group div.form-builder-feedback span {
+    color: white; }
+  .form-builder-theme-light .form-group div.form-builder-feedback span.form-builder-check {
+    color: white; }
+  .form-builder-theme-light .form-group div.form-builder-feedback span.form-builder-x {
+    color: orange; }
+
+.form-builder-theme-light select, .form-builder-theme-light textarea, .form-builder-theme-light input[type=text], .form-builder-theme-light input[type=email], .form-builder-theme-light input[type=url], .form-builder-theme-light input[type=number], .form-builder-theme-light input[type=file], .form-builder-theme-light div.dummy-input {
+  color: #1A1A1A; }
+
+.form-builder-theme-light.transparent-inputs form select, .form-builder-theme-light.transparent-inputs form textarea, .form-builder-theme-light.transparent-inputs form input[type=text], .form-builder-theme-light.transparent-inputs form input[type=email], .form-builder-theme-light.transparent-inputs form input[type=url], .form-builder-theme-light.transparent-inputs form input[type=number], .form-builder-theme-light.transparent-inputs form input[type=file], .form-builder-theme-light.transparent-inputs form div.dummy-input {
+  box-shadow: none;
+  background-color: transparent;
+  border-top-style: none;
+  border-left-style: none;
+  border-right-style: none; }
+
+.form-builder-theme-light.transparent-inputs form .form-group.has-error select, .form-builder-theme-light.transparent-inputs form .form-group.has-error textarea, .form-builder-theme-light.transparent-inputs form .form-group.has-error input[type=text], .form-builder-theme-light.transparent-inputs form .form-group.has-error input[type=email], .form-builder-theme-light.transparent-inputs form .form-group.has-error input[type=url], .form-builder-theme-light.transparent-inputs form .form-group.has-error input[type=number], .form-builder-theme-light.transparent-inputs form .form-group.has-error input[type=file], .form-builder-theme-light.transparent-inputs form .form-group.has-error div.dummy-input {
+  box-shadow: none !important; }
+
+.form-builder-theme-light .form-group.has-success select, .form-builder-theme-light .form-group.has-success textarea, .form-builder-theme-light .form-group.has-success input[type=text], .form-builder-theme-light .form-group.has-success input[type=email], .form-builder-theme-light .form-group.has-success input[type=url], .form-builder-theme-light .form-group.has-success input[type=number], .form-builder-theme-light .form-group.has-success input[type=file], .form-builder-theme-light .form-group.has-success div.dummy-input {
+  box-shadow: none; }
+
+/**
+ * Transparent inputs
+ */
+form.form-builder.transparent-inputs select, form.form-builder.transparent-inputs textarea, form.form-builder.transparent-inputs input[type=text], form.form-builder.transparent-inputs input[type=email], form.form-builder.transparent-inputs input[type=url], form.form-builder.transparent-inputs input[type=number], form.form-builder.transparent-inputs input[type=file], form.form-builder.transparent-inputs div.dummy-input {
+  box-shadow: none;
+  background-color: transparent;
+  border-top-style: none;
+  border-left-style: none;
+  border-right-style: none; }
+
+form.form-builder.transparent-inputs .form-group.has-error select, form.form-builder.transparent-inputs .form-group.has-error textarea, form.form-builder.transparent-inputs .form-group.has-error input[type=text], form.form-builder.transparent-inputs .form-group.has-error input[type=email], form.form-builder.transparent-inputs .form-group.has-error input[type=url], form.form-builder.transparent-inputs .form-group.has-error input[type=number], form.form-builder.transparent-inputs .form-group.has-error input[type=file], form.form-builder.transparent-inputs .form-group.has-error div.dummy-input {
+  box-shadow: none !important; }
+
+/* 
+ * @start wrap
+ */
+div.form-builder.wrap {
+  border: 1px solid #D2D2D2;
+  background-color: #F8F8F8;
+  padding: 12px;
+  margin-bottom: 20px;
+  border-radius: 0; }
+
+div.form-builder.hide-labels.wrap {
+  padding-top: 10px; }
+  div.form-builder.hide-labels.wrap .button-group {
+    margin-bottom: 0; }
+  div.form-builder.hide-labels.wrap .form-group.mail-receipt {
+    padding-bottom: 0; }
+
+div.form-builder.hide-labels div.form-label {
+  display: none; }
+
+/* 
+ * @start radio and check buttons
+ */
+label.lbl-checkbox, label.lbl-radio {
+  display: inline-block;
+  margin-right: 1rem;
+  cursor: pointer; }
+
+/* 
+ * @start mail-receipt
+ */
+.form-group.mail-receipt label {
+  margin-left: 1rem; }
+
+/* 
+ * @start form-message
+ */
+.form-message {
+  padding: 15px;
+  margin-bottom: 20px;
+  border-radius: 0; }
+  .form-message table tbody {
+    border: 1px solid #D2D2D2; }
+  .form-message ul {
+    list-style-type: square; }
+  .form-message table td, .form-message table th {
+    border: 1px solid #ddd;
+    padding: 12px; }
+  .form-message table tr:nth-child(even) {
+    background-color: #f2f2f2; }
+  .form-message table tr:hover {
+    background-color: #ddd; }
+
+.form-message.ajax {
+  padding: 15px;
+  margin-right: 0.3rem;
+  margin-left: 0.3rem;
+  margin-bottom: 20px; }
+  .form-message.ajax table {
+    margin-bottom: 0; }
+
+.form-message.standard {
+  margin-right: 0.3rem;
+  margin-left: 0.3rem;
+  border: 1px solid #D2D2D2;
+  padding: 15px;
+  margin-bottom: 20px; }
+
+.form-message.error {
+  margin-right: 0.3rem;
+  margin-left: 0.3rem;
+  padding: 15px;
+  margin-bottom: 20px;
+  border: 1px solid #cc0000;
+  color: #cc0000;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif; }
+  .form-message.error .heading, .form-message.error a {
+    color: #cc0000; }
+
+.form-message.error.ajax {
+  border: none; }
+
+div.form-builder.wrap .form-message {
+  margin-right: 0;
+  margin-left: 0;
+  border: none;
+  background-color: transparent;
+  padding: 5px; }
+
+/* 
+ * @start form-group
+ */
+.form-group {
+  padding-bottom: 0.6rem; }
+  .form-group .form-label label, .form-group .form-label div.extra-msg, .form-group .form-input label, .form-group .form-input div.extra-msg {
+    color: #0a0a0a;
+    font-weight: normal;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+    font-size: 100%; }
+  .form-group button {
+    font-weight: bold;
+    text-transform: none;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif; }
+  .form-group select, .form-group textarea, .form-group input[type=text], .form-group input[type=email], .form-group input[type=url], .form-group input[type=number], .form-group div.dummy-input {
+    margin-bottom: 0;
+    border-radius: 0 !important;
+    width: 100%;
+    display: block;
+    margin: 0.25em 0; }
+  .form-group .control-label.required span:after {
+    content: "*"; }
+  .form-group .control-label.required span {
+    color: #cc0000; }
+  .form-group .form-builder-error {
+    position: relative; }
+  .form-group small.error {
+    -webkit-transition: opacity 0.3s ease-in, bottom 0.3s ease-in, transform 0.3s;
+    -moz-transition: opacity 0.3s ease-in, bottom 0.3s ease-in, transform 0.3s;
+    -ms-transition: opacity 0.3s ease-in, bottom 0.3s ease-in, transform 0.3s;
+    /* IE10 is actually unprefixed */
+    -o-transition: opacity 0.3s ease-in, bottom 0.3s ease-in, transform 0.3s;
+    transition: opacity 0.3s ease-in, bottom 0.3s ease-in, transform 0.3s;
+    border-radius: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+    color: #fefefe;
+    display: block;
+    background-color: #cc0000;
+    position: absolute;
+    right: 0;
+    transform: translateY(-1.5rem);
+    padding: 2px 10px;
+    visibility: hidden;
+    opacity: 0; }
+  .form-group small.error:after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 30px;
+    width: 0;
+    height: 0;
+    border: 6px solid transparent;
+    border-bottom-color: #cc0000;
+    border-top: 0;
+    margin-left: -6px;
+    margin-top: -6px; }
+
+.form-group.has-error .form-label label {
+  color: #cc0000; }
+
+.form-group.has-error small.error {
+  transform: translateY(-4px);
+  visibility: visible;
+  opacity: 1; }
+
+.form-group.has-error select, .form-group.has-error textarea, .form-group.has-error input[type=text], .form-group.has-error input[type=email], .form-group.has-error input[type=url], .form-group.has-error input[type=number], .form-group.has-error input[type=file], .form-group.has-error div.dummy-input {
+  border-color: #cc0000;
+  box-shadow: inset 0 1px 2px rgba(204, 0, 0, 0.1);
+  color: rgba(204, 0, 0, 0.75);
+  background-color: #fef7f6; }
+
+.form-group.has-success select, .form-group.has-success textarea, .form-group.has-success input[type=text], .form-group.has-success input[type=email], .form-group.has-success input[type=url], .form-group.has-success input[type=number], .form-group.has-success input[type=file], .form-group.has-success div.dummy-input {
+  border-color: #999999;
+  box-shadow: inset 0 1px 2px rgba(76, 76, 76, 0.3);
+  color: #4C4C4C;
+  background-color: #FBF5E4; }
+
+.form-group.has-success .form-label label {
+  color: #4C4C4C; }
+
+.form-group.has-success small.error {
+  display: none; }
+
+.form-grid-grouping {
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  align-items: stretch; }
+  .form-grid-grouping .form-group {
+    flex-grow: 1;
+    max-width: 50%; }
+
+/*
+ * @start form-cell (groupings)
+ */
+div.form-builder.groupings .form-group {
+  padding-right: 0.3rem;
+  padding-left: 0.3rem; }
+
+/**
+ * This is the summary for a DocBlock.
+ *
+ * This is the description for a DocBlock. This text may contain
+ * multiple lines and even some _markdown_.
+ *
+ * * Markdown style lists function too
+ * * Just try this out once
+ *
+ * The section after the description contains the tags; which provide
+ * structured meta-data concerning the given element.
+ *
+ * @author          Gary Swift <gary@brightlight.ie>
+ *
+ * @since             1.0
+ * 
+ * @link             http://docs.phpdoc.org/references/phpdoc/basic-syntax.html
+ *
+ * @param int        $example  This is an example function/method parameter description.
+ * @param string     $example2 This is a second example.
+ */
+@media only screen and (min-width: 900px) {
+  form.form-builder.labels-left div.form-group {
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    -webkit-flex-wrap: nowrap;
+    -ms-flex-wrap: nowrap;
+    flex-wrap: nowrap;
+    -webkit-justify-content: flex-start;
+    -ms-flex-pack: start;
+    justify-content: flex-start;
+    -webkit-align-content: stretch;
+    -ms-flex-line-pack: stretch;
+    align-content: stretch;
+    width: 100%; }
+    form.form-builder.labels-left div.form-group div.form-label {
+      width: 25%;
+      padding-right: 10px; }
+    form.form-builder.labels-left div.form-group div.form-input {
+      width: 75%; }
+    form.form-builder.labels-left div.form-group div.form-builder-feedback {
+      display: none; }
+  form.form-builder.labels-left div.form-group.mail-receipt, form.form-builder.labels-left div.form-group.button-group, form.form-builder.labels-left div.form-group.captcha-wrapper, form.form-builder.labels-left div.form-group.form-section-buttons {
+    padding-left: 25%; } }
+
+/*
+ * @start feedback
+ */
+.form-group div.form-builder-feedback {
+  position: relative; }
+  .form-group div.form-builder-feedback span {
+    -webkit-transition: opacity 0.3s ease-in;
+    -moz-transition: opacity 0.3s ease-in;
+    -ms-transition: opacity 0.3s ease-in;
+    /* IE10 is actually unprefixed */
+    -o-transition: opacity 0.3s ease-in;
+    transition: opacity 0.3s ease-in;
+    visibility: hidden;
+    opacity: 0;
+    position: absolute;
+    right: 2px;
+    top: 6px;
+    color: #4C4C4C;
+    font-size: 0.9rem; }
+  .form-group div.form-builder-feedback span.form-builder-check {
+    color: #4C4C4C; }
+  .form-group div.form-builder-feedback span.form-builder-x {
+    color: #cc0000; }
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg); }
+  100% {
+    transform: rotate(360deg); } }
+
+.form-group.has-success div.form-builder-feedback span.form-builder-check {
+  visibility: visible;
+  opacity: 1; }
+
+.form-group.has-error div.form-builder-feedback span.form-builder-x {
+  visibility: visible;
+  opacity: 1; }
+
+.form-group.processing div.form-builder-feedback span.form-builder-circle-o-notch {
+  visibility: visible;
+  opacity: 1;
+  animation: spin 1s linear infinite; }
+
+@font-face {
+  font-family: "form-builder-icon-fonts";
+  src: url("../fonts/form-builder-icon-fonts.eot?y22y7f");
+  src: url("../fonts/form-builder-icon-fonts.eot?y22y7f#iefix") format("embedded-opentype"), url("../fonts/form-builder-icon-fonts.ttf?y22y7f") format("truetype"), url("../fonts/form-builder-icon-fonts.woff?y22y7f") format("woff"), url("../fonts/form-builder-icon-fonts.svg?y22y7f#form-builder-icon-fonts") format("svg");
+  font-weight: normal;
+  font-style: normal; }
+
+.form-icon {
+  font-family: "form-builder-icon-fonts" !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale; }
+
+.form-builder-x:before {
+  content: "󻤀"; }
+
+.form-builder-check:before {
+  content: "󻤁"; }
+
+.form-builder-circle-o-notch:before {
+  content: "󻤂"; }
+
+.form-builder-gear:before {
+  content: "󻤃"; }
+
+/**
+ * Copy the style for inputs for the div around the file input
+ *
+ * [type='text'], [type='password'], [type='date'], etc
+ */
+.dummy-input {
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  height: 2.4375rem;
+  margin: 0 0 1rem;
+  padding: 0.5rem;
+  padding-top: 0.46rem;
+  border: 1px solid #cacaca;
+  border-radius: 0;
+  background-color: #fefefe;
+  box-shadow: inset 0 1px 2px rgba(10, 10, 10, 0.1);
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: normal;
+  line-height: 1.5;
+  color: #0a0a0a;
+  transition: box-shadow 0.5s, border-color 0.25s ease-in-out;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none; }
+
+/**
+ * File Upload
+ *
+ */
+/**
+ * Section Panels
+ */
+form.form-builder.show-section-panels div.form-section.active-section {
+  opacity: 1;
+  display: block;
+  visibility: visible; }
+
+form.form-builder.show-section-panels div.form-section.hidden-section {
+  opacity: 0.5;
+  display: none;
+  visibility: hidden; }
+
+form.form-builder.show-section-panels div.form-group-extra {
+  display: none; }
+
+/**
+ * Transparent inputs
+ */
+form.form-builder.transparent-inputs select, form.form-builder.transparent-inputs textarea, form.form-builder.transparent-inputs input[type=text], form.form-builder.transparent-inputs input[type=email], form.form-builder.transparent-inputs input[type=url], form.form-builder.transparent-inputs input[type=number], form.form-builder.transparent-inputs input[type=file], form.form-builder.transparent-inputs div.dummy-input {
+  box-shadow: none;
+  background-color: transparent;
+  border-top-style: none;
+  border-left-style: none;
+  border-right-style: none; }
+
+form.form-builder.transparent-inputs .form-group.has-error select, form.form-builder.transparent-inputs .form-group.has-error textarea, form.form-builder.transparent-inputs .form-group.has-error input[type=text], form.form-builder.transparent-inputs .form-group.has-error input[type=email], form.form-builder.transparent-inputs .form-group.has-error input[type=url], form.form-builder.transparent-inputs .form-group.has-error input[type=number], form.form-builder.transparent-inputs .form-group.has-error input[type=file], form.form-builder.transparent-inputs .form-group.has-error div.dummy-input {
+  box-shadow: none !important; }
+
+div.form-section-count {
+  float: right;
+  display: inline-block;
+  padding: 1rem;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  font-size: 2rem;
+  color: #0a0a0a;
+  background-color: #F0F0F0; }
+
+/* The Modal (background) */
+.fb-modal {
+  display: none;
+  /* Hidden by default */
+  position: fixed;
+  /* Stay in place */
+  z-index: 101;
+  /* Sit on top */
+  padding-top: 100px;
+  /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%;
+  /* Full width */
+  height: 100%;
+  /* Full height */
+  overflow: auto;
+  /* Enable scroll if needed */
+  background-color: black;
+  /* Fallback color */
+  background-color: rgba(0, 0, 0, 0.4);
+  /* Black w/ opacity */ }
+
+/* Modal Content */
+.fb-modal-content {
+  position: relative;
+  background-color: #fefefe;
+  margin: auto;
+  padding: 0;
+  border: 1px solid #888;
+  width: 100%;
+  max-width: 600px;
+  min-height: 300px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  -webkit-animation-name: animatetop;
+  -webkit-animation-duration: 0.4s;
+  animation-name: animatetop;
+  animation-duration: 0.4s; }
+
+.fb-modal-content.large {
+  max-width: 800px; }
+
+.fb-modal-content.x-large {
+  max-width: 1000px; }
+
+/* Add Animation */
+@-webkit-keyframes animatetop {
+  from {
+    top: -300px;
+    opacity: 0; }
+  to {
+    top: 0;
+    opacity: 1; } }
+
+@keyframes animatetop {
+  from {
+    top: -300px;
+    opacity: 0; }
+  to {
+    top: 0;
+    opacity: 1; } }
+
+/* The Close Button */
+.fb-modal-close {
+  color: white;
+  float: right;
+  font-size: 28px;
+  margin-right: 1rem;
+  font-weight: bold;
+  color: #A2A2A2; }
+
+.fb-modal-close:hover,
+.fb-modal-close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer; }
