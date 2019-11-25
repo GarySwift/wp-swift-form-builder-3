@@ -16,7 +16,7 @@
         'security' => wp_create_nonce( 'form-builder-nonce' ),
         // debugging info
         // 'updated' => date ("H:i:s - F d Y", $js_version),
-        'debug' => true,
+        'debug' => FORM_BUILDER_DEBUG,
     );   
     $form_builder_date_picker = array( 'format' => get_form_builder_date_format());
     if ( function_exists( 'foundationpress_scripts' ) ) {
@@ -32,4 +32,4 @@
         wp_localize_script( 'form-builder-ajax', 'FormBuilderDatePicker', $form_builder_date_picker);
     } 
 }
-add_action( 'wp_enqueue_scripts', 'wp_swift_form_builder_localize_script', 20 );
+add_action( 'wp_enqueue_scripts', 'wp_swift_form_builder_localize_script', 100 );

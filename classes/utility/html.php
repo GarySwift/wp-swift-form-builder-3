@@ -28,9 +28,11 @@ class WP_Swift_Form_Builder_Html {
 
         <div<?php $helper->get_form_wrapper_css_id() ?> class="<?php echo $helper->get_form_class(); ?>"><!-- @start form-wrapper -->
 
-            <div class="form-builder-popup-message" id="form-builder-popup-message">
-                <div class="inner"></div>
-            </div>
+            <?php if ($helper->show_autosave_option()): ?>
+                <div class="form-builder-popup-message" id="form-builder-popup-message">
+                    <div class="inner"></div>
+                </div>                
+            <?php endif ?>
 
             <?php $this->section_stage_guide($helper) ?>
             <?php //echo '<pre>$_POST: '; var_dump($_POST); echo '</pre>'; ?>
@@ -71,7 +73,8 @@ class WP_Swift_Form_Builder_Html {
 */  
 // $this->recaptcha_html($helper); 
 $helper->spam_killer->spam_html($helper, $this->get_tab_index());      
-$this->mail_receipt_html($helper);            
+$this->mail_receipt_html($helper);      
+$this->autosave_html($helper);      
 $this->button_html($helper);
 $this->close_form_groups_html();
 
@@ -867,9 +870,8 @@ $this->close_form_groups_html();
     public function gdpr_html_license($helper, $tick = false) {
         $gdpr_settings = $helper->get_gdpr_settings();
         if ( isset($gdpr_settings["license_message"]) ): ?>
-
             <br>
-            <div class="form-group sign-up">
+            <div class="form-group form-group-extra sign-up sign-up-auto-agree">
                 <div class="policies">
                     <?php if ($tick): ?>
                         <input type="checkbox" name="gdpr-aggree" id="gdpr-aggree">
@@ -884,11 +886,6 @@ $this->close_form_groups_html();
             <input type="hidden" value="sms" name="sign-up-0[]" id="sign-up-sms">
             <input type="hidden" value="direct_mail" name="sign-up-0[]" id="sign-up-direct-mail">
             <input type="hidden" value="customized_online_advertising" name="sign-up-0[]" id="sign-up-direct-mail">
-            <?php 
-            /* 
-
-            */ 
-            ?>
 
         <?php endif;//@nd if ($this->gdpr_settings)        
     }
@@ -915,14 +912,30 @@ $this->close_form_groups_html();
                 <?php /*<div class="form-label"></div>*/ ?>
                 <div class="form-input">
                     <div class="checkbox">
-                      <input type="checkbox" value="" tabindex=<?php echo $this->get_tab_index(); ?> name="mail-receipt" id="mail-receipt" checked><label for="mail-receipt">Acknowledge me with a mail receipt</label>
+                      <input type="checkbox" value="" tabindex="<?php echo $this->get_tab_index(); ?>" name="mail-receipt" id="mail-receipt" checked><label for="mail-receipt">Acknowledge me with a mail receipt</label>
                     </div>
                 </div>                  
             </div> 
             <!-- @end .mail-receipt -->          
 
         <?php endif;         
-    }    
+    }
+
+    public function autosave_html($helper) {
+        if ($helper->show_autosave_option()): ?>
+
+            <!-- @start .mail-receipt -->
+            <div class="form-group form-builder-autosave form-group-extra">
+                <div class="form-input">
+                    <div class="checkbox">
+                      <input type="checkbox" value="" tabindex="<?php echo $this->get_tab_index(); ?>" name="form-builder-autosave" id="form-builder-autosave" ><label for="form-builder-autosave"><span data-tooltip title="Keeps a copy on your machine for quick reuse">Remember my contact details</span></label>
+                    </div>
+                </div>                  
+            </div> 
+            <!-- @end .mail-receipt -->          
+
+        <?php endif;         
+    }        
 
     //todo - does submit_button_name come from helper
     public function button_html($helper) {

@@ -65,10 +65,28 @@ require plugin_dir_path( __FILE__ ) . 'includes/class-wp-swift-form-builder.php'
  */
 
 /**
+ * Options
+ */
+
+$wp_swift_form_builder_debug_mode = false;
+$wp_swift_form_builder_email_debug_mode = false;
+$wp_swift_form_builder_marketing_debug_mode = false;
+// $debug_options = get_option( 'wp_swift_form_builder_debug_settings' );
+// if (isset($debug_options['wp_swift_form_builder_debug_mode']))
+// 	$wp_swift_form_builder_debug_mode = true;
+// if (isset($debug_options['wp_swift_form_builder_email_debug_mode']))
+// 	$wp_swift_form_builder_email_debug_mode = true;
+// if (isset($debug_options['wp_swift_form_builder_marketing_debug_mode']))
+// 	$wp_swift_form_builder_marketing_debug_mode = true;
+
+/**
  * Constant vars
  */
 define('FORM_BUILDER_DIR', '/form-builder/');
 define('FORM_BUILDER_SAVE_TO_JSON', false);
+define('FORM_BUILDER_DEBUG', $wp_swift_form_builder_debug_mode);
+define('FORM_BUILDER_DEBUG_EMAIL', $wp_swift_form_builder_email_debug_mode);
+define('FORM_BUILDER_DEBUG_MARKETING', $wp_swift_form_builder_marketing_debug_mode);
 define('FORM_BUILDER_DEFAULT_TERM', 'Contact Form');
 define('FORM_BUILDER_DEFAULT_SLUG', 'contact-form');
 // define('FORM_BUILDER_DEFAULT_TAXONOMY', 'wp_swift_form_category');
@@ -112,9 +130,20 @@ require_once FORM_BUILDER_PLUGIN_PATH . 'acf/all.php';
 /**
  * The classes that handles the admin interface
  */
+if( function_exists('acf_add_options_page') ) {
+ 
+	// add sub page
+	acf_add_options_sub_page(array(
+		'page_title' 	=> 'Marketing Settings',
+		'menu_title' 	=> 'Marketing',
+		'parent_slug' 	=> 'edit.php?post_type=wp_swift_form',
+	));
+
+}
 require_once FORM_BUILDER_PLUGIN_PATH . 'classes/interface/class-admin-interface-templates.php';
 require_once FORM_BUILDER_PLUGIN_PATH . 'classes/interface/class-admin-interface-tools.php';
 require_once FORM_BUILDER_PLUGIN_PATH . 'classes/interface/class-admin-interface-settings.php';
+require_once FORM_BUILDER_PLUGIN_PATH . 'classes/interface/class-admin-interface-debug-settings.php';
 
 /**
  * Function that wraps email message in a html template
@@ -173,6 +202,8 @@ require_once FORM_BUILDER_PLUGIN_PATH . 'functions-filters-actions/_reveal-modal
 require_once FORM_BUILDER_PLUGIN_PATH . 'functions-filters-actions/_write-log.php';
 require_once FORM_BUILDER_PLUGIN_PATH . 'functions-filters-actions/_get-form-input.php';
 
+
+require_once FORM_BUILDER_PLUGIN_PATH . 'marketing/marketing.php';
 /**
  * Begins execution of the plugin.
  *
@@ -198,64 +229,3 @@ function wp_swift_formbuilder_exist($form_id) {
 }
 
 run_wp_swift_form_builder();
-
-
-if( function_exists('acf_add_options_page') ) {
- 
-	// add sub page
-	acf_add_options_sub_page(array(
-		'page_title' 	=> 'Marketing Settings',
-		'menu_title' 	=> 'Marketing',
-		'parent_slug' 	=> 'edit.php?post_type=wp_swift_form',
-	));
- 
-}
-
-// if( function_exists('acf_add_local_field_group') ):
-
-// acf_add_local_field_group(array(
-// 	'key' => 'group_5d1b0b9f1755d',
-// 	'title' => 'Form Builder Options: Marketing',
-// 	'fields' => array(
-// 		array(
-// 			'key' => 'field_5d1b0b9f2c4ad',
-// 			'label' => 'Tab Clone Settings: Marketing',
-// 			'name' => 'tab_clone_settings_marketing',
-// 			'type' => 'clone',
-// 			'instructions' => '',
-// 			'required' => 0,
-// 			'conditional_logic' => 0,
-// 			'wrapper' => array(
-// 				'width' => '',
-// 				'class' => '',
-// 				'id' => '',
-// 			),
-// 			'clone' => array(
-// 				0 => 'group_5cff6a76b2519',
-// 			),
-// 			'display' => 'seamless',
-// 			'layout' => 'block',
-// 			'prefix_label' => 0,
-// 			'prefix_name' => 0,
-// 		),
-// 	),
-// 	'location' => array(
-// 		array(
-// 			array(
-// 				'param' => 'options_page',
-// 				'operator' => '==',
-// 				'value' => 'acf-options-marketing',
-// 			),
-// 		),
-// 	),
-// 	'menu_order' => 0,
-// 	'position' => 'normal',
-// 	'style' => 'default',
-// 	'label_placement' => 'top',
-// 	'instruction_placement' => 'label',
-// 	'hide_on_screen' => '',
-// 	'active' => 1,
-// 	'description' => '',
-// ));
-
-// endif;

@@ -149,13 +149,13 @@ class WP_Swift_Form_Builder_Admin_Interface_Settings {
 			'wp_swift_form_builder_plugin_page_section' 
 		);	
 
-	    add_settings_field( 
-			'wp_swift_form_builder_debug_mode', 
-			__( 'Debug Mode', 'wp-swift-form-builder' ), 
-			array($this, 'wp_swift_form_builder_debug_mode_render'),  
-			'form-builder', 
-			'wp_swift_form_builder_plugin_page_section' 
-	    );
+	  //   add_settings_field( 
+			// 'wp_swift_form_builder_debug_mode', 
+			// __( 'Debug Mode', 'wp-swift-form-builder' ), 
+			// array($this, 'wp_swift_form_builder_debug_mode_render'),  
+			// 'form-builder', 
+			// 'wp_swift_form_builder_plugin_page_section' 
+	  //   );
 
 	}
 

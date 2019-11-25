@@ -78,7 +78,7 @@ class Wp_Swift_Form_Builder_Public {
      * @return string  The shortcode output
      */
     public function render_form( $atts = array(), $content = null ) {
-    	$this->enqueue_styles_and_script_without_check();
+    	// $this->enqueue_styles_and_script_without_check();
 
     	
         $a = shortcode_atts( array(

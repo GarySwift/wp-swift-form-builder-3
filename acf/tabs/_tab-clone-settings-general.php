@@ -119,6 +119,34 @@ acf_add_local_field_group(array(
 			'placeholder' => '',
 		),
 		array(
+			'key' => 'field_5dc95ad8f0159',
+			'label' => 'Autosave Details',
+			'name' => 'autosave_details',
+			'type' => 'select',
+			'instructions' => '',
+			'required' => 0,
+			'conditional_logic' => 0,
+			'wrapper' => array(
+				'width' => '',
+				'class' => '',
+				'id' => '',
+			),
+			'choices' => array(
+				'never' => 'Never',
+				'ask' => 'Ask via a checkbox',
+				'always' => 'Always save without asking',
+			),
+			'default_value' => array(
+				0 => 'never',
+			),
+			'allow_null' => 0,
+			'multiple' => 0,
+			'ui' => 0,
+			'return_format' => 'value',
+			'ajax' => 0,
+			'placeholder' => '',
+		),
+		array(
 			'key' => 'field_5c80ea6c2fb33',
 			'label' => 'Show Page in Email',
 			'name' => 'show_page_in_email',
@@ -453,7 +481,7 @@ acf_add_local_field_group(array(
 	'label_placement' => 'top',
 	'instruction_placement' => 'label',
 	'hide_on_screen' => '',
-	'active' => 0,
+	'active' => false,
 	'description' => '',
 ));
 
