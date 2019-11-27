@@ -34,6 +34,8 @@ $input-color: #1A1A1A;
 
 @import "override-defaults";
 
+@import '../../../node_modules/foundation-datepicker/scss/foundation-datepicker';
+
 @mixin font($form-font-weight, $form-font-family, $form-font-size) {
     .form-message.error {
         font-family: $form-font-family;

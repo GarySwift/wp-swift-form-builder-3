@@ -98,12 +98,12 @@ FormBuilderInput.prototype = {
 
         var year = parseInt(parts[2], 10);
         // We must get day and month dependent on the format set on server
-        if ( FormBuilderDatePicker.format === 'dd/mm/yyyy' ) {
+        if ( FormBuilderAjax.datePicker.format === 'dd/mm/yyyy' ) {
             // Rest of wordld
             var day = parseInt(parts[0], 10);
             var month = parseInt(parts[1], 10);         
         }
-        else if ( FormBuilderDatePicker.format === 'mm/dd/yyyy' ) {
+        else if ( FormBuilderAjax.datePicker.format === 'mm/dd/yyyy' ) {
             // United States
             var month = parseInt(parts[0], 10);
             var day = parseInt(parts[1], 10);     

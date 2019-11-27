@@ -211,7 +211,19 @@ class Wp_Swift_Form_Builder_Public {
 
 		$file = 'js/wp-swift-form-builder-public.js';
 		$version = filemtime(plugin_dir_path( __FILE__ ) . $file);
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . $file, array( 'jquery' ), $version, true );
+
+		$form_builder_ajax = wp_swift_form_builder_get_localize_script();
+
+		// Register the script
+        wp_register_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . $file );
+
+        // Localize the script with new data
+        wp_localize_script( $this->plugin_name, 'FormBuilderAjax', $form_builder_ajax, array( 'jquery' ), $version, true);
+
+        // Enqueued script with localized data.
+        wp_enqueue_script( $this->plugin_name );
+
+		// wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . $file, array( 'jquery' ), $version, true );
 
 	}
 	/**

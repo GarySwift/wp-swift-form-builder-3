@@ -17,7 +17,7 @@ if (typeof FormBuilderAjax !== "undefined") {
     // }
     // var session.sessionDetailsName = "form-session-details";
     // console.log('2 session.sessionDetailsName', session.sessionDetailsName);
-    // console.log(FormBuilderDatePicker);
+    // console.log(FormBuilderAjax.datePicker);
     var select2Options = {};
     select2Options = {
         maximumSelectionLength: 2
@@ -79,7 +79,7 @@ if (typeof FormBuilderAjax !== "undefined") {
     //     }
     // });
 
-        // FormBuilderDatePicker is set on server using wp_localize_script
+        // FormBuilderAjax.datePicker is set on server using wp_localize_script
         // // Form Input Object
         // var FormBuilderInput = function FormBuilderInput(input) {
         //     // console.log('input', input);
@@ -348,12 +348,12 @@ if (typeof FormBuilderAjax !== "undefined") {
 
         //     var year = parseInt(parts[2], 10);
         //     // We must get day and month dependent on the format set on server
-        //     if ( FormBuilderDatePicker.format === 'dd/mm/yyyy' ) {
+        //     if ( FormBuilderAjax.datePicker.format === 'dd/mm/yyyy' ) {
         //         // Rest of wordld
         //         var day = parseInt(parts[0], 10);
         //         var month = parseInt(parts[1], 10);         
         //     }
-        //     else if ( FormBuilderDatePicker.format === 'mm/dd/yyyy' ) {
+        //     else if ( FormBuilderAjax.datePicker.format === 'mm/dd/yyyy' ) {
         //         // United States
         //         var month = parseInt(parts[0], 10);
         //         var day = parseInt(parts[1], 10);     
@@ -463,14 +463,14 @@ if (typeof FormBuilderAjax !== "undefined") {
             } 
             today = dd+'/'+mm+'/'+yyyy;
             // We must set today dependent on the format set on server
-            if ( FormBuilderDatePicker.format === 'mm/dd/yyyy' ) {
+            if ( FormBuilderAjax.datePicker.format === 'mm/dd/yyyy' ) {
                 // United States
                 today = mm+'/'+dd+'/'+yyyy;       
             }
 
             $('.js-date-picker.past input').fdatepicker({
                 // initialDate: today,
-                format: FormBuilderDatePicker.format,
+                format: FormBuilderAjax.datePicker.format,
                 endDate: today,//dateInPast(13),
                 // startDate: dateInPast(13),
                 disableDblClickSelection: true,
@@ -485,7 +485,7 @@ if (typeof FormBuilderAjax !== "undefined") {
 
 
             $('.js-date-picker.future input').fdatepicker({
-                format: FormBuilderDatePicker.format,
+                format: FormBuilderAjax.datePicker.format,
                 // format: 'mm-dd-yyyy hh:ii',
                 startDate: today,
                 disableDblClickSelection: true,
@@ -499,7 +499,7 @@ if (typeof FormBuilderAjax !== "undefined") {
             });     
 
             $('.js-date-picker.all input').fdatepicker({
-                format: FormBuilderDatePicker.format,
+                format: FormBuilderAjax.datePicker.format,
                 disableDblClickSelection: true,
                 leftArrow:'<<',
                 rightArrow:'>>',
@@ -521,7 +521,7 @@ if (typeof FormBuilderAjax !== "undefined") {
                 var $dateRangeEnd = $('#' + dateRangeEnd);
 
                 var checkin = $dateRangeStart.fdatepicker({
-                    format: FormBuilderDatePicker.format,
+                    format: FormBuilderAjax.datePicker.format,
                     onRender: function (date) {
                         return date.valueOf() < now.valueOf() ? 'disabled' : '';
                     }
@@ -539,7 +539,7 @@ if (typeof FormBuilderAjax !== "undefined") {
                 }).data('datepicker');
 
                 var checkout = $dateRangeEnd.fdatepicker({
-                    format: FormBuilderDatePicker.format,
+                    format: FormBuilderAjax.datePicker.format,
                     onRender: function (date) {
                         return date.valueOf() <= checkin.date.valueOf() ? 'disabled' : '';
                     }

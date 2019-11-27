@@ -28,7 +28,6 @@
   },
   "homepage": "https://github.com/wp-swift-wordpress-plugins/wp-swift-form-builder-3#readme",
   "dependencies": {
-    "foundation-datepicker": "^1.5.6",
     "select2": "^4.0.6-rc.1"
   },
   "devDependencies": {
@@ -37,6 +36,7 @@
     "@babel/preset-env": "^7.6.3",
     "babel-loader": "^8.0.6",
     "del": "^5.1.0",
+    "foundation-datepicker": "^1.5.6",
     "gulp": "^4.0.2",
     "gulp-csso": "^3.0.1",
     "gulp-if": "^3.0.0",

@@ -7,7 +7,7 @@ const del = require('del')
 var argv = require('yargs').argv
 var csso = require('gulp-csso')//Minify CSS with CSSO
 var gulpif = require('gulp-if')
-var livereload = require('gulp-livereload');
+var livereload = require('gulp-livereload')
 
 // import {$,jQuery} from 'jquery';
 // // export for others scripts to use
@@ -46,9 +46,10 @@ gulp.task('jsPublic', () => {
 
 gulp.task('sassPublic', () => {
     return gulp.src('./public/src/scss/main.scss')
-        .pipe(sass({outputStyle: 'nested',}).on('error', sass.logError))
+        .pipe(sass({outputStyle: 'nested'}).on('error', sass.logError))
         .pipe(rename(slug+'-public.css'))
-        .pipe(gulpif(argv === 'production', csso()))
+        .pipe(gulpif(argv.mode === 'production', csso()))
+        // .pipe(csso())
         .pipe(gulp.dest('./public/css/'))
         .pipe(livereload());
 });
