@@ -3,7 +3,7 @@ export default function(session) {
 
 		if (MarketingAjax.debug)
 			console.log('DEBUG formbuilder-sign-up-form.js');
-		// var taoglasDownload = null;
+		
 		var hasStorage = typeof(Storage) !== "undefined";
 		// var session.name = "form-session-details";
 		var storedSessionDetails = false;

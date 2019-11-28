@@ -3,14 +3,14 @@ var submit = {
     form: function(event, form) {
         var formData = new FormData(form);
         var $form = $(form);
-        errorsInForm = utils.validateForm( $form.serializeArray(), resetErrorsInForm() ); 
+        errorsInForm = utils.validateForm( $form.serializeArray(), utils.resetErrorsInForm() ); 
         if (errorsInForm.count === 0) {
             return true;
         }
         event.preventDefault();
         return false;
     },
-    formAjax: function(form) {
+    formAjax: function(form, session) {
         // event.preventDefault();
     // $('#request-form.ajax').submit(function(e) {
         var formData = new FormData(form);
@@ -21,8 +21,8 @@ var submit = {
         var ajax = $form.data('ajax');
         // console.log('ajax', ajax);
         var submit = $form.find(":submit");
-        // errorsInForm = resetErrorsInForm();
-        errorsInForm = utils.validateForm( $form.serializeArray(), resetErrorsInForm() );
+        // errorsInForm = utils.resetErrorsInForm();
+        var errorsInForm = utils.validateForm( $form.serializeArray(), utils.resetErrorsInForm() );
         // todo - handle file uploads with ajax
         var $fileInputs = $('input.js-file-upload');
         var files = {};
@@ -47,7 +47,7 @@ var submit = {
 
                 FormBuilderAjax.type = $form.data('type');//"wp_swift_submit_request_form";
                 FormBuilderAjax.action = "wp_swift_submit_request_form";
-                var ref = getRef();
+                var ref = utils.getRef();
                 if(typeof ref !== "undefined") {
                    FormBuilderAjax.ref = ref;
                 }
@@ -96,7 +96,7 @@ var submit = {
                         }
 
                         if (serverResponse.error_count === 0 && serverResponse.form_set === true && FormBuilderAjax.type !== "signup") {
-                            resetForm( $form.serializeArray() );        
+                            utils.resetForm( $form.serializeArray() );        
                         }
 
                         if (typeof serverResponse.error_fields !== "undefined") {
@@ -115,6 +115,7 @@ var submit = {
                         if ( responseDisplayModal ) {
                             var $modal = $('#form-builder-reveal');
                             $('#form-builder-reveal-content').html(serverResponse.html);
+                            var modal = utils.getModal();
                             if(typeof modal !== null) {
                                 // $modal.foundation('open');
                                 modal.style.display = "block";  
@@ -135,13 +136,13 @@ var submit = {
 
                                 // $('.form-builder.groupings').slideUp();
                                 // $('#download-mask').removeClass('masked');   
-                                hideForm();                     
+                                utils.hideForm();                     
                             }   
                         } 
                         // else if (serverResponse.session !== "undefined") {
                         //     console.log(serverResponse.session);
                         //     session.save(session.name, serverResponse.session );
-                        //     // removeMarketingSignUp(); 
+                        //     // utils.removeMarketingSignUp(); 
                         // }
                     }                   
                 }); 
@@ -160,22 +161,10 @@ var submit = {
                 $(form).removeClass('hidden-section').addClass('active-section');
             });
             submit.prop('disabled', false);
-            this.showModalWithErrors( wrapErrorMessage(errorsInForm) );
+            utils.showModalWithErrors( utils.wrapErrorMessage(errorsInForm) );
 
         }
         return false;
-    },
-    showModalWithErrors: function($msg) {
-        
-        $('#form-builder-reveal-content').html( $msg );
-        // var $modal = $('#form-builder-reveal');
-        if(typeof modal !== null) {
-            // $modal.foundation('open');
-            modal.style.display = "block";
-        }
-        else {
-            alert("Please fill in the required fields!");
-        } 
-    }
+    }  
 }
 export { submit }

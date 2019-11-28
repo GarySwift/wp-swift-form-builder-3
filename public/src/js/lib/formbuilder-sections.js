@@ -10,7 +10,7 @@ export default function(FormBuilderInput, utils, session) {
             console.log('#form-section-' + $(this).data("id"));
             $('div.form-section.show-hide-section').removeClass('active-section').addClass('hidden-section'); 
             $('#form-section-' + id ).removeClass('hidden-section').addClass('active-section');
-            $('#form-section-' + id + ' select.js-select2-multiple').select2("destroy").select2(select2Options);
+            $('#form-section-' + id + ' select.js-select2-multiple').select2("destroy").select2(utils.select2Options);
 
             $('div.section-head').removeClass('active');
             $('#form-section-head-'+id).addClass('active');
@@ -62,7 +62,7 @@ export default function(FormBuilderInput, utils, session) {
 
             // $('#form-taoglas-products').select2();
         if( jQuery().fdatepicker ) {
-            $('select.js-select2-multiple').select2(select2Options);
+            $('select.js-select2-multiple').select2(utils.select2Options);
         }
         
         // {
@@ -86,7 +86,7 @@ export default function(FormBuilderInput, utils, session) {
         console.log('next', next);
 
         $section = $('#form-section-'+current);
-        errorsInForm = resetErrorsInForm();
+        errorsInForm = utils.resetErrorsInForm();
         $('#form-section-' + current + ' .js-form-builder-control').each(function () {
             input = new FormBuilderInput(this);
             errorsInForm = addClassAfterBlur(input, input.isValid(), errorsInForm);
@@ -105,14 +105,14 @@ export default function(FormBuilderInput, utils, session) {
             }
             $('#form-section-' + current ).removeClass('active-section').addClass('hidden-section');
             $('#form-section-' + next ).removeClass('hidden-section').addClass('active-section');
-            $('#form-section-' + next + ' select.js-select2-multiple').select2("destroy").select2(select2Options);
+            $('#form-section-' + next + ' select.js-select2-multiple').select2("destroy").select2(utils.select2Options);
 
             $([document.documentElement, document.body]).animate({
                 scrollTop: $('#form-section-' + next).offset().top - 100
             }, 800);
         }
         else {
-            showModalWithErrors( wrapErrorMessageSection(errorsInForm) );
+            showModalWithErrors( utils.wrapErrorMessageSection(errorsInForm) );
         }
     });
 
