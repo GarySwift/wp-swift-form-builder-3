@@ -16,6 +16,7 @@
  */
 
 require_once 'acf/_sign-up-form-selector.php';
+require_once 'acf/options-page-marketing-admin.php';
 
 define("FORM_BUILDER_MARKETING", true);
 define("FORM_BUILDER_MARKETING_DEBUG", false);
@@ -101,7 +102,12 @@ function wp_swift_from_builder_marketing_localize_script() {
         }
         $js_version = filemtime( $js_file_path );
         $time = 60000;// 1 minutue in miliseconds
-        // $time = 5000;// 5 seconds      
+        // $time = 5000;// 5 seconds 
+        $interceptCssClass = '';
+        if( function_exists('get_field') ){
+            $interceptCssClass = get_field('css_intercept_class', 'option');
+        }
+        
         $marketing_ajax = array(
             // URL to wp-admin/admin-ajax.php to process the request
             'ajaxurl' => admin_url( 'admin-ajax.php' ),
@@ -126,7 +132,8 @@ function wp_swift_from_builder_marketing_localize_script() {
             'debug' => FORM_BUILDER_MARKETING_DEBUG,
             'debugClearCacheAuto' => false,
             'debugTimeoutInterval' => 30000,
-            'debugClearUserData' => false,        
+            'debugClearUserData' => false, 
+            'interceptCssClass' => $interceptCssClass,     
         );
         if ( function_exists( 'foundationpress_scripts' ) ) {
             // wp_deregister_script('foundation'); 

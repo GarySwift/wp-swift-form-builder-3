@@ -26,45 +26,6 @@ var formBuilderUtilities = {
 		$(id).attr('required', false);
 		$(id).val('');
 	},
-    // Validates that the input string is a valid date formatted as "dd-mm-yyyy"
-    isValidDate: function isValidDate(dateString) {
-        // First check for the pattern
-        if(!dateString.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/)) {
-            return false;
-        }
-        // Parse the date parts to integers
-        var parts = dateString.split("/");
-
-        var year = parseInt(parts[2], 10);
-        // We must get day and month dependent on the format set on server
-        if ( FormBuilderAjax.datePicker.format === 'dd/mm/yyyy' ) {
-            // Rest of wordld
-            var day = parseInt(parts[0], 10);
-            var month = parseInt(parts[1], 10);         
-        }
-        else if ( FormBuilderAjax.datePicker.format === 'mm/dd/yyyy' ) {
-            // United States
-            var month = parseInt(parts[0], 10);
-            var day = parseInt(parts[1], 10);     
-        }
-
-        // Check the ranges of month and year
-        var year_now = new Date().getFullYear();
-
-        if(year < 1900 || year > 2100 || month === 0 || month > 12){
-            return false;
-        }
-
-        var monthLength = [ 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 ];
-
-        // Adjust for leap years
-        if(year % 400 === 0 || (year % 100 !== 0 && year % 4 === 0)){
-            monthLength[1] = 29;
-        }
-
-        // Check the range of the day
-        return day > 0 && day <= monthLength[month - 1];
-    },
     validateForm: function(form, errorsInForm) {
 
         for (var i = 0; i < form.length; i++) {
