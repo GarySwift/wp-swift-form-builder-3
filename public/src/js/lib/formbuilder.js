@@ -1,4 +1,4 @@
-export default function(FormBuilderInput, utils, session) {
+export default function(FormBuilderInput, utils, dateUtils, session) {
 //@start closure
 if (typeof FormBuilderAjax !== "undefined") {
     /**
@@ -23,34 +23,34 @@ if (typeof FormBuilderAjax !== "undefined") {
         maximumSelectionLength: 2
     };
 
-    var dateInPast = function dateInPast(years) {
-        var dateNow = new Date();
-        var dd = dateNow.getDate();
-        var mm = dateNow.getMonth()+1; //January is 0!
-        var yyyy = dateNow.getFullYear();
+    // var dateInPast = function dateInPast(years) {
+    //     var dateNow = new Date();
+    //     var dd = dateNow.getDate();
+    //     var mm = dateNow.getMonth()+1; //January is 0!
+    //     var yyyy = dateNow.getFullYear();
 
-        if(dd<10){
-            dd='0'+dd;
-        } 
-        if(mm<10){
-            mm='0'+mm;
-        } 
+    //     if(dd<10){
+    //         dd='0'+dd;
+    //     } 
+    //     if(mm<10){
+    //         mm='0'+mm;
+    //     } 
         
-        var dateInPast = dd + '-' + mm + '-' + (yyyy-years);
-        return  dateInPast; 
-    };
+    //     var dateInPast = dd + '-' + mm + '-' + (yyyy-years);
+    //     return  dateInPast; 
+    // };
 
-    var resetErrorsInForm = function() {
-        return {
-            count: 0,
-            report: ''
-        };
-    };
+    // var resetErrorsInForm = function() {
+    //     return {
+    //         count: 0,
+    //         report: ''
+    //     };
+    // };
 
     jQuery(document).ready(function($) {
         // sessionDetailsFill(showAndRequireInput);
         session.sessionDetailsFill();
-        var errorsInForm = resetErrorsInForm(); 
+        var errorsInForm = utils.resetErrorsInForm(); 
         if(typeof FormBuilderAjax !== "undefined") {
             // console.log(FormBuilderAjax.updated);
         }
@@ -279,7 +279,7 @@ if (typeof FormBuilderAjax !== "undefined") {
         console.log('next', next);
 
         $section = $('#form-section-'+current);
-        errorsInForm = resetErrorsInForm();
+        errorsInForm = utils.resetErrorsInForm();
         $('#form-section-' + current + ' .js-form-builder-control').each(function () {
             input = new FormBuilderInput(this);
             errorsInForm = utils.addClassAfterBlur(input, input.isValid(), errorsInForm);
@@ -448,119 +448,120 @@ if (typeof FormBuilderAjax !== "undefined") {
             }
         }); 
 
-        if(jQuery().fdatepicker) {
-            var today = new Date();
-            // console.log('today', today);
-            var dd = today.getDate();
-            var mm = today.getMonth()+1; //January is 0!
-            var yyyy = today.getFullYear();
+        dateUtils.run();
+        // if(jQuery().fdatepicker) {
+        //     var today = new Date();
+        //     // console.log('today', today);
+        //     var dd = today.getDate();
+        //     var mm = today.getMonth()+1; //January is 0!
+        //     var yyyy = today.getFullYear();
             
-            if(dd<10){
-                dd='0'+dd;
-            } 
-            if(mm<10){
-                mm='0'+mm;
-            } 
-            today = dd+'/'+mm+'/'+yyyy;
-            // We must set today dependent on the format set on server
-            if ( FormBuilderAjax.datePicker.format === 'mm/dd/yyyy' ) {
-                // United States
-                today = mm+'/'+dd+'/'+yyyy;       
-            }
+        //     if(dd<10){
+        //         dd='0'+dd;
+        //     } 
+        //     if(mm<10){
+        //         mm='0'+mm;
+        //     } 
+        //     today = dd+'/'+mm+'/'+yyyy;
+        //     // We must set today dependent on the format set on server
+        //     if ( FormBuilderAjax.datePicker.format === 'mm/dd/yyyy' ) {
+        //         // United States
+        //         today = mm+'/'+dd+'/'+yyyy;       
+        //     }
 
-            $('.js-date-picker.past input').fdatepicker({
-                // initialDate: today,
-                format: FormBuilderAjax.datePicker.format,
-                endDate: today,//dateInPast(13),
-                // startDate: dateInPast(13),
-                disableDblClickSelection: true,
-                leftArrow:'<<',
-                rightArrow:'>>',
-                closeIcon:'X',
-                closeButton: true
-            }).on('hide', function (ev) {
-                var input = new FormBuilderInput(this);
-                utils.addClassAfterBlur(input, input.isValid(), 0);
-            });
+        //     $('.js-date-picker.past input').fdatepicker({
+        //         // initialDate: today,
+        //         format: FormBuilderAjax.datePicker.format,
+        //         endDate: today,//dateInPast(13),
+        //         // startDate: dateInPast(13),
+        //         disableDblClickSelection: true,
+        //         leftArrow:'<<',
+        //         rightArrow:'>>',
+        //         closeIcon:'X',
+        //         closeButton: true
+        //     }).on('hide', function (ev) {
+        //         var input = new FormBuilderInput(this);
+        //         utils.addClassAfterBlur(input, input.isValid(), 0);
+        //     });
 
 
-            $('.js-date-picker.future input').fdatepicker({
-                format: FormBuilderAjax.datePicker.format,
-                // format: 'mm-dd-yyyy hh:ii',
-                startDate: today,
-                disableDblClickSelection: true,
-                leftArrow:'<<',
-                rightArrow:'>>',
-                closeIcon:'X',
-                closeButton: true
-            }).on('hide', function (ev) {
-                var input = new FormBuilderInput(this);
-                utils.addClassAfterBlur(input, input.isValid(), 0);
-            });     
+        //     $('.js-date-picker.future input').fdatepicker({
+        //         format: FormBuilderAjax.datePicker.format,
+        //         // format: 'mm-dd-yyyy hh:ii',
+        //         startDate: today,
+        //         disableDblClickSelection: true,
+        //         leftArrow:'<<',
+        //         rightArrow:'>>',
+        //         closeIcon:'X',
+        //         closeButton: true
+        //     }).on('hide', function (ev) {
+        //         var input = new FormBuilderInput(this);
+        //         utils.addClassAfterBlur(input, input.isValid(), 0);
+        //     });     
 
-            $('.js-date-picker.all input').fdatepicker({
-                format: FormBuilderAjax.datePicker.format,
-                disableDblClickSelection: true,
-                leftArrow:'<<',
-                rightArrow:'>>',
-                closeIcon:'X',
-                closeButton: true
-            }).on('hide', function (ev) {
-                var input = new FormBuilderInput(this);
-                utils.addClassAfterBlur(input, input.isValid(), 0);
-            }); 
+        //     $('.js-date-picker.all input').fdatepicker({
+        //         format: FormBuilderAjax.datePicker.format,
+        //         disableDblClickSelection: true,
+        //         leftArrow:'<<',
+        //         rightArrow:'>>',
+        //         closeIcon:'X',
+        //         closeButton: true
+        //     }).on('hide', function (ev) {
+        //         var input = new FormBuilderInput(this);
+        //         utils.addClassAfterBlur(input, input.isValid(), 0);
+        //     }); 
 
-            // Range
+        //     // Range
 
-            var nowTemp = new Date();
-            var now = new Date(nowTemp.getFullYear(), nowTemp.getMonth(), nowTemp.getDate(), 0, 0, 0, 0);
+        //     var nowTemp = new Date();
+        //     var now = new Date(nowTemp.getFullYear(), nowTemp.getMonth(), nowTemp.getDate(), 0, 0, 0, 0);
 
-            var datepickerListener = function (dateRangeStart, dateRangeEnd) {
+        //     var datepickerListener = function (dateRangeStart, dateRangeEnd) {
 
-                var $dateRangeStart = $('#' + dateRangeStart);
-                var $dateRangeEnd = $('#' + dateRangeEnd);
+        //         var $dateRangeStart = $('#' + dateRangeStart);
+        //         var $dateRangeEnd = $('#' + dateRangeEnd);
 
-                var checkin = $dateRangeStart.fdatepicker({
-                    format: FormBuilderAjax.datePicker.format,
-                    onRender: function (date) {
-                        return date.valueOf() < now.valueOf() ? 'disabled' : '';
-                    }
-                }).on('changeDate', function (ev) {
-                    if (ev.date.valueOf() > checkout.date.valueOf()) {
-                        var newDate = new Date(ev.date);
-                        newDate.setDate(newDate.getDate() + 1);
-                        checkout.update(newDate);
-                    }
-                    checkin.hide();
-                    $dateRangeEnd[0].focus();
-                }).on('hide', function (ev) {
-                    var input = new FormBuilderInput( document.getElementById( dateRangeStart ) );
-                    utils.addClassAfterBlur(input, input.isValid(), 0);
-                }).data('datepicker');
+        //         var checkin = $dateRangeStart.fdatepicker({
+        //             format: FormBuilderAjax.datePicker.format,
+        //             onRender: function (date) {
+        //                 return date.valueOf() < now.valueOf() ? 'disabled' : '';
+        //             }
+        //         }).on('changeDate', function (ev) {
+        //             if (ev.date.valueOf() > checkout.date.valueOf()) {
+        //                 var newDate = new Date(ev.date);
+        //                 newDate.setDate(newDate.getDate() + 1);
+        //                 checkout.update(newDate);
+        //             }
+        //             checkin.hide();
+        //             $dateRangeEnd[0].focus();
+        //         }).on('hide', function (ev) {
+        //             var input = new FormBuilderInput( document.getElementById( dateRangeStart ) );
+        //             utils.addClassAfterBlur(input, input.isValid(), 0);
+        //         }).data('datepicker');
 
-                var checkout = $dateRangeEnd.fdatepicker({
-                    format: FormBuilderAjax.datePicker.format,
-                    onRender: function (date) {
-                        return date.valueOf() <= checkin.date.valueOf() ? 'disabled' : '';
-                    }
-                }).on('changeDate', function (ev) {
-                    checkout.hide();
-                }).on('hide', function (ev) {
-                    var input = new FormBuilderInput( document.getElementById( dateRangeEnd ) );
-                    utils.addClassAfterBlur(input, input.isValid(), 0);               
-                }).data('datepicker'); 
+        //         var checkout = $dateRangeEnd.fdatepicker({
+        //             format: FormBuilderAjax.datePicker.format,
+        //             onRender: function (date) {
+        //                 return date.valueOf() <= checkin.date.valueOf() ? 'disabled' : '';
+        //             }
+        //         }).on('changeDate', function (ev) {
+        //             checkout.hide();
+        //         }).on('hide', function (ev) {
+        //             var input = new FormBuilderInput( document.getElementById( dateRangeEnd ) );
+        //             utils.addClassAfterBlur(input, input.isValid(), 0);               
+        //         }).data('datepicker'); 
 
-            };
+        //     };
 
-            var $datePickerInput = $('input.js-date-picker-range');
-            if ($datePickerInput.length) {
-                $datePickerInput.each(function() {
-                    var dateRangeStart = this.id;//'#' + 
-                    var dateRangeEnd = dateRangeStart.substring(0, dateRangeStart.length - 6)+'-end';
-                    datepickerListener( dateRangeStart, dateRangeEnd );
-                });
-            }       
-        }   
+        //     var $datePickerInput = $('input.js-date-picker-range');
+        //     if ($datePickerInput.length) {
+        //         $datePickerInput.each(function() {
+        //             var dateRangeStart = this.id;//'#' + 
+        //             var dateRangeEnd = dateRangeStart.substring(0, dateRangeStart.length - 6)+'-end';
+        //             datepickerListener( dateRangeStart, dateRangeEnd );
+        //         });
+        //     }       
+        // }   
 
         $('.js-other-value').removeClass('hide').hide();
 
@@ -619,7 +620,7 @@ if (typeof FormBuilderAjax !== "undefined") {
         var submitForm = function(event, form) {
             var formData = new FormData(form);
             var $form = $(form);
-            errorsInForm = utils.validateForm( $form.serializeArray(), resetErrorsInForm() ); 
+            errorsInForm = utils.validateForm( $form.serializeArray(), utils.resetErrorsInForm() ); 
             if (errorsInForm.count === 0) {
                 return true;
             }
@@ -637,8 +638,8 @@ if (typeof FormBuilderAjax !== "undefined") {
             var ajax = $form.data('ajax');
             // console.log('ajax', ajax);
             var submit = $form.find(":submit");
-            // errorsInForm = resetErrorsInForm();
-            errorsInForm = utils.validateForm( $form.serializeArray(), resetErrorsInForm() );
+            // errorsInForm = utils.resetErrorsInForm();
+            errorsInForm = utils.validateForm( $form.serializeArray(), utils.resetErrorsInForm() );
             // todo - handle file uploads with ajax
             var $fileInputs = $('input.js-file-upload');
             var files = {};

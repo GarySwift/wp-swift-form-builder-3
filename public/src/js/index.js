@@ -7,8 +7,9 @@
 import '../../../node_modules/foundation-datepicker/js/foundation-datepicker.min';
 import { FormBuilderInput } from './lib/form-builder-object';
 import { utils } from './lib/form-builder-utilities';
+import { dateUtils } from './lib/formbuilder-dates';
 import { session } from './lib/formbuilder-session';
 import formbuilder from './lib/formbuilder';
 import formbuilderSignUp from './lib/formbuilder-sign-up-form';
-formbuilder(FormBuilderInput, utils, session);
+formbuilder(FormBuilderInput, utils, dateUtils, session);
 formbuilderSignUp(session);    
