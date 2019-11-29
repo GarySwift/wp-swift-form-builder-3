@@ -103,6 +103,7 @@ require_once FORM_BUILDER_PLUGIN_PATH . 'classes/utility/html.php';
 require_once FORM_BUILDER_PLUGIN_PATH . 'classes/utility/helper.php';
 require_once FORM_BUILDER_PLUGIN_PATH . 'classes/utility/marketing.php';
 require_once FORM_BUILDER_PLUGIN_PATH . 'classes/utility/class-spam-killer.php';
+require_once FORM_BUILDER_PLUGIN_PATH . 'classes/utility/autofill.php';
 /**
  * A FormBuilder child class that handles contact forms
  */

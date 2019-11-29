@@ -314,14 +314,13 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
             write_log('[DANGER!!!] $signup_response: ');write_log($signup_response);
             $response["session"] = $signup_response["session"];
         }
-        /**
-         * This is written outside plugin
-         */
-        if ($this->autosave && function_exists('wp_swift_form_builder_autofill')) {
-            if ($autofill = wp_swift_form_builder_autofill($form_data)) {
+
+        if ($this->autosave) {
+            $get_autofill = new WP_Swift_Autofill();
+            if ($autofill = $get_autofill->run($form_data)) {
                 $response["session"] = $autofill;
             }  
-        }                    
+        }                           
         return $response;
     } 
 

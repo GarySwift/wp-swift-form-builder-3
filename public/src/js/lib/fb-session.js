@@ -116,7 +116,7 @@ var session = {
 		var empty = () => this.sessionDetailsEmpty();
         var msg = '<p>Some details have been autofilled. <br>Click <b>Undo</b> button to clear.</p>';
         // + '<input type="checkbox" id="clear-session-data" name="clear-session-data"><label for="clear-session-data">Delete my autofill data</label><br>';
-        var button = '<a href="#" id="" class="button tiny js-form-builder-popup-message-close">Undo</a>';
+        var button = '<a href="#" id="" class="button small js-form-builder-popup-message-close">Undo</a>';
         // Add the html elements and add an event handler to the button
         $('#form-builder-popup-message .inner').append(msg).append(button).click(function(e) {
         	e.preventDefault();
