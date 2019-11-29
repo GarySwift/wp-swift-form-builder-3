@@ -25,11 +25,8 @@ var formBuilderDates = {
         return  dateInPast; 
     },
     datepickerListener: function (utils, now, dateRangeStart, dateRangeEnd) {
-        // console.log('test', test);
-        // console.log('2 now, dateRangeStart, dateRangeEnd -- ', now, dateRangeStart, dateRangeEnd);
         var $dateRangeStart = $('#' + dateRangeStart);
         var $dateRangeEnd = $('#' + dateRangeEnd);
-        
 
         var checkin = $dateRangeStart.fdatepicker({
             format: FormBuilderAjax.datePicker.format,
@@ -63,12 +60,8 @@ var formBuilderDates = {
 
     },    
     run: function() {
-        // var utils = this.utils;
-        console.log('utils', utils);
 if(jQuery().fdatepicker) {
-    console.log('[jQuery().fdatepicker ->-> jQuery().fdatepicker]');
     var today = new Date();
-    // console.log('today', today);
     var dd = today.getDate();
     var mm = today.getMonth()+1; //January is 0!
     var yyyy = today.getFullYear();
@@ -85,7 +78,6 @@ if(jQuery().fdatepicker) {
         // United States
         today = mm+'/'+dd+'/'+yyyy;       
     }
-    console.log('FormBuilderAjax.datePicker.format', FormBuilderAjax.datePicker.format);
 
     $('.js-date-picker.past input').fdatepicker({
         // initialDate: today,
@@ -137,20 +129,15 @@ if(jQuery().fdatepicker) {
 
 
     var $datePickerInput = $('input.js-date-picker-range');
-    console.log('$datePickerInput.length', $datePickerInput.length);
     if ($datePickerInput.length) {
         // Use arrow functions as a reference to the arguments of the enclosing scope
         // var listener = () => this.datepickerListener();
 
         var listener = this.datepickerListener;
         var now = this.getNow();
-        // console.log('now', now);       
         $datePickerInput.each(function() {
-            // console.log('this.id', this.id);
             var dateRangeStart = this.id;//'#' + 
             var dateRangeEnd = dateRangeStart.substring(0, dateRangeStart.length - 6)+'-end';
-            // console.log('1 now, dateRangeStart, dateRangeEnd -- ', now, dateRangeStart, dateRangeEnd);
-            // console.log('utils, now, dateRangeStart, dateRangeEnd', utils, now, dateRangeStart, dateRangeEnd);
             listener( utils, now, dateRangeStart, dateRangeEnd );
         });
     }       
