@@ -1,4 +1,4 @@
-import { utils } from './form-builder-utilities';
+import { utils } from './fb-utilities';
 // Form Input Object
 var FormBuilderInput = function FormBuilderInput(input) {
     this.name = input.name;

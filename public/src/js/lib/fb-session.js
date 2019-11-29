@@ -1,4 +1,4 @@
-import { utils } from './form-builder-utilities';
+import { utils } from './fb-utilities';
 var session = {
 	// storedSessionDetails: false,
 	name: "form-session-details",

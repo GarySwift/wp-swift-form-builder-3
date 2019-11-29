@@ -1,4 +1,4 @@
-import { FormBuilderInput } from './form-builder-object';
+import { FormBuilderInput } from './fb-object';
 var formBuilderUtilities = {
 	// msg: function() {
 	// 	return 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Obcaecati veritatis pariatur nulla voluptatibus aliquam ';
@@ -195,6 +195,10 @@ var formBuilderUtilities = {
             $html += '</div>';
         $html += '</div>';  
         return $html;
-    }                                       	
+    },
+    getNow: function() {
+        var nowTemp = new Date();
+        return new Date(nowTemp.getFullYear(), nowTemp.getMonth(), nowTemp.getDate(), 0, 0, 0, 0);
+    }                                           	
 }
 export { formBuilderUtilities as utils }

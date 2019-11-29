@@ -9,11 +9,6 @@ var csso = require('gulp-csso')//Minify CSS with CSSO
 var gulpif = require('gulp-if')
 var livereload = require('gulp-livereload')
 
-// import {$,jQuery} from 'jquery';
-// // export for others scripts to use
-// window.$ = $;
-// window.jQuery = jQuery;
-
 gulp.task('jsAdmin', () => {
     return gulp.src('./admin/src/js/index.js')
         .pipe(webpackStream({

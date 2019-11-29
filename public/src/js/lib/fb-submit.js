@@ -1,5 +1,6 @@
-import { utils } from './form-builder-utilities';
+import { utils } from './fb-utilities';
 var submit = {
+    // utils: utils,
     form: function(event, form) {
         var formData = new FormData(form);
         var $form = $(form);

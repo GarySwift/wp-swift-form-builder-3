@@ -1,7 +1,7 @@
-import { utils } from './form-builder-utilities';
-import { FormBuilderInput } from './form-builder-object';
+import { utils } from './fb-utilities';
+import { FormBuilderInput } from './fb-object';
 var formBuilderDates = {
-    utils: utils,
+    // utils: utils,
     getNow: function() {
         var nowTemp = new Date();
         return new Date(nowTemp.getFullYear(), nowTemp.getMonth(), nowTemp.getDate(), 0, 0, 0, 0);
@@ -63,10 +63,10 @@ var formBuilderDates = {
 
     },    
     run: function() {
-        var utils = this.utils;
-
+        // var utils = this.utils;
+        console.log('utils', utils);
 if(jQuery().fdatepicker) {
-    // console.log('[jQuery().fdatepicker ->-> jQuery().fdatepicker]');
+    console.log('[jQuery().fdatepicker ->-> jQuery().fdatepicker]');
     var today = new Date();
     // console.log('today', today);
     var dd = today.getDate();
@@ -85,7 +85,7 @@ if(jQuery().fdatepicker) {
         // United States
         today = mm+'/'+dd+'/'+yyyy;       
     }
-    // console.log('FormBuilderAjax.datePicker.format', FormBuilderAjax.datePicker.format);
+    console.log('FormBuilderAjax.datePicker.format', FormBuilderAjax.datePicker.format);
 
     $('.js-date-picker.past input').fdatepicker({
         // initialDate: today,
@@ -137,7 +137,7 @@ if(jQuery().fdatepicker) {
 
 
     var $datePickerInput = $('input.js-date-picker-range');
-    // console.log('$datePickerInput.length', $datePickerInput.length);
+    console.log('$datePickerInput.length', $datePickerInput.length);
     if ($datePickerInput.length) {
         // Use arrow functions as a reference to the arguments of the enclosing scope
         // var listener = () => this.datepickerListener();
@@ -155,7 +155,6 @@ if(jQuery().fdatepicker) {
         });
     }       
 } 
-
     }      	
 }
 export { formBuilderDates as dateUtils }
