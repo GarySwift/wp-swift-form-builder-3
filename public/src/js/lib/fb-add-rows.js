@@ -1,6 +1,30 @@
-var formBuilderAddNewRows = {
-    run: function() {
+export default function() {
+    console.log('go');
+    var disableAddRemoveButtons = function($addButton, $removeButton) {
+        console.log('disableAddRemoveButtons()');
+        $addButton.attr('disabled', true);
+        $removeButton.attr('disabled', true);   
+    }
 
+    var checkAddRemoveButtons = function($addButton, $removeButton, count, max, min) {
+        console.log('checkAddRemoveButtons() count', count, 'max', max, 'min', min);
+        if (count === 0) {
+            $removeButton.attr('disabled', true);
+            $addButton.attr('disabled', false);
+        } 
+        // else if (count === 1) {
+        //  $removeButton.attr('disabled', true);
+        //  $addButton.attr('disabled', false);
+        // }
+        else if (count > 0 && count < max){
+            $addButton.attr('disabled', false);
+            $removeButton.attr('disabled', false);
+        }
+        else if (count > 0 && count === max){
+            $addButton.attr('disabled', true);
+            $removeButton.attr('disabled', false);
+        }
+    }    
         $('a.js-add-row').click(function(e) {
 
             e.preventDefault();
@@ -41,11 +65,15 @@ var formBuilderAddNewRows = {
                     // if (serverResponse.count === max) {
                     //  $addButton.attr('disabled', true);
                     // }
-                    checkAddRemoveButtons($addButton, $removeButton, count, max);   
+                    checkAddRemoveButtons($addButton, $removeButton, count, max, min);   
                 });
             }
             else {
+                console.log('a.js-add-row.click() count', count, 'max', max, 'min', min);
                 alert("Maximum Reached!\nSorry, you cannot add anymore rows.");
+                if (count > min) {
+                    $removeButton.attr('disabled', false);
+                }                
             }
         }); 
 
@@ -62,19 +90,25 @@ var formBuilderAddNewRows = {
             // var count = $addButton.data('count');
             // console.log('count', count);
             var $countInput = $( $addButton.data('count-input-id') );
+            // console.log('$countInput', $countInput);
             // $countInput.val(10);
             var count = $countInput.val();
-
+            var min = parseInt($countInput.attr('min'));
+            var max = parseInt($countInput.attr('max'));    
             // return false; 
             
-            if ( count > 0 ) {
+            if ( count > min ) {
                 // var max = $addButton.data('max');
-            var min = parseInt($countInput.attr('min'));
-            var max = parseInt($countInput.attr('max'));            
+        
                 var keys = $addButton.data('keys');
+                console.log('keys', keys);
+                var input;
+                console.log('keys.length', keys.length);
                 for (var i = 0; i < keys.length; i++) {
+                    console.log('i', i);
                     input = '#'+keys[i] + '-' + count;
                     var $inputGroup = $(input + '-form-group');
+                    console.log(input + '-form-group');
                     // var $input = $(input);
                     // $input.attr('disabled', true);
                     $inputGroup.remove();
@@ -105,11 +139,16 @@ var formBuilderAddNewRows = {
                 //  $addButton.attr('disabled', true);
                 //  $removeButton.attr('disabled', false);
                 // }    
-                checkAddRemoveButtons($addButton, $removeButton, count, max);
+                checkAddRemoveButtons($addButton, $removeButton, count, max, min);
             }
             else {
+                console.log('a.js-remove-row.click() count', count, 'max', max, 'min', min);
                 alert("Minimum Reached!\nSorry, you cannot remmove anymore rows.");
                 $removeButton.attr('disabled', true);
+                // var addButton = true;
+                if (count < max) {
+                    $addButton.attr('disabled', false);
+                }
             }
 
 
@@ -136,29 +175,9 @@ var formBuilderAddNewRows = {
         //  console.log('');
         // }
     // });
-    },
-    disableAddRemoveButtons: function($addButton, $removeButton) {
-        $addButton.attr('disabled', true);
-        $removeButton.attr('disabled', true);   
-    },
-    checkAddRemoveButtons: function($addButton, $removeButton, count, max) {
-        // console.log('count', count, 'max', max);
-        if (count === 0) {
-            $removeButton.attr('disabled', true);
-            $addButton.attr('disabled', false);
-        } 
-        // else if (count === 1) {
-        //  $removeButton.attr('disabled', true);
-        //  $addButton.attr('disabled', false);
-        // }
-        else if (count > 0 && count < max){
-            $addButton.attr('disabled', false);
-            $removeButton.attr('disabled', false);
-        }
-        else if (count > 0 && count === max){
-            $addButton.attr('disabled', true);
-            $removeButton.attr('disabled', false);
-        }
-    }          
 }
-export { formBuilderAddNewRows as addNewRows }
+// Usage (app.js)
+// import repeaterFunction from './lib/repeater';
+// $(document).ready(function() {
+//   repeaterFunction();
+// });

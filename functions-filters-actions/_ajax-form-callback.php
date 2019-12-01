@@ -135,12 +135,13 @@ function wp_swift_add_row_callback() {
     $count++;
     //$form_id, $post_id, $hidden = array(), $type = 'request', $increment_id = false
     $form = new WP_Swift_Form_Builder_Parent( $form_id, null, array(), 'request', $tabindex );
-    $form->increment_form_data( $count );
+    $form->helper()->increment_form_data( $count );
     // $form_data = $form->get_form_data( $sections = false );
     ob_start();
     ?>
-        <div id="row-<?php echo $count ?>" class="">
-        <?php $tabindex = $form->front_end_form_input_loop($tabindex); ?>
+        <div id="repeat-section-<?php echo $count ?>" class="repeat-section">
+        <?php //$tabindex = $form->front_end_form_input_loop($tabindex); ?>
+        <?php $tabindex =  $form->html()->front_end_form_input_loop( $form->helper(), $tab_index = false, $increment = false ); ?>
         </div>
     <?php    
     $html = ob_get_contents();

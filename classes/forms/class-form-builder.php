@@ -201,5 +201,6 @@ class WP_Swift_Form_Builder_Parent {
     // public function add_attachment($attachment) {
     //     // $this->attachments[] = $attachment;
     //     $this->helper->add_attachment($attachment);
-    // }            
+    // }     
+       
 }

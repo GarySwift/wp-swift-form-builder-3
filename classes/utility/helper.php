@@ -622,4 +622,12 @@ class WP_Swift_Form_Builder_Helper {
             $modal = ' data-modal="'.$this->displaying_results["dom_element_to_inject"].'"';
         return $modal;
     }
+    public function increment_form_data( $count ) {
+        foreach ( $this->form_data as &$section) {
+            foreach ($section["inputs"] as $key => $input) {
+                $section["inputs"][$key.'-'.$count] = $input;
+                unset( $section["inputs"][$key] );
+            }
+        }
+    }     
 }

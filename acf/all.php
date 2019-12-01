@@ -13,7 +13,7 @@ require_once $path . '_form-builder-clone-reporting-group.php';
 require_once $path . '_form-builder-clone-select-options.php';
 require_once $path . '_form-builder-clone-settings-group.php';
 require_once $path . '_form-builder-clone-textarea-attributes.php';
-require_once $path . '_form-builder-inputs.php';
+// require_once $path . '_form-builder-inputs.php';
 require_once $path . '_form-builder-type-clone-contact-form-response.php';
 require_once $path . 'tabs/_tab-clone-settings-inputs.php';
 require_once $path . 'tabs/_tab-clone-settings-general.php';
