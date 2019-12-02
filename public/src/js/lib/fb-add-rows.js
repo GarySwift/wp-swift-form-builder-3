@@ -1,13 +1,12 @@
 export default function() {
-    console.log('go');
     var disableAddRemoveButtons = function($addButton, $removeButton) {
-        console.log('disableAddRemoveButtons()');
+        // console.log('disableAddRemoveButtons()');
         $addButton.attr('disabled', true);
         $removeButton.attr('disabled', true);   
     }
 
     var checkAddRemoveButtons = function($addButton, $removeButton, count, max, min) {
-        console.log('checkAddRemoveButtons() count', count, 'max', max, 'min', min);
+        // console.log('checkAddRemoveButtons() count', count, 'max', max, 'min', min);
         if (count === 0) {
             $removeButton.attr('disabled', true);
             $addButton.attr('disabled', false);
@@ -69,7 +68,7 @@ export default function() {
                 });
             }
             else {
-                console.log('a.js-add-row.click() count', count, 'max', max, 'min', min);
+                // console.log('a.js-add-row.click() count', count, 'max', max, 'min', min);
                 alert("Maximum Reached!\nSorry, you cannot add anymore rows.");
                 if (count > min) {
                     $removeButton.attr('disabled', false);
@@ -101,14 +100,13 @@ export default function() {
                 // var max = $addButton.data('max');
         
                 var keys = $addButton.data('keys');
-                console.log('keys', keys);
+                // console.log('keys', keys);
                 var input;
                 console.log('keys.length', keys.length);
                 for (var i = 0; i < keys.length; i++) {
-                    console.log('i', i);
+                    // console.log('i', i);
                     input = '#'+keys[i] + '-' + count;
                     var $inputGroup = $(input + '-form-group');
-                    console.log(input + '-form-group');
                     // var $input = $(input);
                     // $input.attr('disabled', true);
                     $inputGroup.remove();
@@ -142,7 +140,7 @@ export default function() {
                 checkAddRemoveButtons($addButton, $removeButton, count, max, min);
             }
             else {
-                console.log('a.js-remove-row.click() count', count, 'max', max, 'min', min);
+                // console.log('a.js-remove-row.click() count', count, 'max', max, 'min', min);
                 alert("Minimum Reached!\nSorry, you cannot remmove anymore rows.");
                 $removeButton.attr('disabled', true);
                 // var addButton = true;
