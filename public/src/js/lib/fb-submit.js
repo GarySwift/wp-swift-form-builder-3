@@ -1,7 +1,7 @@
 import { utils } from './fb-utilities';
 var submit = {
     // utils: utils,
-    form: function(event, form) {
+    form: function(form, event) {
         var formData = new FormData(form);
         var $form = $(form);
         errorsInForm = utils.validateForm( $form.serializeArray(), utils.resetErrorsInForm() ); 

@@ -102,7 +102,7 @@ export default function() {
                 var keys = $addButton.data('keys');
                 // console.log('keys', keys);
                 var input;
-                console.log('keys.length', keys.length);
+                // console.log('keys.length', keys.length);
                 for (var i = 0; i < keys.length; i++) {
                     // console.log('i', i);
                     input = '#'+keys[i] + '-' + count;

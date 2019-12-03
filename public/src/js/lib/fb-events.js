@@ -85,12 +85,12 @@ export default function(FormBuilderInput, utils, session, submit) {
         }       
     }); 
 
-    $('body').on('submit', '#request-form.ajax', function(e) {
-        e.preventDefault();
-        return submit.formAjax(session);
+    $('body').on('submit', '#request-form.ajax', function(event) {
+        event.preventDefault();
+        return submit.formAjax(this, session);
     });
 
     $('body').on('submit', '#request-form.no-ajax', function(event) {
-        return submit.form(event, this);
+        return submit.form(this, event);
     });
 }

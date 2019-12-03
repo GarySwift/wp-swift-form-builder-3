@@ -19,7 +19,7 @@ var session = {
 
             if (storedSessionDetails && storedSessionDetails !== "undefined") {
                 Object.assign(storedSessionDetails, value);
-                console.log('MERGED storedSessionDetails', storedSessionDetails);
+                // console.log('MERGED storedSessionDetails', storedSessionDetails);
                 value = JSON.stringify(storedSessionDetails);
             }
             else {
@@ -39,10 +39,7 @@ var session = {
     get: function(name) {
         // window.sessionStorage
         if (this.hasStorage) {
-        	// console.log('this.hasStorage', this.hasStorage);
-        	// console.log('name', name);
             var storedSessionDetails = JSON.parse(localStorage.getItem(name));
-            // console.log('1 storedSessionDetails', storedSessionDetails);
             return storedSessionDetails;
         }
         return false;   
@@ -51,14 +48,11 @@ var session = {
     reset: function(name) {
         if (this.hasStorage) {
             localStorage.removeItem(name);
-            console.log('Session date cleared');
+            // console.log('Session date cleared');
         }   
     }, 
     subscribed: function() {//storedSessionDetails
-    	// console.log('subscribed() -> storedSessionDetails', storedSessionDetails);
     	var storedSessionDetails = this.get(this.name);
-    	// console.log('2 storedSessionDetails', storedSessionDetails);
-    	//session.hasStorage && 
     	if (storedSessionDetails && typeof storedSessionDetails.subscribed !== "undefined" && storedSessionDetails.subscribed === true) {
     		return true;
     	}
