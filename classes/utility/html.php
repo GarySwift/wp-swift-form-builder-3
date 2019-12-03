@@ -1,4 +1,4 @@
- <?php
+<?php
 /*
  * Include the WordPress Admin API interface settings for this plugin.
  * This will declare all menu pages, tabs and inputs etc but it does not
@@ -119,13 +119,12 @@ $this->close_form_groups_html();
                     }          
                 }
 
-                // $this->open_section_html( $helper, $section, $key, $show_next_button_in_sections );            
+                $this->open_section_html( $helper, $section, $key, $show_next_button_in_sections );            
 
                 foreach ($section["inputs"] as $id => $input) {
 
                     if (isset($input['data_type'])) {
-                        // write_log('$id: '.$id . ' -- $input[data_type]: '. $input['data_type']);
-                        // write_log('$input: ');write_log($input);
+ 
                         switch ($input['data_type']) {            
                             case "text":
                             case "url":
@@ -160,7 +159,6 @@ $this->close_form_groups_html();
                                 echo $this->wrap_input($helper, $id, $input, $input_html);
                                 break; 
                             case "repeat_section":
-                                // echo '<pre>$input: '; var_dump($input); echo '</pre>';
                                 echo $this->build_form_repeat_section($helper, $id, $input);
                                 break;
                             case "file":
@@ -176,7 +174,7 @@ $this->close_form_groups_html();
                          
                 }// @end foreach inputs
 
-                // $this->close_section_html( $helper, $section, $key, $prev, $next, $show_submit, $all );
+                $this->close_section_html( $helper, $section, $key, $prev, $next, $show_submit, $all );
 
                 $section_count++;
 
@@ -564,9 +562,6 @@ $this->close_form_groups_html();
 
     private function build_form_repeat_section($helper, $id, $input) {      
         ob_start();
-        // echo '<pre>$id: '; var_dump($id); echo '</pre>';
-        // echo '<pre>$input: '; var_dumsp($input); echo '</pre>';
-        // return;
         $button = $input["buttons"];
         $button_id = $input["id"];
         $add_button_text = $input["buttons"]["add_button"]["button_text"];
