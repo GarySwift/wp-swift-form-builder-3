@@ -15,6 +15,7 @@ function wp_swift_form_builder_get_localize_script() {
         // 'updated' => date ("H:i:s - F d Y", $js_version),
         'debug' => FORM_BUILDER_DEBUG,
         'datePicker' => array( 'format' => get_form_builder_date_format()),
+        'encryptionSecret' => get_form_builder_encryption_secret()
     );     
 }
 /**

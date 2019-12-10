@@ -43,6 +43,7 @@
     "gulp-livereload": "^4.0.2",
     "gulp-rename": "^1.4.0",
     "gulp-sass": "^4.0.2",
+    "secure-ls": "^1.2.5",
     "webpack-stream": "^5.2.1",
     "yargs": "^14.2.0"
   }

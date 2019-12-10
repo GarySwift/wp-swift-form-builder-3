@@ -1,3 +1,4 @@
+import { utils } from './fb-utilities';
 export default function(session) {
 	var storedSessionDetails = false;
     var interceptCssClass;// The CSS class that we intercept (Set with MarketingAjax)
@@ -75,7 +76,8 @@ export default function(session) {
 
 	    	if ( localStorage.getItem(session.name) !== null ) {
 
-		        storedSessionDetails = localStorage.getItem(session.name);
+		        // storedSessionDetails = localStorage.getItem(session.name);
+		        storedSessionDetails = utils.secureLS.get(session.name);
 		        if (storedSessionDetails && storedSessionDetails !== "undefined") {
 		        	storedSessionDetails = JSON.parse(storedSessionDetails);
 		        }
@@ -97,7 +99,8 @@ export default function(session) {
     //@start Debug section
     var resetSessionDetails = function(name) {
         if (session.hasStorage) {
-            localStorage.removeItem(name);
+            // localStorage.removeItem(name);
+            utils.secureLS.remove(name);
             console.log('DEBUG Session data cleared');
         }   
     }; 
@@ -171,7 +174,8 @@ export default function(session) {
     		if (email) {
     			var session = { email: email, subscribed: true };
 		        if (session.hasStorage) {
-		            localStorage.setItem(session.name, JSON.stringify(session));
+		            // localStorage.setItem(session.name, JSON.stringify(session));
+		            this.utils.secureLS.set(session.name, session);
 		        } 		
     		}
     		else {

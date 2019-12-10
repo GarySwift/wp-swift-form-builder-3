@@ -194,6 +194,7 @@ require_once FORM_BUILDER_PLUGIN_PATH . 'functions-filters-actions/_shortcode-me
 require_once FORM_BUILDER_PLUGIN_PATH . 'functions-filters-actions/_acf-filters.php';
 
 require_once FORM_BUILDER_PLUGIN_PATH . 'functions-filters-actions/_get-date-format.php';
+require_once FORM_BUILDER_PLUGIN_PATH . 'functions-filters-actions/_get-encryption-secret.php';
 
 /**
  * Add the FoundationPress reveal modal which shows submission response

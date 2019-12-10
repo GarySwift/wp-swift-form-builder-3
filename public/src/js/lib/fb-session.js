@@ -2,7 +2,7 @@ import { utils } from './fb-utilities';
 var session = {
 	// storedSessionDetails: false,
 	name: "form-session-details",
-	utils: utils,
+	// utils: utils,
 	hasStorage: typeof(Storage) !== "undefined",
 	options: {
 		popup: {
@@ -10,48 +10,39 @@ var session = {
 			out: 11000
 		}
 	},
-	// saveSessionDetails
+	// ls: new SecureLS(utils.secureSettings),
     save: function(name, value) {
-        
         if (this.hasStorage) {
+        	// var ls = new SecureLS(utils.secureSettings);
             // Check if it already exists
-            var storedSessionDetails = JSON.parse(localStorage.getItem(name));
-
-            if (storedSessionDetails && storedSessionDetails !== "undefined") {
+            // var storedSessionDetails = JSON.parse(localStorage.getItem(name));
+            var storedSessionDetails = utils.secureLS.get(name);
+            if (storedSessionDetails) {
                 Object.assign(storedSessionDetails, value);
-                // console.log('MERGED storedSessionDetails', storedSessionDetails);
                 value = JSON.stringify(storedSessionDetails);
             }
             else {
                 value = JSON.stringify(value);
             }
-            // return storedSessionDetails;
-            
-        // }  ///
-        // window.sessionStorage
-        
-        // console.log('Saving: ', value);
-        // if (this.hasStorage) {
-            localStorage.setItem(name, value);
+            // localStorage.setItem(name, value);
+			utils.secureLS.set(name, value);
         }   
     },
-    // getSessionDetails
     get: function(name) {
-        // window.sessionStorage
         if (this.hasStorage) {
-            var storedSessionDetails = JSON.parse(localStorage.getItem(name));
+            // var storedSessionDetails = JSON.parse(localStorage.getItem(name));
+            var storedSessionDetails = utils.secureLS.get(name);
             return storedSessionDetails;
         }
         return false;   
     },
-    // resetSessionDetails
     reset: function(name) {
         if (this.hasStorage) {
-            localStorage.removeItem(name);
-            // console.log('Session date cleared');
+            // localStorage.removeItem(name);
+            utils.secureLS.remove(name);
         }   
     }, 
-    subscribed: function() {//storedSessionDetails
+    subscribed: function() {
     	var storedSessionDetails = this.get(this.name);
     	if (storedSessionDetails && typeof storedSessionDetails.subscribed !== "undefined" && storedSessionDetails.subscribed === true) {
     		return true;
@@ -59,18 +50,26 @@ var session = {
     	return false;
     },      	
 	sessionDetailsFill: function() {
+
+		// console.log('sessionDetailsFill() -> secureSettings', utils.secureSettings);
 		var storedSessionDetails = false;
 		var id;
 		if (this.hasStorage && localStorage.getItem(this.name) !== null) {
-			storedSessionDetails = localStorage.getItem(this.name);
+			// storedSessionDetails = localStorage.getItem(this.name);
+			// console.log('1 storedSessionDetails', storedSessionDetails);
+			// var ls = utils.secureLS;//new SecureLS(utils.secureSettings);// Get and decrypt local storage
+			// storedSessionDetails = localStorage.getItem(this.name);
+			storedSessionDetails = utils.secureLS.get(this.name);
+			// console.log('2 storedSessionDetails', storedSessionDetails);
 			if (storedSessionDetails && storedSessionDetails !== "undefined") {
 				storedSessionDetails = JSON.parse(storedSessionDetails);
+				console.log('storedSessionDetails', storedSessionDetails);
 				var countInputAutoFills = 0;
 				for (let key in storedSessionDetails) {
 			     	id = '#'+key;
 			     	if ($(id).length) {			     		
 			     		if(typeof storedSessionDetails[key].hidden !== "undefined" && storedSessionDetails[key].val !== '') {
-			     			this.utils.showAndRequireInput(id);
+			     			utils.showAndRequireInput(id);
 			     		}
 			     		$(id).val(storedSessionDetails[key].val);
 			     		countInputAutoFills++;
@@ -84,17 +83,19 @@ var session = {
 		}	
 	},
 	sessionDetailsEmpty: function() {
+		console.log('sessionDetailsEmpty()');
 		var storedSessionDetails = false;
 		var id;
 		if (this.hasStorage && localStorage.getItem(this.name) !== null) {
-			storedSessionDetails = localStorage.getItem(this.name);
+			// storedSessionDetails = localStorage.getItem(this.name);
+			storedSessionDetails = utils.secureLS.get(this.name);
 			if (storedSessionDetails && storedSessionDetails !== "undefined") {
 				storedSessionDetails = JSON.parse(storedSessionDetails);
 				for (let key in storedSessionDetails) {
 			     	id = '#'+key;
 			     	if ($(id).length) {		     		
 			     		if(typeof storedSessionDetails[key].hidden !== "undefined") {
-			     			this.utils.hideAndUnrequireInput(id);
+			     			utils.hideAndUnrequireInput(id);
 			     		}
 			     		$(id).val('');
 			     		$(id+'-form-group').removeClass('has-success').removeClass('has-error');
@@ -102,7 +103,8 @@ var session = {
 				}	
 			}	
 		}	
-		localStorage.removeItem(this.name);		
+		// localStorage.removeItem(this.name);	
+		utils.secureLS.remove(this.name);	
 		console.clear();
 	},	
 	showMsg: function() {
