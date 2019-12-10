@@ -236,3 +236,18 @@ img.contact-form-svg {
 
 .acf-field .full-width-settings {
   border: none !important; }
+
+.acf-field.acf-field-clone.clone-group {
+  padding: 15px 12px;
+  padding: 0;
+  border-top: none !important; }
+  .acf-field.acf-field-clone.clone-group > div.acf-label {
+    display: none; }
+  .acf-field.acf-field-clone.clone-group > div.acf-input {
+    background-color: yellow; }
+    .acf-field.acf-field-clone.clone-group > div.acf-input > .acf-clone-fields.acf-fields.-top.-border {
+      border: none; }
+
+.acf-field.no-border-top {
+  border-top: none;
+  padding-top: 0; }

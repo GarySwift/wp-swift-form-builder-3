@@ -1,5 +1,5 @@
 export default function() {
-    
+
     /*
      * Event listeners
      */
@@ -60,11 +60,12 @@ export default function() {
         var count = parseInt($countInput.val());
         var min = parseInt($countInput.attr('min'));
         var max = parseInt($countInput.attr('max'));
+        var showAlert = $addButton.data('alert');
         if (count < max) {
             addRowAjax($addButton, $removeButton, count, max, min, $countInput);
         }
         else {
-            // alert("Maximum Reached!\nSorry, you cannot add anymore rows.");
+            if (showAlert) alert("Maximum Reached!\nSorry, you cannot add anymore rows.");
             checkAddRemoveButtons($addButton, $removeButton, count, max, min);
         }
     };
@@ -88,12 +89,13 @@ export default function() {
         var $countInput = $( $addButton.data('count-input-id') );
         var count = parseInt($countInput.val());
         var min = parseInt($countInput.attr('min'));
-        var max = parseInt($countInput.attr('max'));    
+        var max = parseInt($countInput.attr('max'));
+        var showAlert = $addButton.data('alert'); 
         if ( count > min ) {
             removeRowAction($addButton, $removeButton, count, max, min, $countInput);
         }
         else {
-            // alert("Minimum Reached!\nSorry, you cannot remmove anymore rows.");
+            if (showAlert) alert("Minimum Reached!\nSorry, you cannot remmove anymore rows.");
             checkAddRemoveButtons($addButton, $removeButton, count, max, min);
         }
     };

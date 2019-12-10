@@ -742,8 +742,10 @@ function wp_swift_get_repeating_section_form_data( $prefix, $id, $repeating_sect
     $max = $repeating_section["max"];
     if ($min > $max) $min = $max;
         
-
+    $instructions = $repeating_section["instructions"];
+    $show_alerts = $repeating_section["show_alerts"];
     $button_text = $repeating_section["button_text"];
+    $remove_button_text = $repeating_section["remove_button_text"];
     $input_keys = array();
     $input_arrays = array();
     $buttons = array();
@@ -802,7 +804,13 @@ function wp_swift_get_repeating_section_form_data( $prefix, $id, $repeating_sect
         } 
 
         $add_button_text = $button_text;
-        $remove_button_text = str_replace("Add", "Remove", $add_button_text);
+        if ($remove_button_text) {
+            $remove_button_text = $remove_button_text;
+        }
+        else {
+            $remove_button_text = str_replace("Add", "Remove", $add_button_text);
+        }
+        
         $add_button_disabled = '';
          // $remove_button_disabled = '';
         $remove_button_disabled = ' disabled';
@@ -859,6 +867,8 @@ function wp_swift_get_repeating_section_form_data( $prefix, $id, $repeating_sect
             "buttons" => $buttons,
             "input_arrays" => $input_arrays,
             "input_keys" => $input_keys,
+            "instructions" => $instructions,
+            "show_alerts" => $show_alerts,
         ),
     );
 }

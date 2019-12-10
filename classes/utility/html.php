@@ -582,6 +582,7 @@ $this->close_form_groups_html();
         // }
         // $remove_button_text = str_replace("Add", "Remove", $add_button_text);
         $group_id = $input["id"] . '-add-remove-group';
+        $show_alerts = $input["show_alerts"];
         $min = $input["min"];
         $max = $input["max"];
 
@@ -594,7 +595,9 @@ $this->close_form_groups_html();
         if ($count > $min) {
         }
         ?>
-
+            <?php if ($input["instructions"]): ?>
+                <div class="form-group "><?php echo $input["instructions"] ?></div>
+            <?php endif; ?>
             <input type="hidden" 
                 id="<?php echo $id; ?>" 
                 name="<?php echo $id; ?>" 
@@ -603,24 +606,25 @@ $this->close_form_groups_html();
                 min="<?php echo $min ?>" 
                 max="<?php echo $max ?>" 
                 readonly>
-                <div class="form-group right add-remove-group" id="<?php echo $group_id ?>">
-                    <a href="#" 
-                    class="button small success js-add-row" 
-                    id="add-row-<?php echo $button_id ?>" 
-                    data-remove-button="#remove-row-<?php echo $button_id ?>" 
-                    data-count-input-id="#<?php echo $id ?>" 
-                    data-action="add_row" 
-                    data-group="<?php echo $button_id ?>" 
-                    data-form-id="<?php echo $form_id ?>" 
-                    data-keys='<?php echo $input_keys ?>' 
-                    tabindex="<?php echo $this->tab_index++; ?>"<?php echo $add_button_disabled ?>><?php echo $add_button_text ?></a>
-                    <a href="#" 
-                    class="button small warning js-remove-row" 
-                    id="remove-row-<?php echo $button_id ?>" 
-                    data-add-button="#add-row-<?php echo $button_id ?>" 
-                    tabindex="<?php echo $this->tab_index++; ?>"<?php echo $remove_button_disabled; ?>><?php echo $remove_button_text ?></a>
-                </div>
-        <?php
+            <div class="form-group right add-remove-group" id="<?php echo $group_id ?>">
+                <a href="#" 
+                class="button small success js-add-row" 
+                id="add-row-<?php echo $button_id ?>" 
+                data-remove-button="#remove-row-<?php echo $button_id ?>" 
+                data-count-input-id="#<?php echo $id ?>" 
+                data-action="add_row" 
+                data-group="<?php echo $button_id ?>" 
+                data-form-id="<?php echo $form_id ?>" 
+                data-alert="<?php echo $show_alerts ?>" 
+                data-keys='<?php echo $input_keys ?>' 
+                tabindex="<?php echo $this->tab_index++; ?>"<?php echo $add_button_disabled ?>><?php echo $add_button_text ?></a>
+                <a href="#" 
+                class="button small warning js-remove-row" 
+                id="remove-row-<?php echo $button_id ?>" 
+                data-add-button="#add-row-<?php echo $button_id ?>" 
+                tabindex="<?php echo $this->tab_index++; ?>"<?php echo $remove_button_disabled; ?>><?php echo $remove_button_text ?></a>
+            </div>
+            <?php
         $html = ob_get_contents();
         ob_end_clean();
         

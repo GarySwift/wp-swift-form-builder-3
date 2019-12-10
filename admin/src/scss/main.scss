@@ -175,3 +175,50 @@ img.contact-form-svg {
 .acf-field .full-width-settings {
     border: none !important;
 }
+
+.acf-field.acf-field-clone.clone-group {
+    // border: 1px solid #000;
+    padding: 15px 12px;
+    padding: 0;// 12px;
+    border-top: none !important;
+    // padding-top: 0;
+    // padding: 0;
+    > div.acf-label {
+        display: none; 
+    }
+    > div.acf-input {
+        background-color: yellow; 
+        > .acf-clone-fields.acf-fields.-top.-border {
+            border: none;
+            > .acf-field {
+                // padding: 6px 4px;
+            }
+        }            
+    }
+}
+.acf-field.no-border-top {
+    border-top: none;
+    padding-top: 0;
+}
+// .textererew {
+
+// .acf-clone-fields.acf-fields.-border.-top > .acf-field {
+//                 // position: relative;
+//                 // margin: 0;
+//                 // padding: 15px 12px;
+//                 // padding: 0;
+//                 border-top: red solid 1px;
+//             }     
+//         // }
+         
+//         .acf-fields.-border {
+//             border: blue solid 1px;
+//             // padding: -12px;
+//             // background: #fff;
+//         }
+//         .acf-fields.-top {
+//             border-top: yellow solid 1px;
+//             // padding: -12px;
+//             // background: #fff;
+//         }
+// }
