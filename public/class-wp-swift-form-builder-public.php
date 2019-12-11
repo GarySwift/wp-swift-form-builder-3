@@ -211,8 +211,8 @@ class Wp_Swift_Form_Builder_Public {
 
 		$file = 'js/wp-swift-form-builder-public.js';
 		$version = filemtime(plugin_dir_path( __FILE__ ) . $file);
-
-		$form_builder_ajax = wp_swift_form_builder_get_localize_script();
+		$options = get_option( 'wp_swift_form_builder_settings' );
+		$form_builder_ajax = wp_swift_form_builder_get_localize_script($options);
 
 		// Register the script
         wp_register_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . $file );

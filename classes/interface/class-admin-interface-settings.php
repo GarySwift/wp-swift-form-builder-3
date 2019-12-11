@@ -149,6 +149,14 @@ class WP_Swift_Form_Builder_Admin_Interface_Settings {
 			'wp_swift_form_builder_plugin_page_section' 
 		);	
 
+		add_settings_field( 
+			'wp_swift_form_builder_encryption_secret', 
+			__( 'Encryption Secret', 'wp-swift-form-builder' ),
+			array($this, 'wp_swift_form_builder_encryption_secret_render'), 
+			'form-builder', 
+			'wp_swift_form_builder_plugin_page_section' 
+		);	
+
 	  //   add_settings_field( 
 			// 'wp_swift_form_builder_debug_mode', 
 			// __( 'Debug Mode', 'wp-swift-form-builder' ), 
@@ -402,6 +410,17 @@ class WP_Swift_Form_Builder_Admin_Interface_Settings {
 			<option value='mm/dd/yyyy'<?php selected( $date_format, 'mm/dd/yyyy' ); ?>>mm/dd/yyyy</option>
 		</select><label for="">This will determine the format of the JavaScript datepicker.</label>
 	<?php
+
+	}
+
+	public function wp_swift_form_builder_encryption_secret_render(  ) { 
+		$encryption_secret = get_form_builder_encryption_secret();
+	?>
+	    <input type="password" name="wp_swift_form_builder_settings[wp_swift_form_builder_encryption_secret]" value="<?php
+	    	if ($encryption_secret) echo $encryption_secret 
+	    		?>"> <small>Secure localStorage data with high level of encryption and data compression.</small><br>
+	    	<small>(Any random string will do.) <a href="https://github.com/softvar/secure-ls">https://github.com/softvar/secure-ls</a></small>
+	    <?php
 
 	}
 

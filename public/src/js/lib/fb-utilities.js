@@ -1,18 +1,10 @@
 import { FormBuilderInput } from './fb-object';
 import SecureLS from 'secure-ls';// https://github.com/softvar/secure-ls
 var formBuilderUtilities = {
-	// msg: function() {
-	// 	return 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Obcaecati veritatis pariatur nulla voluptatibus aliquam ';
-	// },
     modal: null,
     select2Options: {
         maximumSelectionLength: 2
     },
-    // secureSettings: {
-    //     encodingType: 'rabbit', 
-    //     isCompression: false, 
-    //     encryptionSecret: FormBuilderAjax.encryptionSecret
-    // },
     secureLS: new SecureLS({
         encodingType: 'rabbit', 
         isCompression: false, 

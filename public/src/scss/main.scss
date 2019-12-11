@@ -34,8 +34,6 @@ $input-color: #1A1A1A;
 
 @import "override-defaults";
 
-@import '../../../node_modules/foundation-datepicker/scss/foundation-datepicker';
-
 @mixin font($form-font-weight, $form-font-family, $form-font-size) {
     .form-message.error {
         font-family: $form-font-family;
@@ -252,7 +250,7 @@ label.lbl-checkbox, label.lbl-radio {
 /* 
  * @start mail-receipt
  */
-.form-group.mail-receipt{
+.form-group.form-group-extra {
    label {
        margin-left: 1rem;
    }
@@ -498,7 +496,7 @@ div.form-builder.groupings {
             }
 
         }
-        div.form-group.mail-receipt, div.form-group.button-group, div.form-group.captcha-wrapper, div.form-group.form-section-buttons  {
+        div.form-group-extra  {
             padding-left: 25%;
         }
     }
@@ -774,3 +772,87 @@ div.form-section-count {
   text-decoration: none;
   cursor: pointer;
 }
+
+/* Pop Up Message */
+.form-builder-popup-message {
+    position: relative;
+    .inner {
+        position: absolute;
+        background-color: $body-background;
+        text-align: right;
+        max-width: 300px;
+        border-radius: $global-radius;
+        padding: 1rem;
+        border: 1px solid #D3D3D3;
+        right: 1rem;
+        box-shadow: 0px 10px 14px 0px rgba(0,0,0,0.3);
+        a.button {
+            margin-bottom: 0;
+            min-width: auto;
+            // font-size: small;
+            padding: 0.5rem 1.5rem;
+        }
+        visibility: hidden;
+        opacity: 0;
+        // transform: translateX(300px);
+        @include translate-x(300px);
+        transition: opacity 0.3s, visibility 0.3s, transform 0.3s;
+
+        &.pop {
+            // .inner {
+            transition: opacity 0.3s, visibility 0.3s, transform 0.3s;
+            visibility: visible;
+            opacity: 1;
+            // transform: translateX(0);    
+            @include translate-x(0);       
+            // }
+        }        
+    }
+
+}
+
+// @mixin transition(...) {
+//     -webkit-transition: ;
+//     -moz-transition: ;
+//     -ms-transition: ; // IE10 is actually unprefixed
+//     -o-transition: ;
+//     transition: ;    
+// }
+// @mixin transform(...) {
+//     -webkit-transform: ;
+//     -moz-transform: ;
+//     -ms-transform: ;
+//     -o-transform: ;
+//     transform: ;     
+// }
+// @mixin translate-y() {
+//     -webkit-transform: translateY();
+//     -moz-transform: translateY();
+//     -ms-transform: translateY();
+//     -o-transform: translateY();
+//     transform: translateY();
+// }
+// @mixin translate-x() {
+//     -webkit-transform: translateX();
+//     -moz-transform: translateX();
+//     -ms-transform: translateX();
+//     -o-transform: translateX();
+//     transform: translateX();
+// }
+// .element-container {
+//     position: relative;
+//     overflow: hidden;
+// }
+// .element {
+//     position: relative;
+//     opacity: 0;
+//     visibility: hidden;
+//     transition-delay: 0.3s;
+//     @include transform(translateX(200px));
+//     @include transition(opacity 0.3s, visibility 0.3s, transform 0.3s);        
+// }
+// .overlay:hover {
+//     opacity: 1;
+//     visibility: visible;
+//     @include transform(translateX(0));        
+// }

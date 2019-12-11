@@ -937,11 +937,11 @@ $this->close_form_groups_html();
             <div class="form-group form-builder-autosave form-group-extra">
                 <div class="form-input">
                     <div class="checkbox">
-                      <input type="checkbox" value="" tabindex="<?php echo $this->get_tab_index(); ?>" name="form-builder-autosave" id="form-builder-autosave" ><label for="form-builder-autosave"><span data-tooltip title="Keeps a copy on your machine for quick reuse">Remember my contact details</span></label>
+                      <input type="checkbox" value="" tabindex="<?php echo $this->get_tab_index(); ?>" name="form-builder-autosave" id="form-builder-autosave" ><label for="form-builder-autosave"><span data-tooltip title="Keep a copy on your machine for quick reuse.">Remember my contact details</span></label>
                     </div>
                 </div>                  
             </div> 
-            <!-- @end .mail-receipt -->          
+            <!-- @end .mail-receipt -->       
 
         <?php endif;         
     }        

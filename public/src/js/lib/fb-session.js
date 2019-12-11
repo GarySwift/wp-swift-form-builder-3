@@ -13,9 +13,7 @@ var session = {
 	// ls: new SecureLS(utils.secureSettings),
     save: function(name, value) {
         if (this.hasStorage) {
-        	// var ls = new SecureLS(utils.secureSettings);
             // Check if it already exists
-            // var storedSessionDetails = JSON.parse(localStorage.getItem(name));
             var storedSessionDetails = utils.secureLS.get(name);
             if (storedSessionDetails) {
                 Object.assign(storedSessionDetails, value);
@@ -55,35 +53,46 @@ var session = {
 		var storedSessionDetails = false;
 		var id;
 		if (this.hasStorage && localStorage.getItem(this.name) !== null) {
-			// storedSessionDetails = localStorage.getItem(this.name);
-			// console.log('1 storedSessionDetails', storedSessionDetails);
-			// var ls = utils.secureLS;//new SecureLS(utils.secureSettings);// Get and decrypt local storage
-			// storedSessionDetails = localStorage.getItem(this.name);
+			var remove = false;
+			if (remove) {
+				utils.secureLS.removeAll(); 
+				console.clear(); 
+				console.log('// remove all keys'); 
+				return;
+			}
 			storedSessionDetails = utils.secureLS.get(this.name);
-			// console.log('2 storedSessionDetails', storedSessionDetails);
-			if (storedSessionDetails && storedSessionDetails !== "undefined") {
-				storedSessionDetails = JSON.parse(storedSessionDetails);
-				console.log('storedSessionDetails', storedSessionDetails);
-				var countInputAutoFills = 0;
-				for (let key in storedSessionDetails) {
-			     	id = '#'+key;
-			     	if ($(id).length) {			     		
-			     		if(typeof storedSessionDetails[key].hidden !== "undefined" && storedSessionDetails[key].val !== '') {
-			     			utils.showAndRequireInput(id);
-			     		}
-			     		$(id).val(storedSessionDetails[key].val);
-			     		countInputAutoFills++;
-			     		$(id+'-form-group').addClass('has-success').removeClass('has-error');
-			     	}
+			if(FormBuilderAjax.debug) {
+				console.log('DEBUG * 2 session.sessionDetailsFill()');
+				console.log('Hashed Stored Session Details: ', localStorage.getItem(this.name));
+				console.log('Stored Session Details: ', storedSessionDetails);
+			}
+			if (storedSessionDetails && storedSessionDetails !== "undefined") {				
+				try {
+				  	storedSessionDetails = JSON.parse(storedSessionDetails);
+					var countInputAutoFills = 0;
+					for (let key in storedSessionDetails) {
+				     	id = '#'+key;
+				     	if ($(id).length) {			     		
+				     		if(typeof storedSessionDetails[key].hidden !== "undefined" && storedSessionDetails[key].val !== '') {
+				     			utils.showAndRequireInput(id);
+				     		}
+				     		$(id).val(storedSessionDetails[key].val);
+				     		countInputAutoFills++;
+				     		$(id+'-form-group').addClass('has-success').removeClass('has-error');
+				     	}
+					}
+					if (countInputAutoFills) {
+						this.showMsg();
+					}				  	
 				}
-				if (countInputAutoFills) {
-					this.showMsg();
+				catch(error) {
+				  	console.error(error);
 				}					
 			}	
 		}	
 	},
 	sessionDetailsEmpty: function() {
-		console.log('sessionDetailsEmpty()');
+		// console.log('sessionDetailsEmpty()');
 		var storedSessionDetails = false;
 		var id;
 		if (this.hasStorage && localStorage.getItem(this.name) !== null) {
