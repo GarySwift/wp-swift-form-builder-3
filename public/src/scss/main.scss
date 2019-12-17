@@ -17,6 +17,10 @@ $form-global-radius: 0;
 @if global-variable-exists( 'global-radius' ) {
     $form-global-radius: $global-radius;
 }
+$form-body-background: #fefefe;
+@if global-variable-exists( 'body-background' ) {
+    $form-body-background: $body-background;
+}
 $form-font-size: 100%;
 $form-font-weight: normal;
 $has-error: #cc0000;
@@ -773,15 +777,22 @@ div.form-section-count {
   cursor: pointer;
 }
 
+@mixin translate-x($value...) {
+    -webkit-transform: translateX($value);
+    -moz-transform: translateX($value);
+    -ms-transform: translateX($value);
+    -o-transform: translateX($value);
+    transform: translateX($value);
+}
 /* Pop Up Message */
 .form-builder-popup-message {
     position: relative;
     .inner {
         position: absolute;
-        background-color: $body-background;
+        background-color: $form-body-background;
         text-align: right;
         max-width: 300px;
-        border-radius: $global-radius;
+        border-radius: $form-global-radius;
         padding: 1rem;
         border: 1px solid #D3D3D3;
         right: 1rem;
