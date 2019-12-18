@@ -29,6 +29,7 @@ $has-success-bg-color: #FBF5E4;//#F8F8F8;
 $form-group-padding: 0.3rem;
 $form-group-padding-bottom: 0.6rem;
 $form-color: #0a0a0a;
+$form-primary-color: #1779ba;
 $show-required-star: true;
 $show-feedback-icons: true;
 $button-case: none;//uppercase;
@@ -867,3 +868,24 @@ div.form-section-count {
 //     visibility: visible;
 //     @include transform(translateX(0));        
 // }
+@import "../../../node_modules/slim-select/dist/slimselect";
+.ss-main {
+    .ss-multi-selected, .ss-single-selected {
+        border: 1px solid #cacaca;
+        background-color: $form-body-background;
+        border-radius: $form-global-radius;
+    }
+    .ss-multi-selected {
+        padding: 3px 6px;
+        .ss-values .ss-value {
+            background-color: $form-primary-color;
+            font-weight: bold;
+            border-radius: $form-global-radius;
+        }
+    }
+    .ss-single-selected {
+        height: 2.4375rem;
+        margin: 0 0 1rem;
+        padding: .5rem;      
+    }
+}

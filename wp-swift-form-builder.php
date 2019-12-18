@@ -206,6 +206,8 @@ require_once FORM_BUILDER_PLUGIN_PATH . 'functions-filters-actions/_get-form-inp
 
 
 require_once FORM_BUILDER_PLUGIN_PATH . 'marketing/marketing.php';
+
+require_once FORM_BUILDER_PLUGIN_PATH . 'predefined-options/_include.php';
 /**
  * Begins execution of the plugin.
  *

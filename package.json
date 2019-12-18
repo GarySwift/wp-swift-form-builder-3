@@ -28,7 +28,8 @@
   },
   "homepage": "https://github.com/wp-swift-wordpress-plugins/wp-swift-form-builder-3#readme",
   "dependencies": {
-    "select2": "^4.0.6-rc.1"
+    "select2": "^4.0.6-rc.1",
+    "slim-select": "^1.23.1"
   },
   "devDependencies": {
     "@babel/cli": "^7.6.4",
