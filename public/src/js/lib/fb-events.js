@@ -14,6 +14,7 @@ export default function(FormBuilderInput, utils, session, submit) {
     $('body').on('blur', '.js-form-builder-control', function(e) {
         if(typeof $(this).serializeArray()[0] !== "undefined") {
             var input = new FormBuilderInput($(this).serializeArray()[0]);
+            // console.log('input', input);
             // Datepicker has time delay before blur so we must reset the input value ater 200ms
             if (input.dataType === 'date') {
 
@@ -31,12 +32,60 @@ export default function(FormBuilderInput, utils, session, submit) {
                 utils.addClassAfterBlur(input, input.isValid(), errorsInForm);
             }
         }
+        else {
+            // This will be a checkbox
+            var input = new FormBuilderInput(this);
+            utils.addClassAfterBlur(input, input.isValid(), errorsInForm);
+        }
     });
+
+    // When a user leaves a form input
+    $('body').on('blur', '._js-form-builder-checkbox-control', function(e) {
+        var input = new FormBuilderInput(this);
+        // console.log('input', input);
+// var $siblings = $(input.siblings);
+// var count = 0;
+// $siblings.each(function(index, el) {
+    
+//     if(this.checked) {
+//         count++;
+//     }            
+// });
+// console.log('count', count);
+        // console.log('inputGroup', inputGroup);
+        // console.log('blur:', input.id, input.isValid());
+        console.log('input.isValid()', input.isValid());
+        utils.addClassAfterBlur(input, input.isValid(), errorsInForm);
+        // console.log(input.id.substring(3)+'-form-group');
+        // $( input.id.substring(3)+'-form-group').addClass('has-error').removeClass('has-success');
+        // var $formGroup =  $(input.formGroup);//$('#'+(this.name.replace(/[\[\]']+/g,''))+'-form-group');// Remove square brackets
+
+        // console.log('formGroup', $formGroup);
+        // console.log('input.isValid()', input.isValid());
+        
+        // setTimeout(function() {
+        //     $formGroup.addClass('has-error').removeClass('has-success');
+        // }, 100);
+        // $formGroup.addClass('has-error').removeClass('has-success');
+    });
+    $('body').on('focus', '._js-form-builder-checkbox-control', function(e) {
+        // console.log('#'+(this.name.replace(/[\[\]']+/g,''))+'-form-group');
+        // var $formGroup = $('#'+(this.name.replace(/[\[\]']+/g,''))+'-form-group');// Remove square brackets
+        // console.log('formGroup remove class', $formGroup);  
+        // $formGroup.removeClass('has-error').removeClass('has-success');      
+        // $('#'+this.id+'-form-group').removeClass('has-error').removeClass('has-success');
+        var input = new FormBuilderInput(this);
+        console.log('input.formGroup', input.formGroup);
+        $(input.formGroup).removeClass('has-error').removeClass('has-success').addClass('has-focus');   
+        // console.log('focus:', input.id, input.isValid());
+    });        
 
     // When a user enters a form input
     $('body').on('focus', '.js-form-builder-control', function(e) { 
-        $('#'+this.id+'-form-group').removeClass('has-error').removeClass('has-success');
-        $('.captcha-wrapper').show();
+        var input = new FormBuilderInput(this);
+        // console.log('this.formGroup', this.formGroup);
+        $(input.formGroup).removeClass('has-error').removeClass('has-success').addClass('has-focus');
+        // $('.captcha-wrapper').show();
     });
 
     $("input.js-single-checkbox").change(function() {

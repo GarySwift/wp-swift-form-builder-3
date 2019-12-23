@@ -23,11 +23,27 @@ formbuilder(FormBuilderInput, events, utils, dateUtils, session, sections, submi
 
 import SlimSelect from 'slim-select';// https://slimselectjs.com/install
 jQuery(document).ready(function($) {
-	new SlimSelect({
-	  select: '.js-select2-multiple'
-	});
-	new SlimSelect({
-	  select: '#form-northern-ireland-county'
-	});
-	console.log('formbuilderjs-select2-multiple')	
+	// var errorsInForm = utils.resetErrorsInForm();
+	// var input = new FormBuilderInput($('#form-northern-ireland-county').serializeArray()[0]);
+	// new SlimSelect({
+	//   	select: '.js-select2-multiple', 
+	// });
+	// new SlimSelect({
+	//   	select: '#form-northern-ireland-county',
+	// 	beforeOpen: function () { console.log('beforeOpen');
+	// 		$(input.id+'-form-group').removeClass('has-error').removeClass('has-success');
+	// 	},
+	// 	afterClose: function() { 
+	// 		var val = $('#form-northern-ireland-county').val();
+	// 		var input = $('#form-northern-ireland-county');
+	// 		if (!val) {
+	// 			var input = new FormBuilderInput($('#form-northern-ireland-county').serializeArray()[0]);
+	// 			utils.addClassAfterBlur(input, false, errorsInForm);
+	// 		}
+	// 	}
+	// });
 });
+
+
+
+

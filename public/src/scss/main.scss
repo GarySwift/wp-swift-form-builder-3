@@ -39,6 +39,8 @@ $input-color: #1A1A1A;
 
 @import "override-defaults";
 
+@import '../../../node_modules/foundation-datepicker/scss/foundation-datepicker';
+
 @mixin font($form-font-weight, $form-font-family, $form-font-size) {
     .form-message.error {
         font-family: $form-font-family;
@@ -395,7 +397,7 @@ div.form-builder.wrap {
     }
 }
 .form-group.has-error {
-    .form-label label{
+    .form-label label, label.lbl-checkbox {
         color: $has-error;
     }
     small.error {
@@ -412,6 +414,8 @@ div.form-builder.wrap {
         
     }
     div.dummy-input {.error {}}
+}
+.form-group.has-focus {
 }
 .form-group.has-success {
     select, textarea, input[type=text], input[type=email], input[type=url], input[type=number], input[type=file], div.dummy-input {
@@ -620,7 +624,7 @@ div.form-builder.groupings {
  *
  * [type='text'], [type='password'], [type='date'], etc
  */
-.dummy-input{
+.dummy-input {
     display: block;
     box-sizing: border-box;
     width: 100%;
@@ -630,14 +634,14 @@ div.form-builder.groupings {
     padding-top: 0.46rem;
     border: 1px solid #cacaca;
     border-radius: $form-global-radius;
-    background-color: #fefefe;
+    background-color: $form-white;
     box-shadow: inset 0 1px 2px rgba(10, 10, 10, 0.1);
+    transition: box-shadow 0.5s, border-color 0.25s ease-in-out;
     font-family: inherit;
     font-size: 1rem;
     font-weight: normal;
     line-height: 1.5;
     color: #0a0a0a;
-    transition: box-shadow 0.5s, border-color 0.25s ease-in-out;
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
@@ -888,4 +892,17 @@ div.form-section-count {
         margin: 0 0 1rem;
         padding: .5rem;      
     }
+}
+.form-group.has-error {
+    .ss-multi-selected, .ss-single-selected {
+        // border: 1px solid #cacaca;
+        border-color: $has-error;
+        box-shadow: inset 0 1px 2px rgba($has-error,0.1);
+        color: rgba($has-error,0.75);
+        background-color: #fef7f6;      
+        .ss-arrow span.arrow-down {
+            border: solid $has-error;
+        border-width: 0 2px 2px 0;
+        }
+    }    
 }

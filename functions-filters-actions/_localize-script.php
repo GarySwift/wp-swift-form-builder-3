@@ -1,5 +1,6 @@
 <?php
 function wp_swift_form_builder_get_localize_script($options) {
+    // write_log('wp_swift_form_builder_get_localize_script()');
     $debug_options = get_option( 'wp_swift_form_builder_debug_settings' );
     $wp_swift_form_builder_debug_mode = false; 
     if (isset($debug_options['wp_swift_form_builder_debug_mode'])) $wp_swift_form_builder_debug_mode = true;  
@@ -18,6 +19,7 @@ function wp_swift_form_builder_get_localize_script($options) {
  * Create the ajax nonce and url
  */
 function wp_swift_form_builder_localize_script() {
+    write_log('wp_swift_form_builder_localize_script');
     $options = get_option( 'wp_swift_form_builder_settings' );
     if ( isset($options['wp_swift_form_builder_checkbox_javascript']) ) {
         $form_builder_ajax = wp_swift_form_builder_get_localize_script($options);
@@ -44,4 +46,4 @@ function wp_swift_form_builder_localize_script() {
         }   
     }
 }
-add_action( 'wp_enqueue_scripts', 'wp_swift_form_builder_localize_script', 100 );
+// add_action( 'wp_enqueue_scripts', 'wp_swift_form_builder_localize_script', 100 );

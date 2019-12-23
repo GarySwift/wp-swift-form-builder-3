@@ -377,7 +377,7 @@ function build_acf_form_array($row_layout, $inputs, $settings, $section=0, $edit
         }
     }
 
-    if( $data_type === 'date' || $data_type === 'date_time' || $data_type === 'date_range' ) {
+    if( $data_type === 'datalist' || $data_type === 'date' || $data_type === 'date_time' || $data_type === 'date_range' ) {
         $type = 'text';
     }
     else {
@@ -468,6 +468,22 @@ function build_acf_form_array($row_layout, $inputs, $settings, $section=0, $edit
         $options_layout = get_sub_field('options_layout');
         $css_class .= ' ' . $options_layout;
 
+    }
+
+
+    if ($data_type === 'checkbox' && $required) {
+        $help = 'Please choose at least one ' . $label . '.';
+    }
+    // write_log('$data_type: ');write_log($data_type);
+    if ($data_type === 'datalist') {
+        $options = get_sub_field('options');
+        // write_log('$options: ');write_log($options);
+        // echo '<pre>$options: '; var_dump($options); echo '</pre>';echo "<hr>";
+        // echo '<pre>$required: '; var_dump($required); echo '</pre>';
+        if ($required) {
+            $help = 'Please select an option or enter your own ' . lcfirst($label) . '.';
+            // echo '<pre>$help: '; var_dump($help); echo '</pre>';
+        }
     }
 
     $select_type = get_sub_field('select_type');
@@ -652,8 +668,12 @@ function build_acf_form_array($row_layout, $inputs, $settings, $section=0, $edit
         case "number":
         case "date":
         case "true_false":
+        // case "datalist":
             $inputs[$prefix.$id] = array("passed"=>false, "clean"=>$value, "value"=>$value, "section"=>$section, "required"=>$required, "type"=>$type, "data_type"=>$data_type,  "placeholder"=>$placeholder, "label"=>$label, "help"=>$help, "instructions" => $instructions, "grouping" => $grouping, "css_class" => $css_class, 'css_class_input' => $css_class_input, "validation" => $validation, 'disabled' => $disabled, "autofill" => $autofill);
             break;
+        case "datalist":
+            $inputs[$prefix.$id] = array("passed"=>false, "clean"=>$value, "value"=>$value, "section"=>$section, "required"=>$required, "type"=>$type, "data_type"=>$data_type,  "placeholder"=>$placeholder, "label"=>$label, "help"=>$help, "instructions" => $instructions, "grouping" => $grouping, "css_class" => $css_class, 'css_class_input' => $css_class_input, "validation" => $validation, 'disabled' => $disabled, "autofill" => $autofill, "options" => $options);
+            break;            
         case "textarea":
             $inputs[$prefix.$id] = array("passed"=>false, "clean"=>$value, "value"=>$value, "section"=>$section, "required"=>$required, "type"=>$type, "data_type"=>$data_type,  "placeholder"=>$placeholder, "label"=>$label, "help"=>$help, "instructions" => $instructions, "grouping" => $grouping, "css_class" => $css_class, "rows" => $rows, "maxlength" => $maxlength, "autofill" => $autofill);
 
@@ -664,6 +684,9 @@ function build_acf_form_array($row_layout, $inputs, $settings, $section=0, $edit
         case "radio":
             $inputs[$prefix.$id] = array("passed"=>false, "clean"=>$value, "value"=>$value, "section"=>$section, "required"=>$required, "type"=>$type, "data_type"=>$data_type, "label"=>$label, "options"=>$select_options, "selected_option"=>$selected_option, "option_group"=>$option_group, "allow_null" => $allow_null, "help"=>$help, "instructions" => $instructions, "grouping" => $grouping, "css_class" => $css_class, "readonly" => $readonly, 'disabled' => $disabled, "autofill" => $autofill);
             break; 
+        case "_datalist":
+            $inputs[$prefix.$id] = array("passed"=>false, "clean"=>$value, "value"=>$value, "section"=>$section, "required"=>$required, "type"=>$type, "data_type"=>$data_type, "label"=>$label, "options"=>$options, "allow_null" => $allow_null, "help"=>$help, "instructions" => $instructions, "grouping" => $grouping, "css_class" => $css_class, "readonly" => $readonly, 'disabled' => $disabled, "autofill" => $autofill);
+            break;             
         case "checkbox_single":
              $inputs[$prefix.$id] = array("passed"=>false, "clean"=>$value, "value"=>$value, "section"=>$section, "required"=>$required, "type"=>"checkbox", "data_type"=>$data_type, "label"=>$label, "option"=>array("value" => 1, "key" => get_sub_field('checkbox_label'), 'checked' => false), "selected_option"=>"", "help"=>$help, "instructions" => $instructions, "grouping" => $grouping, "css_class" => $css_class);
             break;       

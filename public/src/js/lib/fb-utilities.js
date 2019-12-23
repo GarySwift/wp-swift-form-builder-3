@@ -48,19 +48,28 @@ var formBuilderUtilities = {
                     errorsInForm = this.addClassAfterBlur(input, input.isValid(), errorsInForm);
                 }
             });
-        }       
+        }
+
+        var $checkboxes = $('input.js-form-builder-checkbox-control');
+
+        if ($checkboxes.length) {
+            var input = new FormBuilderInput($checkboxes[0]);
+            errorsInForm = this.addClassAfterBlur(input, input.isValid(), errorsInForm);
+        }
+
         return errorsInForm;        
     }, 
     addClassAfterBlur: function addClassAfterBlur(input, valid, errorsInForm) {
+        $(input.formGroup).removeClass('has-focus');
         if(!valid) {
-            $(input.id+'-form-group').addClass('has-error').removeClass('has-success');
+            $(input.formGroup).addClass('has-error').removeClass('has-success');
             errorsInForm.count++;
 
-            errorsInForm.report += "<li>" + $(input.id+'-report').html() + "</li>";
+            errorsInForm.report += "<li>" + $(input.report).html() + "</li>";
         }
         else {
             if (input.value !== '') {
-                $(input.id+'-form-group').removeClass('has-error').addClass('has-success');
+                $(input.formGroup).removeClass('has-error').addClass('has-success');
 
             }
         }
@@ -112,7 +121,7 @@ var formBuilderUtilities = {
         // grecaptcha.reset();
         for (var i = 0; i < form.length; i++) {
             var input = new FormBuilderInput(form[i]);
-            $(input.id+'-form-group').removeClass('has-error').removeClass('has-success');
+            $(input.formGroup).removeClass('has-error').removeClass('has-success');
             $(input.id).val('');
             // this.reset();
         } 

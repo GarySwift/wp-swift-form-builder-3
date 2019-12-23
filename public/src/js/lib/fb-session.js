@@ -48,8 +48,7 @@ var session = {
     	return false;
     },      	
 	sessionDetailsFill: function() {
-
-		// console.log('sessionDetailsFill() -> secureSettings', utils.secureSettings);
+		// this.sessionDetailsEmpty();
 		var storedSessionDetails = false;
 		var id;
 		if (this.hasStorage && localStorage.getItem(this.name) !== null) {
@@ -62,9 +61,8 @@ var session = {
 			}
 			storedSessionDetails = utils.secureLS.get(this.name);
 			if(FormBuilderAjax.debug) {
-				console.log('DEBUG * 2 session.sessionDetailsFill()');
-				console.log('Hashed Stored Session Details: ', localStorage.getItem(this.name));
-				console.log('Stored Session Details: ', storedSessionDetails);
+				console.log('DEBUG Hashed Stored Session Details: ', localStorage.getItem(this.name));
+				console.log('DEBUG Stored Session Details: ', storedSessionDetails);
 			}
 			if (storedSessionDetails && storedSessionDetails !== "undefined") {				
 				try {
@@ -79,6 +77,16 @@ var session = {
 				     		$(id).val(storedSessionDetails[key].val);
 				     		countInputAutoFills++;
 				     		$(id+'-form-group').addClass('has-success').removeClass('has-error');
+				     	}
+				     	else if (storedSessionDetails[key].type = "checkbox") {
+				     		if ($(id + '-form-group').length) {
+				     			var values = storedSessionDetails[key].val;
+				     			$($(id + '-form-group input[type="checkbox"]')).each(function(index, el) {
+				     				if (values.includes(this.value)) {
+				     					$(this).attr("checked", true);
+				     				}
+				     			});
+				     		}
 				     	}
 					}
 					if (countInputAutoFills) {

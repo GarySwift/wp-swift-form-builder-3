@@ -3,7 +3,17 @@ import { utils } from './fb-utilities';
 var FormBuilderInput = function FormBuilderInput(input) {
     this.name = input.name;
     this.value = input.value;
-    this.id = '#'+(this.name.replace(/[\[\]']+/g,''));// Remove square brackets
+    var id =  input.id;
+    if(typeof id !== "undefined") {
+        this.id = '#'+id;
+        this.formGroup = this.id+'-form-group';
+    }
+    else {
+        var name = (this.name.replace(/[\[\]']+/g,''));// Remove square brackets
+        this.id = '#'+name;
+        this.formGroup = this.id+'-form-group';
+    }
+    this.report = this.id+'-report';
     this.required = $(this.id).prop('required');
     this.type = $(this.id).prop('type');
     this.dataType = $(this.id).data('type');
@@ -15,10 +25,25 @@ var FormBuilderInput = function FormBuilderInput(input) {
     if (!isNaN(max)) {
         this.max = max;
     }
+    var count = parseInt($(this.id).data('count')); 
+    if (!isNaN(count)) {
+        this.count = count;
+    }    
     var validation = $(this.id).data('validation');
     if(typeof validation !== "undefined") {
       this.validation = validation;
-    }   
+    } 
+    var siblings = $(this.id).data('siblings');
+    if(typeof siblings !== "undefined") {
+      this.siblings = 'input.'+siblings;
+    } 
+    // var report = 
+    // In case a name has been set as a data attribute (Used by checkboxes)
+    var name = $(this.id).data('name');
+    if(typeof name !== "undefined") {
+      this.formGroup = '#'+name+'-form-group';
+      this.report =  '#'+name+'-report';
+    }       
 };
 
 // Instance methods
@@ -80,8 +105,12 @@ FormBuilderInput.prototype = {
             case 'date':
                 return this.isValidDate(this.value);        
             case 'checkbox':
-                if (this.required && !$(this.id).prop('checked')) {
-                    return false;
+                var count = 0;
+                if ( this.required ) {//&& !$(this.id).prop('checked')
+                    $(this.siblings).each(function() {
+                        if(this.checked) count++; 
+                    });
+                    return count;
                 }
                 return true;
         }

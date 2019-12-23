@@ -137,6 +137,11 @@ $this->close_form_groups_html();
                                 $input_html = $this->build_form_input($helper, $id, $input);
                                 echo $this->wrap_input($helper, $id, $input, $input_html);
                                 break;
+                            case "datalist":
+                                $input_html = $this->build_form_input($helper, $id, $input);
+                                $list = $this->build_form_datalist($helper, $id, $input);
+                                echo $this->wrap_input($helper, $id, $input, $input_html . $list);
+                                break;                                
                             case "textarea":
                                 $input_html = $this->build_form_textarea($helper, $id, $input);
                                 echo $this->wrap_input($helper, $id, $input, $input_html);
@@ -158,6 +163,10 @@ $this->close_form_groups_html();
                                 $input_html = $this->build_form_select($helper, $id, $input);
                                 echo $this->wrap_input($helper, $id, $input, $input_html);
                                 break; 
+                            case "_datalist":
+                                $input_html = $this->build_form_datalist($helper, $id, $input);
+                                echo $this->wrap_input($helper, $id, $input, $input_html);
+                                break;     
                             case "repeat_section":
                                 echo $this->build_form_repeat_section($helper, $id, $input);
                                 break;
@@ -257,7 +266,8 @@ $this->close_form_groups_html();
         if (isset($input['id-index'])) {
             $id .= '-'.$input['id-index'];
         }
-
+        $list = '';
+        if (isset($input['options'])) $list = ' list="'.$id.'-datalist"';    
         
         // new
         $type = ' type="'.$input['type'].'"';
@@ -272,8 +282,10 @@ $this->close_form_groups_html();
         $validation = '';
         $disabled = '';
         $readonly = '';
+        $autocomplete = '';
+        
 
-
+        if (isset($input["autocomplete"])) $autocomplete = ' autocomplete="off"';
         if ( isset($input["value"]) && $input["value"] !== '') {
             $value = ' value="'.$input['value'].'"';
         }
@@ -311,8 +323,9 @@ $this->close_form_groups_html();
         }
         if (isset($input['readonly']) && $input['readonly']) {
             $readonly = ' readonly';
-        }        
-        $input_html = '<input'.$type.$data_type.$class.$id.$name.$tabindex.$value.$placeholder.$section.$required.$min.$max.$validation.$disabled.$readonly.'>';
+        }
+
+        $input_html = '<input'.$type.$data_type.$class.$id.$name.$list.$tabindex.$value.$placeholder.$section.$required.$min.$max.$validation.$disabled.$readonly.$autocomplete.'>';
         return $input_html;       
     } 
 
@@ -333,6 +346,7 @@ $this->close_form_groups_html();
     } 
 
     private function build_form_select($helper, $id, $data) {
+        // echo '<pre>$data: '; var_dump($data); echo '</pre>';
         $readonly = '';
         $multiple = '';
         $css_class = '';
@@ -402,6 +416,64 @@ $this->close_form_groups_html();
         $input_html = ob_get_contents();
         ob_end_clean();
         return $input_html;
+    }
+
+        private function build_form_datalist($helper, $id, $data) {
+            // echo '<pre>$data: '; var_dump($data); echo '</pre>';
+        $readonly = '';
+        // $multiple = '';
+        $css_class = '';
+        $disabled = '';
+
+        if ($data["disabled"]) {
+            $disabled = ' disabled';
+        }        
+        // if ($this->clear_input($helper)) {
+        //     $data['selected_option'] = ''; 
+        // }
+        if (isset( $data['readonly'] ) && $data['readonly']) {
+            $readonly = " disabled";
+        }
+        // $allow_null = true;
+        // if (isset( $data['allow_null'] )) {
+        //     $allow_null = $data['allow_null'];
+        // }
+
+
+        ob_start();
+        ?>
+<?php 
+/* 
+    <input type="text" list="<?php echo $id; ?>-datalist" class="<?php echo $this->get_form_input_class($data, $css_class); ?>" id="<?php echo $id; ?>" name="<?php echo $id;  ?>" data-type="datalist" tabindex="<?php echo $this->tab_index++; ?>" <?php echo $data['required']; echo $readonly; echo $disabled ?>>
+
+ 
+*/ 
+?>
+
+            <?php if (!empty($data["options"])):?>
+
+                <datalist id="<?php echo $id; ?>-datalist">
+
+                <?php foreach ($data["options"] as $option): ?>
+            
+                        <?php if (!empty($option['option_value'])): ?>
+                            <option value="<?php echo $option['option_value']; ?>"><?php echo $option['option'] ?></option>
+                        <?php else: ?>
+                            <option value="<?php echo $option['option']; ?>">
+                        <?php endif ?>
+
+                <?php endforeach;?>
+
+                </datalist>
+
+            <?php  endif; ?>
+
+
+
+        <?php
+        $list_html = ob_get_contents();
+        ob_end_clean();
+        return $list_html;
     }
 
     private function build_form_textarea($helper, $id, $input) {
@@ -489,11 +561,16 @@ $this->close_form_groups_html();
                 $data['options'][$key]['checked'] = false;
             }
         }  
+        $required = '';
         $count=0;  
         $name_append = '';
         if (count($data['options']) > 1) {
             $name_append = '[]';
         }
+        if ($data["required"]) {
+            $required = ' required';
+        }
+        $data_count = ' data-count="'.count($data['options']).'"';
         ob_start();
         foreach ($data['options'] as $option): $count++;
             $checked='';      
@@ -518,7 +595,7 @@ $this->close_form_groups_html();
             ?>
 
                     <label for="<?php echo $id.'-'.$count ?>" class="lbl-checkbox">
-                        <input id="<?php echo $id.'-'.$count ?>" name="<?php echo $name ?>" type="checkbox" data-type="checkbox" tabindex="<?php echo $this->tab_index++; ?>" value="<?php echo $option['option_value'] ?>"<?php echo $checked; ?>><?php echo $option['option'] ?>
+                        <input id="<?php echo $id.'-'.$count ?>" class="js-form-builder-control js-form-builder-checkbox-control js-<?php echo $id ?>" name="<?php echo $name ?>" type="checkbox" data-type="checkbox" data-siblings="js-<?php echo $id ?>" tabindex="<?php echo $this->tab_index++; ?>" value="<?php echo $option['option_value'] ?>" data-name="<?php echo $id; ?>" <?php echo $data_count; echo $checked; echo $required; ?>><?php echo $option['option'] ?>
                     
                     </label>
             <?php
