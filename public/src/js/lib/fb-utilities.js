@@ -126,8 +126,20 @@ var formBuilderUtilities = {
             // this.reset();
         } 
         $('#mail-receipt').prop('checked', false);  
-    },  
+    }, 
+    modalHtml: function() {
+        return '<div id="form-builder-reveal" class="fb-modal">' +
+          '<div class="fb-modal-content large">' +
+            '<span class="fb-modal-close">&times;</span>' +
+            '<div id="form-builder-reveal-content"></div>' +
+          '</div>' +
+        '</div> ';      
+    },     
     setModal: function() {
+        // console.log('// Get the modal');
+        // var modalHtml = this.modalHtml();
+        $(document.body).append( this.modalHtml() );
+        // console.log( 'this.modalHtml()', this.modalHtml() );
         // Get the modal
         this.modal = document.getElementById("form-builder-reveal");//this.getModal();
         var modal = this.modal; 
@@ -169,7 +181,7 @@ var formBuilderUtilities = {
     },
     getModal: function() {
         return this.modal;//document.getElementById("form-builder-reveal");
-    },
+    },   
     removeMarketingSignUp: function () {
         var $signUpHtml = $('div.form-group.sign-up');
         $signUpHtml.each(function(){
@@ -211,15 +223,6 @@ var formBuilderUtilities = {
     getNow: function() {
         var nowTemp = new Date();
         return new Date(nowTemp.getFullYear(), nowTemp.getMonth(), nowTemp.getDate(), 0, 0, 0, 0);
-    }
-    modalHtml: function() {
-        return 
-        '<div id="form-builder-reveal" class="fb-modal">' +
-          '<div class="fb-modal-content large">' +
-            '<span class="fb-modal-close">&times;</span>' +
-            '<div id="form-builder-reveal-content"></div>' +
-          '</div>' +
-        '</div> ';      
     }                                           	
 }
 export { formBuilderUtilities as utils }

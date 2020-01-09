@@ -55,7 +55,7 @@ class Wp_Swift_Form_Builder_Public {
     	/**
     	 * Add reveal modal which shows submission response
     	 */
-    	add_action( 'wp_footer', 'wp_swift_form_builder_modal_reveal', 1);
+    	// add_action( 'wp_footer', 'wp_swift_form_builder_modal_reveal', 1);
 
     	/**
     	 * Add the shortcode
