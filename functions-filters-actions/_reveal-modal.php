@@ -13,7 +13,7 @@ function wp_swift_form_builder_modal_reveal() {
 <div id="form-builder-reveal" class="fb-modal">
   <?php /* Modal content */ ?>
   <div class="fb-modal-content large">
-    <span class="fb-modal-close">&times;</span>
+    <span class="fb-modal-close hide">&times;</span>
     <div id="form-builder-reveal-content"></div>
   </div>
 </div>

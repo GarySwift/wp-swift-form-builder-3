@@ -211,6 +211,15 @@ var formBuilderUtilities = {
     getNow: function() {
         var nowTemp = new Date();
         return new Date(nowTemp.getFullYear(), nowTemp.getMonth(), nowTemp.getDate(), 0, 0, 0, 0);
+    }
+    modalHtml: function() {
+        return 
+        '<div id="form-builder-reveal" class="fb-modal">' +
+          '<div class="fb-modal-content large">' +
+            '<span class="fb-modal-close">&times;</span>' +
+            '<div id="form-builder-reveal-content"></div>' +
+          '</div>' +
+        '</div> ';      
     }                                           	
 }
 export { formBuilderUtilities as utils }

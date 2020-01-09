@@ -93,6 +93,7 @@ define('FORM_BUILDER_DEFAULT_SLUG', 'contact-form');
 define('FORM_BUILDER_DATE_FORMAT', 'dd/mm/yyyy');// or 'mm/dd/yyyy' (Can be set in settings)
 define('FORM_BUILDER_PLUGIN_PATH', plugin_dir_path( __FILE__ ));
 define('FORM_BUILDER_PLUGIN_URL', plugin_dir_url( __FILE__ ));
+define('FORM_BUILDER_PLUGIN_NAME', 'wp-swift-form-builder');
 /**
  * The FormBuilder class that handles all form logic
  */
