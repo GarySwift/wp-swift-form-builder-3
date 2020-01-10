@@ -46,4 +46,4 @@ function wp_swift_form_builder_localize_script() {
         }   
     }
 }
-// add_action( 'wp_enqueue_scripts', 'wp_swift_form_builder_localize_script', 100 );
+add_action( 'wp_enqueue_scripts', 'wp_swift_form_builder_localize_script', 100 );
