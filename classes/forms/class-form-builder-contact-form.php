@@ -33,10 +33,7 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
      * Initializes the plugin.
      */
     public function __construct( $form_id, $post_id = null, $hidden = array(), $type = 'contact' ) {//$args = array()
-        parent::__construct( $form_id, $post_id, $hidden, $type );
-// write_log('FORM_BUILDER_DEBUG: '.FORM_BUILDER_DEBUG);
-// write_log('FORM_BUILDER_DEBUG_EMAIL: '.FORM_BUILDER_DEBUG_EMAIL);
-// write_log('FORM_BUILDER_DEBUG_MARKETING: '.FORM_BUILDER_DEBUG_MARKETING);        
+        parent::__construct( $form_id, $post_id, $hidden, $type );        
     }    
     
     /*
@@ -56,7 +53,7 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
     //     return $response;      
     // }
 
-    private function before_send_email($form_data) {
+    private function before_send_email($form_data, $post) {
         $form_post_id = parent::get_form_post_id();
         $post_id = parent::get_post_id();        
         $this->date = ' - ' . date("Y-m-d H:i:s") . ' GMT';
@@ -106,7 +103,10 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
                 $this->send_email = false;
             } 
 
-            if(get_field('email', $post_id) ) {
+            if (isset($post["to_email"]) && filter_var($post["to_email"], FILTER_VALIDATE_EMAIL)) {
+                $this->to = $post["to_email"];              
+            }
+            elseif(get_field('email', $post_id) ) {
 
                 $emails = get_field('email', $post_id);
                 $emails_array = explode(' ', $emails);
@@ -197,7 +197,7 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
             write_log('$post: ');write_log($post);            
         }
 
-        $this->before_send_email($form_data);
+        $this->before_send_email($form_data, $post);
 
         // Start making the string that will be sent in the email
         $email_string = $this->response_message;

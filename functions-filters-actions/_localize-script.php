@@ -19,7 +19,7 @@ function wp_swift_form_builder_get_localize_script($options) {
  * Create the ajax nonce and url
  */
 function wp_swift_form_builder_localize_script() {
-    write_log('wp_swift_form_builder_localize_script');
+    // write_log('wp_swift_form_builder_localize_script');
     $options = get_option( 'wp_swift_form_builder_settings' );
     if ( isset($options['wp_swift_form_builder_checkbox_javascript']) ) {
         $form_builder_ajax = wp_swift_form_builder_get_localize_script($options);

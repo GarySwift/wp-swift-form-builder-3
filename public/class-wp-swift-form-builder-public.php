@@ -165,27 +165,44 @@ function wp_swift_form_builder_enqueue_styles_no_check() {
 
 }
 
-function wp_swift_get_contact_form($form_id, $post_id = null, $args = array()) {
+function wp_swift_get_contact_form($form_id, $post_id = null, $hidden = array()) {
 
-    return new WP_Swift_Form_Builder_Contact_Form( $form_id, $post_id, $args ); 
+    return new WP_Swift_Form_Builder_Contact_Form( $form_id, $post_id, $hidden ); 
 
 }
 
-function wp_swift_get_signup_form($form_id, $post_id = null, $args = array(), $type = 'signup') {
+function wp_swift_get_signup_form($form_id, $post_id = null, $hidden = array(), $type = 'signup') {
 
-    $form_builder = new WP_Swift_Form_Builder_Signup_Form( $form_id, $post_id, $args, $type );
+    $form_builder = new WP_Swift_Form_Builder_Signup_Form( $form_id, $post_id, $hidden, $type );
     echo $form_builder->run();   
 
 }
-
-function wp_swift_formbuilder_run($form_id, $post_id = null, $args = array()) {
+/**
+ * This is the function used in theme files
+ *
+ * @author  		Gary Swift <gary@brightlight.ie>
+ *
+ * @since 			1.0
+ * 
+ * @link 			http://docs.phpdoc.org/references/phpdoc/basic-syntax.html
+ *
+ * @param int    	$form_id  	The post ID of the form.
+ * @param int 		$post_id 	The post ID of the page that the form is being used on.
+ * @param array 	$hidden 	An array of fields that will be used to generate hidden
+ *                        		form inputs fields. For example, use the array key 'to_email'
+ *                        		to override any settings in the back-end. Shortcode attributes
+ *                        		will be used in the same way. It is necessary to use hidden 
+ *                        		inputs fields due to the Ajax callback. If this information 
+ *                        		is sensitive then you should write a custom callback function.
+ */
+function wp_swift_formbuilder_run($form_id, $post_id = null, $hidden = array()) {
 
 	$type = get_field('form_type', $form_id);
 	if( $type == 'signup' ) {
-    	$form_builder = new WP_Swift_Form_Builder_Signup_Form( $form_id, $post_id, $args );
+    	$form_builder = new WP_Swift_Form_Builder_Signup_Form( $form_id, $post_id, $hidden );
 	}
 	else {
-		$form_builder = new WP_Swift_Form_Builder_Contact_Form( $form_id, $post_id, $args );
+		$form_builder = new WP_Swift_Form_Builder_Contact_Form( $form_id, $post_id, $hidden );
 	}
 
 	wp_swift_form_builder_enqueue_styles_and_scripts();

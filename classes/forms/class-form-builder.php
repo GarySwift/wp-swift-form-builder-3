@@ -23,9 +23,9 @@ class WP_Swift_Form_Builder_Parent {
         /**
          * Initializes the helper, validate abd html_builder
          */  
-        $this->helper = new WP_Swift_Form_Builder_Helper( $form_id, $post_id, $hidden = array(), $type, $args = array(), $_post = null );
+        $this->helper = new WP_Swift_Form_Builder_Helper( $form_id, $post_id, $hidden, $type, $args, $_post = null );
         $this->validate = new WP_Swift_Form_Builder_Validate();  
-        $this->html_builder = new WP_Swift_Form_Builder_Html( $this->helper->get_tab_index() );   
+        $this->html_builder = new WP_Swift_Form_Builder_Html( $this->helper->get_tab_index(), $hidden );   
         $this->marketing = new WP_Swift_Form_Builder_Marketing(); 
     }
 

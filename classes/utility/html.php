@@ -12,14 +12,14 @@
  */
 class WP_Swift_Form_Builder_Html {
     private $tab_index;
-    // private $spam_killer;
+    private $hidden;
 
     /*
      * Initializes the class.
      */
-    public function __construct( $tab_index ) {
+    public function __construct( $tab_index, $hidden ) {
         $this->tab_index = $tab_index;
-        // $this->helper->spam_killer = new WP_Swift_Form_Builder_Spam_Killer();
+        $this->hidden = $hidden;
     }
     
     public function front_end_form($helper, $response = null, $msg = null ) {
