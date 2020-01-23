@@ -213,6 +213,7 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
         $email_string .= $this->do_signup_third_party_wrap($signup);
         $attachments = parent::get_attachments();
         $debug_info = '';
+        $user_email = $this->get_user_email($form_data);
         if (isset($post["form-builder-autosave"])) $this->autosave = true;
         // echo '<pre>3 $attachments = parent::get_attachments(): '; var_dump($attachments); echo '</pre>';
         // echo wp_swift_wrap_email($email_string);
@@ -228,14 +229,16 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
 
                     $status = wp_mail($this->to, $this->response_subject.$this->date, wp_swift_wrap_email($email_string), $this->headers, $attachments);
                 }
-                
+
             // }
 
             if (isset($this->forward_email)) {
                 foreach ($this->forward_email as $key => $forward_email) {
                     $status = wp_mail($forward_email, '[Fwd:] '.$this->response_subject.$this->date, wp_swift_wrap_email($email_string), $this->headers);
                 }
-            }         
+            }
+
+            $this->sent_email_callback($post, $form_data, $this->send_email, $user_email);         
         }
         else {
             $debug_info .= "<pre>Debugging mode is on so no emails are being sent.</pre>";
@@ -258,7 +261,9 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
                 foreach ($this->forward_email as $key => $forward_email) {
                     $debug_info .= '[Fwd:] '.$forward_email.'<br>';
                 }
-            }              
+            } 
+
+            $this->sent_email_callback($post, $form_data, $this->send_email, $user_email);             
         }
 
         /*
@@ -288,15 +293,12 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
 
         
 
-        $form_data_section_1 = $form_data[0];
+        // $form_data_section_1 = $form_data[0];
 
         if ( ($user_confirmation_email=== 'ask' && isset($post["mail-receipt"])) || $user_confirmation_email=== 'send' )  {
- 
-            if ($this->send_email) {
-
-                if (isset($form_data_section_1["inputs"]['form-email']['clean'])) {
-                    $status = wp_mail($form_data_section_1["inputs"]['form-email']['clean'], $this->auto_response_subject, wp_swift_wrap_email($user_email_string), $this->headers);
-                }
+            
+            if ($user_email && $this->send_email) {
+                $status = wp_mail($user_email, $this->auto_response_subject, wp_swift_wrap_email($user_email_string), $this->headers);
             }
         
             $user_output_footer .= '<p>A confirmation email has been sent to you including these details.</p>';
@@ -322,6 +324,19 @@ class WP_Swift_Form_Builder_Contact_Form extends WP_Swift_Form_Builder_Parent {
             }  
         }                           
         return $response;
+    }
+
+    private function get_user_email($form_data) {
+        $form_data_section_1 = $form_data[0];
+        if (isset($form_data_section_1["inputs"]['form-email']['clean'])) {
+            return $form_data_section_1["inputs"]['form-email']['clean'];
+        }
+    }
+
+    private function sent_email_callback($post, $form_data, $send_email, $user_email) {
+        if ( isset($post["wp-swift-form-builder-do-after-send-mail"]) && function_exists('wp_swift_form_builder_do_after_send_mail')) {
+            wp_swift_form_builder_do_after_send_mail($post, $form_data, $send_email, $user_email);
+        }        
     } 
 
     private function do_signup_third_party_wrap($html) { 
