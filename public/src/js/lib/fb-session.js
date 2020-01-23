@@ -1,8 +1,7 @@
-import { utils } from './fb-utilities';
 var session = {
 	// storedSessionDetails: false,
 	name: "form-session-details",
-	// utils: utils,
+	utils: null,
 	hasStorage: typeof(Storage) !== "undefined",
 	options: {
 		popup: {
@@ -10,11 +9,10 @@ var session = {
 			out: 11000
 		}
 	},
-	// ls: new SecureLS(utils.secureSettings),
     save: function(name, value) {
         if (this.hasStorage) {
             // Check if it already exists
-            var storedSessionDetails = utils.secureLS.get(name);
+            var storedSessionDetails = this.utils.secureLS.get(name);
             if (storedSessionDetails) {
                 Object.assign(storedSessionDetails, value);
                 value = JSON.stringify(storedSessionDetails);
@@ -23,13 +21,13 @@ var session = {
                 value = JSON.stringify(value);
             }
             // localStorage.setItem(name, value);
-			utils.secureLS.set(name, value);
+			this.utils.secureLS.set(name, value);
         }   
     },
     get: function(name) {
         if (this.hasStorage) {
             // var storedSessionDetails = JSON.parse(localStorage.getItem(name));
-            var storedSessionDetails = utils.secureLS.get(name);
+            var storedSessionDetails = this.utils.secureLS.get(name);
             return storedSessionDetails;
         }
         return false;   
@@ -37,7 +35,7 @@ var session = {
     reset: function(name) {
         if (this.hasStorage) {
             // localStorage.removeItem(name);
-            utils.secureLS.remove(name);
+            this.utils.secureLS.remove(name);
         }   
     }, 
     subscribed: function() {
@@ -47,19 +45,19 @@ var session = {
     	}
     	return false;
     },      	
-	sessionDetailsFill: function() {
-		// this.sessionDetailsEmpty();
+	sessionDetailsFill: function(utils) {
+		this.utils = utils;
 		var storedSessionDetails = false;
 		var id;
 		if (this.hasStorage && localStorage.getItem(this.name) !== null) {
 			var remove = false;
 			if (remove) {
-				utils.secureLS.removeAll(); 
+				this.utils.secureLS.removeAll(); 
 				console.clear(); 
 				console.log('// remove all keys'); 
 				return;
 			}
-			storedSessionDetails = utils.secureLS.get(this.name);
+			storedSessionDetails = this.utils.secureLS.get(this.name);
 			if(FormBuilderAjax.debug) {
 				console.log('DEBUG Hashed Stored Session Details: ', localStorage.getItem(this.name));
 				console.log('DEBUG Stored Session Details: ', storedSessionDetails);
@@ -72,7 +70,7 @@ var session = {
 				     	id = '#'+key;
 				     	if ($(id).length) {			     		
 				     		if(typeof storedSessionDetails[key].hidden !== "undefined" && storedSessionDetails[key].val !== '') {
-				     			utils.showAndRequireInput(id);
+				     			this.utils.showAndRequireInput(id);
 				     		}
 				     		$(id).val(storedSessionDetails[key].val);
 				     		countInputAutoFills++;
@@ -105,14 +103,14 @@ var session = {
 		var id;
 		if (this.hasStorage && localStorage.getItem(this.name) !== null) {
 			// storedSessionDetails = localStorage.getItem(this.name);
-			storedSessionDetails = utils.secureLS.get(this.name);
+			storedSessionDetails = this.utils.secureLS.get(this.name);
 			if (storedSessionDetails && storedSessionDetails !== "undefined") {
 				storedSessionDetails = JSON.parse(storedSessionDetails);
 				for (let key in storedSessionDetails) {
 			     	id = '#'+key;
 			     	if ($(id).length) {		     		
 			     		if(typeof storedSessionDetails[key].hidden !== "undefined") {
-			     			utils.hideAndUnrequireInput(id);
+			     			this.utils.hideAndUnrequireInput(id);
 			     		}
 			     		$(id).val('');
 			     		$(id+'-form-group').removeClass('has-success').removeClass('has-error');
@@ -121,7 +119,7 @@ var session = {
 			}	
 		}	
 		// localStorage.removeItem(this.name);	
-		utils.secureLS.remove(this.name);	
+		this.utils.secureLS.remove(this.name);	
 		console.clear();
 	},	
 	showMsg: function() {

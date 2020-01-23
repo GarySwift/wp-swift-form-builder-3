@@ -1,15 +1,18 @@
 import { FormBuilderInput } from './fb-object';
-import SecureLS from 'secure-ls';// https://github.com/softvar/secure-ls
+import SecureLS from 'secure-ls';// Secure local storage
 var formBuilderUtilities = {
     modal: null,
     select2Options: {
         maximumSelectionLength: 2
     },
-    secureLS: new SecureLS({
-        encodingType: 'rabbit', 
-        isCompression: false, 
-        encryptionSecret: FormBuilderAjax.encryptionSecret
-    }),    
+    secureLS: null,
+    setSecureLS: function(encryptionSecret) {
+        this.secureLS = new SecureLS({
+            encodingType: 'rabbit', 
+            isCompression: false, 
+            encryptionSecret: encryptionSecret
+        });  
+    },        
 	showAndRequireInput: function(id) {
 		// var showAndRequireInput = function (id) {
 		$(id+'-form-group').removeClass('hide');
@@ -223,6 +226,6 @@ var formBuilderUtilities = {
     getNow: function() {
         var nowTemp = new Date();
         return new Date(nowTemp.getFullYear(), nowTemp.getMonth(), nowTemp.getDate(), 0, 0, 0, 0);
-    }                                           	
+    }                                          	
 }
 export { formBuilderUtilities as utils }

@@ -119,11 +119,14 @@ class Wp_Swift_Form_Builder_Public {
  * @since    1.0.0
  */
 function wp_swift_form_builder_enqueue_styles_and_scripts() {
-	return;// @todo Reove this and the add_action hook
+	// return;// @todo Reove this and the add_action hook
 	$options = get_option( 'wp_swift_form_builder_settings' );
 	if ( !isset($options['wp_swift_form_builder_checkbox_javascript']) ) {
     	# Register the JavaScript for the public-facing side of the site.
     	wp_swift_form_builder_enqueue_scripts_no_check($options);
+	}
+	else {
+		wp_swift_form_builder_localize_script($options);
 	}
 	if ( !isset($options['wp_swift_form_builder_checkbox_css']) ) {
     	# Register the stylesheets for the public-facing side of the site.

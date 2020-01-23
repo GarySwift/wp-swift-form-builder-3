@@ -1,6 +1,5 @@
 <?php
 function wp_swift_form_builder_get_localize_script($options) {
-    // write_log('wp_swift_form_builder_get_localize_script()');
     $debug_options = get_option( 'wp_swift_form_builder_debug_settings' );
     $wp_swift_form_builder_debug_mode = false; 
     if (isset($debug_options['wp_swift_form_builder_debug_mode'])) $wp_swift_form_builder_debug_mode = true;  
@@ -11,16 +10,18 @@ function wp_swift_form_builder_get_localize_script($options) {
         'security' => wp_create_nonce( 'form-builder-nonce' ),
         // debugging info
         'debug' => $wp_swift_form_builder_debug_mode,
-        'datePicker' => array( 'format' => get_form_builder_date_format()),
-        'encryptionSecret' => get_form_builder_encryption_secret()
+        'datePicker' => array( 'format' => get_form_builder_date_format($options)),
+        'encryptionSecret' => get_form_builder_encryption_secret($options),
+        'marketing' => wp_swift_form_builder_get_marketing_script(),
     );     
 }
 /**
  * Create the ajax nonce and url
  */
-function wp_swift_form_builder_localize_script() {
-    // write_log('wp_swift_form_builder_localize_script');
-    $options = get_option( 'wp_swift_form_builder_settings' );
+function wp_swift_form_builder_localize_script($options = array()) {
+    if (!$options) {
+        $options = get_option( 'wp_swift_form_builder_settings' );
+    }
     if ( isset($options['wp_swift_form_builder_checkbox_javascript']) ) {
         $form_builder_ajax = wp_swift_form_builder_get_localize_script($options);
         $use_theme_js = function_exists( 'foundationpress_scripts' );
@@ -46,4 +47,6 @@ function wp_swift_form_builder_localize_script() {
         }   
     }
 }
-add_action( 'wp_enqueue_scripts', 'wp_swift_form_builder_localize_script', 100 );
+# Do not use the action 'wp_enqueue_scripts' to localize the script. 
+# We will call this function only when it is used in a page.
+// add_action( 'wp_enqueue_scripts', 'wp_swift_form_builder_localize_script', 100 );

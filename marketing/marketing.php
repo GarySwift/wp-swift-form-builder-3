@@ -81,6 +81,45 @@ function wp_swift_from_builder_marketing_callback() {
 }
 
 /**
+ * Get the script
+ */
+function wp_swift_form_builder_get_marketing_script() {
+    if (FORM_BUILDER_MARKETING) {
+        return false;
+    } else {
+        // @todo 
+        // Get the page ID using a ACF field in the 
+        // same way we get the $interceptCssClass
+        global $wpdb; 
+        $page_slug = 'sign-up';
+        $post_type = 'page';
+        $page = $wpdb->get_var( $wpdb->prepare( "SELECT ID FROM $wpdb->posts WHERE post_name = %s AND post_type= %s AND post_status = 'publish'", $page_slug, $post_type ) );    
+        $time = 60000;// 1 minutue in miliseconds
+            $interceptCssClass = '';
+        if( function_exists('get_field') ){
+            $interceptCssClass = get_field('css_intercept_class', 'option');
+        }
+        return array(
+            'security' => wp_create_nonce( "marketing-nonce" ),
+            'action' => 'wp_swift_from_builder_marketing',
+            'modal' => FORM_BUILDER_MARKETING_MODAL,
+            'showAlertBeforeRedirect' => false,
+            'signupDeclined' => "form-builder-signup-declined",
+            'time' => $time,// time before modal shows
+            'debugClearSignupDeclined' => false,
+            'autoHideModal' => 6000,
+            'redirect' => FORM_BUILDER_MARKETING_MARKETING_REDIRECT,
+            'signUpURL' => get_the_permalink( $page ),
+            // debugging info
+            'debug' => FORM_BUILDER_MARKETING_DEBUG,
+            'debugClearCacheAuto' => false,
+            'debugTimeoutInterval' => 30000,
+            'debugClearUserData' => false, 
+            'interceptCssClass' => $interceptCssClass,     
+        );        
+    }
+}
+/**
  * Create the ajax nonce and url
  */
 function wp_swift_from_builder_marketing_localize_script() {

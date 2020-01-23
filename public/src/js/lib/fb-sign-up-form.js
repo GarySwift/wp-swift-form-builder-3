@@ -1,7 +1,7 @@
 export default function(session) {
-	if(typeof MarketingAjax !== "undefined") {
+	if(typeof FormBuilderAjax.marketing !== "undefined") {
 
-		if (MarketingAjax.debug)
+		if (FormBuilderAjax.marketing.debug)
 			console.log('DEBUG formbuilder-sign-up-form.js');
 		
 		var hasStorage = typeof(Storage) !== "undefined";

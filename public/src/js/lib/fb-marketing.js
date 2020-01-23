@@ -1,7 +1,7 @@
 import { utils } from './fb-utilities';
 export default function(session) {
 	var storedSessionDetails = false;
-    var interceptCssClass;// The CSS class that we intercept (Set with MarketingAjax)
+    var interceptCssClass;// The CSS class that we intercept (Set with FormBuilderAjax.marketing)
     var $interceptLink;// The DOM elements of that class
 
     var getUrlParameter = function (sParam) {
@@ -9,7 +9,7 @@ export default function(session) {
             sURLVariables = sPageURL.split('&'),
             sParameterName,
             i;
-
+            
         for (i = 0; i < sURLVariables.length; i++) {
             sParameterName = sURLVariables[i].split('=');
 
@@ -21,7 +21,7 @@ export default function(session) {
 
     // Add event-handler to links
     var setInterceptLinks = function($interceptLink) {
-		if (MarketingAjax.debug) {
+		if (FormBuilderAjax.marketing.debug) {
 			console.log('DEBUG setInterceptLinks ()');
 		}
 
@@ -32,7 +32,7 @@ export default function(session) {
 
 			// Detect left click
 		    $interceptLink.click(function(e) {
-				if (MarketingAjax.debug)
+				if (FormBuilderAjax.marketing.debug)
 					console.log('DEBUG $interceptLink.click()');	    	 	
     			e.preventDefault();
 	    		return redirect($(this));    
@@ -47,7 +47,7 @@ export default function(session) {
 
     var redirect = function($link) {
     	var location = decodeURIComponent(window.location.href);
-    	if ( MarketingAjax.showAlertBeforeRedirect ) {
+    	if ( FormBuilderAjax.marketing.showAlertBeforeRedirect ) {
 	    	alert(
 	    		"This file requires a sign up!" + "\n\n" +
 	    		"You will be now redirected to a subscription page." + "\n\n" +
@@ -60,12 +60,12 @@ export default function(session) {
 		if(typeof download !== "undefined") {
 		  downloadData.download = true;
 		}
-	    if (MarketingAjax.debug) {
+	    if (FormBuilderAjax.marketing.debug) {
 	    	console.log('DEBUG [Session Storage] downloadData: ', downloadData);
 	    	console.log('DEBUG ...redirecting');
 	    }		    		
 		downloadData = JSON.stringify(downloadData);
-		sessionStorage.setItem("taoglas-download", downloadData);		
+		sessionStorage.setItem(interceptCssClass, downloadData);		
 		window.location.href = signUpURL + '?ref=' + location;  
 		return false;     	
     };
@@ -88,7 +88,7 @@ export default function(session) {
 	    	}
 
 		    // Debug details
-        	if (MarketingAjax.debug) {
+        	if (FormBuilderAjax.marketing.debug) {
         		console.log('DEBUG getStoredSessionDetails() storedSessionDetails: ', storedSessionDetails);
         	}
         	return storedSessionDetails;	        
@@ -104,12 +104,12 @@ export default function(session) {
             console.log('DEBUG Session data cleared');
         }   
     }; 
-    var clearUserData = function(storedSessionDetails, MarketingAjax) {
-		if (MarketingAjax.debug)
+    var clearUserData = function(storedSessionDetails, FormBuilderAjax) {
+		if (FormBuilderAjax.marketing.debug)
 			console.log('DEBUG clearUserData(): Clearing signupDeclined, storedSessionDetails; Set setInterceptLinks ()');    	
 
-	    sessionStorage.removeItem(MarketingAjax.signupDeclined);
-	    signupDeclined = sessionStorage.getItem(MarketingAjax.signupDeclined);
+	    sessionStorage.removeItem(FormBuilderAjax.marketing.signupDeclined);
+	    signupDeclined = sessionStorage.getItem(FormBuilderAjax.marketing.signupDeclined);
 	      	
     	if (storedSessionDetails) {
 	        resetSessionDetails(session.name);
@@ -187,7 +187,7 @@ export default function(session) {
     var download = getUrlParameter('download');
     var downloadData;
     if (download && session.hasStorage) {
-    	downloadData = sessionStorage.getItem("taoglas-download");
+    	downloadData = sessionStorage.getItem(interceptCssClass);
 		downloadData = JSON.parse(downloadData);
 		
 		if ( jQuery.isPlainObject( downloadData ) ) {
@@ -205,51 +205,52 @@ export default function(session) {
 		}
     }     	
 
-    if(typeof MarketingAjax !== "undefined") {
-    	interceptCssClass = MarketingAjax.interceptCssClass;//The CSS class that we intercept
+    // if(typeof FormBuilderAjax.marketing !== "undefined") {
+    if(typeof FormBuilderAjax !== "undefined" && FormBuilderAjax.marketing) {
+    	interceptCssClass = FormBuilderAjax.marketing.interceptCssClass;//The CSS class that we intercept
     	if (interceptCssClass) {
     		$interceptLink = $('a.' + interceptCssClass);
-    		if (MarketingAjax.debug)
+    		if (FormBuilderAjax.marketing.debug)
     			console.log('$interceptLink have been set for ' + interceptCssClass);
     	}
     	storedSessionDetails = getStoredSessionDetails();
 
 		//@start Debug section
-	    if (MarketingAjax.debugClearCacheAuto) {
+	    if (FormBuilderAjax.marketing.debugClearCacheAuto) {
 		    setTimeout(function() {
-		    	clearUserData(storedSessionDetails, MarketingAjax);
-		    }, parseInt(MarketingAjax.debugTimeoutInterval) );
+		    	clearUserData(storedSessionDetails, FormBuilderAjax.marketing);
+		    }, parseInt(FormBuilderAjax.marketing.debugTimeoutInterval) );
 	    }	
-	    if (MarketingAjax.debugClearUserData){
+	    if (FormBuilderAjax.marketing.debugClearUserData){
 	    	console.log('DEBUG clearing user data');
-	    	clearUserData(storedSessionDetails, MarketingAjax);
+	    	clearUserData(storedSessionDetails, FormBuilderAjax.marketing);
 	    }	        
 	    //@end Debug section
 
     	
 
-    	if (MarketingAjax.modal) {
-	        if (MarketingAjax.debugClearSignupDeclined) {
+    	if (FormBuilderAjax.marketing.modal) {
+	        if (FormBuilderAjax.marketing.debugClearSignupDeclined) {
 	        	console.log("DEBUG Clearing session storage for user signupDeclined");
-	        	sessionStorage.removeItem(MarketingAjax.signupDeclined);
+	        	sessionStorage.removeItem(FormBuilderAjax.marketing.signupDeclined);
 	        }
 	        var signupDeclined = null;
 	    	var $existingForm = $('#request-form');
 
 	    	if ( session.hasStorage ) {
-				signupDeclined = sessionStorage.getItem(MarketingAjax.signupDeclined);			
+				signupDeclined = sessionStorage.getItem(FormBuilderAjax.marketing.signupDeclined);			
 			}
 
-			if (MarketingAjax.debug)
+			if (FormBuilderAjax.marketing.debug)
 				console.log('DEBUG !storedSessionDetails', !storedSessionDetails, ', !signupDeclined', !signupDeclined, ', !$existingForm.length', !$existingForm.length);
 
 	    	if ( !storedSessionDetails && !signupDeclined && !$existingForm.length ) {
 		  		setTimeout(function() {
-		  			if (MarketingAjax.debug)
-		  				console.log('DEBUG Show modal in ' + MarketingAjax.time + 'ms.');
+		  			if (FormBuilderAjax.marketing.debug)
+		  				console.log('DEBUG Show modal in ' + FormBuilderAjax.marketing.time + 'ms.');
 
 			        // This Ajax call will get the form HTML, inject it into the DOM, and open the modal
-			        $.post(MarketingAjax.ajaxurl, MarketingAjax, function(response) {
+			        $.post(FormBuilderAjax.ajaxurl, FormBuilderAjax.marketing, function(response) {
 			            var serverResponse = JSON.parse(response);
 				        var $modal = $('#marketing-reveal');
 				        var $modalContent = $('#marketing-reveal-content');
@@ -261,34 +262,34 @@ export default function(session) {
 							$modal.on('closed.zf.reveal', function () {
 								// save session variable
 								if ( session.hasStorage ) {
-									sessionStorage.setItem(MarketingAjax.signupDeclined, 1);
-									signupDeclined = sessionStorage.getItem(MarketingAjax.signupDeclined);
-						  			if (MarketingAjax.debug)
+									sessionStorage.setItem(FormBuilderAjax.marketing.signupDeclined, 1);
+									signupDeclined = sessionStorage.getItem(FormBuilderAjax.marketing.signupDeclined);
+						  			if (FormBuilderAjax.marketing.debug)
 						  				console.log('DEBUG Modal has been closed and event has been saved in the session var signupDeclined');
 								}
 							});                 
 		                }
 			        });
-		  		}, MarketingAjax.time);
+		  		}, FormBuilderAjax.marketing.time);
 	    	}
 	    	else {
-		    	if (MarketingAjax.debug)
+		    	if (FormBuilderAjax.marketing.debug)
 		    		console.log('DEBUG Modal not set because user is already subscribed or has previously declined or this page already has a form with sign-up option');   		
 	    	}
     	}
-    	if (MarketingAjax.redirect) {
+    	if (FormBuilderAjax.marketing.redirect) {
 
-		    var signUpURL = MarketingAjax.signUpURL;
+		    var signUpURL = FormBuilderAjax.marketing.signUpURL;
 
-		    if (MarketingAjax.debug)
-		    	console.log('DEBUG MarketingAjax', MarketingAjax);
+		    if (FormBuilderAjax.marketing.debug)
+		    	console.log('DEBUG FormBuilderAjax.marketing', FormBuilderAjax.marketing);
 
 			setInterceptLinks($interceptLink);
 	
 
-		    if (MarketingAjax.debug && MarketingAjax.debugClearCacheAuto && typeof storedSessionDetails.subscribed !== "undefined" && storedSessionDetails.subscribed === true) {
+		    if (FormBuilderAjax.marketing.debug && FormBuilderAjax.marketing.debugClearCacheAuto && typeof storedSessionDetails.subscribed !== "undefined" && storedSessionDetails.subscribed === true) {
 		    	console.log('DEBUG User is now subscribed');
-		    	console.log('DEBUG User data (storedSessionDetails) will be cleared in ' + (MarketingAjax.debugTimeoutInterval/1000) + ' seconds.');
+		    	console.log('DEBUG User data (storedSessionDetails) will be cleared in ' + (FormBuilderAjax.marketing.debugTimeoutInterval/1000) + ' seconds.');
 		    }
     	}
     }

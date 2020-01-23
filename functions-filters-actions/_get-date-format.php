@@ -2,8 +2,10 @@
 /**
  * Get the date format
  */
-function get_form_builder_date_format() {
-	$options = get_option( 'wp_swift_form_builder_settings' );
+function get_form_builder_date_format($options) {
+    if (!$options) {
+        $options = get_option( 'wp_swift_form_builder_settings' );
+    }
 	if (!empty($options['wp_swift_form_builder_date_format'])) {
 		return $options['wp_swift_form_builder_date_format'];
 	}
