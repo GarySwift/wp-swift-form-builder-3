@@ -14,9 +14,4 @@ export default function(FormBuilderInput, events, utils, dateUtils, session, sec
             fbMarketingAjax(session);
         });
     }//@endif FormBuilderAjax
-    // else {
-    //     jQuery(document).ready(function($) {
-    //         events(FormBuilderInput, utils, session, submit);
-    //     });        
-    // }
 }

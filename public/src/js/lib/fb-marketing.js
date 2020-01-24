@@ -211,7 +211,7 @@ export default function(session) {
     	if (interceptCssClass) {
     		$interceptLink = $('a.' + interceptCssClass);
     		if (FormBuilderAjax.marketing.debug)
-    			console.log('$interceptLink have been set for ' + interceptCssClass);
+    			console.log('DEBUG $interceptLink have been set for ' + interceptCssClass);
     	}
     	storedSessionDetails = getStoredSessionDetails();
 

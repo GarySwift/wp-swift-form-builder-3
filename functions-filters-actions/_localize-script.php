@@ -19,10 +19,48 @@ function wp_swift_form_builder_get_localize_script($options) {
  * Create the ajax nonce and url
  */
 function wp_swift_form_builder_localize_script($options = array()) {
+    write_log('wp_swift_form_builder_localize_script()');
+    // if (!$options) {
+    //     $options = get_option( 'wp_swift_form_builder_settings' );
+    // }
+    // // write_log('$options: ');write_log($options);
+    // if ( isset($options['wp_swift_form_builder_checkbox_javascript']) ) {
+    //     // write_log($options);
+    //     $form_builder_ajax = wp_swift_form_builder_get_localize_script($options);
+    //     $use_theme_js = function_exists( 'foundationpress_scripts' );
+    //     if ( $use_theme_js ) {
+    //         $handle = "foundation";
+    //     }  
+    //     else {
+            $handle = 'form-builder-ajax';
+            $file = 'wp-swift-form-builder-public.js';
+            $js_file = 'public/js/' . $file;
+            $js_file_path = FORM_BUILDER_PLUGIN_PATH . $js_file;
+            $js_version = filemtime( $js_file_path );
+            $deps = array();
+            // Register the script
+            wp_register_script( $handle, FORM_BUILDER_PLUGIN_URL . $js_file, $deps, $js_version, true );
+        // }      
+        
+        // Localize the script with new data
+        wp_localize_script( $handle, 'FormBuilderAjax', $form_builder_ajax);
+
+        // if (!$use_theme_js) {
+            wp_enqueue_script( $handle ); 
+        // }   
+    // }
+}
+/**
+ * Create the ajax nonce and url
+ */
+function wp_swift_form_builder_localize_script_2($options = array()) {
+    // write_log('wp_swift_form_builder_localize_script()');
     if (!$options) {
         $options = get_option( 'wp_swift_form_builder_settings' );
     }
+    // write_log('$options: ');write_log($options);
     if ( isset($options['wp_swift_form_builder_checkbox_javascript']) ) {
+        // write_log($options);
         $form_builder_ajax = wp_swift_form_builder_get_localize_script($options);
         $use_theme_js = function_exists( 'foundationpress_scripts' );
         if ( $use_theme_js ) {
