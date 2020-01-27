@@ -60,58 +60,40 @@ class WP_Swift_Form_Builder_Admin_Interface_Tools {
 								<p><?php echo __( 'Select the form you would like to export and and use the download button to export to a .json file which you can then import to another WordPress installation.', 'wp-swift-form-builder' ); ?></p>
 								<?php 
 								if ( isset($_POST["form-id"]) ):
-									// $form_id = $_POST["form-id"];
-									// $form_data_preset = get_field('sections', $form_id, true);
-									// $json = json_encode($form_data_preset);
 
 									$data = array();
 									$form_id = $_POST["form-id"];
 									$sections = array();
-									// $sections = get_field('sections', $form_id, true);
-									// $sections["sections"] = array( 
-									// 	"key" => "field_5cff77477c15c",
-									// 	"value" =>  get_field('sections', $form_id, true),
-									// );
-									// $form_data_preset[] = $sections;
-									// $form_data_preset[] = array(
-									// 	"post_title" => get_the_title( $form_id ),
-									// );
+									$form_data_preset = array();
+
+									$title = array(
+										"form-title" => array( 
+											"key" => "post_title",
+											"value" => get_the_title( $form_id ),//"Test Title",// 
+										),
+									);
+
+									$form_data_preset[] = $title;							
+
 									$form_data_preset[] = array(
 										"sections" => array( 
 											"key" => "field_5cff77477c15c",
 											"value" =>  get_field('sections', $form_id, true),
 										),
 									);
-									// write_log($form_data_preset);
-									// $json = json_encode($form_data_preset);	
-									// 
-									// $data = array();
-									// $form_id = $_POST["form-id"];
-									// $form_type = get_field('form_type', $form_id, true);
-									// echo '<pre>$form_type: '; var_dump($form_type); echo '</pre>';
-									// $form_data_preset["form_type"] = get_field('form_type', $form_id, true);
-									// $form_type = array();
-									// $form_type["form_type"] = array( 
-									// 	"key" => "form_type_acf_key",
-									// 	"value" =>  get_field('form_type', $form_id, true),
-									// );	
+			
 									$form_data_preset[] = array(
 										"form_type" => array( 
 											"key" => "field_5cff741fba730",
 											"value" =>  get_field('form_type', $form_id, true),
 										),
 									);								
-									// write_log($form_data_preset);
-									// echo '<pre>$form_data_preset: '; var_dump($form_data_preset); echo '</pre>';
-									// 
-									// $form_data_preset["form_type"] = $form_type;
+
 									$general = array();
-									// $labels = get_field('labels', $form_id, true);
 									$general["labels"] = array(
 										"key" => "field_5c896d0ca5b65",
 										"value" => get_field('labels', $form_id, true),
 									);
-									// $wrap_form = get_field('wrap_form', $form_id, true);
 									$general["wrap_form"]  = array(
 										"key" => "field_5c80ea6c2fb10",
 										"value" => get_field('wrap_form', $form_id, true),
@@ -124,9 +106,6 @@ class WP_Swift_Form_Builder_Admin_Interface_Tools {
 
 									$submit_button_text = get_field('submit_button_text', $form_id, true);
 									
-									// htmlspecialchars(get_field('submit_button_text', $form_id, true), ENT_QUOTES, 'UTF-8');
-									// echo '<pre>1 $submit_button_text: '; var_dump($submit_button_text); echo '</pre>';
-									// echo "<pre>2 $submit_button_text:"; var_dump(htmlspecialchars(get_field('submit_button_text', $form_id, true), ENT_QUOTES, 'UTF-8')); echo "</pre>";
 									$general["submit_button_text"] = array(
 										"key" => "field_5c80ea6c2fb1c",
 										"value" => addslashes(get_field('submit_button_text', $form_id, true)),
@@ -179,8 +158,6 @@ class WP_Swift_Form_Builder_Admin_Interface_Tools {
 										"value" => get_field('show_section_stage_guide', $form_id, true),
 									);								
 
-									// echo '<pre>$general: '; var_dump($general); echo '</pre>';
-									// $form_data_preset[] = array("general" => $general);
 									$form_data_preset[] = $general;
 
 									$form_data_preset[] = array(
@@ -204,21 +181,6 @@ class WP_Swift_Form_Builder_Admin_Interface_Tools {
 										),
 									);
 
-
-									// $form_data_preset[] = array(
-									// 	"marketing" => array( 
-									// 		"key" => "field_5cff6ab638c61",
-									// 		"value" =>  get_field('marketing', $form_id, true),
-									// 	),
-									// );
-
-									// $form_data_preset[] = array(
-									// 	"gdpr_settings" => array( 
-									// 		"key" => "field_5cff6a76baf64",
-									// 		"value" =>  get_field('gdpr_settings', $form_id, true),
-									// 	),
-									// );
-
 									$form_data_preset[] = array(
 										"marketing" => array( 
 											"key" => "field_5d1b0f1560a64",
@@ -233,11 +195,10 @@ class WP_Swift_Form_Builder_Admin_Interface_Tools {
 										),
 									);
 
-									// echo '<pre>$form_data_preset: '; var_dump($form_data_preset); echo '</pre>';
+
 									$json = json_encode($form_data_preset, JSON_HEX_QUOT | JSON_HEX_APOS);	
 
 									$form_data_preset = json_decode($json, true);	
-									// echo "<pre>"; var_dump(is_array($form_data_preset)); echo "</pre>";														
 									?>
 
 									<textarea class="copy-area" onclick="this.focus();this.select();document.execCommand('copy')" onfocus="this.focus();this.select();document.execCommand('copy')" readonly><?php echo $json ?></textarea>
@@ -289,11 +250,7 @@ class WP_Swift_Form_Builder_Admin_Interface_Tools {
 								if ( isset($_POST["import-form"]) ):
 									$form_data = $_POST["import-form"];
 									$json = str_replace('\"', '"', $form_data);
-									// echo '<pre>$form_data: '; var_dump($form_data); echo '</pre>';
 									$form_data_preset = json_decode($json, true);
-									// echo '<pre>$form_data_preset: '; var_dump($form_data_preset); echo '</pre>';
-									// echo "<hr>";echo "<hr>";echo "<hr>";
-									// $form_data_preset = null;
 
 									if (is_array($form_data_preset)): ?>
 
@@ -312,59 +269,46 @@ class WP_Swift_Form_Builder_Admin_Interface_Tools {
 											$sections = null;
 											$form_type = null;
 
-									        // if (isset($form_data_preset["sections"])) {
-									        // 	$sections = $form_data_preset["sections"];
-									        // }
-
-									        // if (isset($form_data_preset["form_type"])) {
-									        // 	$form_type = $form_data_preset["form_type"];
-									        // }
-
 									        $post_id = wp_insert_post($args);
+									        $post_title = false;	
 									        if(!is_wp_error($post_id)) {
-									            $update_post = array(
-									                'ID'           => $post_id,
-									                'post_title'   => 'Imported Form '.$post_id,
-									            );
-									            // Update the post title with post id
-									            wp_update_post( $update_post );            
+		         
 
 									            // Prepopulate the ACF field with input details (this is not processed form data)
-										        // if ($sections) {
-										        //     update_field( $section_acf_key, $sections, $post_id );
-										        // }
 
-										        // if ($form_type) {
-										        //     update_field( $form_type_acf_key, $form_type, $post_id );
-										        // }
-
-										        // foreach ( $form_data_preset["general"] as $field) {
-										        	
-										        // 	if (isset($field["unformat"])) {
-										        // 		switch ($field["unformat"]) {
-										        // 			case "stripslashes":
-										        // 				echo "<pre>"; var_dump($field["value"]); echo "</pre>";
-										        // 				echo "<pre>"; var_dump(stripslashes ( $field["value"] )); echo "</pre>";
-										        // 				update_field( $field["key"], stripslashes ( $field["value"] ), $post_id );
-										        // 				break;
-										        // 		}
-										        // 	} else {
-										        // 		update_field( $field["key"], $field["value"], $post_id );
-										        // 	}
-										        // }
-										        // 
 								        		foreach ($form_data_preset as $section) {
-// echo '<pre>$section: '; var_dump($section); echo '</pre>';echo "<hr>";
+
 													foreach ( $section as $key => $field) {
-										        		// echo "<h2>"; var_dump($key); echo "</h2>";
-										        		// echo "<h3>"; echo $field["key"]; echo "</h3>";
-										        		// // echo '<pre>'; var_dump($field); echo '</pre>';echo "<hr>";
-										        		// echo "<hr>";
-											        	if (isset($field["unformat"])) {
+
+										        		if ($key == "form-title") {
+	
+										        			$count = 0;
+										        			if (get_page_by_title($field["value"], OBJECT, 'wp_swift_form')) {
+										        				// Title exists
+										        				$count++;
+										        				
+										        				while (!$post_title) {
+										        					
+										        					$title = $field["value"] . ' ('.($count) .')';
+
+										        			    	if (!get_page_by_title($title, OBJECT, 'wp_swift_form')) {
+										        			    		$post_title = $title;
+										        			    	}
+
+																    if($count > 100) $post_title = 'Imported Form '.$post_id;
+																    
+																    $count++;
+																}
+										        			}
+										        			else {
+										        				// Title does not exist
+										        				$post_title = $field["value"];
+										        			}
+
+										        		}
+											        	elseif (isset($field["unformat"])) {
 											        		switch ($field["unformat"]) {
 											        			case "stripslashes":
-											        				// echo "<pre>"; var_dump($field["value"]); echo "</pre>";
-											        				// echo "<pre>"; var_dump(stripslashes ( $field["value"] )); echo "</pre>";
 											        				update_field( $field["key"], stripslashes ( $field["value"] ), $post_id );
 											        				break;
 											        		}
@@ -374,6 +318,18 @@ class WP_Swift_Form_Builder_Admin_Interface_Tools {
 											        }
 
 								        		}
+
+								        		if ($post_title) {
+								        		
+									        		$update_post = array(
+										                'ID'           => $post_id,
+										                'post_title'   => $post_title,
+										            );
+
+										            // Update the post title with post id
+										            wp_update_post( $update_post );  								        			
+									        	
+									        	} 
 
 									            // Process the form data into a Wordpress option
 									            wp_swift_form_builder_save_post($post_id);
