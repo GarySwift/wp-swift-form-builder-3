@@ -21,7 +21,7 @@ class WP_Swift_Form_Builder_Spam_Killer {
     private $recaptcha = null;
     private $honeypot = true;
     private $time_control = true;
-    private $min_time_to_fill_form = 6;// define the minimum time required to fill the form to 6 seconds
+    private $min_time_to_fill_form = 2;// define the minimum time required to fill the form to 6 seconds
     private $debug = false;
     /*
      * Initializes the plugin.

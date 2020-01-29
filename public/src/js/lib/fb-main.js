@@ -9,7 +9,7 @@ export default function(FormBuilderInput, events, utils, dateUtils, session, sec
             dateUtils.run();
             sections(FormBuilderInput, utils, session);
             events(FormBuilderInput, utils, session, submit);
-            signUp(session); 
+            signUp(session, utils); 
             repeater();
             fbMarketingAjax(session);
         });

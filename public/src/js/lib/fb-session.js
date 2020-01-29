@@ -49,6 +49,7 @@ var session = {
 		this.utils = utils;
 		var storedSessionDetails = false;
 		var id;
+		
 		if (this.hasStorage && localStorage.getItem(this.name) !== null) {
 			var remove = false;
 			if (remove) {
@@ -92,7 +93,7 @@ var session = {
 					}				  	
 				}
 				catch(error) {
-				  	console.error(error);
+				  	// console.error(error);
 				}					
 			}	
 		}	

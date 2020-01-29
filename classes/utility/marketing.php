@@ -18,10 +18,10 @@ class WP_Swift_Form_Builder_Marketing
     }
 
     public function signup_api( $post, $form_data, $marketing, $auto_consent, $gdpr_settings, $send_marketing, $at_least_one_option_required = false ) {
-        // write_log('signup_api() $auto_consent: ');write_log($auto_consent);
-        // write_log('$post: ');write_log($post);
+        
         if (!isset($post["marketing-sign-up"])) 
-            return null;    
+            return null;  
+
         // $marketing =  parent::get_marketing();
         // $gdpr_settings = parent::get_gdpr_settings();
         $opt_ins = null;
@@ -91,7 +91,10 @@ class WP_Swift_Form_Builder_Marketing
                             // write_log('count($list_id_array): ');write_log(count($list_id_array));
                             if ( $send_marketing && count($list_id_array) ) {
                                 $signup_response = $this->do_signup( $post, $marketing, $form_data, $signups, $auto_consent, $list_id_array );  
-                                // write_log('HTML >> $signup_response: ');write_log($signup_response);
+                                
+                                // if ($debug_mode) {
+                                // 	write_log('HTML >> $signup_response: ');write_log($signup_response);
+                                // }
                             }                          
                         // }
                         // $signup_response = $this->do_signup( parent::get_form_data(), $signups, $list_id_array );            
@@ -153,6 +156,7 @@ class WP_Swift_Form_Builder_Marketing
 	}
 
 	public function do_signup_mailchimp($post, $form_data, $signups, $auto_consent, $list_id_array = array(), $list_id_array_unlink = null) {  
+
 	    /**
 	     * $signup_status
 	     *
@@ -160,10 +164,18 @@ class WP_Swift_Form_Builder_Marketing
 	     * "subscribed" means they are directly added
 	     */ 
 	    $marketing_debug_mode = false;
+	    $debug_mode = false;
 		$debug_options = get_option( 'wp_swift_form_builder_debug_settings' );
+		write_log('$debug_options: ');write_log($debug_options);
 		if (isset($debug_options['wp_swift_form_builder_marketing_debug_mode'])) {
 			$marketing_debug_mode = true; 
-		}	      
+		}
+		if (isset($debug_options['wp_swift_form_builder_debug_mode'])) {
+			$debug_mode = true; 
+		}
+		if ($debug_mode) {
+			write_log('public function do_signup_mailchimp()');
+		}					      
 	    $autosave = isset($post["form-builder-autosave"]);
 	    $signup_status = "subscribed";    
 	    $response = null;
@@ -239,8 +251,10 @@ class WP_Swift_Form_Builder_Marketing
 	    if ($state) {
 	        $post_data["merge_fields"]["STATE"] = $state;
 	    }
-	    // write_log('$post_data: ');write_log($post_data);
-
+	    
+	    if ($debug_mode) {
+	    	write_log('$post_data: ');write_log($post_data);
+	    }
 	    // $session_data = array(
 	    //     "firstName" => $first_name,
 	    //     "lastName" => $last_name,
@@ -282,6 +296,10 @@ class WP_Swift_Form_Builder_Marketing
 	        # Setup cURL
 	        $api_response = '';
 	        $url = 'https://'.$data_center.'.api.mailchimp.com/3.0/lists/'.$list_id.'/members/';
+	       	write_log('$url: ');write_log($url);
+	       	if ($debug_mode) {
+	       		write_log('$url: ');write_log($url);
+	       	}
 	        if (!$marketing_debug_mode) {
 		        $ch = curl_init($url);
 		        curl_setopt_array($ch, array(
@@ -305,7 +323,10 @@ class WP_Swift_Form_Builder_Marketing
 				$response["session"] = $session_data;  
 	            $response["response_header"] = $response_header;
 	        }
-	        // write_log('');write_log('$api_response: ');write_log($api_response);write_log('');
+	        if ($debug_mode) {
+	        	write_log('');write_log('$api_response: ');write_log($api_response);write_log('');
+	        }
+	        
 	        # End cURL
 	        
 	        if (isset($api_response["status"])) {

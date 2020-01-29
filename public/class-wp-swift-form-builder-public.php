@@ -122,11 +122,11 @@ function wp_swift_form_builder_enqueue_styles_and_scripts() {
 	// write_log('Handler for registering the JavaScript and stylesheets for the public-facing side of the site.');
 	// return;// @todo Reove this and the add_action hook
 	$options = get_option( 'wp_swift_form_builder_settings' );
-	write_log('$options: ');write_log($options);
-	write_log('2 FORM_BUILDER_MARKETING: ');write_log(FORM_BUILDER_MARKETING);
+	// write_log('$options: ');write_log($options);
+	// write_log('2 FORM_BUILDER_MARKETING: ');write_log(FORM_BUILDER_MARKETING);
 	if ( !isset($options['wp_swift_form_builder_checkbox_javascript']) ) {
     	# Register the JavaScript for the public-facing side of the site.
-    	write_log('# Register the JavaScript for the public-facing side of the site.');
+    	// write_log('# Register the JavaScript for the public-facing side of the site.');
     	wp_swift_form_builder_enqueue_scripts_no_check($options);
 	}
 	else {
@@ -134,7 +134,7 @@ function wp_swift_form_builder_enqueue_styles_and_scripts() {
 	}
 	if ( !isset($options['wp_swift_form_builder_checkbox_css']) ) {
     	# Register the stylesheets for the public-facing side of the site.
-    	write_log('# Register the stylesheets for the public-facing side of the site.');
+    	// write_log('# Register the stylesheets for the public-facing side of the site.');
     	wp_swift_form_builder_enqueue_styles_no_check();	
 	}	
 }

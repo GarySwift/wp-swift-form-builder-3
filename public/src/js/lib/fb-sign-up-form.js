@@ -1,4 +1,4 @@
-export default function(session) {
+export default function(session, utils) {
 	if(typeof FormBuilderAjax.marketing !== "undefined") {
 
 		if (FormBuilderAjax.marketing.debug)
@@ -16,8 +16,10 @@ export default function(session) {
 		// console.log('$signupGroup.length', $signupGroup.length);
 		// console.log('hasStorage', hasStorage);
 		// console.log('1 *');
-		if (hasStorage && localStorage.getItem(session.name) !== null) {
-			storedSessionDetails = JSON.parse(localStorage.getItem(session.name));
+		var tempSession = localStorage.getItem(session.name);
+		if (hasStorage && tempSession !== null) {
+			storedSessionDetails = utils.secureLS.get(session.name);
+			// storedSessionDetails = JSON.parse(tempSession);
 					// storedSessionDetails = JSON.parse(storedSessionDetails);
 			if ($signupGroup.length ) {
 				// if (typeof(Storage) !== "undefined") {
