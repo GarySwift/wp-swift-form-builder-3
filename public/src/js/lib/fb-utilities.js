@@ -150,7 +150,6 @@ var formBuilderUtilities = {
         this.modal = document.getElementById("form-builder-reveal");//this.getModal();
         var modal = this.modal; 
         // modal.open = function() {
-
         // };
         // console.log('modal', modal);
 
