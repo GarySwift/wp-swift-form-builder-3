@@ -46,10 +46,12 @@ var session = {
     	return false;
     },      	
 	sessionDetailsFill: function(utils) {
+// 		sessionStorage.removeItem("taoglas-signup-declined"); 
+// localStorage.removeItem("form-session-details");
 		this.utils = utils;
 		var storedSessionDetails = false;
 		var id;
-		
+
 		if (this.hasStorage && localStorage.getItem(this.name) !== null) {
 			var remove = false;
 			if (remove) {
@@ -66,6 +68,18 @@ var session = {
 			if (storedSessionDetails && storedSessionDetails !== "undefined") {				
 				try {
 				  	storedSessionDetails = JSON.parse(storedSessionDetails);
+				  	// getSession
+				  	// storedSessionDetails = utils.secureLS.get(session.name);
+				  	// storedSessionDetails = utils.getSession(this.name);
+
+				  	if(FormBuilderAjax.debug) console.log('DEBUG storedSessionDetails', storedSessionDetails);
+
+				  	if (storedSessionDetails.subscribed === true) {
+				  		this.utils.removeMarketingSignUp();// Remove the MarketingSignUp html
+				  	} 
+				  	// else {
+				  	// 	console.log('not suscribed');
+				  	// }
 					var countInputAutoFills = 0;
 					for (let key in storedSessionDetails) {
 				     	id = '#'+key;

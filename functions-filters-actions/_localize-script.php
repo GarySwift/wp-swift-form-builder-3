@@ -9,7 +9,7 @@ function wp_swift_form_builder_get_localize_script($options) {
         // generate a nonce with a unique ID so that you can check it later when an AJAX request is sent
         'security' => wp_create_nonce( 'form-builder-nonce' ),
         // debugging info
-        'debug' => false,//$wp_swift_form_builder_debug_mode,
+        'debug' => $wp_swift_form_builder_debug_mode,
         'datePicker' => array( 'format' => get_form_builder_date_format($options)),
         'encryptionSecret' => get_form_builder_encryption_secret($options),
         'marketing' => wp_swift_form_builder_get_marketing_script(),

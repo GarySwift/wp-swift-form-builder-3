@@ -12,7 +12,10 @@ var formBuilderUtilities = {
             isCompression: false, 
             encryptionSecret: encryptionSecret
         });  
-    },        
+    }, 
+    getSession: function(name) {
+        return this.secureLS.get(name);
+    },       
 	showAndRequireInput: function(id) {
 		// var showAndRequireInput = function (id) {
 		$(id+'-form-group').removeClass('hide');
