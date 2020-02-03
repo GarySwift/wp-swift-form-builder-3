@@ -411,8 +411,8 @@ function build_acf_form_array($row_layout, $inputs, $settings, $section=0, $edit
     if( $data_type === 'date_range' ) {
          
         // echo '<pre>$date_ranges: '; var_dump($date_ranges); echo '</pre>';       
-        $css_class .= ' js-date-picker-range ' . $date_ranges;
-        $css_class_input = 'js-date-picker-range';
+        $css_class .= '';//' js-date-picker-range ' . $date_ranges;
+        $css_class_input = ' js-date-picker-range ' . $date_ranges;
         if (!isset($settings["groupings"])) {
             $settings["groupings"] = true;
         }        
@@ -701,8 +701,8 @@ function build_acf_form_array($row_layout, $inputs, $settings, $section=0, $edit
             $inputs[$prefix.$id] = array("passed"=>false, "clean"=>$value, "value"=>$value, "section"=>$section, "required"=>$required, "type"=>$type, "data_type"=>$data_type,  "placeholder"=>$placeholder, "label"=>$label, "accept"=>"pdf", "help"=>$help, "instructions" => $instructions, "grouping" => $grouping, "css_class" => $css_class, "css_class_input" => $css_class_input, 'disabled' => $disabled, "save_location" => $save_location);
             break;              
         case "date_range":
-            $inputs[$prefix.$id.'-start'] = array("passed"=>false, "clean"=>$value, "value"=>$value, "section"=>$section, "required"=>$required, "type"=>$type, "data_type"=>"date", "label"=>"Date From", "help"=>$help, "instructions" => $instructions, "grouping" => 'start', "css_class" => $css_class.' js-date-range', 'css_class_input' => $css_class_input, 'order'=>0, 'parent_label'=>$label, 'disabled' => $disabled);
-            $inputs[$prefix.$id.'-end'] = array("passed"=>false, "clean"=>$value, "value"=>$value, "section"=>$section, "required"=>$required, "type"=>$type, "data_type"=>"date", "label"=>"Date To", "help"=>$help, "instructions" => $instructions, "grouping" => 'end', "css_class" => $css_class.' js-date-range', 'order'=>1, 'parent_label'=>$label, 'disabled' => $disabled);
+            $inputs[$prefix.$id.'-start'] = array("passed"=>false, "clean"=>$value, "value"=>$value, "section"=>$section, "required"=>$required, "type"=>$type, "data_type"=>"date", "label"=> $label." <small>(Date From)</small>", "help"=>$help, "instructions" => $instructions, "grouping" => 'start', "css_class" => $css_class.'', 'css_class_input' => $css_class_input . ' start', 'order'=>0, 'parent_label'=>$label, 'disabled' => $disabled);
+            $inputs[$prefix.$id.'-end'] = array("passed"=>false, "clean"=>$value, "value"=>$value, "section"=>$section, "required"=>$required, "type"=>$type, "data_type"=>"date", "label"=> $label." <small>(Date To)</small>", "help"=>$help, "instructions" => $instructions, "grouping" => 'end', "css_class" => $css_class.'', 'css_class_input' => $css_class_input . ' end','order'=>1, 'parent_label'=>$label, 'disabled' => $disabled);
             break;  
         case "repeat_section":
             $repeat_section = wp_swift_get_repeating_section_form_data( $prefix, $id, get_sub_field('repeating_section'), $inputs, $edit_id, $switch_to_blog, $_post );

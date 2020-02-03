@@ -246,6 +246,7 @@ $this->close_form_groups_html();
      * @start Form Inputs
      ******************************************************/
     private function build_form_input($helper, $id, $input, $section='') {
+        // echo '<pre>$input: '; var_dump($input); echo '</pre>';
         // $has_error='';
         if ($this->clear_input($helper)) {
             $input['value'] = '';
