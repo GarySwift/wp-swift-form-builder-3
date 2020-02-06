@@ -9,6 +9,7 @@ require_once $path . '_form-builder-clone-input-validation.php';
 require_once $path . '_form-builder-clone-number-attributes.php';
 require_once $path . '_form-builder-clone-options.php';
 require_once $path . '_form-builder-clone-options-layout.php';
+require_once $path . '_form-builder-clone-options-repeater.php';
 require_once $path . '_form-builder-clone-reporting-group.php';
 require_once $path . '_form-builder-clone-select-options.php';
 require_once $path . '_form-builder-clone-settings-group.php';
