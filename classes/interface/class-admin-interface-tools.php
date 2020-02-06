@@ -195,7 +195,81 @@ class WP_Swift_Form_Builder_Admin_Interface_Tools {
 										),
 									);
 
+									# @start
+									# Form Builder Type Clone: Contact Form Response
+									$form_data_preset[] = array(
+										"to_email" => array( 
+											"key" => "field_5c65c3baa7360",
+											"value" =>  get_field('to_email', $form_id, true),
+										),
+									);
 
+									$form_data_preset[] = array(
+										"to_email_callback" => array( 
+											"key" => "field_5c65c4d8a7361",
+											"value" =>  get_field('to_email_callback', $form_id, true),
+										),
+									);									
+
+									$form_data_preset[] = array(
+										"response_subject" => array( 
+											"key" => "field_5c65c514a7362",
+											"value" =>  get_field('response_subject', $form_id, true),
+										),
+									);
+
+									$form_data_preset[] = array(
+										"response_subject_callback" => array( 
+											"key" => "field_5d317a69bc3ff",
+											"value" =>  get_field('response_subject_callback', $form_id, true),
+										),
+									);
+
+									$form_data_preset[] = array(
+										"response_subject_callback" => array( 
+											"key" => "field_5d317a69bc3ff",
+											"value" =>  get_field('response_subject_callback', $form_id, true),
+										),
+									);
+
+									$form_data_preset[] = array(
+										"response_message" => array( 
+											"key" => "field_5c65c535a7363",
+											"value" =>  get_field('response_message', $form_id, true),
+										),
+									);
+
+									$form_data_preset[] = array(
+										"confirmation_header" => array( 
+											"key" => "field_5c65c60ccab86",
+											"value" =>  get_field('confirmation_header', $form_id, true),
+										),
+									);
+
+									$form_data_preset[] = array(
+										"auto_response_subject" => array( 
+											"key" => "field_5c65c647cab87",
+											"value" =>  get_field('auto_response_subject', $form_id, true),
+										),
+									);
+
+									$form_data_preset[] = array(
+										"auto_response_message" => array( 
+											"key" => "field_5c65c6e58d4fd",
+											"value" =>  get_field('auto_response_message', $form_id, true),
+										),
+									);
+
+									$form_data_preset[] = array(
+										"forwarding_emails" => array( 
+											"key" => "field_5c65cd7e6f364",
+											"value" =>  get_field('forwarding_emails', $form_id, true),
+										),
+									);
+									
+									# Form Builder Type Clone: Contact Form Response
+									# @end
+									
 									$json = json_encode($form_data_preset, JSON_HEX_QUOT | JSON_HEX_APOS);	
 
 									$form_data_preset = json_decode($json, true);	
