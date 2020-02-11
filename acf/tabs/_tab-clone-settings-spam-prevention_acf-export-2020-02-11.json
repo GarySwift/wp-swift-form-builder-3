@@ -1,0 +1,265 @@
+[
+    {
+        "key": "group_5cff71d405e20",
+        "title": "Tab Clone Settings: Spam Prevention",
+        "fields": [
+            {
+                "key": "field_5e429498e7f49",
+                "label": "Default",
+                "name": "default",
+                "type": "radio",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "choices": {
+                    "default": "Default"
+                },
+                "allow_null": 0,
+                "other_choice": 0,
+                "default_value": "default",
+                "layout": "vertical",
+                "return_format": "value",
+                "save_other_choice": 0
+            },
+            {
+                "key": "field_5cff71d409587",
+                "label": "Google",
+                "name": "spam_prevention_type",
+                "type": "checkbox",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "choices": {
+                    "google": "Google reCAPTCHA"
+                },
+                "allow_custom": 0,
+                "default_value": [],
+                "layout": "vertical",
+                "toggle": 0,
+                "return_format": "value",
+                "save_custom": 0
+            },
+            {
+                "key": "field_5cff71d409592",
+                "label": "reCAPTCHA Settings",
+                "name": "recaptcha_settings",
+                "type": "group",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": [
+                    [
+                        {
+                            "field": "field_5cff71d409587",
+                            "operator": "==",
+                            "value": "google"
+                        }
+                    ]
+                ],
+                "wrapper": {
+                    "width": "75",
+                    "class": "",
+                    "id": ""
+                },
+                "layout": "table",
+                "sub_fields": [
+                    {
+                        "key": "field_5cff71d430fc0",
+                        "label": "Theme",
+                        "name": "theme",
+                        "type": "select",
+                        "instructions": "",
+                        "required": 0,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "choices": {
+                            "dark": "Dark",
+                            "light": "Light"
+                        },
+                        "default_value": [
+                            "light"
+                        ],
+                        "allow_null": 0,
+                        "multiple": 0,
+                        "ui": 0,
+                        "ajax": 0,
+                        "return_format": "value",
+                        "placeholder": ""
+                    },
+                    {
+                        "key": "field_5cff71d430ff0",
+                        "label": "Size",
+                        "name": "size",
+                        "type": "select",
+                        "instructions": "",
+                        "required": 0,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "choices": {
+                            "compact": "Compact",
+                            "normal": "Normal"
+                        },
+                        "default_value": [
+                            "normal"
+                        ],
+                        "allow_null": 0,
+                        "multiple": 0,
+                        "ui": 0,
+                        "ajax": 0,
+                        "return_format": "value",
+                        "placeholder": ""
+                    }
+                ]
+            },
+            {
+                "key": "field_5cff71d40959d",
+                "label": "reCAPTCHA Display",
+                "name": "recaptcha_display_settings",
+                "type": "group",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": [
+                    [
+                        {
+                            "field": "field_5cff71d409587",
+                            "operator": "==",
+                            "value": "google"
+                        }
+                    ]
+                ],
+                "wrapper": {
+                    "width": "25",
+                    "class": "",
+                    "id": ""
+                },
+                "layout": "block",
+                "sub_fields": [
+                    {
+                        "key": "field_5cff71d435ae5",
+                        "label": "Hide On Load",
+                        "name": "hide_on_load",
+                        "type": "true_false",
+                        "instructions": "",
+                        "required": 0,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "message": "",
+                        "default_value": 0,
+                        "ui": 1,
+                        "ui_on_text": "",
+                        "ui_off_text": ""
+                    }
+                ]
+            },
+            {
+                "key": "field_5e428d89fde99",
+                "label": "Default Spam Prevention",
+                "name": "default_spam_prevention",
+                "type": "group",
+                "instructions": "Developers should look at the <b>WP_Swift_Form_Builder_Spam_Killer<\/b> class for more details.",
+                "required": 0,
+                "conditional_logic": [
+                    [
+                        {
+                            "field": "field_5e429498e7f49",
+                            "operator": "==",
+                            "value": "default"
+                        }
+                    ]
+                ],
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "layout": "block",
+                "sub_fields": [
+                    {
+                        "key": "field_5e428e9efde9a",
+                        "label": "Honeypot",
+                        "name": "honeypot",
+                        "type": "radio",
+                        "instructions": "Honeypot technique uses hidden input fields which people cannot see them but bots can. If the form is submitted with any of these fields filled, it will fail with a message. (There are 5 honeypot fields.)",
+                        "required": 0,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "choices": {
+                            "honeypot": "Honeypot"
+                        },
+                        "allow_null": 0,
+                        "other_choice": 0,
+                        "default_value": "honeypot",
+                        "layout": "vertical",
+                        "return_format": "value",
+                        "save_other_choice": 0
+                    },
+                    {
+                        "key": "field_5e428f18fde9b",
+                        "label": "Timestamp",
+                        "name": "timestamp",
+                        "type": "radio",
+                        "instructions": "Timestamp technique uses a hidden input field with an encrypted timestamp which is read when the form is submitted. If the difference is greater than the tolerance, it fails with a message. (The tolerance is set to 6 seconds.)",
+                        "required": 0,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "choices": {
+                            "timestamp": "Timestamp"
+                        },
+                        "allow_null": 0,
+                        "other_choice": 0,
+                        "default_value": "timestamp",
+                        "layout": "vertical",
+                        "return_format": "value",
+                        "save_other_choice": 0
+                    }
+                ]
+            }
+        ],
+        "location": [
+            [
+                {
+                    "param": "post_type",
+                    "operator": "==",
+                    "value": "post"
+                }
+            ]
+        ],
+        "menu_order": 0,
+        "position": "normal",
+        "style": "default",
+        "label_placement": "top",
+        "instruction_placement": "label",
+        "hide_on_screen": "",
+        "active": false,
+        "description": ""
+    }
+]

@@ -144,7 +144,6 @@ function wp_swift_form_builder_enqueue_styles_and_scripts() {
  * @since    1.0.0
  */
 function wp_swift_form_builder_enqueue_scripts_no_check($options) {
-
     // if (!$options) {
     //     $options = get_option( 'wp_swift_form_builder_settings' );
     // }
@@ -162,6 +161,20 @@ function wp_swift_form_builder_enqueue_scripts_no_check($options) {
     // Enqueued script with localized data.
     wp_enqueue_script( FORM_BUILDER_PLUGIN_NAME );
 
+	/**
+	 * @author  Gary Swift <gary@brightlight.ie>
+	 * @since 	2020 01 11
+	 * @link 	https://developers.google.com/recaptcha/docs/faq#can-i-use-recaptcha-globally
+	 */
+    if ( isset($options['wp_swift_form_builder_google_recaptcha']['source']) ) {
+    	$source = $options['wp_swift_form_builder_google_recaptcha']['source'];
+        wp_register_script( 'g-recaptcha', 'https://www.'.$source.'/recaptcha/api.js', '', '' );
+        wp_enqueue_script( 'g-recaptcha' );    
+    }
+    else {
+        wp_register_script( 'g-recaptcha', 'https://www.google.com/recaptcha/api.js', '', '' );
+        wp_enqueue_script( 'g-recaptcha' );    
+    }
 }
 
 /**

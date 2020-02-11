@@ -182,7 +182,7 @@ class WP_Swift_Form_Builder_Admin_Interface_Settings {
 			     	}?>">
 			     </td>
 				<td class="title">Site Key</td>
-				<td class="desc">Use this in the HTML code your site serves to users.</i></td>
+				<td class="desc"><i>Use this in the HTML code your site serves to users.</i></td>
 			</tr>
 			<tr>
 				<td><input type="password" autocomplete="new-password" name="wp_swift_form_builder_settings[wp_swift_form_builder_google_recaptcha][secret_key]" value="<?php
@@ -191,7 +191,7 @@ class WP_Swift_Form_Builder_Admin_Interface_Settings {
 			     	}?>">
 			     </td>
 				<td class="title">Secret Key</td>
-				<td class="desc">Use this for communication between your site and Google.</i></td>
+				<td class="desc"><i>Use this for communication between your site and Google.</i></td>
 			</tr>	
 			<tr>
 				<td><input type="email" name="wp_swift_form_builder_settings[wp_swift_form_builder_google_recaptcha][owner]" value="<?php
@@ -200,8 +200,33 @@ class WP_Swift_Form_Builder_Admin_Interface_Settings {
 			     	}?>">
 			     </td>
 				<td class="title">Owner</td>
-				<td class="desc">The google account to which this is associated.</i></td>
-			</tr>						
+				<td class="desc"><i>The google account to which this is associated.</i></td>
+			</tr>	
+			<tr>
+				<td>
+					<select>
+					    <option selected>reCaptcha Version 2</option>						
+				    </select>
+			     </td>
+				<td class="title">Version</td>
+				<td class="desc">reCaptcha Version 3 will be available in a future update.</td>
+			</tr>				
+			<tr>
+				<td>
+					<select name='wp_swift_form_builder_settings[wp_swift_form_builder_google_recaptcha][source]'>
+						<?php if (isset($options['wp_swift_form_builder_google_recaptcha']['source'])): ?>
+					        <option value='google.com' <?php selected( $options['wp_swift_form_builder_google_recaptcha']['source'], 'google.com' ); ?>>google.com</option>
+					        <option value='recaptcha.net' <?php selected( $options['wp_swift_form_builder_google_recaptcha']['source'], 'recaptcha.net' ); ?>>recaptcha.net</option>
+						<?php else: ?>
+					        <option value='google.com' selected>google.com</option>
+					        <option value='recaptcha.net'>recaptcha.net</option>							
+						<?php endif ?>
+				    </select>
+			     </td>
+				<td class="title">reCaptcha Source</td>
+				<td class="desc"><i>If you're not sure if your country blocks Google then you may leave this as default. Otherwise, if your country blocks google.com requests then please select the suggested recaptcha.net alternative.</i></td>
+			</tr>	
+
 		</table>
 		<p><small>Google reCAPTCHAs must turned on each individual form via the settings tab.</small></p>
 	    <?php

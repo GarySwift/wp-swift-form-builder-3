@@ -6,9 +6,9 @@ acf_add_local_field_group(array(
 	'title' => 'Tab Clone Settings: Spam Prevention',
 	'fields' => array(
 		array(
-			'key' => 'field_5cff71d409587',
-			'label' => 'Spam Prevention',
-			'name' => 'spam_prevention_type',
+			'key' => 'field_5e429498e7f49',
+			'label' => 'Default',
+			'name' => 'default',
 			'type' => 'radio',
 			'instructions' => '',
 			'required' => 0,
@@ -19,15 +19,38 @@ acf_add_local_field_group(array(
 				'id' => '',
 			),
 			'choices' => array(
-				'none' => 'None',
-				'google' => 'Google reCAPTCHA',
+				'default' => 'Default',
 			),
 			'allow_null' => 0,
 			'other_choice' => 0,
-			'save_other_choice' => 0,
-			'default_value' => 'none',
-			'layout' => 'horizontal',
+			'default_value' => 'default',
+			'layout' => 'vertical',
 			'return_format' => 'value',
+			'save_other_choice' => 0,
+		),
+		array(
+			'key' => 'field_5cff71d409587',
+			'label' => 'Google',
+			'name' => 'spam_prevention_type',
+			'type' => 'checkbox',
+			'instructions' => '',
+			'required' => 0,
+			'conditional_logic' => 0,
+			'wrapper' => array(
+				'width' => '',
+				'class' => '',
+				'id' => '',
+			),
+			'choices' => array(
+				'google' => 'Google reCAPTCHA',
+			),
+			'allow_custom' => 0,
+			'default_value' => array(
+			),
+			'layout' => 'vertical',
+			'toggle' => 0,
+			'return_format' => 'value',
+			'save_custom' => 0,
 		),
 		array(
 			'key' => 'field_5cff71d409592',
@@ -46,7 +69,7 @@ acf_add_local_field_group(array(
 				),
 			),
 			'wrapper' => array(
-				'width' => '',
+				'width' => '75',
 				'class' => '',
 				'id' => '',
 			),
@@ -110,7 +133,7 @@ acf_add_local_field_group(array(
 		),
 		array(
 			'key' => 'field_5cff71d40959d',
-			'label' => 'Display Settings',
+			'label' => 'reCAPTCHA Display',
 			'name' => 'recaptcha_display_settings',
 			'type' => 'group',
 			'instructions' => '',
@@ -125,7 +148,7 @@ acf_add_local_field_group(array(
 				),
 			),
 			'wrapper' => array(
-				'width' => '',
+				'width' => '25',
 				'class' => '',
 				'id' => '',
 			),
@@ -152,6 +175,77 @@ acf_add_local_field_group(array(
 				),
 			),
 		),
+		array(
+			'key' => 'field_5e428d89fde99',
+			'label' => 'Default Spam Prevention',
+			'name' => 'default_spam_prevention',
+			'type' => 'group',
+			'instructions' => 'Developers should look at the <b>WP_Swift_Form_Builder_Spam_Killer</b> class for more details.',
+			'required' => 0,
+			'conditional_logic' => array(
+				array(
+					array(
+						'field' => 'field_5e429498e7f49',
+						'operator' => '==',
+						'value' => 'default',
+					),
+				),
+			),
+			'wrapper' => array(
+				'width' => '',
+				'class' => '',
+				'id' => '',
+			),
+			'layout' => 'block',
+			'sub_fields' => array(
+				array(
+					'key' => 'field_5e428e9efde9a',
+					'label' => 'Honeypot',
+					'name' => 'honeypot',
+					'type' => 'radio',
+					'instructions' => 'Honeypot technique uses hidden input fields which people cannot see them but bots can. If the form is submitted with any of these fields filled, it will fail with a message. (There are 5 honeypot fields.)',
+					'required' => 0,
+					'conditional_logic' => 0,
+					'wrapper' => array(
+						'width' => '',
+						'class' => '',
+						'id' => '',
+					),
+					'choices' => array(
+						'honeypot' => 'Honeypot',
+					),
+					'allow_null' => 0,
+					'other_choice' => 0,
+					'default_value' => 'honeypot',
+					'layout' => 'vertical',
+					'return_format' => 'value',
+					'save_other_choice' => 0,
+				),
+				array(
+					'key' => 'field_5e428f18fde9b',
+					'label' => 'Timestamp',
+					'name' => 'timestamp',
+					'type' => 'radio',
+					'instructions' => 'Timestamp technique uses a hidden input field with an encrypted timestamp which is read when the form is submitted. If the difference is greater than the tolerance, it fails with a message. (The tolerance is set to 6 seconds.)',
+					'required' => 0,
+					'conditional_logic' => 0,
+					'wrapper' => array(
+						'width' => '',
+						'class' => '',
+						'id' => '',
+					),
+					'choices' => array(
+						'timestamp' => 'Timestamp',
+					),
+					'allow_null' => 0,
+					'other_choice' => 0,
+					'default_value' => 'timestamp',
+					'layout' => 'vertical',
+					'return_format' => 'value',
+					'save_other_choice' => 0,
+				),
+			),
+		),
 	),
 	'location' => array(
 		array(
@@ -168,7 +262,7 @@ acf_add_local_field_group(array(
 	'label_placement' => 'top',
 	'instruction_placement' => 'label',
 	'hide_on_screen' => '',
-	'active' => 0,
+	'active' => false,
 	'description' => '',
 ));
 

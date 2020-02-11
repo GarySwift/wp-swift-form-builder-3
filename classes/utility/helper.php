@@ -173,10 +173,6 @@ class WP_Swift_Form_Builder_Helper {
         }
         if (isset($this->settings['recaptcha'])) {
             $this->recaptcha = $this->settings["recaptcha"];
-            if ($this->recaptcha_site()) {
-                wp_register_script( 'g-recaptcha', 'https://www.google.com/recaptcha/api.js', '', '' );
-                wp_enqueue_script( 'g-recaptcha' );
-            }
         }
         // todo - move the get_field requests into _build-form-array.php
         // if (function_exists("get_field")) {
